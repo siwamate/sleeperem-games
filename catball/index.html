@@ -350,22 +350,12 @@
         <span style="font-size:11px; font-weight:700;">ฟาร์มแมว</span>
       </a>
 
-      <!-- Emergency Paw Saver Status Indicator -->
-      <div id="paw-saver-indicator" class="skill-pill" title="สกิลกู้ชีพ: อุ้งเท้าเจาะบอลแตกเมื่อจวนตัว">
-        <span style="font-size:14px;">🐾</span>
-        <span id="paw-status-text" style="font-size:10px; font-weight:600; color:#34d399;">พร้อมช่วย (1)</span>
-      </div>
+      <div class="footer-hint" style="font-size:11px; color:#94a3b8;">หย่อนรวมแมวให้ถึง Tier 10 👑</div>
 
       <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="เขย่ากล่องแมวให้บอลไหลรวมกัน">
         <span class="moon-icon">🌙</span>
         <span id="moon-count" class="moon-badge">2</span>
       </button>
-    </div>
-
-    <!-- Cat Skill Animated Popup Banner -->
-    <div id="skill-banner" class="skill-banner">
-      <span id="skill-icon" style="font-size:24px;">🐾</span>
-      <div id="skill-text" style="font-size:13px; font-weight:700; color:#fff;">อุ้งเท้ากู้ชีพช่วยเจาะบอลแตกทันเวลา!</div>
     </div>
 
     <!-- Game Over Modal -->
@@ -996,10 +986,7 @@
 
       if (isOverDanger) {
         dangerTimer += dt;
-        // Emergency Paw Saver Skill (Tries to save player when danger >= 2.0s)
-        if (dangerTimer >= 2.0 && emergencySaverAvailable && !isGameOver) {
-          triggerEmergencyPawSaver();
-        } else if (dangerTimer >= 2.5 && !isGameOver) {
+        if (dangerTimer >= 2.5 && !isGameOver) {
           triggerGameOver();
         }
       } else {
@@ -1021,9 +1008,6 @@
       isGameOver = false;
       dropCooldown = false;
       dangerTimer = 0;
-      emergencySaverAvailable = true;
-      document.getElementById("paw-status-text").innerText = "พร้อมช่วย (1)";
-      document.getElementById("paw-status-text").style.color = "#34d399";
       document.getElementById("moon-count").innerText = "2";
       document.getElementById("moon-shake-btn").disabled = false;
       document.getElementById("game-over-modal").style.display = "none";
