@@ -1,58 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
-    <defs>
-      <linearGradient id="grad-catbg-19_suphalak" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#1e293b"/>
-        <stop offset="100%" stop-color="#0b1322"/>
-      </linearGradient>
-      <filter id="glow-cat-19_suphalak" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="rgba(0,0,0,0.4)"/>
-      </filter>
-    </defs>
-    <rect width="200" height="200" rx="20" fill="url(#grad-catbg-19_suphalak)"/>
-
-    <g filter="url(#glow-cat-19_suphalak)">
-      <!-- Tail -->
-      <polygon points="140,160 168,145 180,125 170,118 155,138 135,152" fill="#451a03"/>
-      <polygon points="170,118 180,125 182,105 174,102" fill="#78350f"/>
-
-      <!-- Body / Torso Facets -->
-      <polygon points="100,105 75,135 100,150" fill="#78350f"/>
-      <polygon points="100,105 125,135 100,150" fill="#b45309"/>
-      <polygon points="75,135 55,160 85,175" fill="#451a03"/>
-      <polygon points="75,135 100,150 85,175" fill="#78350f"/>
-      <polygon points="125,135 145,160 115,175" fill="#270e02"/>
-      <polygon points="125,135 100,150 115,175" fill="#451a03"/>
-
-      <!-- Paws / Legs -->
-      <polygon points="85,175 75,182 92,185 96,177" fill="#b45309"/>
-      <polygon points="115,175 108,177 112,185 125,182" fill="#78350f"/>
-
-      <!-- Head Facets -->
-      <!-- Ears -->
-      <polygon points="78,55 57,18.25 92,38" fill="#451a03"/>
-      <polygon points="92,38 57,18.25 102,48" fill="#b45309"/>
-      <polygon points="82,50 65.4,29.799999999999997 95,42" fill="#f472b6" opacity="0.7"/>
-
-      <polygon points="122,55 143,18.25 108,38" fill="#451a03"/>
-      <polygon points="108,38 143,18.25 98,48" fill="#78350f"/>
-      <polygon points="118,50 134.6,29.799999999999997 105,42" fill="#f472b6" opacity="0.7"/>
-
-      <!-- Face -->
-      <polygon points="100,45 80,62 100,75" fill="#b45309"/>
-      <polygon points="100,45 120,62 100,75" fill="#78350f"/>
-      <polygon points="80,62 65,78 88,95" fill="#451a03"/>
-      <polygon points="80,62 100,75 88,95" fill="#78350f"/>
-      <polygon points="120,62 135,78 112,95" fill="#270e02"/>
-      <polygon points="120,62 100,75 112,95" fill="#b45309"/>
-      <polygon points="88,95 100,75 100,105" fill="#78350f"/>
-      <polygon points="112,95 100,75 100,105" fill="#451a03"/>
-
-      <!-- Eyes -->
-      <polygon points="82,68 88,65 90,72 84,74" fill="#eab308"/>
-      <polygon points="118,68 112,65 110,72 116,74" fill="#eab308"/>
-
-      <!-- Nose & Mouth -->
-      <polygon points="98,82 102,82 100,86" fill="#f43f5e"/>
-      <path d="M 96 90 Q 100 93 100 86 Q 100 93 104 90" stroke="#270e02" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    </g>
-  </svg>
+  <defs><linearGradient id="bg_sup" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2d150b"/><stop offset="100%" stop-color="#0f172a"/></linearGradient></defs>
+  <rect width="200" height="200" rx="20" fill="url(#bg_sup)"/>
+  <!-- Copper Tail -->
+  <polygon points="140,165 175,135 185,110 172,105 158,130 135,155" fill="#78350f"/>
+  <!-- Copper Body -->
+  <polygon points="100,105 70,135 100,155" fill="#b45309"/>
+  <polygon points="100,105 130,135 100,155" fill="#92400e"/>
+  <polygon points="70,135 50,165 85,178" fill="#78350f"/>
+  <polygon points="130,135 150,165 115,178" fill="#602509"/>
+  <polygon points="85,178 72,185 92,188 96,180" fill="#92400e"/>
+  <polygon points="115,178 104,180 108,188 128,185" fill="#78350f"/>
+  <!-- Ears -->
+  <polygon points="78,55 50,12 92,38" fill="#78350f"/>
+  <polygon points="122,55 150,12 108,38" fill="#602509"/>
+  <polygon points="82,50 62,26 94,42" fill="#b45309"/>
+  <polygon points="118,50 138,26 106,42" fill="#92400e"/>
+  <!-- Head -->
+  <polygon points="100,38 78,55 100,68" fill="#d97706"/>
+  <polygon points="100,38 122,55 100,68" fill="#b45309"/>
+  <polygon points="100,55 75,70 100,85" fill="#b45309"/>
+  <polygon points="100,55 125,70 100,85" fill="#92400e"/>
+  <polygon points="75,70 65,82 85,102" fill="#78350f"/>
+  <polygon points="125,70 135,82 115,102" fill="#602509"/>
+  <polygon points="85,102 100,85 100,115" fill="#92400e"/>
+  <polygon points="115,102 100,85 100,115" fill="#78350f"/>
+  <!-- Glowing Gold/Amber Eyes -->
+  <polygon points="80,68 88,64 92,72 84,75" fill="#fbbf24"/>
+  <polygon points="120,68 112,64 108,72 116,75" fill="#f59e0b"/>
+  <circle cx="86" cy="69" r="2" fill="#fff"/>
+  <circle cx="114" cy="69" r="2" fill="#fff"/>
+</svg>

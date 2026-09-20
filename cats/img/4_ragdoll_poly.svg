@@ -1,58 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
-    <defs>
-      <linearGradient id="grad-catbg-4_ragdoll" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#1e293b"/>
-        <stop offset="100%" stop-color="#0b1322"/>
-      </linearGradient>
-      <filter id="glow-cat-4_ragdoll" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="rgba(0,0,0,0.4)"/>
-      </filter>
-    </defs>
-    <rect width="200" height="200" rx="20" fill="url(#grad-catbg-4_ragdoll)"/>
-
-    <g filter="url(#glow-cat-4_ragdoll)">
-      <!-- Tail -->
-      <polygon points="140,160 168,145 180,125 170,118 155,138 135,152" fill="#94a3b8"/>
-      <polygon points="170,118 180,125 182,105 174,102" fill="#e2e8f0"/>
-
-      <!-- Body / Torso Facets -->
-      <polygon points="100,105 75,135 100,150" fill="#e2e8f0"/>
-      <polygon points="100,105 125,135 100,150" fill="#ffffff"/>
-      <polygon points="75,135 55,160 85,175" fill="#94a3b8"/>
-      <polygon points="75,135 100,150 85,175" fill="#e2e8f0"/>
-      <polygon points="125,135 145,160 115,175" fill="#475569"/>
-      <polygon points="125,135 100,150 115,175" fill="#94a3b8"/>
-
-      <!-- Paws / Legs -->
-      <polygon points="85,175 75,182 92,185 96,177" fill="#ffffff"/>
-      <polygon points="115,175 108,177 112,185 125,182" fill="#e2e8f0"/>
-
-      <!-- Head Facets -->
-      <!-- Ears -->
-      <polygon points="78,55 58,20 92,38" fill="#94a3b8"/>
-      <polygon points="92,38 58,20 102,48" fill="#ffffff"/>
-      <polygon points="82,50 66,31 95,42" fill="#f472b6" opacity="0.7"/>
-
-      <polygon points="122,55 142,20 108,38" fill="#94a3b8"/>
-      <polygon points="108,38 142,20 98,48" fill="#e2e8f0"/>
-      <polygon points="118,50 134,31 105,42" fill="#f472b6" opacity="0.7"/>
-
-      <!-- Face -->
-      <polygon points="100,45 80,62 100,75" fill="#ffffff"/>
-      <polygon points="100,45 120,62 100,75" fill="#e2e8f0"/>
-      <polygon points="80,62 65,78 88,95" fill="#94a3b8"/>
-      <polygon points="80,62 100,75 88,95" fill="#e2e8f0"/>
-      <polygon points="120,62 135,78 112,95" fill="#475569"/>
-      <polygon points="120,62 100,75 112,95" fill="#ffffff"/>
-      <polygon points="88,95 100,75 100,105" fill="#e2e8f0"/>
-      <polygon points="112,95 100,75 100,105" fill="#94a3b8"/>
-
-      <!-- Eyes -->
-      <polygon points="82,68 88,65 90,72 84,74" fill="#38bdf8"/>
-      <polygon points="118,68 112,65 110,72 116,74" fill="#38bdf8"/>
-
-      <!-- Nose & Mouth -->
-      <polygon points="98,82 102,82 100,86" fill="#f43f5e"/>
-      <path d="M 96 90 Q 100 93 100 86 Q 100 93 104 90" stroke="#475569" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    </g>
-  </svg>
+  <defs><linearGradient id="bg_rag" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0f172a"/></linearGradient></defs>
+  <rect width="200" height="200" rx="20" fill="url(#bg_rag)"/>
+  <!-- Fluffy White Body -->
+  <polygon points="140,165 180,135 190,105 175,98 160,128 135,155" fill="#f8fafc"/>
+  <polygon points="100,105 60,135 100,160" fill="#ffffff"/>
+  <polygon points="100,105 140,135 100,160" fill="#f1f5f9"/>
+  <polygon points="60,135 45,168 85,182" fill="#e2e8f0"/>
+  <polygon points="140,135 155,168 115,182" fill="#cbd5e1"/>
+  <!-- Dark Ears -->
+  <polygon points="78,55 45,15 92,38" fill="#475569"/>
+  <polygon points="122,55 155,15 108,38" fill="#334155"/>
+  <!-- Face Mask with Inverted V White Blaze -->
+  <polygon points="100,42 65,65 80,85" fill="#475569"/>
+  <polygon points="100,42 135,65 120,85" fill="#334155"/>
+  <polygon points="65,65 55,85 75,105" fill="#334155"/>
+  <polygon points="135,65 145,85 125,105" fill="#1e293b"/>
+  <!-- Inverted White V -->
+  <polygon points="100,52 82,90 100,118" fill="#ffffff"/>
+  <polygon points="100,52 118,90 100,118" fill="#f8fafc"/>
+  <!-- Sky Blue Eyes -->
+  <circle cx="75" cy="72" r="7" fill="#38bdf8"/>
+  <circle cx="125" cy="72" r="7" fill="#38bdf8"/>
+</svg>
