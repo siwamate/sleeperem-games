@@ -300,7 +300,7 @@
       transition: all 0.15s ease;
     }
     .moon-icon-btn:active {
-      transform: scale(0.9);
+      transform: scale(0.86) rotate(-14deg);
     }
     .moon-icon-btn:disabled {
       background: #334155;
@@ -591,8 +591,23 @@
         <span id="user-name" style="font-size:11px; font-weight:600; color:#cbd5e1;">Guest</span>
       </div>
 
-      <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="เขย่ากล่องแมวให้บอลไหลรวมกัน">
-        <span class="moon-icon">🌙</span>
+      <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="อุ้งเท้าแมวช่วยขยับกล่อง (เขย่ากล่องให้แมวรวมกัน)">
+        <span class="paw-icon" style="display:flex; align-items:center; justify-content:center; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.25));">
+          <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
+            <!-- Central main pad -->
+            <ellipse cx="12" cy="15.8" rx="5.4" ry="4.2" fill="#ffffff" />
+            <ellipse cx="12" cy="15.8" rx="4.2" ry="3.2" fill="#fda4af" />
+            <!-- 4 Toe beans -->
+            <ellipse cx="5.6" cy="10.8" rx="2.3" ry="3.2" transform="rotate(-24 5.6 10.8)" fill="#ffffff" />
+            <ellipse cx="5.6" cy="10.8" rx="1.6" ry="2.4" transform="rotate(-24 5.6 10.8)" fill="#fda4af" />
+            <ellipse cx="9.8" cy="6.6" rx="2.1" ry="3.1" transform="rotate(-8 9.8 6.6)" fill="#ffffff" />
+            <ellipse cx="9.8" cy="6.6" rx="1.5" ry="2.3" transform="rotate(-8 9.8 6.6)" fill="#fda4af" />
+            <ellipse cx="14.2" cy="6.6" rx="2.1" ry="3.1" transform="rotate(8 14.2 6.6)" fill="#ffffff" />
+            <ellipse cx="14.2" cy="6.6" rx="1.5" ry="2.3" transform="rotate(8 14.2 6.6)" fill="#fda4af" />
+            <ellipse cx="18.4" cy="10.8" rx="2.3" ry="3.2" transform="rotate(24 18.4 10.8)" fill="#ffffff" />
+            <ellipse cx="18.4" cy="10.8" rx="1.6" ry="2.4" transform="rotate(24 18.4 10.8)" fill="#fda4af" />
+          </svg>
+        </span>
         <span id="moon-count" class="moon-badge">2</span>
       </button>
     </div>
