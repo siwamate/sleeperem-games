@@ -421,10 +421,36 @@
       font-family: inherit;
       transition: all 0.15s ease;
       flex-shrink: 0;
+      text-decoration: none;
     }
     .action-btn-pill:active { transform: scale(0.94); background: #334155; }
     @media (max-width: 380px) {
       .btn-text { display: none; }
+    }
+
+    .farm-btn-active.is-owner-vip {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(67, 56, 202, 0.45));
+      border: 1.5px solid #fbbf24;
+      color: #fbbf24;
+      box-shadow: 0 0 14px rgba(251, 191, 36, 0.4);
+      animation: vipPulse 2s infinite ease-in-out;
+    }
+    @keyframes vipPulse {
+      0%, 100% { box-shadow: 0 0 8px rgba(251, 191, 36, 0.3); border-color: #fbbf24; }
+      50% { box-shadow: 0 0 16px rgba(251, 191, 36, 0.7); border-color: #fde047; }
+    }
+
+    /* VIP Access Modal */
+    #vip-farm-modal {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 110;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
     }
 
     /* Leaderboard Modal */
@@ -616,10 +642,10 @@
 
     <!-- Bottom Action Bar (Farm, Leaderboard, Player Profile, Moon Shake) -->
     <div class="bottom-action-bar">
-      <a href="/farm" class="farm-btn-active" title="ไปเที่ยวฟาร์มแมวแสนอบอุ่น">
-        <span style="font-size:14px;">🏡</span>
-        <span class="btn-text farm-btn-text">ฟาร์มแมว</span>
-      </a>
+      <button id="farm-nav-btn" class="action-btn-pill farm-btn-active" onclick="handleFarmClick(event)" title="ไปเที่ยวฟาร์มแมวแสนอบอุ่น">
+        <span id="farm-btn-icon" style="font-size:14px;">🏡</span>
+        <span id="farm-btn-text" class="btn-text">ฟาร์มแมว</span>
+      </button>
 
       <button id="leaderboard-btn" class="action-btn-pill" onclick="openLeaderboardModal()" title="ดูตารางอันดับทาสแมว">
         <span style="font-size:14px;">🏆</span>
@@ -660,7 +686,7 @@
           <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
           <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
           <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;">
-            เข้าสู่ระบบด้วย Facebook เพื่อบันทึกคะแนนสูงสุด ชิงอันดับบน <b>Leaderboard</b> และรับอาหารแมวฟรี!
+            เข้าสู่ระบบด้วย Facebook เพื่อบันทึกคะแนนสูงสุด ชิงอันดับบน <b>Leaderboard</b> และรับสิทธิ์ดูแลฟาร์มแมว!
           </p>
 
           <button class="fb-login-btn" onclick="loginWithFacebook()">
@@ -676,12 +702,23 @@
         <div id="modal-user-view" style="display:none;">
           <div id="modal-user-avatar-wrap" style="margin-bottom:8px;"></div>
           <h3 id="modal-user-name" style="font-size: 17px; font-weight: 700; color: #f8fafc; margin-bottom: 2px;">ทาสแมว</h3>
-          <p style="font-size: 11px; color: #34d399; margin-bottom: 14px;">● เชื่อมต่อ Facebook แล้ว</p>
+          
+          <!-- VIP Owner Badge in Profile -->
+          <div id="owner-vip-badge-tag" style="display:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; margin-bottom:10px; text-align:center; box-shadow:0 0 10px rgba(245,158,11,0.3);">
+            👑 เจ้าของฟาร์ม Sleeperem (VIP Owner)
+          </div>
+
+          <p id="modal-user-status" style="font-size: 11px; color: #34d399; margin-bottom: 14px;">● เชื่อมต่อ Facebook แล้ว</p>
 
           <div style="background:#0f172a; padding:12px; border-radius:14px; border:1px solid #334155; margin-bottom:14px;">
             <div style="font-size:11px; color:#94a3b8;">สถิติสูงสุดของคุณ</div>
             <div id="modal-high-score" style="font-size:22px; font-weight:700; color:#fbbf24; font-family:monospace;">0</div>
           </div>
+
+          <!-- Direct VIP Farm Button for Owner -->
+          <a id="owner-farm-direct-btn" href="/farm" style="display:none; text-decoration:none; width:100%; padding:10px; background:linear-gradient(135deg, #7c3aed, #4338ca); border:1.5px solid #fbbf24; border-radius:12px; color:#fbbf24; font-size:13px; font-weight:700; margin-bottom:8px; text-align:center; box-sizing:border-box; box-shadow:0 0 14px rgba(251,191,36,0.35);">
+            🏡 เข้าสู่ฟาร์มแมวของคุณ (VIP) →
+          </a>
 
           <button onclick="closeLoginModal(); openLeaderboardModal();" style="width:100%; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
             <span>🏆</span> เปิดดูตารางอันดับ (Leaderboard)
@@ -695,6 +732,32 @@
             ปิดหน้าต่าง
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- VIP Early Access / Farm Admission Modal -->
+    <div id="vip-farm-modal">
+      <div class="modal-card">
+        <div style="font-size: 44px; margin-bottom: 6px;">🏡👑</div>
+        <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">ฟาร์มแมวแสนอบอุ่น</h3>
+        <span style="display:inline-block; background:#4338ca; color:#a5b4fc; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; margin-bottom:12px;">VIP EARLY ACCESS</span>
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 16px; text-align:center;">
+          ฟาร์มแมวเปิดให้ทดสอบรอบพิเศษสำหรับคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b><br>
+          หากคุณคือคุณ Kanel Notarry โปรดเข้าสู่ระบบด้วย Facebook เพื่อเปิดสิทธิ์ดูแลฟาร์มเต็มรูปแบบ!
+        </p>
+
+        <button class="fb-login-btn" onclick="loginWithFacebook()" style="margin-bottom:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          เข้าสู่ระบบด้วย Facebook
+        </button>
+
+        <a href="/farm" style="display:block; text-decoration:none; width:100%; padding:10px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:12px; font-weight:600; text-align:center; box-sizing:border-box; margin-bottom:8px;">
+          ✨ ทดลองเข้าชมตัวอย่าง (Preview) →
+        </a>
+
+        <button onclick="closeVipFarmModal()" style="width:100%; padding:8px; background:transparent; border:none; color:#94a3b8; font-size:12px; cursor:pointer;">
+          เล่นเกมต่อ
+        </button>
       </div>
     </div>
 
@@ -1294,6 +1357,37 @@
     }
 
     let currentUser = null;
+    const KANEL_NOTARRY_UUID = "087bafcd-0191-419f-8a39-bd834eb323f2";
+
+    function isKanelNotarry(user) {
+      if (!user) return false;
+      const id = user.id || "";
+      const meta = user.user_metadata || {};
+      const name = (meta.full_name || meta.name || user.name || "").toLowerCase();
+      const email = (user.email || "").toLowerCase();
+      return id === KANEL_NOTARRY_UUID ||
+             (name.includes("kanel") && name.includes("notarry")) ||
+             email.includes("notarry");
+    }
+
+    function handleFarmClick(e) {
+      if (e) e.preventDefault();
+      if (currentUser) {
+        // Logged in - proceed directly to farm!
+        window.location.href = "/farm";
+      } else {
+        // Guest - prompt with VIP early access modal
+        openVipFarmModal();
+      }
+    }
+
+    function openVipFarmModal() {
+      document.getElementById("vip-farm-modal").style.display = "flex";
+    }
+
+    function closeVipFarmModal() {
+      document.getElementById("vip-farm-modal").style.display = "none";
+    }
 
     function openLoginModal() {
       const guestView = document.getElementById("modal-guest-view");
@@ -1301,12 +1395,19 @@
       if (currentUser) {
         guestView.style.display = "none";
         userView.style.display = "block";
-        document.getElementById("modal-user-name").innerText = currentUser.name;
+        const isOwner = isKanelNotarry(currentUser);
+        document.getElementById("modal-user-name").innerText = isOwner ? `${currentUser.name} 👑` : currentUser.name;
         document.getElementById("modal-high-score").innerText = bestScore.toLocaleString();
+        
+        const ownerTag = document.getElementById("owner-vip-badge-tag");
+        const ownerFarmBtn = document.getElementById("owner-farm-direct-btn");
+        if (ownerTag) ownerTag.style.display = isOwner ? "block" : "none";
+        if (ownerFarmBtn) ownerFarmBtn.style.display = isOwner ? "block" : "none";
+
         if (currentUser.avatar) {
-          document.getElementById("modal-user-avatar-wrap").innerHTML = `<img src="${currentUser.avatar}" style="width:64px;height:64px;border-radius:50%;border:2px solid #38bdf8;object-fit:cover;">`;
+          document.getElementById("modal-user-avatar-wrap").innerHTML = `<img src="${currentUser.avatar}" style="width:64px;height:64px;border-radius:50%;border:2.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'};object-fit:cover;">`;
         } else {
-          document.getElementById("modal-user-avatar-wrap").innerHTML = `<span style="font-size:48px;">🐱</span>`;
+          document.getElementById("modal-user-avatar-wrap").innerHTML = `<span style="font-size:48px;">${isOwner ? '👑' : '🐱'}</span>`;
         }
       } else {
         guestView.style.display = "block";
@@ -1353,6 +1454,15 @@
         currentUser = null;
         document.getElementById("user-name").innerText = "Guest";
         document.getElementById("user-avatar").innerHTML = "👤";
+        
+        // Reset farm button
+        const farmBtn = document.getElementById("farm-nav-btn");
+        const farmText = document.getElementById("farm-btn-text");
+        const farmIcon = document.getElementById("farm-btn-icon");
+        if (farmBtn) farmBtn.classList.remove("is-owner-vip");
+        if (farmText) farmText.innerText = "ฟาร์มแมว";
+        if (farmIcon) farmIcon.innerText = "🏡";
+
         closeLoginModal();
         alert("ออกจากระบบเรียบร้อยแล้ว");
       }
@@ -1364,13 +1474,37 @@
         const u = session.user;
         const name = u.user_metadata.full_name || u.user_metadata.name || "ทาสแมว Facebook";
         const avatar = u.user_metadata.avatar_url || u.user_metadata.picture;
-        currentUser = { id: u.id, name, avatar };
+        currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
 
+        const isOwner = isKanelNotarry(u);
         const nameElem = document.getElementById("user-name");
         const avatarElem = document.getElementById("user-avatar");
-        if (nameElem) nameElem.innerText = name.split(" ")[0]; // First name for compact display
+        const farmBtn = document.getElementById("farm-nav-btn");
+        const farmText = document.getElementById("farm-btn-text");
+        const farmIcon = document.getElementById("farm-btn-icon");
+
+        if (nameElem) {
+          nameElem.innerText = isOwner ? "👑 Kanel" : name.split(" ")[0];
+          if (isOwner) nameElem.style.color = "#fbbf24";
+        }
+
         if (avatar && avatarElem) {
-          avatarElem.innerHTML = `<img src="${avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;">`;
+          avatarElem.innerHTML = `<img src="${avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${isOwner ? '#fbbf24' : '#38bdf8'};">`;
+        }
+
+        // Special VIP Owner badge for Kanel Notarry
+        if (isOwner) {
+          if (farmBtn) {
+            farmBtn.classList.add("is-owner-vip");
+            farmBtn.title = "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry! (คลิกเพื่อเข้าฟาร์ม)";
+          }
+          if (farmText) {
+            farmText.innerText = "ฟาร์มแมว VIP";
+            farmText.style.color = "#fbbf24";
+          }
+          if (farmIcon) {
+            farmIcon.innerText = "👑";
+          }
         }
 
         // Clean up OAuth hash params in URL if present
