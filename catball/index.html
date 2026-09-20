@@ -102,6 +102,52 @@
       transform: translateX(-50%) translateY(0);
     }
 
+    
+    .player-profile-badge {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .player-profile-badge:active { transform: scale(0.94); }
+
+    /* Facebook Login Modal */
+    #login-modal {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .fb-login-btn {
+      width: 100%;
+      background: #1877f2;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+      transition: all 0.15s;
+    }
+    .fb-login-btn:active { transform: scale(0.96); }
+
     /* Header Bar */
     .header {
       padding: 12px 16px;
@@ -326,15 +372,16 @@
       </div>
     </div>
 
-    <!-- Next Cat Preview Bar -->
+    <!-- Next Cat Preview Bar & Highest Cat HUD -->
     <div class="preview-bar">
       <div class="next-indicator">
-        <span>ตัวต่อไป:</span>
+        <span>ถัดไป:</span>
         <div id="next-cat-view" class="next-bubble">🧶</div>
         <span id="next-cat-name" style="font-weight: 600; color: #f59e0b;">ก้อนไหมพรม</span>
       </div>
-      <div style="font-size: 10px; color: #64748b;">
-        เป้าหมาย: ราชาแมวคู่ Tier 10
+      <div id="highest-cat-hud" style="font-size: 11px; color: #38bdf8; font-weight: 600; display:flex; align-items:center; gap:4px;">
+        <span>สูงสุด:</span>
+        <span id="highest-tier-name" style="color: #fbbf24; font-weight: 700;">Tier 1 (ลูกแมวส้ม)</span>
       </div>
     </div>
 
@@ -343,19 +390,40 @@
       <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Bottom Action Bar (iPhone/iPad First - 100% Unobstructed Playing Area) -->
+    <!-- Bottom Action Bar (Clean, Unobstructed, Farm hidden per request) -->
     <div class="bottom-action-bar">
-      <a href="/farm" class="farm-nav-btn" title="ไปห้องฟาร์มแมว แต่งห้อง ซื้อของ">
-        <span>🏡</span>
-        <span style="font-size:11px; font-weight:700;">ฟาร์มแมว</span>
-      </a>
+      <div id="player-profile-badge" class="player-profile-badge" onclick="openLoginModal()" title="ล็อกอินบันทึกสถิติ">
+        <span id="user-avatar" style="font-size:16px;">👤</span>
+        <span id="user-name" style="font-size:11px; font-weight:600; color:#cbd5e1;">เล่นแบบ Guest</span>
+      </div>
 
-      <div class="footer-hint" style="font-size:11px; color:#94a3b8;">หย่อนรวมแมวให้ถึง Tier 10 👑</div>
+      <div class="footer-hint" id="footer-hint-text" style="font-size:11px; color:#94a3b8;">แตะด้านบนเพื่อหย่อนน้องแมว 🐱</div>
 
       <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="เขย่ากล่องแมวให้บอลไหลรวมกัน">
         <span class="moon-icon">🌙</span>
         <span id="moon-count" class="moon-badge">2</span>
       </button>
+    </div>
+
+    
+    <!-- Facebook Login Modal -->
+    <div id="login-modal">
+      <div class="modal-card">
+        <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
+        <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
+        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
+          เข้าสู่ระบบเพื่อจัดอันดับบน Leaderboard และรับรางวัลในเกม!
+        </p>
+
+        <button class="fb-login-btn" onclick="loginWithFacebook()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          เข้าสู่ระบบด้วย Facebook
+        </button>
+
+        <button onclick="closeLoginModal()" style="width:100%; margin-top:10px; padding:10px; background:transparent; border:1px solid #475569; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
+          เล่นต่อแบบ Guest
+        </button>
+      </div>
     </div>
 
     <!-- Game Over Modal -->
@@ -887,6 +955,46 @@
     /* ==========================================================================
        USER INPUTS & DROP HANDLING
        ========================================================================== */
+    
+    function updateHighestCatHUD() {
+      let maxTier = 0;
+      for (const c of cats) {
+        if (c.tier > maxTier) maxTier = c.tier;
+      }
+      const config = CAT_TIERS[maxTier];
+      const elem = document.getElementById("highest-tier-name");
+      if (elem && config) {
+        elem.innerText = `Tier ${maxTier + 1} (${config.name})`;
+      }
+    }
+
+    function openLoginModal() {
+      document.getElementById("login-modal").style.display = "flex";
+    }
+
+    function closeLoginModal() {
+      document.getElementById("login-modal").style.display = "none";
+    }
+
+    // Facebook Login via Supabase Function
+    async function loginWithFacebook() {
+      if (typeof supabaseClient === "undefined") {
+        alert("🔒 กำลังเชื่อมต่อ Supabase Authentication... ให้คุณตั้งค่า Project URL & Key ในขั้นตอนถัดไป!");
+        return;
+      }
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithOAuth({
+          provider: 'facebook',
+          options: {
+            redirectTo: window.location.origin + window.location.pathname
+          }
+        });
+        if (error) alert("เกิดข้อผิดพลาด: " + error.message);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
     function updateScoreUI() {
       document.getElementById("score-val").innerText = score;
       if (score > bestScore) {
