@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Cat Drop & Merge: Sleepy Cats (Sleeperem Prototype)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
@@ -22,23 +22,86 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      min-height: 100dvh;
       overflow: hidden;
       touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
     }
     #game-container {
       position: relative;
-      width: 420px;
-      max-width: 100vw;
-      height: 720px;
-      max-height: 100vh;
+      width: 100%;
+      max-width: 440px;
+      height: 100dvh;
+      max-height: 100dvh;
       background: #131b2e;
-      border: 3px solid #1e293b;
-      border-radius: 20px;
+      border: 1px solid #1e293b;
       box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(99, 102, 241, 0.15);
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
+    @media (min-width: 768px) {
+      /* iPad & Tablet / Desktop Chrome Center View */
+      #game-container {
+        width: 460px;
+        max-width: 90vw;
+        height: 840px;
+        max-height: 94dvh;
+        border: 3px solid #1e293b;
+        border-radius: 26px;
+      }
+    }
+    
+    .farm-nav-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      border: 1px solid #34d399;
+      transition: all 0.15s;
+    }
+    .farm-nav-btn:active { transform: scale(0.92); }
+    .skill-pill {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid #334155;
+      padding: 4px 10px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .skill-banner {
+      position: absolute;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid #fbbf24;
+      border-radius: 20px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 50;
+    }
+    .skill-banner.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* Header Bar */
     .header {
       padding: 12px 16px;
@@ -280,13 +343,29 @@
       <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Bottom Action Bar (Outside Canvas - Clean & Does Not Block Cats) -->
+    <!-- Bottom Action Bar (iPhone/iPad First - 100% Unobstructed Playing Area) -->
     <div class="bottom-action-bar">
-      <div class="footer-hint">หย่อนรวมแมวให้ถึง Tier 10 👑</div>
-      <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="เขย่ากล่องแมว">
+      <a href="/farm" class="farm-nav-btn" title="ไปห้องฟาร์มแมว แต่งห้อง ซื้อของ">
+        <span>🏡</span>
+        <span style="font-size:11px; font-weight:700;">ฟาร์มแมว</span>
+      </a>
+
+      <!-- Emergency Paw Saver Status Indicator -->
+      <div id="paw-saver-indicator" class="skill-pill" title="สกิลกู้ชีพ: อุ้งเท้าเจาะบอลแตกเมื่อจวนตัว">
+        <span style="font-size:14px;">🐾</span>
+        <span id="paw-status-text" style="font-size:10px; font-weight:600; color:#34d399;">พร้อมช่วย (1)</span>
+      </div>
+
+      <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="เขย่ากล่องแมวให้บอลไหลรวมกัน">
         <span class="moon-icon">🌙</span>
         <span id="moon-count" class="moon-badge">2</span>
       </button>
+    </div>
+
+    <!-- Cat Skill Animated Popup Banner -->
+    <div id="skill-banner" class="skill-banner">
+      <span id="skill-icon" style="font-size:24px;">🐾</span>
+      <div id="skill-text" style="font-size:13px; font-weight:700; color:#fff;">อุ้งเท้ากู้ชีพช่วยเจาะบอลแตกทันเวลา!</div>
     </div>
 
     <!-- Game Over Modal -->
@@ -426,6 +505,53 @@
       canvas.height = height;
     }
     window.addEventListener("resize", resizeCanvas);
+
+    
+    // Cat Skills & Coins System
+    let emergencySaverAvailable = true;
+    let fishCoins = parseInt(localStorage.getItem("sleeperem_fish_coins") || "100");
+
+    function showSkillToast(icon, text) {
+      const banner = document.getElementById("skill-banner");
+      document.getElementById("skill-icon").innerText = icon;
+      document.getElementById("skill-text").innerText = text;
+      banner.classList.add("show");
+      setTimeout(() => banner.classList.remove("show"), 2200);
+    }
+
+    function triggerEmergencyPawSaver() {
+      emergencySaverAvailable = false;
+      document.getElementById("paw-status-text").innerText = "ใช้แล้ว (0)";
+      document.getElementById("paw-status-text").style.color = "#94a3b8";
+
+      // Find top 1-2 cats resting above or closest to danger line
+      const dangerCats = [...cats]
+        .filter(c => c.y - c.r < DANGER_Y + 40)
+        .sort((a, b) => a.y - b.y);
+
+      const targetCats = dangerCats.slice(0, 2);
+      targetCats.forEach(c => {
+        // Pop particles
+        for (let i = 0; i < 20; i++) {
+          particles.push(new Particle(c.x, c.y, CAT_TIERS[c.tier].color));
+        }
+        c.merged = true;
+      });
+
+      // Filter out popped cats
+      for (let i = cats.length - 1; i >= 0; i--) {
+        if (cats[i].merged) cats.splice(i, 1);
+      }
+
+      dangerTimer = 0;
+      sound.playMerge(4);
+      showSkillToast("🐾", "อุ้งเท้ากู้ชีพเจาะบอลแตกช่วยชีวิตทันเวลา!");
+
+      // Screen shake
+      const wrap = document.getElementById("game-container");
+      wrap.style.transform = "translate(0px, 8px)";
+      setTimeout(() => { wrap.style.transform = "none"; }, 150);
+    }
 
     // Game Variables
     let score = 0;
@@ -778,6 +904,10 @@
         localStorage.setItem("sleeperem_best", bestScore);
       }
       document.getElementById("best-val").innerText = bestScore;
+      
+      // 10% of earned score is automatically saved as Fish Coins for Cat Farm
+      const earnedCoins = Math.floor(score / 10);
+      localStorage.setItem("sleeperem_fish_coins", (100 + earnedCoins).toString());
     }
 
     function updateNextCatUI() {
@@ -832,10 +962,13 @@
       }
 
       sound.playMoonShake();
+      // Show shake skill banner
+      showSkillToast("🌙", "แมวโดดเขย่ากล่อง! บอลกลิ้งไหลรวมร่าง!");
+
       // Shake all cats upwards and randomly
       cats.forEach(cat => {
-        cat.vy = -(Math.random() * 450 + 200);
-        cat.vx += (Math.random() - 0.5) * 400;
+        cat.vy = -(Math.random() * 480 + 220);
+        cat.vx += (Math.random() - 0.5) * 450;
       });
 
       // Visual screen shake
@@ -863,7 +996,10 @@
 
       if (isOverDanger) {
         dangerTimer += dt;
-        if (dangerTimer >= 2.5 && !isGameOver) {
+        // Emergency Paw Saver Skill (Tries to save player when danger >= 2.0s)
+        if (dangerTimer >= 2.0 && emergencySaverAvailable && !isGameOver) {
+          triggerEmergencyPawSaver();
+        } else if (dangerTimer >= 2.5 && !isGameOver) {
           triggerGameOver();
         }
       } else {
@@ -885,6 +1021,9 @@
       isGameOver = false;
       dropCooldown = false;
       dangerTimer = 0;
+      emergencySaverAvailable = true;
+      document.getElementById("paw-status-text").innerText = "พร้อมช่วย (1)";
+      document.getElementById("paw-status-text").style.color = "#34d399";
       document.getElementById("moon-count").innerText = "2";
       document.getElementById("moon-shake-btn").disabled = false;
       document.getElementById("game-over-modal").style.display = "none";
@@ -942,16 +1081,7 @@
         const currentConfig = CAT_TIERS[currentCatTier];
         const clampedX = Math.max(currentConfig.radius + 8, Math.min(width - currentConfig.radius - 8, aimX));
 
-        // Dashed Vertical Guide
-        ctx.save();
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(clampedX, 70);
-        ctx.lineTo(clampedX, height);
-        ctx.stroke();
-        ctx.restore();
+// Vertical guide line removed per user request
 
         // Dropper Cat Preview
         const previewCat = new Cat(clampedX, 55, currentCatTier);

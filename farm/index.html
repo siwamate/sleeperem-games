@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>🏡 บ้านแมวแสนอบอุ่น (Sleeperem Cat Farm)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
+    body {
+      background: #0b0f19;
+      color: #f8fafc;
+      font-family: 'Prompt', -apple-system, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+    .app-wrap {
+      width: 100%;
+      max-width: 540px;
+      min-height: 100vh;
+      background: #111827;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid #1f2937;
+      border-right: 1px solid #1f2937;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+    @media (min-width: 768px) {
+      body { padding: 24px 0; }
+      .app-wrap {
+        border-radius: 28px;
+        min-height: 880px;
+        border: 2px solid #374151;
+        overflow: hidden;
+      }
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: #1f2937;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #374151;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    .back-btn {
+      background: #374151;
+      color: #38bdf8;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 18px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #4b5563;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .back-btn:active { transform: scale(0.94); background: #4b5563; }
+    .currency-pill {
+      background: #0f172a;
+      border: 1px solid #f59e0b;
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* Chapter / Level Progress Banner */
+    .level-banner {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      padding: 12px 16px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .level-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .progress-bar-wrap {
+      width: 120px;
+      height: 8px;
+      background: #334155;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #10b981);
+      width: 45%;
+      border-radius: 4px;
+    }
+
+    /* Living Room Scene Viewport */
+    .room-viewport {
+      position: relative;
+      width: 100%;
+      height: 270px;
+      background: linear-gradient(180deg, #1e1b4b 0%, #312e81 40%, #1e293b 40%, #0f172a 100%);
+      overflow: hidden;
+      border-bottom: 2px solid #374151;
+    }
+    .room-wall-window {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      width: 70px;
+      height: 70px;
+      background: #38bdf8;
+      border: 4px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    .room-floor-line {
+      position: absolute;
+      top: 120px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Floating Interactive Furniture */
+    .furniture-spot {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .furniture-spot:active { transform: scale(0.92); }
+    .furniture-icon {
+      font-size: 42px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    }
+    .furniture-tag {
+      font-size: 9px;
+      background: rgba(0,0,0,0.7);
+      color: #cbd5e1;
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-top: 2px;
+    }
+
+    /* Wandering Cats */
+    .cat-actor {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .cat-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #334155;
+      border: 2px solid #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      object-fit: cover;
+    }
+    .cat-name-tag {
+      font-size: 9px;
+      background: #0f172a;
+      color: #fef08a;
+      padding: 1px 6px;
+      border-radius: 6px;
+      border: 1px solid #ca8a04;
+      margin-top: 2px;
+    }
+    .chat-bubble {
+      position: absolute;
+      top: -26px;
+      background: #fff;
+      color: #0f172a;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* Upload Pet Cat Banner Action */
+    .custom-cat-cta {
+      background: linear-gradient(135deg, #ec4899, #be185d);
+      margin: 12px 16px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #f472b6;
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .custom-cat-cta:active { transform: scale(0.96); }
+    .cta-left { display: flex; align-items: center; gap: 10px; }
+    .cta-icon { font-size: 30px; }
+    .cta-title { font-size: 13px; font-weight: 700; color: #fff; }
+    .cta-desc { font-size: 11px; color: #fce7f3; }
+    .cta-btn {
+      background: #fff;
+      color: #be185d;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* 20 Items Shop Container */
+    .shop-section {
+      flex: 1;
+      padding: 0 16px 40px;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 12px 0 10px;
+    }
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+    .item-card {
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: border-color 0.2s;
+    }
+    .item-card.owned { border-color: #10b981; }
+    .card-top { display: flex; gap: 10px; align-items: flex-start; }
+    .item-emoji {
+      font-size: 32px;
+      width: 48px;
+      height: 48px;
+      background: #111827;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #374151;
+      flex-shrink: 0;
+    }
+    .item-name { font-size: 13px; font-weight: 700; color: #f3f4f6; }
+    .item-desc { font-size: 11px; color: #9ca3af; line-height: 1.4; margin-top: 2px; }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #374151;
+      padding-top: 8px;
+    }
+    .item-level-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: #10b981;
+      background: #064e3b;
+      padding: 2px 8px;
+      border-radius: 8px;
+    }
+    .item-level-tag.locked { color: #9ca3af; background: #374151; }
+    .buy-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+      transition: all 0.15s;
+    }
+    .buy-btn:active { transform: scale(0.92); }
+    .buy-btn:disabled { background: #4b5563; cursor: not-allowed; box-shadow: none; }
+
+    /* Modal for Uploading Pet Cat */
+    #upload-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-box {
+      background: #1f2937;
+      border: 2px solid #ec4899;
+      border-radius: 24px;
+      padding: 24px;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      animation: pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes pop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .preview-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #ec4899;
+      margin: 14px auto;
+      object-fit: cover;
+      display: block;
+      background: #111827;
+    }
+    .cat-name-input {
+      width: 100%;
+      padding: 10px 14px;
+      background: #111827;
+      border: 1px solid #4b5563;
+      border-radius: 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      margin-bottom: 16px;
+      outline: none;
+    }
+    .cat-name-input:focus { border-color: #ec4899; }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrap">
+    <!-- Navigation Header -->
+    <header>
+      <a href="/catball" class="back-btn">
+        <span>🎮</span>
+        <span>เล่นเกม Cat Ball</span>
+      </a>
+      <div class="currency-pill">
+        <span>🐟</span>
+        <span id="coin-val">100</span>
+        <span style="font-size:11px; font-weight:400; color:#9ca3af;">เหรียญ</span>
+      </div>
+    </header>
+
+    <!-- Chapter / Level Banner -->
+    <div class="level-banner">
+      <div>
+        <div class="level-title">
+          <span>🏆</span>
+          <span id="chapter-title">Level 1: ห้องนอนเจ้าส้ม (Cozy Bedroom)</span>
+        </div>
+        <p style="font-size:10px; color:#94a3b8; margin-top:2px;">เล่นสะสมคะแนนในเกมเพื่อปลดล็อก Chapter ถัดไป!</p>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Living Room Scene Viewport (Cats Roaming & Interacting) -->
+    <div class="room-viewport" id="room-viewport">
+      <div class="room-wall-window">☀️</div>
+      <div class="room-floor-line"></div>
+
+      <!-- Furniture Spots (Visible when unlocked/purchased) -->
+      <div id="spot-wheel" class="furniture-spot" style="left: 20px; bottom: 15px;">
+        <span class="furniture-icon">🎡</span>
+        <span class="furniture-tag" id="tag-wheel">ลู่วิ่ง Lv.1</span>
+      </div>
+
+      <div id="spot-tree" class="furniture-spot" style="right: 25px; bottom: 20px;">
+        <span class="furniture-icon">🏰</span>
+        <span class="furniture-tag" id="tag-tree">คอนโด 2 ชั้น</span>
+      </div>
+
+      <div id="spot-dino" class="furniture-spot" style="left: 175px; bottom: 18px;">
+        <span class="furniture-icon">🦖</span>
+        <span class="furniture-tag" id="tag-dino">ที่ฝนเล็บไดโน</span>
+      </div>
+
+      <div id="spot-box" class="furniture-spot" style="left: 95px; bottom: 25px;">
+        <span class="furniture-icon">📦</span>
+        <span class="furniture-tag">กล่องกระดาษ</span>
+      </div>
+
+      <div id="spot-fishbowl" class="furniture-spot" style="right: 110px; bottom: 20px;">
+        <span class="furniture-icon">🐠</span>
+        <span class="furniture-tag">แมวเหลวในโหล</span>
+      </div>
+
+      <!-- Interactive Cats Roaming Around -->
+      <div class="cat-actor" id="cat-1" style="left: 45px; bottom: 80px;" onclick="petCat(this, 'ง่ำๆ สบายใจจัง~')">
+        <div class="chat-bubble">เหมียว~ 💖</div>
+        <div class="cat-avatar" style="border-color:#eab308;">🐱</div>
+        <span class="cat-name-tag">สก็อตติชหูพับ</span>
+      </div>
+
+      <div class="cat-actor" id="cat-2" style="right: 50px; bottom: 115px;" onclick="petCat(this, 'ขอนอนทั้งวันนะมนุษย์ Zzz')">
+        <div class="cat-avatar" style="border-color:#ec4899;">🐈</div>
+        <span class="cat-name-tag">สฟิงซ์ขี้หนาว</span>
+      </div>
+
+      <!-- Custom Uploaded Cat Actor -->
+      <div class="cat-actor" id="custom-cat-actor" style="left: 180px; bottom: 90px; display: none;" onclick="petCat(this, 'รักทาสที่สุดในโลก! 💕')">
+        <div class="chat-bubble" id="custom-cat-chat">เหมียววว! ✨</div>
+        <img id="custom-cat-img" class="cat-avatar" src="" alt="My Cat">
+        <span id="custom-cat-tag" class="cat-name-tag" style="background:#be185d; color:#fff;">แมวของฉัน</span>
+      </div>
+    </div>
+
+    <!-- Upload Pet Cat Action Banner -->
+    <div class="custom-cat-cta" onclick="openUploadModal()">
+      <div class="cta-left">
+        <span class="cta-icon">📷</span>
+        <div>
+          <div class="cta-title">ถ่ายรูป / อัปโหลดแมวของคุณ!</div>
+          <div class="cta-desc">พาน้องแมวตัวจริงของคุณเข้ามาเดินเล่นในฟาร์ม</div>
+        </div>
+      </div>
+      <button class="cta-btn">+ เพิ่มแมว</button>
+    </div>
+
+    <!-- 20 Decoration Items Shop Section -->
+    <div class="shop-section">
+      <div class="section-title">
+        <span>🛍️</span>
+        <span>ร้านเฟอร์นิเจอร์ & ของเล่นแต่งฟาร์ม (20 รายการ)</span>
+      </div>
+
+      <div class="items-grid" id="items-grid">
+        <!-- Generated by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Cat Upload Modal -->
+  <div id="upload-modal">
+    <div class="modal-box">
+      <h3 style="color:#f472b6; font-size:18px; margin-bottom:4px;">📷 เพิ่มน้องแมวตัวจริงเข้าฟาร์ม</h3>
+      <p style="font-size:11px; color:#9ca3af; margin-bottom:12px;">ถ่ายรูปน้องแมวจากกล้องมือถือหรือเลือกรูปถ่าย</p>
+      
+      <img id="upload-preview" class="preview-avatar" src="https://api.iconify.design/twemoji:cat-face.svg" alt="Preview">
+      
+      <input type="file" id="cat-file-input" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)">
+      <button onclick="document.getElementById('cat-file-input').click()" style="background:#374151; color:#fff; border:1px solid #4b5563; padding:6px 14px; border-radius:12px; font-size:11px; font-weight:600; cursor:pointer; margin-bottom:12px;">
+        📸 ถ่ายรูป / เลือกรูปภาพ
+      </button>
+
+      <input type="text" id="cat-name-input" class="cat-name-input" placeholder="ตั้งชื่อน้องแมว (เช่น เจ้าส้ม, ถุงเงิน)" maxlength="15">
+
+      <div style="display:flex; gap:10px;">
+        <button onclick="closeUploadModal()" style="flex:1; padding:10px; background:#374151; border:none; border-radius:12px; color:#cbd5e1; font-weight:600; cursor:pointer;">
+          ยกเลิก
+        </button>
+        <button onclick="saveCustomCat()" style="flex:1; padding:10px; background:linear-gradient(135deg, #ec4899, #be185d); border:none; border-radius:12px; color:#fff; font-weight:700; cursor:pointer;">
+          บันทึกเข้าฟาร์ม
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 20 DECORATION ITEMS DATA SPECIFICATION
+    const FARM_ITEMS = [
+      { id: "wheel", name: "ลู่วิ่งวงล้อแมว", icon: "🎡", levels: ["ลู่วิ่งเล็กไม้สน", "ลู่วิ่งกลางบุพรม", "ลู่วิ่งใหญ่ไฟนีออน"], prices: [60, 150, 350], desc: "แมวขึ้นไปวิ่งออกกำลังกาย ล้อหมุนติ้วๆ เพิ่มความสุข" },
+      { id: "tree", name: "คอนโดแมวปีนป่าย", icon: "🏰", levels: ["คอนโด 2 ชั้น", "คอนโด 3 ชั้นมีสะพาน", "คอนโด 4 ชั้นติดปราสาท"], prices: [80, 200, 450], desc: "เสาปีนป่ายมีเปลและหลุมอวกาศ แมวปีนขึ้นไปชะโงกหน้า" },
+      { id: "dino", name: "ที่ฝนเล็บไดโนเสาร์", icon: "🦖", levels: ["เบบี้ไดโนเสาร์", "ไดโนเสาร์สไปโน", "ก็อดซิลลาพ่นแคทนิป"], prices: [50, 120, 280], desc: "ที่ลับเล็บรูปไดโนเสาร์ T-Rex ยักษ์ แมวยืนสองขายืดตัวตะปบ" },
+      { id: "post", name: "ที่ฝนเล็บมินิมอล", icon: "🪵", levels: ["เสาเล็ก", "เสากลางมีลูกตุ้ม", "เสาเห็ดยักษ์"], prices: [30, 80, 180], desc: "เสาลับเล็บเชือกป่านธรรมชาติ สำหรับยืดเส้นตอนตื่นนอน" },
+      { id: "box", name: "กล่องกระดาษวิเศษ", icon: "📦", levels: ["กล่องพัสดุเล็ก", "กล่องลังขนาดกลาง", "ลังตู้เย็นใบยักษ์"], prices: [25, 70, 160], desc: "สัจธรรมของแมว ทิ้งเบาะหรูมามุดกล่อง โผล่หัวดุ๊กดิ๊ก" },
+      { id: "fishbowl", name: "อ่างแก้วปลาแมวเหลว", icon: "🐠", levels: ["โหลแก้วใสกลม", "อ่างแก้วคริสตัลขอบทอง", "ตู้ปลาอะคริลิกใส"], prices: [70, 180, 400], desc: "อ่างแก้วใส แมวหย่อนตัวลงไปแล้วกลายเป็นของเหลวไหลเต็มอ่าง" },
+      { id: "donut", name: "เบาะนอนโดนัทมาชเมลโล่", icon: "🍩", levels: ["เบาะผ้าฝ้าย", "เบาะขนแกะหนานุ่ม", "เตียงโดนัทอุ่น"], prices: [40, 95, 220], desc: "เบาะนุ่มฟูขนแกะ แมวนอนขดเป็นก้อนกลมหลับพริ้ม Zzz" },
+      { id: "fountain", name: "น้ำพุแมวน้ำไหลบริสุทธิ์", icon: "⛲", levels: ["ชามน้ำเซรามิก", "น้ำพุกรองคาร์บอน", "น้ำพุคริสตัลไฟ LED"], prices: [50, 110, 260], desc: "น้ำพุแมวแบบกรองน้ำ แมวเดินมาก้มเลียน้ำอย่างสดชื่น" },
+      { id: "garden", name: "แปลงหญ้าแมว & แคทนิป", icon: "🌿", levels: ["กระถางเล็ก", "แปลงหญ้าขอบไม้", "สวนแคทนิปโอเอซิส"], prices: [35, 85, 200], desc: "กระถางหญ้าโอ๊ต แมวเดินมาดมแล้วเคลิ้ม กลิ้งเกลือกอย่างฟิน" },
+      { id: "hammock", name: "เปลนอนริมหน้าต่างรับแดด", icon: "🪟", levels: ["เปลผ้าแคนวาส", "เปลไม้สักเบาะนวม", "ระเบียงกระจกพาโนรามา"], prices: [65, 140, 320], desc: "เปลดูดกระจก มองเห็นวิวสวน แมวนอนอาบแดดอุ่นสบาย" },
+      { id: "tunnel", name: "อุโมงค์ของเล่นแมวมุด", icon: "🚇", levels: ["ท่อตรง 1 ทาง", "อุโมงค์ 3 ทาง", "เขาวงกต 5 แฉก"], prices: [45, 100, 240], desc: "ท่ออุโมงค์ผ้าเสียงกรอบแกรบ แมววิ่งพุ่งผ่านทะลุไปอีกฝั่ง" },
+      { id: "tv", name: "ทีวีตู้ปลาส่วนตัวแมว", icon: "📺", levels: ["กรอบรูปปลาคาร์ป", "ตู้ทีวีวินเทจจอขยับ", "Smart TV แมว 4K"], prices: [90, 220, 500], desc: "จอทีวีเปิดภาพปลาว่าย แมวนั่งจ้องตาไม่กะพริบเพลิดเพลิน" },
+      { id: "milk", name: "บ้านกล่องนมยักษ์", icon: "🥛", levels: ["กล่องนมรสจืด", "กล่องนมสตรอว์เบอร์รี", "คฤหาสน์ร้านนมสด"], prices: [55, 130, 290], desc: "กล่องนมสดสไตล์ญี่ปุ่น มีหน้าต่างรูปขวดนม แมวมุดเข้าไปแอบ" },
+      { id: "rug", name: "พรมอุ้งเท้าแมวนุ่มพิเศษ", icon: "🐾", levels: ["พรมมินิมอล", "พรมอุ้งเท้าชมพู", "พรมขนมิ้งค์ลายเสือ"], prices: [35, 75, 170], desc: "พรมปูพื้นห้องรูปอุ้งเท้านุ่มฟู ช่วยลดเสียงฝีเท้าและกันลื่น" },
+      { id: "lamp", name: "โคมไฟดวงจันทร์สลัว", icon: "🌕", levels: ["หลอดไฟวอร์ม", "โคมไฟดวงจันทร์ 3D", "ลูกแก้วฉายดาวกาแล็กซี่"], prices: [45, 105, 230], desc: "โคมไฟพระจันทร์ตั้งพื้น ให้แสงอบอุ่นเหมาะกับการนอนหลับ" },
+      { id: "buffet", name: "ชามบุฟเฟต์ปลาทูทองคำ", icon: "🍣", levels: ["จานรูปปลา", "ชามเงินยกสูง", "จานทองคำแซลมอน"], prices: [75, 180, 420], desc: "จานอาหารหรูหรา แมวได้กินแล้วค่าความสุขพุ่ง 100%" },
+      { id: "yarn", name: "ตะกร้าไหมพรมยักษ์", icon: "🧶", levels: ["ไหมพรมธรรมดา", "ตะกร้าไหมพรมหลากสี", "ลูกบอลไหมพรมซ่อนกระพรวน"], prices: [30, 70, 160], desc: "ลูกบอลไหมพรมขนาดใหญ่ แมวชอบใช้ขาหลังถีบเล่นเพลิน" },
+      { id: "wand", name: "ไม้ล่อขนนกอัตโนมัติ", icon: "🪶", levels: ["ไม้ขนนกปักฐาน", "หุ่นยนต์เลเซอร์หมุน", "โดรนขนนกลอยฟ้า"], prices: [60, 140, 310], desc: "หุ่นยนต์หมุนไม้ขนนกไปมาอัตโนมัติ แมวคอยกระโดดตะครุบ" },
+      { id: "spa", name: "อ่างอาบน้ำฟองสบู่สปา", icon: "🛁", levels: ["อ่างไม้หอม", "จากุซซีฟองนุ่ม", "ออนเซ็นสไตล์ญี่ปุ่น"], prices: [85, 210, 480], desc: "อ่างสปาน้ำอุ่นพร้อมเป็ดเหลือง สำหรับแมวผ่อนคลาย" },
+      { id: "tent", name: "เต็นท์กระโจมแมวโบฮีเมียน", icon: "🎪", levels: ["กระโจมผ้าดิบ", "กระโจมติดไฟปิงปอง", "กระโจมเจ้าชายแมว"], prices: [50, 120, 270], desc: "กระโจมผ้าฝ้ายโบฮีเมียน แมวชอบเข้าไปนอนซุกตัวอุ่นใจ" }
+    ];
+
+    // Local Storage State
+    let fishCoins = parseInt(localStorage.getItem("sleeperem_fish_coins") || "250");
+    let ownedItems = JSON.parse(localStorage.getItem("sleeperem_farm_items") || "{}");
+    let customCat = JSON.parse(localStorage.getItem("sleeperem_custom_cat") || "null");
+
+    function saveState() {
+      localStorage.setItem("sleeperem_fish_coins", fishCoins.toString());
+      localStorage.setItem("sleeperem_farm_items", JSON.stringify(ownedItems));
+      document.getElementById("coin-val").innerText = fishCoins.toLocaleString();
+    }
+
+    function renderShop() {
+      const grid = document.getElementById("items-grid");
+      grid.innerHTML = "";
+
+      FARM_ITEMS.forEach(item => {
+        const currentLv = ownedItems[item.id] || 0;
+        const isMax = currentLv >= 3;
+        const nextPrice = isMax ? 0 : item.prices[currentLv];
+        const canAfford = fishCoins >= nextPrice;
+
+        const card = document.createElement("div");
+        card.className = "item-card" + (currentLv > 0 ? " owned" : "");
+
+        const levelLabel = currentLv === 0 ? "ยังไม่มี" : `Lv.${currentLv} (${item.levels[currentLv-1]})`;
+
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="item-emoji">${item.icon}</div>
+            <div>
+              <div class="item-name">${item.name}</div>
+              <div class="item-desc">${item.desc}</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="item-level-tag ${currentLv === 0 ? 'locked' : ''}">${levelLabel}</span>
+            ${isMax ? '<span style="font-size:11px; color:#10b981; font-weight:700;">★ ระดับสูงสุด</span>' : `
+              <button class="buy-btn" onclick="buyItem('${item.id}')" ${!canAfford ? 'disabled' : ''}>
+                <span>🐟</span>
+                <span>${nextPrice} เหรียญ</span>
+              </button>
+            `}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function buyItem(id) {
+      const item = FARM_ITEMS.find(x => x.id === id);
+      const currentLv = ownedItems[id] || 0;
+      if (currentLv >= 3) return;
+
+      const price = item.prices[currentLv];
+      if (fishCoins >= price) {
+        fishCoins -= price;
+        ownedItems[id] = currentLv + 1;
+        saveState();
+        renderShop();
+        updateRoomFurniture();
+        alert(`🎉 อัปเกรด "${item.name}" เป็น ${item.levels[ownedItems[id]-1]} เรียบร้อยแล้ว!`);
+      }
+    }
+
+    function updateRoomFurniture() {
+      // Toggle visibility and update tags of room spots
+      if (ownedItems["wheel"]) {
+        document.getElementById("tag-wheel").innerText = `ลู่วิ่ง Lv.${ownedItems["wheel"]}`;
+        document.getElementById("spot-wheel").style.opacity = "1";
+      }
+      if (ownedItems["tree"]) {
+        document.getElementById("tag-tree").innerText = `คอนโด ${ownedItems["tree"]+1} ชั้น`;
+        document.getElementById("spot-tree").style.opacity = "1";
+      }
+      if (ownedItems["dino"]) {
+        document.getElementById("spot-dino").style.opacity = "1";
+      }
+    }
+
+    // Custom Pet Cat Upload
+    let tempCatPhoto = "";
+
+    function openUploadModal() {
+      document.getElementById("upload-modal").style.display = "flex";
+      if (customCat) {
+        document.getElementById("upload-preview").src = customCat.photo;
+        document.getElementById("cat-name-input").value = customCat.name;
+      }
+    }
+
+    function closeUploadModal() {
+      document.getElementById("upload-modal").style.display = "none";
+    }
+
+    function handlePhotoUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        tempCatPhoto = evt.target.result;
+        document.getElementById("upload-preview").src = tempCatPhoto;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveCustomCat() {
+      const name = document.getElementById("cat-name-input").value.trim() || "น้องแมวสุดที่รัก";
+      const photo = tempCatPhoto || (customCat ? customCat.photo : "https://api.iconify.design/twemoji:cat-face.svg");
+
+      customCat = { name, photo };
+      localStorage.setItem("sleeperem_custom_cat", JSON.stringify(customCat));
+      closeUploadModal();
+      applyCustomCatToRoom();
+      alert(`😻 ยินดีต้อนรับ "${name}" เข้าสู่ฟาร์มแมวเรียบร้อยแล้ว!`);
+    }
+
+    function applyCustomCatToRoom() {
+      if (!customCat) return;
+      const actor = document.getElementById("custom-cat-actor");
+      const img = document.getElementById("custom-cat-img");
+      const tag = document.getElementById("custom-cat-tag");
+
+      img.src = customCat.photo;
+      tag.innerText = customCat.name;
+      actor.style.display = "flex";
+    }
+
+    function petCat(element, message) {
+      let bubble = element.querySelector(".chat-bubble");
+      if (!bubble) {
+        bubble = document.createElement("div");
+        bubble.className = "chat-bubble";
+        element.appendChild(bubble);
+      }
+      bubble.innerText = message;
+      bubble.style.display = "block";
+      setTimeout(() => { bubble.style.display = "none"; }, 2500);
+
+      // Reward 2 fish coins when petting cats
+      fishCoins += 2;
+      saveState();
+    }
+
+    // INIT
+    saveState();
+    renderShop();
+    updateRoomFurniture();
+    applyCustomCatToRoom();
+  </script>
+</body>
+</html>
