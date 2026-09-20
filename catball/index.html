@@ -103,6 +103,27 @@
     }
 
     
+    
+    .farm-btn-disabled {
+      background: #1e293b;
+      color: #64748b;
+      border: 1px solid #334155;
+      padding: 6px 12px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0.7;
+      cursor: not-allowed;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    @media (max-width: 380px) {
+      .farm-btn-text { display: none; }
+    }
+
     .player-profile-badge {
       background: #1e293b;
       border: 1px solid #334155;
@@ -350,6 +371,7 @@
       box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -390,14 +412,17 @@
       <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Bottom Action Bar (Clean, Unobstructed, Farm hidden per request) -->
+    <!-- Bottom Action Bar (Resizable Greyed-out Farm Button & Facebook Profile) -->
     <div class="bottom-action-bar">
-      <div id="player-profile-badge" class="player-profile-badge" onclick="openLoginModal()" title="ล็อกอินบันทึกสถิติ">
-        <span id="user-avatar" style="font-size:16px;">👤</span>
-        <span id="user-name" style="font-size:11px; font-weight:600; color:#cbd5e1;">เล่นแบบ Guest</span>
-      </div>
+      <button class="farm-btn-disabled" disabled title="ฟาร์มแมว (กำลังพัฒนาระบบ)">
+        <span style="font-size:14px;">🏡</span>
+        <span class="farm-btn-text">ฟาร์มแมว</span>
+      </button>
 
-      <div class="footer-hint" id="footer-hint-text" style="font-size:11px; color:#94a3b8;">แตะด้านบนเพื่อหย่อนน้องแมว 🐱</div>
+      <div id="player-profile-badge" class="player-profile-badge" onclick="openLoginModal()" title="คลิกเพื่อล็อกอิน Facebook">
+        <span id="user-avatar" style="font-size:16px;">👤</span>
+        <span id="user-name" style="font-size:11px; font-weight:600; color:#cbd5e1;">Guest</span>
+      </div>
 
       <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="เขย่ากล่องแมวให้บอลไหลรวมกัน">
         <span class="moon-icon">🌙</span>
@@ -976,10 +1001,17 @@
       document.getElementById("login-modal").style.display = "none";
     }
 
+    // Supabase Live Client Initialization
+    const SUPABASE_URL = "https://hcwryoufmklgefajfhzq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_OHGsfx4tr9sTRrXUVp3PHA_ucrWKN4A";
+    const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
     // Facebook Login via Supabase Function
     async function loginWithFacebook() {
-      if (typeof supabaseClient === "undefined") {
-        alert("🔒 กำลังเชื่อมต่อ Supabase Authentication... ให้คุณตั้งค่า Project URL & Key ในขั้นตอนถัดไป!");
+      if (!supabaseClient) {
+        alert("กำลังโหลดระบบ Supabase กรุณาลองใหม่อีกครั้ง");
         return;
       }
       try {
@@ -989,11 +1021,36 @@
             redirectTo: window.location.origin + window.location.pathname
           }
         });
-        if (error) alert("เกิดข้อผิดพลาด: " + error.message);
+        if (error) {
+          alert("Facebook Login แจ้งเตือน: " + error.message);
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Facebook login error:", err);
       }
     }
+
+    // Check active user session on start
+    async function checkUserSession() {
+      if (!supabaseClient) return;
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session && session.user) {
+          const u = session.user;
+          const name = u.user_metadata.full_name || u.user_metadata.name || "ทาสแมว Facebook";
+          const avatar = u.user_metadata.avatar_url || u.user_metadata.picture;
+          const nameElem = document.getElementById("user-name");
+          const avatarElem = document.getElementById("user-avatar");
+          if (nameElem) nameElem.innerText = name;
+          if (avatar && avatarElem) {
+            avatarElem.innerHTML = `<img src="${avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;">`;
+          }
+          closeLoginModal();
+        }
+      } catch (e) {
+        console.error("Session error:", e);
+      }
+    }
+    setTimeout(checkUserSession, 300);
 
     function updateScoreUI() {
       document.getElementById("score-val").innerText = score;
@@ -1106,6 +1163,23 @@
       isGameOver = true;
       document.getElementById("final-score").innerText = score;
       document.getElementById("game-over-modal").style.display = "flex";
+
+      // Secure Score Submission to Supabase RPC
+      if (supabaseClient) {
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+          if (session && session.user) {
+            let maxTier = 0;
+            cats.forEach(c => { if (c.tier > maxTier) maxTier = c.tier; });
+            supabaseClient.rpc('submit_game_score', {
+              p_score: score,
+              p_highest_tier: maxTier
+            }).then(({ data, error }) => {
+              if (!error) console.log("✅ บันทึกคะแนนขึ้น Supabase สำเร็จ:", data);
+              else console.warn("Supabase score notice:", error.message);
+            });
+          }
+        });
+      }
     }
 
     function restartGame() {
