@@ -136,6 +136,24 @@
       flex-shrink: 0;
       white-space: nowrap;
     }
+    .farm-btn-active {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      border: 1px solid #34d399;
+      padding: 6px 12px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      text-decoration: none;
+      flex-shrink: 0;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+      transition: all 0.15s ease;
+    }
+    .farm-btn-active:active { transform: scale(0.92); }
     @media (max-width: 380px) {
       .farm-btn-text { display: none; }
     }
@@ -598,10 +616,10 @@
 
     <!-- Bottom Action Bar (Farm, Leaderboard, Player Profile, Moon Shake) -->
     <div class="bottom-action-bar">
-      <button class="farm-btn-disabled" disabled title="ฟาร์มแมว (กำลังพัฒนาระบบ)">
+      <a href="/farm" class="farm-btn-active" title="ไปเที่ยวฟาร์มแมวแสนอบอุ่น">
         <span style="font-size:14px;">🏡</span>
         <span class="btn-text farm-btn-text">ฟาร์มแมว</span>
-      </button>
+      </a>
 
       <button id="leaderboard-btn" class="action-btn-pill" onclick="openLeaderboardModal()" title="ดูตารางอันดับทาสแมว">
         <span style="font-size:14px;">🏆</span>
