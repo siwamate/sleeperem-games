@@ -120,47 +120,85 @@
       width: 100%;
       height: 100%;
     }
-    /* Floating Controls */
-    .controls-bar {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      right: 12px;
-      display: flex;
-      justify-content: space-between;
-      pointer-events: none;
-      z-index: 15;
-    }
-    .game-btn {
-      pointer-events: auto;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 8px 14px;
-      font-family: inherit;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    /* Header Icon Button */
+    .mute-icon-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.15s ease;
+      margin-left: 8px;
+    }
+    .mute-icon-btn:active {
+      transform: scale(0.92);
+      background: #1e293b;
+    }
+
+    /* Bottom Action Bar (Outside Canvas) */
+    .bottom-action-bar {
+      padding: 8px 16px;
+      background: #0f172a;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 20;
+    }
+    .footer-hint {
+      font-size: 11px;
+      color: #64748b;
+    }
+    .moon-icon-btn {
+      position: relative;
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      border: 2px solid #fbbf24;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
       transition: all 0.15s ease;
     }
-    .game-btn:active {
-      transform: scale(0.95);
+    .moon-icon-btn:active {
+      transform: scale(0.9);
     }
-    .moon-btn {
-      background: linear-gradient(135deg, #f59e0b, #b45309);
-      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
-    }
-    .moon-btn:disabled {
-      background: #475569;
-      opacity: 0.6;
+    .moon-icon-btn:disabled {
+      background: #334155;
+      border-color: #475569;
+      opacity: 0.5;
       cursor: not-allowed;
       box-shadow: none;
     }
+    .moon-icon {
+      font-size: 20px;
+    }
+    .moon-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #0f172a;
+    }
+
     /* Game Over Modal */
     #game-over-modal {
       display: none;
@@ -212,7 +250,7 @@
       <div class="brand-title">
         <span>🐱</span> SLEEPEREM
       </div>
-      <div class="stats-box">
+      <div class="stats-box" style="align-items: center;">
         <div class="stat-pill">
           <div class="stat-label">คะแนน</div>
           <div id="score-val" class="stat-value">0</div>
@@ -221,6 +259,7 @@
           <div class="stat-label">สูงสุด</div>
           <div id="best-val" class="stat-value">0</div>
         </div>
+        <button id="mute-btn" class="mute-icon-btn" onclick="toggleMute()" title="เปิด/ปิดเสียง">🔊</button>
       </div>
     </div>
 
@@ -236,19 +275,18 @@
       </div>
     </div>
 
-    <!-- Interactive Canvas -->
+    <!-- Interactive Canvas (100% Unobstructed Playing Area) -->
     <div id="canvas-wrap">
       <canvas id="gameCanvas"></canvas>
-      
-      <!-- Bottom Controls -->
-      <div class="controls-bar">
-        <button id="moon-shake-btn" class="game-btn moon-btn" onclick="triggerMoonShake()">
-          🌙 Moon Shake (<span id="moon-count">2</span>)
-        </button>
-        <button class="game-btn" onclick="toggleMute()" id="mute-btn">
-          🔊 เสียง: เปิด
-        </button>
-      </div>
+    </div>
+
+    <!-- Bottom Action Bar (Outside Canvas - Clean & Does Not Block Cats) -->
+    <div class="bottom-action-bar">
+      <div class="footer-hint">หย่อนรวมแมวให้ถึง Tier 10 👑</div>
+      <button id="moon-shake-btn" class="moon-icon-btn" onclick="triggerMoonShake()" title="เขย่ากล่องแมว">
+        <span class="moon-icon">🌙</span>
+        <span id="moon-count" class="moon-badge">2</span>
+      </button>
     </div>
 
     <!-- Game Over Modal -->
@@ -810,7 +848,7 @@
 
     function toggleMute() {
       sound.muted = !sound.muted;
-      document.getElementById("mute-btn").innerText = sound.muted ? "🔇 เสียง: ปิด" : "🔊 เสียง: เปิด";
+      document.getElementById("mute-btn").innerText = sound.muted ? "🔇" : "🔊";
     }
 
     function checkGameOver(dt) {
