@@ -370,6 +370,168 @@
       margin-top: 18px;
       box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
     }
+  
+    /* Action Button Pills (Bottom Bar) */
+    .action-btn-pill {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #38bdf8;
+      padding: 6px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    .action-btn-pill:active { transform: scale(0.94); background: #334155; }
+    @media (max-width: 380px) {
+      .btn-text { display: none; }
+    }
+
+    /* Leaderboard Modal */
+    #leaderboard-modal {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 105;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .leaderboard-card {
+      background: #131b2e;
+      border: 2px solid #3b82f6;
+      border-radius: 22px;
+      padding: 20px 16px 16px;
+      width: 100%;
+      max-width: 380px;
+      max-height: 85dvh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7), 0 0 30px rgba(59, 130, 246, 0.2);
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .leaderboard-list {
+      flex: 1;
+      overflow-y: auto;
+      margin: 10px 0;
+      padding-right: 4px;
+      max-height: 52dvh;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .leaderboard-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .leaderboard-list::-webkit-scrollbar-track {
+      background: #0f172a;
+      border-radius: 10px;
+    }
+    .leaderboard-list::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 10px;
+    }
+    .leaderboard-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 14px;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .leaderboard-row:hover {
+      border-color: #38bdf8;
+    }
+    .leaderboard-row.is-me {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.5), rgba(15, 23, 42, 0.8));
+      border: 1.5px solid #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    }
+    .leaderboard-rank {
+      width: 28px;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      color: #94a3b8;
+      flex-shrink: 0;
+    }
+    .leaderboard-rank.rank-1 { font-size: 20px; filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6)); }
+    .leaderboard-rank.rank-2 { font-size: 19px; filter: drop-shadow(0 0 5px rgba(203, 213, 225, 0.5)); }
+    .leaderboard-rank.rank-3 { font-size: 18px; filter: drop-shadow(0 0 5px rgba(217, 119, 6, 0.5)); }
+    .leaderboard-avatar-wrap {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px solid #334155;
+    }
+    .leaderboard-avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .leaderboard-avatar-placeholder {
+      font-size: 18px;
+    }
+    .leaderboard-player-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .leaderboard-player-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f8fafc;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .you-badge {
+      background: #0284c7;
+      color: #fff;
+      font-size: 9px;
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+    .leaderboard-player-sub {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 1px;
+    }
+    .leaderboard-score {
+      font-size: 15px;
+      font-weight: 700;
+      color: #38bdf8;
+      font-family: monospace;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .score-unit {
+      font-size: 9px;
+      color: #64748b;
+      display: block;
+      font-weight: 400;
+      font-family: 'Prompt', sans-serif;
+    }
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -412,15 +574,20 @@
       <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Bottom Action Bar (Resizable Greyed-out Farm Button & Facebook Profile) -->
+    <!-- Bottom Action Bar (Farm, Leaderboard, Player Profile, Moon Shake) -->
     <div class="bottom-action-bar">
       <button class="farm-btn-disabled" disabled title="ฟาร์มแมว (กำลังพัฒนาระบบ)">
         <span style="font-size:14px;">🏡</span>
-        <span class="farm-btn-text">ฟาร์มแมว</span>
+        <span class="btn-text farm-btn-text">ฟาร์ม</span>
       </button>
 
-      <div id="player-profile-badge" class="player-profile-badge" onclick="openLoginModal()" title="คลิกเพื่อล็อกอิน Facebook">
-        <span id="user-avatar" style="font-size:16px;">👤</span>
+      <button id="leaderboard-btn" class="action-btn-pill" onclick="openLeaderboardModal()" title="ดูตารางอันดับทาสแมว">
+        <span style="font-size:14px;">🏆</span>
+        <span class="btn-text">อันดับ</span>
+      </button>
+
+      <div id="player-profile-badge" class="player-profile-badge" onclick="openLoginModal()" title="คลิกเพื่อจัดการโปรไฟล์">
+        <span id="user-avatar" style="font-size:15px;">👤</span>
         <span id="user-name" style="font-size:11px; font-weight:600; color:#cbd5e1;">Guest</span>
       </div>
 
@@ -437,8 +604,8 @@
         <div id="modal-guest-view">
           <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
           <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
-          <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
-            เข้าสู่ระบบด้วย Facebook เพื่อบันทึกคะแนนสูงสุดและจัดอันดับบน Leaderboard!
+          <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;">
+            เข้าสู่ระบบด้วย Facebook เพื่อบันทึกคะแนนสูงสุด ชิงอันดับบน <b>Leaderboard</b> และรับอาหารแมวฟรี!
           </p>
 
           <button class="fb-login-btn" onclick="loginWithFacebook()">
@@ -461,11 +628,48 @@
             <div id="modal-high-score" style="font-size:22px; font-weight:700; color:#fbbf24; font-family:monospace;">0</div>
           </div>
 
-          <button onclick="logoutFacebook()" style="width:100%; padding:10px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer;">
+          <button onclick="closeLoginModal(); openLeaderboardModal();" style="width:100%; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <span>🏆</span> เปิดดูตารางอันดับ (Leaderboard)
+          </button>
+
+          <button onclick="logoutFacebook()" style="width:100%; padding:9px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer;">
             ออกจากระบบ (Logout)
           </button>
 
           <button onclick="closeLoginModal()" style="width:100%; margin-top:8px; padding:8px; background:transparent; border:none; color:#94a3b8; font-size:12px; cursor:pointer;">
+            ปิดหน้าต่าง
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal">
+      <div class="leaderboard-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px;">🏆</span>
+            <div>
+              <h3 style="font-size:16px; font-weight:700; color:#fbbf24; margin:0;">ทำเนียบทาสแมว</h3>
+              <p style="font-size:11px; color:#94a3b8; margin:0;">ตารางอันดับคะแนนสูงสุด (Leaderboard)</p>
+            </div>
+          </div>
+          <button onclick="closeLeaderboardModal()" style="background:transparent; border:none; color:#94a3b8; font-size:22px; cursor:pointer; padding:2px 8px;">✕</button>
+        </div>
+
+        <div id="leaderboard-list" class="leaderboard-list">
+          <div style="text-align:center; padding:32px 16px; color:#94a3b8;">
+            <div style="font-size:28px; margin-bottom:8px;">🐱</div>
+            <div style="font-size:12px;">กำลังโหลดตารางอันดับ...</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <button onclick="loadLeaderboardData()" style="flex:1; padding:10px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit;">
+            🔄 รีเฟรช
+          </button>
+          <button onclick="closeLeaderboardModal()" style="flex:1; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; color:#fff; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">
             ปิดหน้าต่าง
           </button>
         </div>
@@ -484,9 +688,14 @@
           <div id="final-score" style="font-size: 28px; font-weight: 700; color: #38bdf8; font-family: monospace;">0</div>
         </div>
 
-        <button class="restart-btn" onclick="restartGame()">
-          🔄 เล่นใหม่อีกตา
-        </button>
+        <div style="display:flex; gap:8px; margin-top:14px;">
+          <button class="restart-btn" onclick="restartGame()" style="flex:1; margin-top:0;">
+            🔄 เล่นใหม่
+          </button>
+          <button onclick="openLeaderboardModal()" style="padding:12px 16px; background:#0284c7; color:#fff; font-size:13px; font-weight:700; border:none; border-radius:14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:5px; box-shadow:0 4px 12px rgba(2, 132, 199, 0.3);">
+            <span>🏆</span> อันดับ
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1102,8 +1311,111 @@
     }
 
     if (supabaseClient) {
-      supabaseClient.auth.getSession().then(({ data: { session } }) => applyUserSession(session));
+      supabaseClient.auth.getSession().then(({ data: { session } }) => {
+        applyUserSession(session);
+        // Auto-prompt login popup if user is not logged in!
+        if (!session || !session.user) {
+          setTimeout(() => {
+            if (!currentUser) {
+              openLoginModal();
+            }
+          }, 650);
+        }
+      });
       supabaseClient.auth.onAuthStateChange((event, session) => applyUserSession(session));
+    }
+
+
+    /* ==========================================================================
+       LEADERBOARD & AUTO-LOGIN MODAL LOGIC
+       ========================================================================== */
+    async function openLeaderboardModal() {
+      document.getElementById("leaderboard-modal").style.display = "flex";
+      await loadLeaderboardData();
+    }
+
+    function closeLeaderboardModal() {
+      document.getElementById("leaderboard-modal").style.display = "none";
+    }
+
+    async function loadLeaderboardData() {
+      const listElem = document.getElementById("leaderboard-list");
+      if (!listElem) return;
+      listElem.innerHTML = `
+        <div style="text-align:center; padding:32px 16px; color:#94a3b8;">
+          <div style="font-size:28px; margin-bottom:8px; animation:spin 1s infinite linear;">🐱</div>
+          <div style="font-size:12px;">กำลังดึงอันดับคะแนนสูงสุด...</div>
+        </div>`;
+
+      if (!supabaseClient) {
+        listElem.innerHTML = `<div style="text-align:center; padding:20px; color:#f87171; font-size:12px;">ไม่สามารถเชื่อมต่อฐานข้อมูลได้</div>`;
+        return;
+      }
+
+      try {
+        const { data, error } = await supabaseClient.rpc('get_leaderboard', { p_limit: 25 });
+        if (error) {
+          console.error("Leaderboard fetch error:", error);
+          listElem.innerHTML = `<div style="text-align:center; padding:20px; color:#f87171; font-size:12px;">เกิดข้อผิดพลาดในการโหลดคะแนน</div>`;
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          listElem.innerHTML = `
+            <div style="text-align:center; padding:28px 16px; color:#94a3b8;">
+              <span style="font-size:32px;">🧶</span>
+              <p style="margin-top:8px; font-size:13px; color:#cbd5e1;">ยังไม่มีคะแนนในระบบ</p>
+              <p style="font-size:11px; color:#64748b;">มาเป็นทาสแมวคนแรกที่ขึ้นตารางอันดับกันเถอะ!</p>
+            </div>`;
+          return;
+        }
+
+        let htmlRows = "";
+        data.forEach((row) => {
+          const isMe = currentUser && currentUser.id === row.user_id;
+          let rankBadge = `#${row.rank}`;
+          let rankClass = "";
+          if (row.rank === 1) { rankBadge = "🥇"; rankClass = "rank-1"; }
+          else if (row.rank === 2) { rankBadge = "🥈"; rankClass = "rank-2"; }
+          else if (row.rank === 3) { rankBadge = "🥉"; rankClass = "rank-3"; }
+
+          const tierConfig = CAT_TIERS[row.highest_tier] || CAT_TIERS[CAT_TIERS.length - 1];
+          const tierName = tierConfig ? tierConfig.name : `Tier ${row.highest_tier + 1}`;
+          const avatarSrc = row.avatar_url || "";
+          const avatarHtml = avatarSrc
+            ? `<img src="${avatarSrc}" class="leaderboard-avatar" onerror="this.onerror=null;this.parentNode.innerHTML='<span class=\'leaderboard-avatar-placeholder\'>🐱</span>';">`
+            : `<div class="leaderboard-avatar-placeholder">🐱</div>`;
+
+          htmlRows += `
+            <div class="leaderboard-row ${isMe ? 'is-me' : ''}">
+              <div class="leaderboard-rank ${rankClass}">${rankBadge}</div>
+              <div class="leaderboard-avatar-wrap">${avatarHtml}</div>
+              <div class="leaderboard-player-info">
+                <div class="leaderboard-player-name">
+                  ${escapeHtml(row.display_name)}
+                  ${isMe ? '<span class="you-badge">คุณ</span>' : ''}
+                </div>
+                <div class="leaderboard-player-sub">
+                  ⭐ Tier ${row.highest_tier + 1} (${tierName})
+                </div>
+              </div>
+              <div class="leaderboard-score">
+                ${Number(row.high_score).toLocaleString()}
+                <span class="score-unit">แต้ม</span>
+              </div>
+            </div>`;
+        });
+
+        listElem.innerHTML = htmlRows;
+      } catch (err) {
+        console.error("Leaderboard load exception:", err);
+        listElem.innerHTML = `<div style="text-align:center; padding:20px; color:#f87171; font-size:12px;">เกิดข้อผิดพลาดในการดึงข้อมูล</div>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
     function updateScoreUI() {
