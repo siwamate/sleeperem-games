@@ -431,23 +431,44 @@
     </div>
 
     
-    <!-- Facebook Login Modal -->
+    <!-- Facebook Login & User Profile Modal -->
     <div id="login-modal">
       <div class="modal-card">
-        <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
-        <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
-        <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
-          เข้าสู่ระบบเพื่อจัดอันดับบน Leaderboard และรับรางวัลในเกม!
-        </p>
+        <div id="modal-guest-view">
+          <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
+          <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
+          <p style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin-bottom: 12px;">
+            เข้าสู่ระบบด้วย Facebook เพื่อบันทึกคะแนนสูงสุดและจัดอันดับบน Leaderboard!
+          </p>
 
-        <button class="fb-login-btn" onclick="loginWithFacebook()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          เข้าสู่ระบบด้วย Facebook
-        </button>
+          <button class="fb-login-btn" onclick="loginWithFacebook()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            เข้าสู่ระบบด้วย Facebook
+          </button>
 
-        <button onclick="closeLoginModal()" style="width:100%; margin-top:10px; padding:10px; background:transparent; border:1px solid #475569; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
-          เล่นต่อแบบ Guest
-        </button>
+          <button onclick="closeLoginModal()" style="width:100%; margin-top:10px; padding:10px; background:transparent; border:1px solid #475569; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
+            เล่นต่อแบบ Guest
+          </button>
+        </div>
+
+        <div id="modal-user-view" style="display:none;">
+          <div id="modal-user-avatar-wrap" style="margin-bottom:8px;"></div>
+          <h3 id="modal-user-name" style="font-size: 17px; font-weight: 700; color: #f8fafc; margin-bottom: 2px;">ทาสแมว</h3>
+          <p style="font-size: 11px; color: #34d399; margin-bottom: 14px;">● เชื่อมต่อ Facebook แล้ว</p>
+
+          <div style="background:#0f172a; padding:12px; border-radius:14px; border:1px solid #334155; margin-bottom:14px;">
+            <div style="font-size:11px; color:#94a3b8;">สถิติสูงสุดของคุณ</div>
+            <div id="modal-high-score" style="font-size:22px; font-weight:700; color:#fbbf24; font-family:monospace;">0</div>
+          </div>
+
+          <button onclick="logoutFacebook()" style="width:100%; padding:10px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer;">
+            ออกจากระบบ (Logout)
+          </button>
+
+          <button onclick="closeLoginModal()" style="width:100%; margin-top:8px; padding:8px; background:transparent; border:none; color:#94a3b8; font-size:12px; cursor:pointer;">
+            ปิดหน้าต่าง
+          </button>
+        </div>
       </div>
     </div>
 
@@ -993,7 +1014,25 @@
       }
     }
 
+    let currentUser = null;
+
     function openLoginModal() {
+      const guestView = document.getElementById("modal-guest-view");
+      const userView = document.getElementById("modal-user-view");
+      if (currentUser) {
+        guestView.style.display = "none";
+        userView.style.display = "block";
+        document.getElementById("modal-user-name").innerText = currentUser.name;
+        document.getElementById("modal-high-score").innerText = bestScore.toLocaleString();
+        if (currentUser.avatar) {
+          document.getElementById("modal-user-avatar-wrap").innerHTML = `<img src="${currentUser.avatar}" style="width:64px;height:64px;border-radius:50%;border:2px solid #38bdf8;object-fit:cover;">`;
+        } else {
+          document.getElementById("modal-user-avatar-wrap").innerHTML = `<span style="font-size:48px;">🐱</span>`;
+        }
+      } else {
+        guestView.style.display = "block";
+        userView.style.display = "none";
+      }
       document.getElementById("login-modal").style.display = "flex";
     }
 
@@ -1029,28 +1068,43 @@
       }
     }
 
-    // Check active user session on start
-    async function checkUserSession() {
-      if (!supabaseClient) return;
-      try {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (session && session.user) {
-          const u = session.user;
-          const name = u.user_metadata.full_name || u.user_metadata.name || "ทาสแมว Facebook";
-          const avatar = u.user_metadata.avatar_url || u.user_metadata.picture;
-          const nameElem = document.getElementById("user-name");
-          const avatarElem = document.getElementById("user-avatar");
-          if (nameElem) nameElem.innerText = name;
-          if (avatar && avatarElem) {
-            avatarElem.innerHTML = `<img src="${avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;">`;
-          }
-          closeLoginModal();
-        }
-      } catch (e) {
-        console.error("Session error:", e);
+    async function logoutFacebook() {
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        document.getElementById("user-name").innerText = "Guest";
+        document.getElementById("user-avatar").innerHTML = "👤";
+        closeLoginModal();
+        alert("ออกจากระบบเรียบร้อยแล้ว");
       }
     }
-    setTimeout(checkUserSession, 300);
+
+    // Handle user session state
+    function applyUserSession(session) {
+      if (session && session.user) {
+        const u = session.user;
+        const name = u.user_metadata.full_name || u.user_metadata.name || "ทาสแมว Facebook";
+        const avatar = u.user_metadata.avatar_url || u.user_metadata.picture;
+        currentUser = { id: u.id, name, avatar };
+
+        const nameElem = document.getElementById("user-name");
+        const avatarElem = document.getElementById("user-avatar");
+        if (nameElem) nameElem.innerText = name.split(" ")[0]; // First name for compact display
+        if (avatar && avatarElem) {
+          avatarElem.innerHTML = `<img src="${avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;">`;
+        }
+
+        // Clean up OAuth hash params in URL if present
+        if (window.location.hash && window.location.hash.includes("access_token")) {
+          history.replaceState(null, '', window.location.pathname);
+        }
+      }
+    }
+
+    if (supabaseClient) {
+      supabaseClient.auth.getSession().then(({ data: { session } }) => applyUserSession(session));
+      supabaseClient.auth.onAuthStateChange((event, session) => applyUserSession(session));
+    }
 
     function updateScoreUI() {
       document.getElementById("score-val").innerText = score;
