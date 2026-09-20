@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cat Drop & Merge: Sleepy Cats (Sleeperem Prototype)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body {
+      background: #0b0f19;
+      color: #f8fafc;
+      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      touch-action: none;
+    }
+    #game-container {
+      position: relative;
+      width: 420px;
+      max-width: 100vw;
+      height: 720px;
+      max-height: 100vh;
+      background: #131b2e;
+      border: 3px solid #1e293b;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(99, 102, 241, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    /* Header Bar */
+    .header {
+      padding: 12px 16px;
+      background: #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #334155;
+      z-index: 10;
+    }
+    .brand-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.5px;
+    }
+    .stats-box {
+      display: flex;
+      gap: 12px;
+    }
+    .stat-pill {
+      background: #0f172a;
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      text-align: right;
+    }
+    .stat-label {
+      font-size: 9px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #38bdf8;
+      font-family: monospace;
+    }
+    /* Next Cat Preview Bar */
+    .preview-bar {
+      padding: 6px 16px;
+      background: #172033;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #cbd5e1;
+      border-bottom: 1px dashed #334155;
+      z-index: 10;
+    }
+    .next-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .next-bubble {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #64748b;
+      font-size: 14px;
+    }
+    /* Canvas Area */
+    #canvas-wrap {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      cursor: crosshair;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    /* Floating Controls */
+    .controls-bar {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 15;
+    }
+    .game-btn {
+      pointer-events: auto;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 8px 14px;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .game-btn:active {
+      transform: scale(0.95);
+    }
+    .moon-btn {
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    }
+    .moon-btn:disabled {
+      background: #475569;
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    /* Game Over Modal */
+    #game-over-modal {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .modal-card {
+      background: #1e293b;
+      border: 2px solid #3b82f6;
+      border-radius: 24px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .restart-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #10b981, #047857);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      margin-top: 18px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand-title">
+        <span>🐱</span> SLEEPEREM
+      </div>
+      <div class="stats-box">
+        <div class="stat-pill">
+          <div class="stat-label">คะแนน</div>
+          <div id="score-val" class="stat-value">0</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-label">สูงสุด</div>
+          <div id="best-val" class="stat-value">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next Cat Preview Bar -->
+    <div class="preview-bar">
+      <div class="next-indicator">
+        <span>ตัวต่อไป:</span>
+        <div id="next-cat-view" class="next-bubble">🧶</div>
+        <span id="next-cat-name" style="font-weight: 600; color: #f59e0b;">ก้อนไหมพรม</span>
+      </div>
+      <div style="font-size: 10px; color: #64748b;">
+        เป้าหมาย: ราชาแมวคู่ Tier 10
+      </div>
+    </div>
+
+    <!-- Interactive Canvas -->
+    <div id="canvas-wrap">
+      <canvas id="gameCanvas"></canvas>
+      
+      <!-- Bottom Controls -->
+      <div class="controls-bar">
+        <button id="moon-shake-btn" class="game-btn moon-btn" onclick="triggerMoonShake()">
+          🌙 Moon Shake (<span id="moon-count">2</span>)
+        </button>
+        <button class="game-btn" onclick="toggleMute()" id="mute-btn">
+          🔊 เสียง: เปิด
+        </button>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal">
+      <div class="modal-card">
+        <div style="font-size: 48px; margin-bottom: 8px;">😿</div>
+        <h2 style="font-size: 20px; font-weight: 700; color: #f87171; margin-bottom: 4px;">กล่องแมวเต็มแย้ว!</h2>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก</p>
+        
+        <div style="background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #334155;">
+          <div style="font-size: 11px; color: #94a3b8;">คะแนนรอบนี้</div>
+          <div id="final-score" style="font-size: 28px; font-weight: 700; color: #38bdf8; font-family: monospace;">0</div>
+        </div>
+
+        <button class="restart-btn" onclick="restartGame()">
+          🔄 เล่นใหม่อีกตา
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       CAT TIERS CONFIGURATION (Sleeperem Mascot Integrated)
+       ========================================================================== */
+    const CAT_TIERS = [
+      { tier: 0, name: "ก้อนไหมพรม", radius: 18, color: "#f472b6", score: 2, eye: "yarn" },
+      { tier: 1, name: "ลูกแมวส้มจิ๋ว", radius: 26, color: "#fb923c", score: 4, eye: "sleepy" },
+      { tier: 2, name: "แมวสลิดขี้เซา", radius: 34, color: "#94a3b8", score: 8, eye: "happy" },
+      { tier: 3, name: "แมวสามสีอบอุ่น", radius: 44, color: "#fcd34d", score: 16, eye: "winking" },
+      { tier: 4, name: "แมวดำนำโชค", radius: 55, color: "#334155", score: 32, eye: "sleepy" },
+      { tier: 5, name: "แมววิเชียรมาศ", radius: 68, color: "#e2e8f0", score: 64, eye: "mask" },
+      { tier: 6, name: "แมวเปอร์เซียปุย", radius: 82, color: "#fdba74", score: 128, eye: "fluffy" },
+      { tier: 7, name: "พี่ส้มตัวตึง", radius: 98, color: "#ea580c", score: 256, eye: "curious" },
+      { tier: 8, name: "ท่านอนก้อนขนยักษ์", radius: 116, color: "#c084fc", score: 512, eye: "zen" },
+      { tier: 9, name: "ราชาแมวคู่ Sleeperem", radius: 136, color: "#f59e0b", score: 1024, eye: "king" }
+    ];
+
+    /* ==========================================================================
+       SOUND SYNTHESIZER (Web Audio API - Zero External Dependencies)
+       ========================================================================== */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        // Pentatonic Scale in Hz for harmonic soothing merges
+        this.notes = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+      }
+
+      playDrop() {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(380, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.12);
+      }
+
+      playMerge(tier) {
+        if (this.muted) return;
+        this.init();
+        const noteIndex = Math.min(tier, this.notes.length - 1);
+        const freq = this.notes[noteIndex];
+
+        // Bubble Pop / Chime oscillator
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(freq * 0.8, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, this.ctx.currentTime + 0.18);
+        gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.35);
+
+        // Cute cat purr / harmonic sparkle
+        const sparkle = this.ctx.createOscillator();
+        const sGain = this.ctx.createGain();
+        sparkle.type = "sine";
+        sparkle.frequency.setValueAtTime(freq * 2, this.ctx.currentTime);
+        sGain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+        sGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+        sparkle.connect(sGain);
+        sGain.connect(this.ctx.destination);
+        sparkle.start();
+        sparkle.stop(this.ctx.currentTime + 0.25);
+      }
+
+      playMoonShake() {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(250, this.ctx.currentTime + 0.3);
+        osc.frequency.linearRampToValueAtTime(60, this.ctx.currentTime + 0.6);
+        gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.6);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.6);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* ==========================================================================
+       CANVAS & GAME ENGINE CORE (Custom Circle Physics Engine)
+       ========================================================================== */
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let width, height;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    // Game Variables
+    let score = 0;
+    let bestScore = parseInt(localStorage.getItem("sleeperem_best") || "0");
+    let moonShakesLeft = 2;
+    let isGameOver = false;
+    let dropCooldown = false;
+    let aimX = 200;
+
+    let currentCatTier = 0;
+    let nextCatTier = 0;
+
+    const cats = [];
+    const particles = [];
+    const DANGER_Y = 110;
+    let dangerTimer = 0;
+
+    function getRandomInitialTier() {
+      // Drop tier 0, 1, or 2
+      const r = Math.random();
+      if (r < 0.55) return 0;
+      if (r < 0.85) return 1;
+      return 2;
+    }
+
+    /* ==========================================================================
+       CAT ENTITY CLASS (Verlet / Euler Hybrid Physics)
+       ========================================================================== */
+    class Cat {
+      constructor(x, y, tier) {
+        this.x = x;
+        this.y = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.tier = tier;
+        this.config = CAT_TIERS[tier];
+        this.r = this.config.radius;
+        this.mass = this.r * this.r;
+        this.merged = false;
+        this.scale = 0.1; // Spawn pop animation
+        this.targetScale = 1.0;
+        this.rotation = (Math.random() - 0.5) * 0.4;
+      }
+
+      update(dt) {
+        // Pop-in animation
+        if (this.scale < this.targetScale) {
+          this.scale += (this.targetScale - this.scale) * 0.25;
+        }
+
+        // Gravity
+        this.vy += 980 * dt;
+
+        // Air damping
+        this.vx *= 0.995;
+        this.vy *= 0.995;
+
+        // Update position
+        this.x += this.vx * dt;
+        this.y += this.vy * dt;
+
+        // Boundary checks (Left, Right, Floor)
+        const restitution = 0.25; // bouncy feeling
+        const friction = 0.94;
+
+        if (this.x - this.r < 0) {
+          this.x = this.r;
+          this.vx = -this.vx * restitution;
+        } else if (this.x + this.r > width) {
+          this.x = width - this.r;
+          this.vx = -this.vx * restitution;
+        }
+
+        if (this.y + this.r > height) {
+          this.y = height - this.r;
+          this.vy = -this.vy * restitution;
+          this.vx *= friction;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.scale(this.scale, this.scale);
+        ctx.rotate(this.rotation);
+
+        const r = this.r;
+        const color = this.config.color;
+
+        // Cat Body Shadow
+        ctx.beginPath();
+        ctx.arc(2, 4, r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+        ctx.fill();
+
+        // Cat Body
+        ctx.beginPath();
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#1e293b";
+        ctx.stroke();
+
+        // Cat Ears
+        const earSize = r * 0.38;
+        // Left Ear
+        ctx.beginPath();
+        ctx.moveTo(-r * 0.65, -r * 0.5);
+        ctx.lineTo(-r * 0.45, -r * 0.95);
+        ctx.lineTo(-r * 0.15, -r * 0.7);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.stroke();
+
+        // Right Ear
+        ctx.beginPath();
+        ctx.moveTo(r * 0.65, -r * 0.5);
+        ctx.lineTo(r * 0.45, -r * 0.95);
+        ctx.lineTo(r * 0.15, -r * 0.7);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.stroke();
+
+        // Inner ears (pink)
+        ctx.fillStyle = "#f472b6";
+        ctx.beginPath();
+        ctx.moveTo(-r * 0.55, -r * 0.55);
+        ctx.lineTo(-r * 0.45, -r * 0.85);
+        ctx.lineTo(-r * 0.25, -r * 0.68);
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(r * 0.55, -r * 0.55);
+        ctx.lineTo(r * 0.45, -r * 0.85);
+        ctx.lineTo(r * 0.25, -r * 0.68);
+        ctx.fill();
+
+        // Face details
+        if (this.tier === 0) {
+          // Yarn Ball pattern
+          ctx.strokeStyle = "rgba(255,255,255,0.6)";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(-r*0.2, -r*0.2, r*0.5, 0, Math.PI);
+          ctx.arc(r*0.2, r*0.2, r*0.4, Math.PI, Math.PI*2);
+          ctx.stroke();
+        } else if (this.tier === 9) {
+          // Tier 10: Sleeperem Mascots (Twin Cats with Crown & Moon)
+          ctx.fillStyle = "#1e293b";
+          // Two pairs of sleeping eyes (Two Cats!)
+          // Cat 1 eyes
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.arc(-r * 0.35, 0, r * 0.14, 0, Math.PI);
+          ctx.stroke();
+          // Cat 2 eyes
+          ctx.beginPath();
+          ctx.arc(r * 0.35, 0, r * 0.14, 0, Math.PI);
+          ctx.stroke();
+
+          // Cute pink cheeks for both
+          ctx.fillStyle = "rgba(244, 114, 182, 0.6)";
+          ctx.beginPath(); ctx.arc(-r * 0.55, r * 0.18, r * 0.12, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(r * 0.55, r * 0.18, r * 0.12, 0, Math.PI*2); ctx.fill();
+
+          // Golden Crown on top!
+          ctx.fillStyle = "#facc15";
+          ctx.beginPath();
+          ctx.moveTo(-r * 0.3, -r * 0.85);
+          ctx.lineTo(-r * 0.4, -r * 1.15);
+          ctx.lineTo(0, -r * 0.95);
+          ctx.lineTo(r * 0.4, -r * 1.15);
+          ctx.lineTo(r * 0.3, -r * 0.85);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        } else {
+          // Standard Cute Sleeping Cats ( - . - )
+          ctx.strokeStyle = "#1e293b";
+          ctx.lineWidth = Math.max(2, r * 0.06);
+
+          // Left Sleeping Eye
+          ctx.beginPath();
+          ctx.arc(-r * 0.3, -r * 0.05, r * 0.15, 0.1 * Math.PI, 0.9 * Math.PI);
+          ctx.stroke();
+
+          // Right Sleeping Eye
+          ctx.beginPath();
+          ctx.arc(r * 0.3, -r * 0.05, r * 0.15, 0.1 * Math.PI, 0.9 * Math.PI);
+          ctx.stroke();
+
+          // Tiny Nose & Mouth
+          ctx.fillStyle = "#f43f5e";
+          ctx.beginPath();
+          ctx.arc(0, r * 0.18, r * 0.08, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Cheeks (Blush)
+          ctx.fillStyle = "rgba(244, 63, 94, 0.35)";
+          ctx.beginPath(); ctx.arc(-r * 0.5, r * 0.18, r * 0.14, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(r * 0.5, r * 0.18, r * 0.14, 0, Math.PI * 2); ctx.fill();
+
+          // Whiskers
+          ctx.strokeStyle = "rgba(30, 41, 59, 0.6)";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(-r * 0.45, r * 0.18); ctx.lineTo(-r * 0.8, r * 0.12);
+          ctx.moveTo(-r * 0.45, r * 0.28); ctx.lineTo(-r * 0.8, r * 0.35);
+          ctx.moveTo(r * 0.45, r * 0.18); ctx.lineTo(r * 0.8, r * 0.12);
+          ctx.moveTo(r * 0.45, r * 0.28); ctx.lineTo(r * 0.8, r * 0.35);
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+    }
+
+    /* ==========================================================================
+       PARTICLE SPARKLE SYSTEM
+       ========================================================================== */
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 180 + 60;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        this.life = 1.0;
+        this.decay = Math.random() * 1.5 + 1.2;
+        this.size = Math.random() * 5 + 3;
+      }
+      update(dt) {
+        this.x += this.vx * dt;
+        this.y += this.vy * dt;
+        this.life -= this.decay * dt;
+      }
+      draw() {
+        if (this.life <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.life);
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function createBurst(x, y, color, count = 16) {
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle(x, y, color));
+      }
+    }
+
+    /* ==========================================================================
+       COLLISION RESOLUTION (Substepped Impulse Physics)
+       ========================================================================== */
+    function resolveCollisions() {
+      const n = cats.length;
+      for (let i = 0; i < n; i++) {
+        for (let j = i + 1; j < n; j++) {
+          const c1 = cats[i];
+          const c2 = cats[j];
+          if (c1.merged || c2.merged) continue;
+
+          const dx = c2.x - c1.x;
+          const dy = c2.y - c1.y;
+          const distSq = dx * dx + dy * dy;
+          const minDist = c1.r + c2.r;
+
+          if (distSq < minDist * minDist) {
+            const dist = Math.sqrt(distSq) || 0.001;
+
+            // CHECK MERGE CONDITION!
+            if (c1.tier === c2.tier && c1.tier < CAT_TIERS.length - 1) {
+              c1.merged = true;
+              c2.merged = true;
+
+              const midX = (c1.x + c2.x) * 0.5;
+              const midY = (c1.y + c2.y) * 0.5;
+              const nextTier = c1.tier + 1;
+
+              // Sound & FX
+              sound.playMerge(nextTier);
+              createBurst(midX, midY, CAT_TIERS[nextTier].color, 24);
+
+              // Add Score
+              score += CAT_TIERS[nextTier].score;
+              updateScoreUI();
+
+              // Spawn upgraded Cat
+              setTimeout(() => {
+                const newCat = new Cat(midX, midY, nextTier);
+                newCat.vy = -80; // little joyous bounce
+                cats.push(newCat);
+              }, 10);
+
+              continue;
+            }
+
+            // Standard Circle Elastic Collision & Separation
+            const overlap = minDist - dist;
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            // Separate overlapping bodies
+            const totalMass = c1.mass + c2.mass;
+            const m1Ratio = c2.mass / totalMass;
+            const m2Ratio = c1.mass / totalMass;
+
+            c1.x -= nx * overlap * m1Ratio;
+            c1.y -= ny * overlap * m1Ratio;
+            c2.x += nx * overlap * m2Ratio;
+            c2.y += ny * overlap * m2Ratio;
+
+            // Relative velocity impulse
+            const kx = c1.vx - c2.vx;
+            const ky = c1.vy - c2.vy;
+            const p = 2 * (nx * kx + ny * ky) / totalMass;
+
+            const restitution = 0.2;
+            c1.vx -= p * c2.mass * nx * (1 + restitution);
+            c1.vy -= p * c2.mass * ny * (1 + restitution);
+            c2.vx += p * c1.mass * nx * (1 + restitution);
+            c2.vy += p * c1.mass * ny * (1 + restitution);
+          }
+        }
+      }
+
+      // Filter out merged cats
+      for (let i = cats.length - 1; i >= 0; i--) {
+        if (cats[i].merged) {
+          cats.splice(i, 1);
+        }
+      }
+    }
+
+    /* ==========================================================================
+       USER INPUTS & DROP HANDLING
+       ========================================================================== */
+    function updateScoreUI() {
+      document.getElementById("score-val").innerText = score;
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem("sleeperem_best", bestScore);
+      }
+      document.getElementById("best-val").innerText = bestScore;
+    }
+
+    function updateNextCatUI() {
+      const config = CAT_TIERS[nextCatTier];
+      const view = document.getElementById("next-cat-view");
+      view.innerText = config.tier === 0 ? "🧶" : "🐱";
+      view.style.backgroundColor = config.color;
+      document.getElementById("next-cat-name").innerText = config.name;
+    }
+
+    function dropCat() {
+      if (dropCooldown || isGameOver) return;
+
+      const currentConfig = CAT_TIERS[currentCatTier];
+      // Bound aim inside walls
+      const clampedX = Math.max(currentConfig.radius + 8, Math.min(width - currentConfig.radius - 8, aimX));
+
+      sound.playDrop();
+      const newCat = new Cat(clampedX, 70, currentCatTier);
+      cats.push(newCat);
+
+      // Trigger Cooldown
+      dropCooldown = true;
+      currentCatTier = nextCatTier;
+      nextCatTier = getRandomInitialTier();
+      updateNextCatUI();
+
+      setTimeout(() => {
+        dropCooldown = false;
+      }, 550);
+    }
+
+    // Pointer events (Mouse & Touch)
+    canvas.addEventListener("pointermove", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      aimX = e.clientX - rect.left;
+    });
+
+    canvas.addEventListener("pointerdown", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      aimX = e.clientX - rect.left;
+      dropCat();
+    });
+
+    // Special Boosters
+    function triggerMoonShake() {
+      if (moonShakesLeft <= 0 || isGameOver) return;
+      moonShakesLeft--;
+      document.getElementById("moon-count").innerText = moonShakesLeft;
+      if (moonShakesLeft <= 0) {
+        document.getElementById("moon-shake-btn").disabled = true;
+      }
+
+      sound.playMoonShake();
+      // Shake all cats upwards and randomly
+      cats.forEach(cat => {
+        cat.vy = -(Math.random() * 450 + 200);
+        cat.vx += (Math.random() - 0.5) * 400;
+      });
+
+      // Visual screen shake
+      const wrap = document.getElementById("game-container");
+      wrap.style.transform = "translate(0px, -6px)";
+      setTimeout(() => { wrap.style.transform = "translate(0px, 6px)"; }, 60);
+      setTimeout(() => { wrap.style.transform = "translate(0px, -3px)"; }, 120);
+      setTimeout(() => { wrap.style.transform = "none"; }, 180);
+    }
+
+    function toggleMute() {
+      sound.muted = !sound.muted;
+      document.getElementById("mute-btn").innerText = sound.muted ? "🔇 เสียง: ปิด" : "🔊 เสียง: เปิด";
+    }
+
+    function checkGameOver(dt) {
+      let isOverDanger = false;
+      for (const cat of cats) {
+        // Must be stable (slow moving) and resting above DANGER_Y
+        if (cat.y - cat.r < DANGER_Y && Math.abs(cat.vy) < 20 && cat.scale >= 0.9) {
+          isOverDanger = true;
+          break;
+        }
+      }
+
+      if (isOverDanger) {
+        dangerTimer += dt;
+        if (dangerTimer >= 2.5 && !isGameOver) {
+          triggerGameOver();
+        }
+      } else {
+        dangerTimer = Math.max(0, dangerTimer - dt * 2);
+      }
+    }
+
+    function triggerGameOver() {
+      isGameOver = true;
+      document.getElementById("final-score").innerText = score;
+      document.getElementById("game-over-modal").style.display = "flex";
+    }
+
+    function restartGame() {
+      cats.length = 0;
+      particles.length = 0;
+      score = 0;
+      moonShakesLeft = 2;
+      isGameOver = false;
+      dropCooldown = false;
+      dangerTimer = 0;
+      document.getElementById("moon-count").innerText = "2";
+      document.getElementById("moon-shake-btn").disabled = false;
+      document.getElementById("game-over-modal").style.display = "none";
+      updateScoreUI();
+    }
+
+    /* ==========================================================================
+       MAIN GAME LOOP (Fixed Substepping for Rock-Solid 60 FPS)
+       ========================================================================== */
+    let lastTime = performance.now();
+
+    function gameLoop(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
+      // Physics Substepping (8 substeps per frame prevents tunneling)
+      if (!isGameOver) {
+        const subSteps = 8;
+        const subDt = dt / subSteps;
+        for (let s = 0; s < subSteps; s++) {
+          cats.forEach(c => c.update(subDt));
+          resolveCollisions();
+        }
+        checkGameOver(dt);
+      }
+
+      // Update Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update(dt);
+        if (particles[i].life <= 0) particles.splice(i, 1);
+      }
+
+      // RENDER FRAME
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw Danger Line
+      ctx.save();
+      ctx.strokeStyle = dangerTimer > 0 ? "rgba(239, 68, 68, 0.9)" : "rgba(239, 68, 68, 0.35)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(0, DANGER_Y);
+      ctx.lineTo(width, DANGER_Y);
+      ctx.stroke();
+
+      if (dangerTimer > 0) {
+        ctx.fillStyle = "rgba(239, 68, 68, 0.8)";
+        ctx.font = "bold 11px Prompt";
+        ctx.fillText("⚠️ ระวังล้นกล่อง! (" + Math.ceil(2.5 - dangerTimer) + "s)", 16, DANGER_Y - 8);
+      }
+      ctx.restore();
+
+      // Draw Aiming Guide Line and Dropper Cat
+      if (!dropCooldown && !isGameOver) {
+        const currentConfig = CAT_TIERS[currentCatTier];
+        const clampedX = Math.max(currentConfig.radius + 8, Math.min(width - currentConfig.radius - 8, aimX));
+
+        // Dashed Vertical Guide
+        ctx.save();
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(clampedX, 70);
+        ctx.lineTo(clampedX, height);
+        ctx.stroke();
+        ctx.restore();
+
+        // Dropper Cat Preview
+        const previewCat = new Cat(clampedX, 55, currentCatTier);
+        previewCat.scale = 1.0;
+        previewCat.draw();
+      }
+
+      // Draw All Cats
+      cats.forEach(c => c.draw());
+
+      // Draw Particles
+      particles.forEach(p => p.draw());
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // INITIALIZATION
+    resizeCanvas();
+    currentCatTier = getRandomInitialTier();
+    nextCatTier = getRandomInitialTier();
+    updateScoreUI();
+    updateNextCatUI();
+    requestAnimationFrame(gameLoop);
+  </script>
+</body>
+</html>

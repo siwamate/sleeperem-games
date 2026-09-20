@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sleeperem Games 🌙 ศูนย์รวมเกมคลายเครียด</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: radial-gradient(circle at top, #1e293b 0%, #0b0f19 100%);
+      color: #f8fafc;
+      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 16px;
+    }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+    .brand-header {
+      text-align: center;
+    }
+    .brand-logo {
+      font-size: 48px;
+      margin-bottom: 8px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fbbf24;
+      letter-spacing: 0.5px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-top: 6px;
+    }
+    .game-card {
+      width: 100%;
+      background: #131b2e;
+      border: 2px solid #334155;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 25px rgba(99, 102, 241, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: #38bdf8;
+    }
+    .badge {
+      align-self: flex-start;
+      background: #0284c7;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .game-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .game-desc {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+      transition: all 0.15s ease;
+    }
+    .play-btn:hover {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      transform: scale(1.02);
+    }
+    .upcoming-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .sub-card {
+      background: #0f172a;
+      border: 1px dashed #334155;
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sub-card h3 {
+      font-size: 15px;
+      color: #94a3b8;
+    }
+    .sub-card p {
+      font-size: 12px;
+      color: #64748b;
+    }
+    footer {
+      margin-top: auto;
+      padding-top: 40px;
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+    }
+    footer a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand-header">
+      <div class="brand-logo">🐱🌙</div>
+      <h1>SLEEPEREM GAMES</h1>
+      <p class="subtitle">เกมผ่อนคลายเล่นเพลินสำหรับคนเหนื่อยวันจันทร์</p>
+    </div>
+
+    <!-- Featured Flagship Game -->
+    <div class="game-card">
+      <span class="badge">🔥 เกมเรือธง (Flagship)</span>
+      <div class="game-title">
+        <span>🧶</span> Cat Drop & Merge: Sleepy Cats
+      </div>
+      <p class="game-desc">
+        หย่อนก้อนแมวนุ่มฟูลงในกล่อง รวมร่างแมวพันธุ์เดียวกันเพื่อไต่ระดับไปยัง <b>Tier 10 ราชาแมวคู่ Sleeperem ใต้พระจันทร์เสี้ยว</b> เล่นง่ายด้วยนิ้วเดียว พร้อมระบบเสียง Pentatonic สุดฟิน!
+      </p>
+      <a href="/catball" class="play-btn">
+        <span>▶</span> เข้าเล่นเกม Cat Ball ทันที
+      </a>
+    </div>
+
+    <!-- Upcoming Games -->
+    <div class="upcoming-grid">
+      <div class="sub-card">
+        <h3>🐸 Cat Hopper</h3>
+        <p>เกมน้องแมวกระโดดข้ามสิ่งกีดขวาง ท้าทายความเร็วและจังหวะ (เร็วๆ นี้)</p>
+      </div>
+      <div class="sub-card">
+        <h3>🧱 Sleepy Blocks</h3>
+        <p>เกมต่อบล็อกปริศนาผ่อนคลายสมองในค่ำคืนอันเงียบสงบ (เร็วๆ นี้)</p>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2026 <a href="https://sleeperem.com">Sleeperem Studio</a> • เพื่อนขี้เซาสำหรับคนเหนื่อยวันจันทร์</p>
+    </footer>
+  </div>
+</body>
+</html>
