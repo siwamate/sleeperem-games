@@ -49,7 +49,7 @@
       margin-bottom: 30px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     .banner-title {
@@ -62,27 +62,19 @@
     }
     .banner-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 14px;
     }
     .banner-card {
       background: rgba(15, 23, 42, 0.7);
-      border: 1px solid #334155;
       border-radius: 14px;
       padding: 12px;
       display: flex;
       align-items: center;
       gap: 12px;
+      transition: transform 0.2s;
     }
-    .banner-card img {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
-      object-fit: cover;
-      border: 1px solid #475569;
-    }
-    .banner-card h4 { font-size: 13px; color: #fff; margin-bottom: 2px; }
-    .banner-card p { font-size: 11px; color: #94a3b8; line-height: 1.4; }
+    .banner-card:hover { transform: translateY(-2px); }
 
     /* Comparison Table */
     .table-card {
@@ -96,7 +88,7 @@
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      min-width: 720px;
+      min-width: 780px;
     }
     th {
       background: #1e293b;
@@ -114,10 +106,10 @@
     }
     tr:hover { background: rgba(30, 41, 59, 0.4); }
     .rank-col { font-size: 16px; color: #fbbf24; text-align: center; width: 50px; }
-    .img-col { width: 120px; text-align: center; }
+    .img-col { width: 130px; text-align: center; }
     .thumb-wrap {
-      width: 90px;
-      height: 90px;
+      width: 95px;
+      height: 95px;
       border-radius: 16px;
       overflow: hidden;
       background: #0f172a;
@@ -133,10 +125,12 @@
       object-fit: cover;
     }
     .img-label {
-      display: block;
+      display: inline-block;
       font-size: 10px;
       color: #64748b;
-      margin-top: 4px;
+      margin-top: 6px;
+      padding: 2px 6px;
+      border-radius: 6px;
     }
     .highlight-col { background: rgba(56, 189, 248, 0.03); }
     .highlight-col-ball { background: rgba(245, 158, 11, 0.03); }
@@ -154,6 +148,17 @@
       margin: 6px 0;
     }
     .desc { font-size: 12px; color: #cbd5e1; line-height: 1.5; }
+    
+    .status-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: #065f46;
+      color: #6ee7b7;
+      margin-top: 6px;
+    }
   </style>
 </head>
 <body>
@@ -161,91 +166,188 @@
     <header>
       <div class="back-nav">
         <a href="/" class="nav-link">← กลับหน้าหลัก Games</a>
+        <a href="/catball-dev" class="nav-link" style="color:#fbbf24; border-color:#fbbf24;">🧪 ทดลอง Cat Ball Dev</a>
         <a href="/catball" class="nav-link">🎮 เล่นเกม Cat Ball</a>
       </div>
       <h1>🔍 ตารางรีวิวเปรียบเทียบ: แมวจริง vs โพลีกอน vs บอลแมว</h1>
-      <p class="sub">เปรียบเทียบ 4 มิติของน้องแมว 20 สายพันธุ์ เพื่อให้คุณตรวจรีวิวก่อนนำไปใช้จริงในเกมและฟาร์ม</p>
+      <p class="sub">เปรียบเทียบ 4 มิติของน้องแมว 20 สายพันธุ์ คัดสรรโมเดล 3D Low-Poly แท้ เพื่อตรวจรีวิวก่อนนำไปใช้จริง</p>
+      <div class="status-badge">✨ มีโมเดล 3D Low-Poly แท้แล้ว 14 สายพันธุ์ยอดนิยม</div>
     </header>
 
-        <!-- Top Concept Highlights -->
+    <!-- Top Concept Highlights -->
     <div class="concept-banner">
       <div class="banner-title">
         <span>✨</span> 3D Low-Poly Concept Showcase (ชุดโมเดลที่สะท้อนเอกลักษณ์เฉพาะสายพันธุ์):
       </div>
-      <p style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">
-        คัดสรรโมเดล 3D Low-Poly แท้ ที่จำลองกายวิภาคโดดเด่นของแต่ละสายพันธุ์อย่างแม่นยำ ไม่ใช่แค่รูปทรงสามเหลี่ยมทั่วๆ ไป:
+      <p style="font-size:13px; color:#cbd5e1; line-height:1.6;">
+        โมเดล 3D Low-Poly ทรงเหลี่ยมเรขาคณิต Origami สไตล์ Sleeperem Cozy สะท้อนเอกลักษณ์สายพันธุ์แท้ชัดเจน (หูพับสก็อตติช, ขาสั้นมันช์กิ้น, แผงคอเมนคูน, ตาสองสีขาวมณี, แต้มสีวิเชียรมาศ, ลายเสือเบงกอล/อเมริกันช็อตแฮร์):
       </p>
-      <div class="banner-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
-        
-        <!-- Scottish Fold -->
-        <div class="banner-card" style="border: 1px solid #eab308;">
+      <div class="banner-grid">
+
+        <div class="banner-card" style="border: 1px solid #f59e0b;">
           <div style="display:flex; gap:6px;">
-            <img src="img/ball_scottish.jpg" alt="Scottish Fold Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #eab308;">
-            <img src="img/full_scottish.jpg" alt="Scottish Fold Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+            <img src="img/ball_savannah.jpg" alt="ซาวันนาห์ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #f59e0b;">
+            <img src="img/full_savannah.jpg" alt="ซาวันนาห์ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
           </div>
           <div>
-            <h4 style="color:#fef08a;">สก็อตติช โฟลด์ (Scottish Fold)</h4>
-            <p style="color:#94a3b8; font-size:11px;">หูพับกลมแนบสนิทกับหัวกลมมน แก้มยุ้ย ตาโตสีอำพันกลมดิ๊ก</p>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#1 ซาวันนาห์ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Savannah)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">ตัวสูง ขายาว ลายจุดเสือดาวป่า หูตั้งใหญ่สง่างาม</p>
           </div>
         </div>
 
-        <!-- Sphynx -->
-        <div class="banner-card" style="border: 1px solid #ec4899;">
-          <div style="display:flex; gap:6px;">
-            <img src="img/ball_sphynx.jpg" alt="Sphynx Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #ec4899;">
-            <img src="img/full_sphynx.jpg" alt="Sphynx Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
-          </div>
-          <div>
-            <h4 style="color:#fbcfe8;">สฟิงซ์ (Sphynx)</h4>
-            <p style="color:#94a3b8; font-size:11px;">แมวไร้ขน รอยย่นเรขาคณิตชัดเจน หูค้างคาวใบใหญ่ทรงสามเหลี่ยม</p>
-          </div>
-        </div>
 
-        <!-- Bengal -->
-        <div class="banner-card" style="border: 1px solid #f97316;">
-          <div style="display:flex; gap:6px;">
-            <img src="img/ball_bengal.jpg" alt="Bengal Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #f97316;">
-            <img src="img/full_bengal.jpg" alt="Bengal Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
-          </div>
-          <div>
-            <h4 style="color:#fed7aa;">เบงกอล (Bengal)</h4>
-            <p style="color:#94a3b8; font-size:11px;">ขนสีส้มทอง ลายเสือดาว Rosette ลายดอกดวง ตาเขียวมรกต</p>
-          </div>
-        </div>
-
-        <!-- Persian -->
-        <div class="banner-card" style="border: 1px solid #a855f7;">
-          <div style="display:flex; gap:6px;">
-            <img src="img/ball_persian.jpg" alt="Persian Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #a855f7;">
-            <img src="img/full_persian.jpg" alt="Persian Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
-          </div>
-          <div>
-            <h4 style="color:#e9d5ff;">เปอร์เซีย (Persian)</h4>
-            <p style="color:#94a3b8; font-size:11px;">หน้าบี้แบน จมูกเชิด ตาโตสีส้มทองแดง ขนฟูหนาเป็นเหลี่ยมปุยรอบตัว</p>
-          </div>
-        </div>
-
-        <!-- Khao Manee -->
-        <div class="banner-card" style="border: 1px solid #38bdf8;">
-          <div style="display:flex; gap:6px;">
-            <img src="img/ball_khaomanee.jpg" alt="Khao Manee Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
-            <img src="img/full_khaomanee.jpg" alt="Khao Manee Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
-          </div>
-          <div>
-            <h4 style="color:#bae6fd;">ขาวมณี (Khao Manee)</h4>
-            <p style="color:#94a3b8; font-size:11px;">ขนขาวปลอดดั่งหิมะ เอกลักษณ์ตาสองสี (Odd-eyes ฟ้าประกายเพชร - เหลืองอำพัน)</p>
-          </div>
-        </div>
-
-        <!-- Maine Coon -->
         <div class="banner-card" style="border: 1px solid #10b981;">
           <div style="display:flex; gap:6px;">
-            <img src="img/ball_mainecoon.jpg" alt="Maine Coon Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #10b981;">
-            <img src="img/ball_british.jpg" alt="British Shorthair" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+            <img src="img/ball_mainecoon.jpg" alt="เมนคูน Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #10b981;">
+            <img src="img/full_mainecoon.jpg" alt="เมนคูน Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
           </div>
           <div>
-            <h4 style="color:#a7f3d0;">เมนคูน & บริติช</h4>
-            <p style="color:#94a3b8; font-size:11px;">เมนคูนแผงคอสิงโตพู่หูลิงซ์ / บริติชบลูแก้มยุ้ยกลมตัน</p>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#2 เมนคูน <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Maine Coon)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">แผงคอสิงโตหนาฟู หูปลายพู่ลิงซ์ หางฟูพวงอลังการ</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #f97316;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_bengal.jpg" alt="เบงกอล Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #f97316;">
+            <img src="img/full_bengal.jpg" alt="เบงกอล Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#3 เบงกอล <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Bengal)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">ลายดอกดวง Rosette สีส้มทอง ตาเขียวมรกต ปราดเปรียว</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #38bdf8;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_ragdoll.jpg" alt="แร็กดอลล์ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+            <img src="img/full_ragdoll.jpg" alt="แร็กดอลล์ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#4 แร็กดอลล์ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Ragdoll)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">แต้มสีบลูพอยท์ ขนปุยสีครีมนุ่ม ตาสีแซฟไฟร์ลึกซึ้ง</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #ec4899;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_sphynx.jpg" alt="สฟิงซ์ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #ec4899;">
+            <img src="img/full_sphynx.jpg" alt="สฟิงซ์ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#5 สฟิงซ์ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Sphynx)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">ไร้ขน ริ้วรอยโพลีกอนสง่างาม หูค้างคาวใบใหญ่</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #6366f1;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_british.jpg" alt="บริติช ช็อตแฮร์ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #6366f1;">
+            <img src="img/full_british.jpg" alt="บริติช ช็อตแฮร์ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#6 บริติช ช็อตแฮร์ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(British Shorthair)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">บอดี้แน่นตัน แก้มยุ้ยกลม ขนบลูเทาสั้นนุ่มดั่งกำมะหยี่</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #eab308;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_scottish.jpg" alt="สก็อตติช โฟลด์ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #eab308;">
+            <img src="img/full_scottish.jpg" alt="สก็อตติช โฟลด์ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#7 สก็อตติช โฟลด์ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Scottish Fold)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">หูพับแนบชิดหัวกลมดิ๊ก ตาโตสีอำพันเหมือนลูกนกฮูก</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #14b8a6;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_norwegian.jpg" alt="นอร์วีเจียน ฟอเรสต์ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #14b8a6;">
+            <img src="img/8_norwegian_poly.svg" alt="นอร์วีเจียน ฟอเรสต์ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#8 นอร์วีเจียน ฟอเรสต์ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Norwegian Forest)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">บอลขนหนา 2 ชั้น ขนคอทรงสามเหลี่ยมทนความหนาว</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #06b6d4;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_russianblue.jpg" alt="รัสเซียน บลู Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #06b6d4;">
+            <img src="img/full_russianblue.jpg" alt="รัสเซียน บลู Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#9 รัสเซียน บลู <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Russian Blue)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">ขนสีเทาเงินเหลือบประกาย ตาสีเขียวมรกตเปล่งแสง</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #f59e0b;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_munchkin.jpg" alt="มันช์กิ้น Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #f59e0b;">
+            <img src="img/full_munchkin.jpg" alt="มันช์กิ้น Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#10 มันช์กิ้น <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Munchkin)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">ขาสั้นเตี้ยป้อม ลำตัวยาวน่ารักดุ๊กดิ๊ก ตาแป๋วขี้อ้อน</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #a855f7;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_persian.jpg" alt="เปอร์เซีย Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #a855f7;">
+            <img src="img/full_persian.jpg" alt="เปอร์เซีย Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#14 เปอร์เซีย <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Persian)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">หน้าบี้แบน จมูกเชิด ขนยาวฟูฟ่องรอบตัว ตาสีทองแดง</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #94a3b8;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_americanshorthair.jpg" alt="อเมริกัน ช็อตแฮร์ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #94a3b8;">
+            <img src="img/full_americanshorthair.jpg" alt="อเมริกัน ช็อตแฮร์ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#15 อเมริกัน ช็อตแฮร์ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(American Shorthair)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">ลายก้นหอย Classic Tabby สีเงิน-ดำคมชัด แก้มยุ้ยกล้ามแน่น</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #38bdf8;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_khaomanee.jpg" alt="ขาวมณี Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+            <img src="img/full_khaomanee.jpg" alt="ขาวมณี Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#17 ขาวมณี <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Khao Manee)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">ขนขาวปลอด ตาสองสี Odd-eyes ฟ้าประกายเพชรและเหลืองอำพัน</p>
+          </div>
+        </div>
+
+
+        <div class="banner-card" style="border: 1px solid #3b82f6;">
+          <div style="display:flex; gap:6px;">
+            <img src="img/ball_siamese.jpg" alt="วิเชียรมาศ Ball" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #3b82f6;">
+            <img src="img/full_siamese.jpg" alt="วิเชียรมาศ Full" style="width:58px; height:58px; border-radius:10px; object-fit:cover; border:1px solid #38bdf8;">
+          </div>
+          <div>
+            <h4 style="color:#ffffff; font-size:13px; font-weight:700;">#20 วิเชียรมาศ <span style="font-size:11px; color:#94a3b8; font-weight:normal;">(Siamese Cat)</span></h4>
+            <p style="color:#cbd5e1; font-size:11px; line-height:1.4;">แต้ม 9 จุดสีช็อกโกแลตเข้ม ทรงเพรียวระหง ตาสีฟ้าครามสดใส</p>
           </div>
         </div>
 
@@ -265,7 +367,7 @@
           </tr>
         </thead>
         <tbody>
-          
+
   <tr>
     <td class="rank-col"><b>#1</b></td>
     <td class="img-col">
@@ -273,12 +375,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/1_savannah_poly.svg" alt="ซาวันนาห์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_savannah.jpg" alt="ซาวันนาห์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_savannah.jpg" alt="ซาวันนาห์ (บอลโพลีกอน 3D)" loading="lazy"></div>
-      <span class="img-label" style="background:#b45309; color:#fef08a;">✨ บอล 3D Low-Poly แท้</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_savannah.jpg" alt="ซาวันนาห์ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">ซาวันนาห์ <span class="en-sub">(Savannah)</span></div>
@@ -294,12 +396,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/2_mainecoon_poly.svg" alt="เมนคูน (โพลีกอนตัวเต็ม)" loading="lazy"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_mainecoon.jpg" alt="เมนคูน (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/ball_mainecoon.jpg" alt="เมนคูน (บอลโพลีกอน 3D)" loading="lazy" style="border:2px solid #10b981;"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_mainecoon.jpg" alt="เมนคูน (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">เมนคูน <span class="en-sub">(Maine Coon)</span></div>
@@ -315,12 +417,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/full_bengal.jpg" alt="เบงกอล (โพลีกอนตัวเต็ม 3D)" loading="lazy" style="border:2px solid #38bdf8;"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_bengal.jpg" alt="เบงกอล (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/ball_bengal.jpg" alt="เบงกอล (บอลโพลีกอน 3D)" loading="lazy" style="border:2px solid #fbbf24;"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_bengal.jpg" alt="เบงกอล (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">เบงกอล <span class="en-sub">(Bengal)</span></div>
@@ -336,12 +438,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/4_ragdoll_poly.svg" alt="แร็กดอลล์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_ragdoll.jpg" alt="แร็กดอลล์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/4_ragdoll_ball.svg" alt="แร็กดอลล์ (บอลโพลีกอน)" loading="lazy"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_ragdoll.jpg" alt="แร็กดอลล์ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">แร็กดอลล์ <span class="en-sub">(Ragdoll)</span></div>
@@ -357,12 +459,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/full_sphynx.jpg" alt="สฟิงซ์ (โพลีกอนตัวเต็ม 3D)" loading="lazy" style="border:2px solid #38bdf8;"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_sphynx.jpg" alt="สฟิงซ์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/ball_sphynx.jpg" alt="สฟิงซ์ (บอลโพลีกอน 3D)" loading="lazy" style="border:2px solid #fbbf24;"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_sphynx.jpg" alt="สฟิงซ์ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">สฟิงซ์ <span class="en-sub">(Sphynx)</span></div>
@@ -378,12 +480,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/full_british.jpg" alt="บริติช ช็อตแฮร์ (โพลีกอนตัวเต็ม 3D)" loading="lazy" style="border:2px solid #38bdf8;"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_british.jpg" alt="บริติช ช็อตแฮร์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/ball_british.jpg" alt="บริติช ช็อตแฮร์ (บอลโพลีกอน 3D)" loading="lazy" style="border:2px solid #fbbf24;"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_british.jpg" alt="บริติช ช็อตแฮร์ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">บริติช ช็อตแฮร์ <span class="en-sub">(British Shorthair)</span></div>
@@ -399,12 +501,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/full_scottish.jpg" alt="สก็อตติช โฟลด์ (โพลีกอนตัวเต็ม 3D)" loading="lazy" style="border:2px solid #38bdf8;"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_scottish.jpg" alt="สก็อตติช โฟลด์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/ball_scottish.jpg" alt="สก็อตติช โฟลด์ (บอลโพลีกอน 3D)" loading="lazy" style="border:2px solid #fbbf24;"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_scottish.jpg" alt="สก็อตติช โฟลด์ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">สก็อตติช โฟลด์ <span class="en-sub">(Scottish Fold)</span></div>
@@ -420,12 +522,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/8_norwegian_poly.svg" alt="นอร์วีเจียน ฟอเรสต์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/8_norwegian_poly.svg" alt="นอร์วีเจียน ฟอเรสต์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
       <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/8_norwegian_ball.svg" alt="นอร์วีเจียน ฟอเรสต์ (บอลโพลีกอน)" loading="lazy"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_norwegian.jpg" alt="นอร์วีเจียน ฟอเรสต์ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">นอร์วีเจียน ฟอเรสต์ <span class="en-sub">(Norwegian Forest)</span></div>
@@ -441,12 +543,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/9_russianblue_poly.svg" alt="รัสเซียน บลู (โพลีกอนตัวเต็ม)" loading="lazy"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_russianblue.jpg" alt="รัสเซียน บลู (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/9_russianblue_ball.svg" alt="รัสเซียน บลู (บอลโพลีกอน)" loading="lazy"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_russianblue.jpg" alt="รัสเซียน บลู (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">รัสเซียน บลู <span class="en-sub">(Russian Blue)</span></div>
@@ -462,12 +564,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/10_munchkin_poly.svg" alt="มันช์กิ้น (โพลีกอนตัวเต็ม)" loading="lazy"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_munchkin.jpg" alt="มันช์กิ้น (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/10_munchkin_ball.svg" alt="มันช์กิ้น (บอลโพลีกอน)" loading="lazy"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_munchkin.jpg" alt="มันช์กิ้น (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">มันช์กิ้น <span class="en-sub">(Munchkin)</span></div>
@@ -483,11 +585,11 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/11_exotic_poly.svg" alt="เอ็กโซติก ช็อตแฮร์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/11_exotic_poly.svg" alt="เอ็กโซติก ช็อตแฮร์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
       <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/11_exotic_ball.svg" alt="เอ็กโซติก ช็อตแฮร์ (บอลโพลีกอน)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/11_exotic_ball.svg" alt="เอ็กโซติก ช็อตแฮร์ (บอลโพลีกอน)" loading="lazy"></div>
       <span class="img-label">🔮 บอลแมวในเกม</span>
     </td>
     <td class="info-col">
@@ -504,11 +606,11 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/12_birman_poly.svg" alt="เบอร์แมน (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/12_birman_poly.svg" alt="เบอร์แมน (โพลีกอนตัวเต็ม)" loading="lazy"></div>
       <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/12_birman_ball.svg" alt="เบอร์แมน (บอลโพลีกอน)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/12_birman_ball.svg" alt="เบอร์แมน (บอลโพลีกอน)" loading="lazy"></div>
       <span class="img-label">🔮 บอลแมวในเกม</span>
     </td>
     <td class="info-col">
@@ -525,11 +627,11 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/13_turkish_poly.svg" alt="เตอร์กิช แองโกรา (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/13_turkish_poly.svg" alt="เตอร์กิช แองโกรา (โพลีกอนตัวเต็ม)" loading="lazy"></div>
       <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/13_turkish_ball.svg" alt="เตอร์กิช แองโกรา (บอลโพลีกอน)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/13_turkish_ball.svg" alt="เตอร์กิช แองโกรา (บอลโพลีกอน)" loading="lazy"></div>
       <span class="img-label">🔮 บอลแมวในเกม</span>
     </td>
     <td class="info-col">
@@ -546,12 +648,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/full_persian.jpg" alt="เปอร์เซีย (โพลีกอนตัวเต็ม 3D)" loading="lazy" style="border:2px solid #38bdf8;"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_persian.jpg" alt="เปอร์เซีย (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/ball_persian.jpg" alt="เปอร์เซีย (บอลโพลีกอน 3D)" loading="lazy" style="border:2px solid #fbbf24;"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_persian.jpg" alt="เปอร์เซีย (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">เปอร์เซีย <span class="en-sub">(Persian)</span></div>
@@ -567,12 +669,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/15_americanshorthair_poly.svg" alt="อเมริกัน ช็อตแฮร์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_americanshorthair.jpg" alt="อเมริกัน ช็อตแฮร์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/15_americanshorthair_ball.svg" alt="อเมริกัน ช็อตแฮร์ (บอลโพลีกอน)" loading="lazy"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_americanshorthair.jpg" alt="อเมริกัน ช็อตแฮร์ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">อเมริกัน ช็อตแฮร์ <span class="en-sub">(American Shorthair)</span></div>
@@ -588,11 +690,11 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/16_abyssinian_poly.svg" alt="อาบิสซิเนียน (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/16_abyssinian_poly.svg" alt="อาบิสซิเนียน (โพลีกอนตัวเต็ม)" loading="lazy"></div>
       <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/16_abyssinian_ball.svg" alt="อาบิสซิเนียน (บอลโพลีกอน)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/16_abyssinian_ball.svg" alt="อาบิสซิเนียน (บอลโพลีกอน)" loading="lazy"></div>
       <span class="img-label">🔮 บอลแมวในเกม</span>
     </td>
     <td class="info-col">
@@ -609,12 +711,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/full_khaomanee.jpg" alt="ขาวมณี (โพลีกอนตัวเต็ม 3D)" loading="lazy" style="border:2px solid #38bdf8;"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_khaomanee.jpg" alt="ขาวมณี (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/ball_khaomanee.jpg" alt="ขาวมณี (บอลโพลีกอน 3D)" loading="lazy" style="border:2px solid #fbbf24;"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_khaomanee.jpg" alt="ขาวมณี (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">ขาวมณี <span class="en-sub">(Khao Manee)</span></div>
@@ -630,11 +732,11 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/18_korat_poly.svg" alt="โคราช / สีสวาด (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/18_korat_poly.svg" alt="โคราช / สีสวาด (โพลีกอนตัวเต็ม)" loading="lazy"></div>
       <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/18_korat_ball.svg" alt="โคราช / สีสวาด (บอลโพลีกอน)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/18_korat_ball.svg" alt="โคราช / สีสวาด (บอลโพลีกอน)" loading="lazy"></div>
       <span class="img-label">🔮 บอลแมวในเกม</span>
     </td>
     <td class="info-col">
@@ -651,11 +753,11 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/19_suphalak_poly.svg" alt="ศุภลักษณ์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/19_suphalak_poly.svg" alt="ศุภลักษณ์ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
       <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/19_suphalak_ball.svg" alt="ศุภลักษณ์ (บอลโพลีกอน)" loading="lazy"></div>
+      <div class="thumb-wrap" style=""><img src="img/19_suphalak_ball.svg" alt="ศุภลักษณ์ (บอลโพลีกอน)" loading="lazy"></div>
       <span class="img-label">🔮 บอลแมวในเกม</span>
     </td>
     <td class="info-col">
@@ -672,12 +774,12 @@
       <span class="img-label">ภาพถ่ายจริง</span>
     </td>
     <td class="img-col highlight-col">
-      <div class="thumb-wrap"><img src="img/20_siamese_poly.svg" alt="วิเชียรมาศ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
-      <span class="img-label">🐱 แมวโพลีกอน (ฟาร์ม)</span>
+      <div class="thumb-wrap" style="border:2px solid #38bdf8;"><img src="img/full_siamese.jpg" alt="วิเชียรมาศ (โพลีกอนตัวเต็ม)" loading="lazy"></div>
+      <span class="img-label" style="background:#0369a1; color:#e0f2fe; font-weight:700;">✨ ตัวเต็ม 3D Low-Poly แท้</span>
     </td>
     <td class="img-col highlight-col-ball">
-      <div class="thumb-wrap"><img src="img/20_siamese_ball.svg" alt="วิเชียรมาศ (บอลโพลีกอน)" loading="lazy"></div>
-      <span class="img-label">🔮 บอลแมวในเกม</span>
+      <div class="thumb-wrap" style="border:2px solid #fbbf24;"><img src="img/ball_siamese.jpg" alt="วิเชียรมาศ (บอลโพลีกอน)" loading="lazy"></div>
+      <span class="img-label" style="background:#b45309; color:#fef08a; font-weight:700;">✨ บอล 3D Low-Poly แท้</span>
     </td>
     <td class="info-col">
       <div class="breed-name">วิเชียรมาศ <span class="en-sub">(Siamese Cat)</span></div>
@@ -685,7 +787,6 @@
       <p class="desc">แมวสยามแต้ม 9 จุด ตาสีฟ้าครามสดใส ทรงเพรียวระหง โด่งดังไปทั่วโลก</p>
     </td>
   </tr>
-
         </tbody>
       </table>
     </div>
