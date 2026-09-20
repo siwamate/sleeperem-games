@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>🧪 [DEV] ฟาร์มแมวแสนอบอุ่น (Sleeperem Cozy Cat Farm - Staging)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body {
+      background: #0b0f19;
+      color: #f8fafc;
+      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+    .app-wrap {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: #111827;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid #1f2937;
+      border-right: 1px solid #1f2937;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      body { padding: 24px 0; }
+      .app-wrap {
+        border-radius: 28px;
+        min-height: 900px;
+        border: 2px solid #374151;
+        overflow: hidden;
+      }
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: #1e293b;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #334155;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    .back-btn {
+      background: #0f172a;
+      color: #38bdf8;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .back-btn:active { transform: scale(0.94); background: #1e293b; }
+    
+    .header-user-badge {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 5px 11px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .header-user-badge:active { transform: scale(0.94); }
+    .header-user-badge.is-owner {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(67, 56, 202, 0.45));
+      border: 1.5px solid #fbbf24;
+      color: #fbbf24;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
+      animation: vipPulse 2s infinite ease-in-out;
+    }
+    @keyframes vipPulse {
+      0%, 100% { box-shadow: 0 0 8px rgba(251, 191, 36, 0.3); border-color: #fbbf24; }
+      50% { box-shadow: 0 0 16px rgba(251, 191, 36, 0.7); border-color: #fde047; }
+    }
+    .user-avatar-img {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+    @media (max-width: 380px) {
+      .back-text { display: none; }
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .currency-pill {
+      background: #0f172a;
+      border: 1px solid #f59e0b;
+      padding: 5px 12px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .sound-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Theme Selector Tabs (Japanese, Modern, Secret Space) */
+    .theme-selector-bar {
+      background: #172033;
+      padding: 8px 12px;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      border-bottom: 1px dashed #334155;
+      scrollbar-width: none;
+    }
+    .theme-selector-bar::-webkit-scrollbar { display: none; }
+    .theme-tab-btn {
+      flex: 1;
+      min-width: 110px;
+      padding: 8px 10px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      color: #94a3b8;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      white-space: nowrap;
+    }
+    .theme-tab-btn.active {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #ffffff;
+      border-color: #38bdf8;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+      transform: translateY(-1px);
+    }
+    .theme-tab-btn.secret-locked {
+      border: 1px dashed #ec4899;
+      color: #f472b6;
+      background: rgba(236, 72, 153, 0.1);
+    }
+    .theme-tab-btn.secret-unlocked {
+      background: linear-gradient(135deg, #9333ea, #4f46e5);
+      color: #f5d0fe;
+      border-color: #c084fc;
+      box-shadow: 0 4px 15px rgba(147, 51, 234, 0.5);
+    }
+
+    /* ==========================================================================
+       ROOM VIEWPORT & STYLES (Japanese, Modern, Cosmic Space)
+       ========================================================================== */
+    .room-viewport {
+      position: relative;
+      width: 100%;
+      height: 290px;
+      overflow: hidden;
+      border-bottom: 2px solid #334155;
+      transition: background 0.5s ease, filter 0.5s ease;
+    }
+
+    /* 1. Japanese Zen Theme (Warm wood, tatami, shoji, sakura) */
+    .room-viewport.theme-japanese {
+      background: linear-gradient(180deg, #fef3c7 0%, #fde68a 35%, #b45309 35%, #78350f 37%, #d97706 37%, #fef3c7 100%);
+      background-size: 100% 100%;
+    }
+    .theme-japanese .room-backwall {
+      position: absolute;
+      inset: 0;
+      bottom: 100px;
+      background: repeating-linear-gradient(90deg, #fef3c7, #fef3c7 60px, #fde68a 60px, #fde68a 62px);
+      box-shadow: inset 0 10px 30px rgba(180, 83, 9, 0.15);
+    }
+    .theme-japanese .room-floor {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: repeating-linear-gradient(0deg, #fef08a 0px, #fef08a 18px, #ca8a04 18px, #ca8a04 20px);
+      box-shadow: inset 0 6px 15px rgba(0,0,0,0.15);
+      border-top: 3px solid #78350f;
+    }
+    .theme-japanese .window-view {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      width: 82px;
+      height: 82px;
+      background: radial-gradient(circle, #ffe4e6 0%, #fbcfe8 100%);
+      border: 4px solid #78350f;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .sakura-petal {
+      position: absolute;
+      font-size: 12px;
+      animation: fallSakura 4s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes fallSakura {
+      0% { transform: translate(0, -10px) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.9; }
+      100% { transform: translate(-30px, 90px) rotate(360deg); opacity: 0; }
+    }
+
+    /* 2. Modern Nordic Loft Theme (Scandinavian Light Wood, Panoramic Glass, Cityscape) */
+    .room-viewport.theme-modern {
+      background: linear-gradient(180deg, #334155 0%, #1e293b 40%, #0f172a 40%, #0f172a 100%);
+    }
+    .theme-modern .room-backwall {
+      position: absolute;
+      inset: 0;
+      bottom: 100px;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border-bottom: 2px solid #334155;
+    }
+    .theme-modern .room-floor {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: repeating-linear-gradient(90deg, #475569 0px, #475569 40px, #334155 40px, #334155 42px);
+      box-shadow: inset 0 8px 20px rgba(0,0,0,0.4);
+      border-top: 3px solid #64748b;
+    }
+    .theme-modern .window-view {
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      width: 110px;
+      height: 86px;
+      background: linear-gradient(180deg, #0284c7 0%, #f59e0b 80%, #ea580c 100%);
+      border: 3px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      padding-bottom: 4px;
+      gap: 4px;
+    }
+    .city-building {
+      width: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* 3. Secret Cosmic Space Station (Galaxy, Earth, Cyber Neon, Zero-G) */
+    .room-viewport.theme-space {
+      background: radial-gradient(circle at center, #2e1065 0%, #090314 100%);
+    }
+    .theme-space .room-backwall {
+      position: absolute;
+      inset: 0;
+      bottom: 90px;
+      background: radial-gradient(ellipse at 50% 20%, #4c1d95 0%, #0b0416 80%);
+      box-shadow: inset 0 0 50px rgba(168, 85, 247, 0.3);
+    }
+    .theme-space .room-floor {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 90px;
+      background: repeating-linear-gradient(90deg, #180828 0px, #180828 35px, #38bdf8 35px, #38bdf8 36px);
+      border-top: 3px solid #a855f7;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), inset 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+    .theme-space .window-view {
+      position: absolute;
+      top: 10px;
+      right: 18px;
+      width: 90px;
+      height: 90px;
+      background: radial-gradient(circle, #0284c7 0%, #090d16 100%);
+      border: 4px solid #c084fc;
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(192, 132, 252, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      animation: pulseGlow 3s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      from { box-shadow: 0 0 15px rgba(192, 132, 252, 0.4); }
+      to { box-shadow: 0 0 30px rgba(56, 189, 248, 0.8); }
+    }
+    .space-earth {
+      font-size: 34px;
+      animation: rotateEarth 20s linear infinite;
+    }
+    @keyframes rotateEarth {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Floating Interactive Furniture */
+    .furniture-spot {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.3s;
+      z-index: 5;
+    }
+    .furniture-spot:active { transform: scale(0.92); }
+    .furniture-icon {
+      font-size: 40px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    }
+    .furniture-tag {
+      font-size: 9px;
+      background: rgba(15, 23, 42, 0.85);
+      color: #f8fafc;
+      padding: 1px 6px;
+      border-radius: 8px;
+      margin-top: 2px;
+      border: 1px solid #334155;
+      white-space: nowrap;
+    }
+
+    /* Live Roaming & Purring Cats */
+    .cat-actor {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 10;
+    }
+    .cat-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #1e293b;
+      border: 2px solid #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      object-fit: cover;
+      transition: transform 0.15s;
+    }
+    .cat-actor:active .cat-avatar {
+      transform: scale(1.15) rotate(-6deg);
+    }
+    .cat-name-tag {
+      font-size: 9px;
+      background: #0f172a;
+      color: #fef08a;
+      padding: 1px 6px;
+      border-radius: 6px;
+      border: 1px solid #ca8a04;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+    .chat-bubble {
+      position: absolute;
+      top: -28px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      display: none;
+      animation: popBounce 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 20;
+    }
+    @keyframes popBounce {
+      0% { transform: scale(0.6) translateY(5px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    /* Floating Hearts on Petting */
+    .floating-heart {
+      position: absolute;
+      font-size: 18px;
+      animation: floatUp 1.2s ease-out forwards;
+      pointer-events: none;
+      z-index: 25;
+    }
+    @keyframes floatUp {
+      0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+      100% { transform: translate(10px, -45px) scale(1.4); opacity: 0; }
+    }
+
+    /* Hyperspace Warp Effect (for Secret Cosmic Theme Unlock) */
+    #warp-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, #38bdf8 0%, #1e1b4b 60%, #000 100%);
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      animation: warpFlash 1.4s ease-in-out forwards;
+    }
+    @keyframes warpFlash {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0; transform: scale(1); }
+    }
+
+    /* Easter Egg Secret Hint Toast */
+    .toast-alert {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid #a855f7;
+      color: #f3e8ff;
+      border-radius: 18px;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 60;
+      white-space: nowrap;
+    }
+    .toast-alert.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 20 Items Shop Section */
+    .shop-section {
+      flex: 1;
+      padding: 12px 16px 40px;
+      background: #111827;
+    }
+    .shop-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+    }
+    .filter-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .filter-btn.active {
+      background: #0284c7;
+      color: #fff;
+      border-color: #38bdf8;
+    }
+
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+    }
+    .item-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .item-card.owned { border-color: #10b981; background: #162033; }
+    .card-top { display: flex; gap: 10px; align-items: flex-start; }
+    .item-emoji {
+      font-size: 28px;
+      width: 44px;
+      height: 44px;
+      background: #0f172a;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #334155;
+      flex-shrink: 0;
+    }
+    .item-name { font-size: 12px; font-weight: 700; color: #f8fafc; }
+    .item-desc { font-size: 10px; color: #94a3b8; line-height: 1.3; margin-top: 2px; }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #334155;
+      padding-top: 6px;
+    }
+    .item-level-tag {
+      font-size: 9px;
+      font-weight: 700;
+      color: #10b981;
+      background: #064e3b;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .item-level-tag.locked { color: #94a3b8; background: #334155; }
+    .buy-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
+      transition: all 0.15s;
+    }
+    .buy-btn:active { transform: scale(0.92); }
+    .buy-btn:disabled { background: #475569; cursor: not-allowed; box-shadow: none; opacity: 0.6; }
+
+    /* Farm Modals */
+    .farm-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .farm-modal-card {
+      background: #1e293b;
+      border: 2px solid #3b82f6;
+      border-radius: 22px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 340px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      text-align: center;
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .farm-modal-card.owner-card {
+      border-color: #fbbf24;
+      box-shadow: 0 0 30px rgba(251, 191, 36, 0.25);
+    }
+    .fb-login-btn {
+      width: 100%;
+      padding: 11px;
+      border-radius: 12px;
+      background: #1877f2;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+      transition: all 0.15s;
+    }
+    .fb-login-btn:active { transform: scale(0.96); opacity: 0.9; }
+
+    .dev-staging-ribbon {
+      background: linear-gradient(90deg, #b45309, #d97706, #b45309);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #f59e0b;
+      z-index: 40;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrap">
+    <!-- Dev Staging Ribbon -->
+    <div class="dev-staging-ribbon">
+      <span>🧪 DEV STAGING (สำหรับทดสอบ)</span>
+      <span style="font-size:9px; color:#fde047;">เชื่อมต่อกับ /catball-dev</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header>
+      <a href="/catball-dev" class="back-btn" title="กลับไปเล่นเกมหย่อนแมว (Staging)">
+        <span>🎮</span>
+        <span class="back-text">เล่นเกม Cat Ball</span>
+      </a>
+
+      <div id="farm-user-pill" class="header-user-badge" onclick="handleUserPillClick()" title="บัญชีผู้ใช้">
+        <span id="farm-user-icon">👤</span>
+        <span id="farm-user-name">เข้าสู่ระบบ</span>
+      </div>
+
+      <div class="header-right">
+        <div class="currency-pill" title="เหรียญปลาสำหรับซื้อของแต่งฟาร์ม (ได้จาก 10% ของคะแนนในเกม)">
+          <span>🐟</span>
+          <span id="coin-val">250</span>
+          <span style="font-size:10px; font-weight:400; color:#94a3b8;">เหรียญ</span>
+        </div>
+        <button id="sound-toggle" class="sound-btn" onclick="toggleAudio()" title="เปิด/ปิดเสียงดนตรี">🔊</button>
+      </div>
+    </header>
+
+    <!-- Theme Selector Tabs -->
+    <div class="theme-selector-bar">
+      <button id="tab-japanese" class="theme-tab-btn active" onclick="switchTheme('japanese')">
+        <span>🍵</span>
+        <span>สไตล์ญี่ปุ่น</span>
+      </button>
+      <button id="tab-modern" class="theme-tab-btn" onclick="switchTheme('modern')">
+        <span>🛋️</span>
+        <span>สไตล์โมเดิร์น</span>
+      </button>
+      <button id="tab-space" class="theme-tab-btn secret-locked" onclick="clickSpaceTab()">
+        <span id="space-tab-icon">🛸</span>
+        <span id="space-tab-label">??? ธีมลับอวกาศ</span>
+      </button>
+    </div>
+
+    <!-- Living Room Scene Viewport -->
+    <div class="room-viewport theme-japanese" id="room-viewport">
+      <div class="room-backwall" id="room-backwall"></div>
+      <div class="room-floor" id="room-floor"></div>
+
+      <!-- Window Viewport (Click 5 times for Easter Egg) -->
+      <div class="window-view" id="room-window" onclick="tapWindowEasterEgg()" title="หน้าต่างชมวิว (ลองเคาะดูสิ!)">
+        <div id="window-content">
+          <!-- Dynamically updated by theme -->
+          <span style="font-size:26px;">🌸</span>
+          <div class="sakura-petal" style="left:15px;">🌸</div>
+          <div class="sakura-petal" style="left:45px; animation-delay: 1.5s;">🌸</div>
+        </div>
+      </div>
+
+      <!-- Dynamic Theme Furniture Spots -->
+      <div id="spot-1" class="furniture-spot" style="left: 20px; bottom: 12px;">
+        <span class="furniture-icon" id="furn-icon-1">🍵</span>
+        <span class="furniture-tag" id="furn-tag-1">โต๊ะโคทัตสึ</span>
+      </div>
+
+      <div id="spot-2" class="furniture-spot" style="right: 25px; bottom: 15px;">
+        <span class="furniture-icon" id="furn-icon-2">🪴</span>
+        <span class="furniture-tag" id="furn-tag-2">ต้นบอนไซ</span>
+      </div>
+
+      <div id="spot-3" class="furniture-spot" style="left: 175px; bottom: 15px;">
+        <span class="furniture-icon" id="furn-icon-3">🏮</span>
+        <span class="furniture-tag" id="furn-tag-3">โคมไฟวาชิ</span>
+      </div>
+
+      <div id="spot-wheel" class="furniture-spot" style="left: 95px; bottom: 18px;">
+        <span class="furniture-icon">🎡</span>
+        <span class="furniture-tag" id="tag-wheel">ลู่วิ่งวงล้อ</span>
+      </div>
+
+      <div id="spot-condo" class="furniture-spot" style="right: 105px; bottom: 20px;">
+        <span class="furniture-icon">🏰</span>
+        <span class="furniture-tag" id="tag-condo">คอนโดแมว</span>
+      </div>
+
+      <!-- Roaming & Purring Cats -->
+      <div class="cat-actor" id="cat-1" style="left: 55px; bottom: 60px;" onclick="petCat(this, 'สก็อตติชหูพับ', 'ง่วงจังเลยมนุษย์ ขอนอนต่อน้า Zzz')">
+        <div class="chat-bubble">เหมียววว~ 💖</div>
+        <div class="cat-avatar" style="border-color:#fbbf24;">🐱</div>
+        <span class="cat-name-tag">สก็อตติชหูพับ</span>
+      </div>
+
+      <div class="cat-actor" id="cat-2" style="right: 60px; bottom: 75px;" onclick="petCat(this, 'เจ้าส้มสุดตึง', 'เกาคางให้หน่อยสิ ฟินจังเลย~ 🐾')">
+        <div class="chat-bubble">เพอร์ๆๆ~ ✨</div>
+        <div class="cat-avatar" style="border-color:#f97316;">🐈</div>
+        <span class="cat-name-tag">เจ้าส้มตัวตึง</span>
+      </div>
+
+      <div class="cat-actor" id="cat-space" style="left: 195px; bottom: 65px; display: none;" onclick="petCat(this, 'แมวเอเลี่ยน Zero-G', 'ปิ๊ปๆ! มนุษย์โลกนี่ใจดีจัง 🛸')">
+        <div class="chat-bubble">บี๊บๆๆ! 👽</div>
+        <div class="cat-avatar" style="border-color:#c084fc;">🛸</div>
+        <span class="cat-name-tag" style="background:#4c1d95; color:#e9d5ff;">แมวต่างดาว</span>
+      </div>
+
+      <!-- Warp Effect Overlay -->
+      <div id="warp-overlay">
+        <span style="font-size: 60px; margin-bottom: 12px;">🛸✨</span>
+        <h2 style="color:#38bdf8; font-size:22px; font-weight:700;">HYPERSPACE WARP!</h2>
+        <p style="color:#e9d5ff; font-size:13px;">ทะลุมิติสู่สถานีอวกาศแมวต่างดาว!</p>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-alert" class="toast-alert">
+      <span id="toast-icon">✨</span>
+      <span id="toast-text">ข้อความแจ้งเตือน</span>
+    </div>
+
+    <!-- 20 Items Shop Section -->
+    <div class="shop-section">
+      <div class="shop-header-row">
+        <div class="section-title">
+          <span>🛍️</span>
+          <span>ร้านของแต่งฟาร์ม (20 ชนิด)</span>
+        </div>
+        <div class="filter-pills">
+          <button class="filter-btn active" onclick="filterShop('all', this)">ทั้งหมด</button>
+          <button class="filter-btn" onclick="filterShop('japanese', this)">ญี่ปุ่น</button>
+          <button class="filter-btn" onclick="filterShop('modern', this)">โมเดิร์น</button>
+          <button class="filter-btn" onclick="filterShop('space', this)">อวกาศ</button>
+        </div>
+      </div>
+
+      <div class="items-grid" id="items-grid">
+        <!-- Generated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Facebook Login Modal -->
+    <div id="farm-login-modal" class="farm-modal-overlay">
+      <div class="farm-modal-card">
+        <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
+        <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">ฟาร์มแมว Sleeperem</h3>
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 16px;">
+          เข้าสู่ระบบด้วย Facebook เพื่อเชื่อมต่อฟาร์มแมวของคุณ<br>
+          หากคุณคือคุณ <b>Kanel Notarry</b> จะได้รับสิทธิ์ <b>เจ้าของฟาร์ม (VIP Owner)</b> พร้อมปลดล็อกทุกธีมทันที!
+        </p>
+        <button class="fb-login-btn" onclick="loginWithFacebook()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          เข้าสู่ระบบด้วย Facebook
+        </button>
+        <button onclick="closeFarmLoginModal()" style="width:100%; margin-top:10px; padding:10px; background:transparent; border:1px solid #475569; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
+          เยี่ยมชมฟาร์มต่อแบบ Guest
+        </button>
+      </div>
+    </div>
+
+    <!-- Owner Perks Dashboard Modal -->
+    <div id="owner-perks-modal" class="farm-modal-overlay">
+      <div class="farm-modal-card owner-card">
+        <div id="owner-avatar-wrap" style="margin-bottom:8px;"></div>
+        <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 2px;">👑 Kanel Notarry</h3>
+        <p style="font-size: 11px; color: #10b981; font-weight: 600; margin-bottom: 14px;">● เจ้าของฟาร์มแมว Sleeperem (VIP Owner)</p>
+
+        <div style="background:#0f172a; padding:12px 14px; border-radius:14px; border:1px solid #fbbf24; margin-bottom:14px; text-align:left; font-size:12px; color:#e2e8f0; line-height:1.7;">
+          <div>✨ <b>สิทธิพิเศษเจ้าของฟาร์ม:</b></div>
+          <div>🌌 ปลดล็อกครบทุก 3 สไตล์ (ญี่ปุ่น, โมเดิร์น, อวกาศลับ)</div>
+          <div>🛋️ เข้าถึงของแต่งห้องทั้ง 20 ชิ้นได้ทันที</div>
+          <div>👑 ป้ายสถานะ VIP ตลอดกาล</div>
+        </div>
+
+        <button onclick="grantOwnerBonusCoins()" style="width:100%; padding:11px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 12px rgba(245,158,11,0.35);">
+          <span>🐟</span> เติมเหรียญปลา VIP (+5,000 เหรียญ)
+        </button>
+
+        <button onclick="logoutFacebook()" style="width:100%; padding:9px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer; margin-bottom:8px;">
+          ออกจากระบบ (Logout)
+        </button>
+
+        <button onclick="closeOwnerPerksModal()" style="width:100%; padding:8px; background:transparent; border:none; color:#94a3b8; font-size:12px; cursor:pointer;">
+          ปิดหน้าต่าง
+        </button>
+      </div>
+    </div>
+
+    <!-- Visitor Profile Modal -->
+    <div id="visitor-modal" class="farm-modal-overlay">
+      <div class="farm-modal-card">
+        <div id="visitor-avatar-wrap" style="margin-bottom:8px;"></div>
+        <h3 id="visitor-name" style="font-size: 17px; font-weight: 700; color: #f8fafc; margin-bottom: 2px;">ผู้มาเยือนฟาร์ม</h3>
+        <p style="font-size: 11px; color: #38bdf8; margin-bottom: 14px;">● ทาสแมว Facebook</p>
+        <button onclick="logoutFacebook()" style="width:100%; padding:9px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer; margin-bottom:8px;">
+          ออกจากระบบ (Logout)
+        </button>
+        <button onclick="closeVisitorModal()" style="width:100%; padding:8px; background:transparent; border:none; color:#94a3b8; font-size:12px; cursor:pointer;">
+          ปิดหน้าต่าง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       SYNTHESIZED SOUND ENGINE (Pure Web Audio API - No External Files)
+       ========================================================================== */
+    class CozyAudio {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPurr() {
+        if (this.muted) return;
+        this.init();
+        // Gentle warm cat purr vibration
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(80, this.ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(140, this.ctx.currentTime + 0.15);
+        osc.frequency.linearRampToValueAtTime(75, this.ctx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.35);
+      }
+      playBuyChime() {
+        if (this.muted) return;
+        this.init();
+        // Harmonious pentatonic chime
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          const t = this.ctx.currentTime + idx * 0.08;
+          gain.gain.setValueAtTime(0.2, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.4);
+        });
+      }
+      playWarpSound() {
+        if (this.muted) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.8);
+        osc.frequency.exponentialRampToValueAtTime(1760, this.ctx.currentTime + 1.2);
+        gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 1.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 1.3);
+      }
+    }
+    const audio = new CozyAudio();
+
+    function toggleAudio() {
+      audio.muted = !audio.muted;
+      document.getElementById('sound-toggle').innerText = audio.muted ? '🔇' : '🔊';
+    }
+
+    /* ==========================================================================
+       20 ITEMS DATA (Categorized by Themes)
+       ========================================================================== */
+    const FARM_ITEMS = [
+      // Japanese Zen Theme
+      { id: "kotatsu", theme: "japanese", name: "โต๊ะอุ่นขาโคทัตสึ", icon: "🍵", price: 60, desc: "โต๊ะปูผ้านวมอุ่นๆ น้องแมวมุดนอนหัวโผล่หลับสบาย" },
+      { id: "bonsai", theme: "japanese", name: "ต้นบอนไซเซน", icon: "🪴", price: 80, desc: "บอนไซสนญี่ปุ่นดัดทรงสวยงาม เสริมบรรยากาศสงบจิตใจ" },
+      { id: "maneki", theme: "japanese", name: "แมวกวักนำโชคทองคำ", icon: "🐱", price: 120, desc: "แมวกวักดุ๊กดิ๊ก ดึงดูดเหรียญปลาให้ไหลมาเทมา" },
+      { id: "lantern", theme: "japanese", name: "โคมไฟกระดาษวาชิ", icon: "🏮", price: 50, desc: "โคมไฟญี่ปุ่นสีส้มอบอุ่น ส่องประกายละมุนตา" },
+      { id: "tatami_cushion", theme: "japanese", name: "เบาะรองนั่งผ้าไหม", icon: "🟤", price: 40, desc: "เบาะรองนั่งนุ่มกำลังดี แมวนั่งสมาธิมองสวนซากุระ" },
+
+      // Modern Nordic Loft Theme
+      { id: "wheel", theme: "modern", name: "ลู่วิ่งวงล้อแมวสแกนดิเนเวีย", icon: "🎡", price: 150, desc: "วงล้อลายไม้โอ๊ค แมวขึ้นไปวิ่งออกกำลังกายเพลินๆ" },
+      { id: "condo", theme: "modern", name: "คอนโดแมวไม้ดีไซเนอร์", icon: "🏰", price: 180, desc: "คอนโดทรงเหลี่ยมสไตล์นอร์ดิก มีหลุมอวกาศมองทะลุ" },
+      { id: "monstera", theme: "modern", name: "ต้นมอนสเตอร่าดินเผา", icon: "🌿", price: 70, desc: "ไม้ฟอกอากาศยอดฮิต เพิ่มความเขียวสดชื่นในห้อง" },
+      { id: "sofa", theme: "modern", name: "โซฟามินิมอลสีครีม", icon: "🛋️", price: 130, desc: "โซฟาผ้าลินิน แมวทิ้งตัวนอนเหยียดยาวอย่างฟิน" },
+      { id: "lamp", theme: "modern", name: "โคมไฟพระจันทร์เสี้ยว", icon: "🌙", price: 90, desc: "โคมไฟมินิมอลทรงพระจันทร์ Sleeperem ปรับแสงนุ่มนวล" },
+
+      // Cosmic Alien Space Station Theme (Secret)
+      { id: "space_pod", theme: "space", name: "แคปซูลนอน Zero-G", icon: "🛸", price: 200, desc: "แคปซูลต้านแรงโน้มถ่วง แมวนอนลอยเบาหวิวไร้น้ำหนัก" },
+      { id: "ufo_drone", theme: "space", name: "โดรนของเล่นจานบินจิ๋ว", icon: "👽", price: 160, desc: "จานบินบินวนรอบห้องปล่อยแสงเลเซอร์ ล่อน้องแมวกระโดด" },
+      { id: "hologram", theme: "space", name: "ตู้ปลาโฮโลแกรมอวกาศ", icon: "🌌", price: 220, desc: "ปลาแสงนีออนว่ายกลางอากาศ แมวจ้องมองตาไม่กะพริบ" },
+      { id: "cyber_food", theme: "space", name: "ชามอาหารสังเคราะห์พลังงาน", icon: "🔮", price: 140, desc: "ชามอาหารอวกาศเรืองแสง เต็มไปด้วยสารอาหารเพิ่มความสุข" },
+      { id: "space_helmet", theme: "space", name: "หมวกแก้วนักบินอวกาศจิ๋ว", icon: "🪐", price: 250, desc: "หมวกแก้วใสกันรังสีคอสมิก สำหรับน้องแมวเตรียมสำรวจดาว" },
+
+      // General Cozy Essentials
+      { id: "dino", theme: "all", name: "ที่ฝนเล็บไดโนเสาร์", icon: "🦖", price: 95, desc: "ที่ลับเล็บรูป T-Rex ยักษ์ แมวยืนสองขายืดตัวตะปบ" },
+      { id: "box", theme: "all", name: "กล่องพัสดุในตำนาน", icon: "📦", price: 30, desc: "ทิ้งเบาะแสนแพงมานอนในกล่องกระดาษ สัจธรรมของแมว" },
+      { id: "fishbowl", theme: "all", name: "โหลแก้วแมวเหลว", icon: "🐠", price: 110, desc: "โหลแก้วใส แมวหย่อนตัวลงไปแล้วกลายเป็นของเหลว" },
+      { id: "yarn", theme: "all", name: "ก้อนไหมพรมยักษ์", icon: "🧶", price: 35, desc: "ไหมพรมเนื้อนุ่ม แมวชอบใช้ขาหลังถีบรัวๆ" },
+      { id: "buffet", theme: "all", name: "บุฟเฟต์ปลาแซลมอนทองคำ", icon: "🍣", price: 300, desc: "อาหารมื้อหรูหรา กินแล้วน้องแมวมีความสุขเต็ม 100%" }
+    ];
+
+    /* ==========================================================================
+       STATE MANAGEMENT
+       ========================================================================== */
+    let fishCoins = parseInt(localStorage.getItem("sleeperem_fish_coins") || "250");
+    let currentTheme = localStorage.getItem("sleeperem_farm_theme") || "japanese";
+    let isSpaceUnlocked = localStorage.getItem("sleeperem_space_unlocked") === "true";
+    let ownedItems = JSON.parse(localStorage.getItem("sleeperem_farm_items") || "{}");
+    let currentFilter = "all";
+    let windowTapCount = 0;
+    let windowTapTimer = null;
+
+    function saveState() {
+      localStorage.setItem("sleeperem_fish_coins", fishCoins.toString());
+      localStorage.setItem("sleeperem_farm_theme", currentTheme);
+      localStorage.setItem("sleeperem_space_unlocked", isSpaceUnlocked.toString());
+      localStorage.setItem("sleeperem_farm_items", JSON.stringify(ownedItems));
+      document.getElementById("coin-val").innerText = fishCoins.toLocaleString();
+    }
+
+    /* ==========================================================================
+       THEME SWITCHING LOGIC
+       ========================================================================== */
+    function switchTheme(theme) {
+      if (theme === 'space' && !isSpaceUnlocked) {
+        showToast("🛸", "ธีมลับอวกาศยังถูกล็อกอยู่! (ลองเคาะหน้าต่าง 5 ครั้งสิ)");
+        return;
+      }
+
+      currentTheme = theme;
+      saveState();
+
+      // Update tab buttons
+      document.getElementById("tab-japanese").classList.toggle("active", theme === 'japanese');
+      document.getElementById("tab-modern").classList.toggle("active", theme === 'modern');
+      
+      const spaceTab = document.getElementById("tab-space");
+      if (isSpaceUnlocked) {
+        spaceTab.classList.remove("secret-locked");
+        spaceTab.classList.add("secret-unlocked");
+        document.getElementById("space-tab-label").innerText = "🛸 สไตล์อวกาศ";
+      }
+      spaceTab.classList.toggle("active", theme === 'space');
+
+      // Update Viewport Class
+      const viewport = document.getElementById("room-viewport");
+      viewport.className = "room-viewport theme-" + theme;
+
+      // Update Window & Furniture based on Theme
+      updateRoomDecorations();
+      showToast("✨", `เปลี่ยนเป็น ${theme === 'japanese' ? 'สไตล์ญี่ปุ่น' : theme === 'modern' ? 'สไตล์โมเดิร์น' : 'สไตล์อวกาศต่างดาว'} เรียบร้อย!`);
+    }
+
+    function clickSpaceTab() {
+      if (!isSpaceUnlocked) {
+        showToast("🛸", "ความลับ: เคาะที่หน้าต่างห้อง 5 ครั้งรัวๆ เพื่อเปิดประตูมิติ!");
+      } else {
+        switchTheme('space');
+      }
+    }
+
+    function updateRoomDecorations() {
+      const win = document.getElementById("window-content");
+      const f1 = document.getElementById("furn-icon-1");
+      const t1 = document.getElementById("furn-tag-1");
+      const f2 = document.getElementById("furn-icon-2");
+      const t2 = document.getElementById("furn-tag-2");
+      const f3 = document.getElementById("furn-icon-3");
+      const t3 = document.getElementById("furn-tag-3");
+      const spaceCat = document.getElementById("cat-space");
+
+      if (currentTheme === 'japanese') {
+        win.innerHTML = `<span style="font-size:26px;">🌸</span>
+          <div class="sakura-petal" style="left:15px;">🌸</div>
+          <div class="sakura-petal" style="left:45px; animation-delay:1.5s;">🌸</div>`;
+        f1.innerText = "🍵"; t1.innerText = "โต๊ะโคทัตสึ";
+        f2.innerText = "🪴"; t2.innerText = "ต้นบอนไซ";
+        f3.innerText = "🏮"; t3.innerText = "โคมไฟวาชิ";
+        spaceCat.style.display = "none";
+      } else if (currentTheme === 'modern') {
+        win.innerHTML = `
+          <div class="city-building" style="height:45px;"></div>
+          <div class="city-building" style="height:65px;"></div>
+          <div class="city-building" style="height:35px;"></div>
+          <div class="city-building" style="height:55px;"></div>`;
+        f1.innerText = "🛋️"; t1.innerText = "โซฟามินิมอล";
+        f2.innerText = "🌿"; t2.innerText = "ต้นมอนสเตอร่า";
+        f3.innerText = "🌙"; t3.innerText = "โคมไฟพระจันทร์";
+        spaceCat.style.display = "none";
+      } else if (currentTheme === 'space') {
+        win.innerHTML = `<span class="space-earth">🌍</span>`;
+        f1.innerText = "🛸"; t1.innerText = "แคปซูล Zero-G";
+        f2.innerText = "🌌"; t2.innerText = "ตู้ปลาโฮโลแกรม";
+        f3.innerText = "🔮"; t3.innerText = "แท่นสังเคราะห์";
+        spaceCat.style.display = "flex";
+      }
+    }
+
+    /* ==========================================================================
+       EASTER EGG: UNLOCK SECRET SPACE THEME
+       ========================================================================== */
+    function tapWindowEasterEgg() {
+      windowTapCount++;
+      clearTimeout(windowTapTimer);
+      windowTapTimer = setTimeout(() => { windowTapCount = 0; }, 2000);
+
+      // Cute ripple / purr
+      audio.playPurr();
+
+      if (windowTapCount < 5 && !isSpaceUnlocked) {
+        showToast("🔍", `สัญญาณปริศนา... (${windowTapCount}/5)`);
+      } else if (windowTapCount >= 5 && !isSpaceUnlocked) {
+        // UNLOCK SECRET THEME!
+        isSpaceUnlocked = true;
+        saveState();
+
+        audio.playWarpSound();
+
+        // Trigger Hyperspace Warp Flash
+        const warp = document.getElementById("warp-overlay");
+        warp.style.display = "flex";
+        setTimeout(() => {
+          warp.style.display = "none";
+          switchTheme('space');
+          showToast("🛸", "🎉 ปลดล็อกธีมลับสำเร็จ! สถานีอวกาศแมวต่างดาว!");
+        }, 1300);
+      }
+    }
+
+    /* ==========================================================================
+       PETTING & CAT INTERACTIONS
+       ========================================================================== */
+    function petCat(element, catName, msg) {
+      audio.playPurr();
+
+      // Show Speech Bubble
+      let bubble = element.querySelector(".chat-bubble");
+      if (bubble) {
+        bubble.innerText = msg;
+        bubble.style.display = "block";
+        setTimeout(() => { bubble.style.display = "none"; }, 2500);
+      }
+
+      // Spawn Floating Heart
+      const heart = document.createElement("div");
+      heart.className = "floating-heart";
+      heart.innerText = "💖";
+      heart.style.left = (element.offsetLeft + 15) + "px";
+      heart.style.top = (element.offsetTop - 10) + "px";
+      document.getElementById("room-viewport").appendChild(heart);
+      setTimeout(() => heart.remove(), 1200);
+
+      // Reward 2 fish coins
+      fishCoins += 2;
+      saveState();
+    }
+
+    /* ==========================================================================
+       SHOP SYSTEM & 20 ITEMS
+       ========================================================================== */
+    function filterShop(category, btnElem) {
+      currentFilter = category;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      if (btnElem) btnElem.classList.add("active");
+      renderShop();
+    }
+
+    function renderShop() {
+      const grid = document.getElementById("items-grid");
+      grid.innerHTML = "";
+
+      const filtered = FARM_ITEMS.filter(item => {
+        if (currentFilter === 'all') return true;
+        return item.theme === currentFilter || item.theme === 'all';
+      });
+
+      filtered.forEach(item => {
+        const isOwned = !!ownedItems[item.id];
+        const canAfford = fishCoins >= item.price;
+
+        const card = document.createElement("div");
+        card.className = "item-card" + (isOwned ? " owned" : "");
+
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="item-emoji">${item.icon}</div>
+            <div>
+              <div class="item-name">${item.name}</div>
+              <div class="item-desc">${item.desc}</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="item-level-tag ${isOwned ? '' : 'locked'}">${isOwned ? 'ครอบครองแล้ว' : 'ยังไม่มี'}</span>
+            ${isOwned ? '<span style="font-size:11px; color:#10b981; font-weight:700;">✓ ติดตั้งแล้ว</span>' : `
+              <button class="buy-btn" onclick="buyItem('${item.id}')" ${!canAfford ? 'disabled' : ''}>
+                <span>🐟</span>
+                <span>${item.price} เหรียญ</span>
+              </button>
+            `}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function buyItem(id) {
+      const item = FARM_ITEMS.find(x => x.id === id);
+      if (!item || ownedItems[id]) return;
+
+      if (fishCoins >= item.price) {
+        fishCoins -= item.price;
+        ownedItems[id] = true;
+        saveState();
+        audio.playBuyChime();
+        renderShop();
+        showToast("🎉", `ซื้อ "${item.name}" แต่งฟาร์มเรียบร้อยแล้ว!`);
+      }
+    }
+
+    /* Toast Notification Helper */
+    function showToast(icon, text) {
+      const toast = document.getElementById("toast-alert");
+      document.getElementById("toast-icon").innerText = icon;
+      document.getElementById("toast-text").innerText = text;
+      toast.classList.add("show");
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    /* ==========================================================================
+       SUPABASE AUTH & KANEL NOTARRY VIP OWNER SYSTEM
+       ========================================================================== */
+    const SUPABASE_URL = "https://hcwryoufmklgefajfhzq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_OHGsfx4tr9sTRrXUVp3PHA_ucrWKN4A";
+    const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    const KANEL_NOTARRY_UUID = "087bafcd-0191-419f-8a39-bd834eb323f2";
+    let currentUser = null;
+
+    function isKanelNotarry(user) {
+      if (!user) return false;
+      const id = user.id || "";
+      const meta = user.user_metadata || {};
+      const name = (meta.full_name || meta.name || user.name || "").toLowerCase();
+      const email = (user.email || "").toLowerCase();
+      return id === KANEL_NOTARRY_UUID ||
+             (name.includes("kanel") && name.includes("notarry")) ||
+             email.includes("notarry");
+    }
+
+    async function loginWithFacebook() {
+      if (!supabaseClient) {
+        alert("กำลังโหลดระบบ Supabase กรุณาลองใหม่อีกครั้ง");
+        return;
+      }
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithOAuth({
+          provider: 'facebook',
+          options: {
+            redirectTo: window.location.origin + window.location.pathname
+          }
+        });
+        if (error) alert("Facebook Login แจ้งเตือน: " + error.message);
+      } catch (err) {
+        console.error("Facebook login error:", err);
+      }
+    }
+
+    async function logoutFacebook() {
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        updateUserUI(null);
+        closeOwnerPerksModal();
+        closeVisitorModal();
+        showToast("🚪", "ออกจากระบบเรียบร้อยแล้ว");
+      }
+    }
+
+    function handleUserPillClick() {
+      if (!currentUser) {
+        openFarmLoginModal();
+      } else if (isKanelNotarry(currentUser)) {
+        openOwnerPerksModal();
+      } else {
+        openVisitorModal();
+      }
+    }
+
+    function openFarmLoginModal() { document.getElementById("farm-login-modal").style.display = "flex"; }
+    function closeFarmLoginModal() { document.getElementById("farm-login-modal").style.display = "none"; }
+
+    function openOwnerPerksModal() {
+      const wrap = document.getElementById("owner-avatar-wrap");
+      if (currentUser && currentUser.avatar) {
+        wrap.innerHTML = `<img src="${currentUser.avatar}" style="width:64px;height:64px;border-radius:50%;border:2.5px solid #fbbf24;object-fit:cover;">`;
+      } else {
+        wrap.innerHTML = `<span style="font-size:48px;">👑</span>`;
+      }
+      document.getElementById("owner-perks-modal").style.display = "flex";
+    }
+    function closeOwnerPerksModal() { document.getElementById("owner-perks-modal").style.display = "none"; }
+
+    function openVisitorModal() {
+      const wrap = document.getElementById("visitor-avatar-wrap");
+      if (currentUser && currentUser.avatar) {
+        wrap.innerHTML = `<img src="${currentUser.avatar}" style="width:64px;height:64px;border-radius:50%;border:2px solid #38bdf8;object-fit:cover;">`;
+      } else {
+        wrap.innerHTML = `<span style="font-size:48px;">🐱</span>`;
+      }
+      document.getElementById("visitor-name").innerText = currentUser ? currentUser.name : "ผู้มาเยือน";
+      document.getElementById("visitor-modal").style.display = "flex";
+    }
+    function closeVisitorModal() { document.getElementById("visitor-modal").style.display = "none"; }
+
+    function grantOwnerBonusCoins() {
+      fishCoins += 5000;
+      saveState();
+      renderShop();
+      audio.playBuyChime();
+      showToast("💰", "เติมเหรียญปลา VIP +5,000 เหรียญเรียบร้อยแล้ว!");
+    }
+
+    function updateUserUI(user) {
+      const pill = document.getElementById("farm-user-pill");
+      const icon = document.getElementById("farm-user-icon");
+      const name = document.getElementById("farm-user-name");
+
+      if (user) {
+        const isOwner = isKanelNotarry(user);
+        if (isOwner) {
+          pill.className = "header-user-badge is-owner";
+          icon.innerHTML = user.avatar
+            ? `<img src="${user.avatar}" class="user-avatar-img" style="border:1.5px solid #fbbf24;">`
+            : "👑";
+          name.innerText = "👑 Kanel (เจ้าของ)";
+          name.style.color = "#fbbf24";
+          pill.title = "คุณ Kanel Notarry (เจ้าของฟาร์ม) - คลิกดูสิทธิพิเศษ";
+
+          // Auto unlock secret space theme for the owner!
+          if (!isSpaceUnlocked) {
+            isSpaceUnlocked = true;
+            saveState();
+            const spaceTab = document.getElementById("tab-space");
+            spaceTab.classList.remove("secret-locked");
+            spaceTab.classList.add("secret-unlocked");
+            document.getElementById("space-tab-label").innerText = "🛸 สไตล์อวกาศ";
+          }
+
+          // Ensure owner has at least 9,999 coins to test items
+          if (fishCoins < 1000) {
+            fishCoins = 9999;
+            saveState();
+            renderShop();
+          }
+
+          showToast("👑", "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry!");
+        } else {
+          pill.className = "header-user-badge";
+          icon.innerHTML = user.avatar
+            ? `<img src="${user.avatar}" class="user-avatar-img">`
+            : "🐱";
+          name.innerText = user.name.split(" ")[0] + " (ทาสแมว)";
+          name.style.color = "#cbd5e1";
+          pill.title = "ผู้มาเยือนฟาร์ม - คลิกเพื่อจัดการ";
+        }
+      } else {
+        pill.className = "header-user-badge";
+        icon.innerText = "👤";
+        name.innerText = "เข้าสู่ระบบ";
+        name.style.color = "#cbd5e1";
+        pill.title = "คลิกเพื่อเข้าสู่ระบบด้วย Facebook";
+      }
+    }
+
+    function applyUserSession(session) {
+      if (session && session.user) {
+        const u = session.user;
+        const name = u.user_metadata.full_name || u.user_metadata.name || "ทาสแมว Facebook";
+        const avatar = u.user_metadata.avatar_url || u.user_metadata.picture;
+        currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
+        updateUserUI(currentUser);
+
+        // Clean up OAuth hash params
+        if (window.location.hash && window.location.hash.includes("access_token")) {
+          history.replaceState(null, '', window.location.pathname);
+        }
+      } else {
+        currentUser = null;
+        updateUserUI(null);
+      }
+    }
+
+    /* ==========================================================================
+       INITIALIZATION
+       ========================================================================== */
+    saveState();
+    if (isSpaceUnlocked) {
+      document.getElementById("tab-space").classList.remove("secret-locked");
+      document.getElementById("tab-space").classList.add("secret-unlocked");
+      document.getElementById("space-tab-label").innerText = "🛸 สไตล์อวกาศ";
+    }
+    switchTheme(currentTheme);
+    renderShop();
+
+    if (supabaseClient) {
+      supabaseClient.auth.getSession().then(({ data: { session } }) => {
+        applyUserSession(session);
+      });
+      supabaseClient.auth.onAuthStateChange((event, session) => applyUserSession(session));
+    } else {
+      updateUserUI(null);
+    }
+  </script>
+</body>
+</html>
