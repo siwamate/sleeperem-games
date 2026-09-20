@@ -653,6 +653,29 @@
     }
     .fb-login-btn:active { transform: scale(0.96); opacity: 0.9; }
 
+    /* Construction Gatekeeper Screen */
+    .farm-locked-gate {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1e293b 0%, #0b0f19 100%);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .farm-gate-card {
+      background: #111827;
+      border: 2px solid #f59e0b;
+      border-radius: 24px;
+      padding: 32px 20px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(245, 158, 11, 0.2);
+      text-align: center;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
     .dev-staging-ribbon {
       background: linear-gradient(90deg, #b45309, #d97706, #b45309);
       color: #fff;
@@ -669,6 +692,28 @@
   </style>
 </head>
 <body>
+
+  <!-- Construction Gatekeeper Screen (Active by default until Kanel Notarry is verified) -->
+  <div id="farm-locked-gate" class="farm-locked-gate">
+    <div class="farm-gate-card">
+      <div style="font-size: 56px; margin-bottom: 8px;">🚧🐱</div>
+      <h2 style="font-size: 20px; font-weight: 700; color: #fbbf24; margin-bottom: 6px;">ฟาร์มแมวอยู่ระหว่างก่อสร้าง</h2>
+      <span style="display:inline-block; background:#dc2626; color:#fee2e2; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px; margin-bottom:14px;">ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม (DEV)</span>
+      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 22px;">
+        ฟาร์มแมวกำลังอยู่ในช่วงตกแต่งห้องและเพิ่มของเล่น จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
+        ขณะนี้เปิดสิทธิ์เฉพาะคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b> เท่านั้น
+      </p>
+
+      <button class="fb-login-btn" onclick="loginWithFacebook()" style="margin-bottom: 12px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        เข้าสู่ระบบด้วย Facebook (เจ้าของฟาร์ม)
+      </button>
+
+      <a href="/catball-dev" style="display:block; text-decoration:none; padding:11px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:13px; font-weight:600; text-align:center;">
+        🎮 กลับไปเล่นเกม Cat Ball (Staging)
+      </a>
+    </div>
+  </div>
 
   <div class="app-wrap">
     <!-- Dev Staging Ribbon -->
@@ -1308,13 +1353,16 @@
     }
 
     function updateUserUI(user) {
+      const gate = document.getElementById("farm-locked-gate");
       const pill = document.getElementById("farm-user-pill");
       const icon = document.getElementById("farm-user-icon");
       const name = document.getElementById("farm-user-name");
 
-      if (user) {
-        const isOwner = isKanelNotarry(user);
-        if (isOwner) {
+      if (user && isKanelNotarry(user)) {
+        // Kanel Notarry verified! Unlock and reveal the farm!
+        if (gate) gate.style.display = "none";
+
+        if (pill) {
           pill.className = "header-user-badge is-owner";
           icon.innerHTML = user.avatar
             ? `<img src="${user.avatar}" class="user-avatar-img" style="border:1.5px solid #fbbf24;">`
@@ -1322,40 +1370,31 @@
           name.innerText = "👑 Kanel (เจ้าของ)";
           name.style.color = "#fbbf24";
           pill.title = "คุณ Kanel Notarry (เจ้าของฟาร์ม) - คลิกดูสิทธิพิเศษ";
+        }
 
-          // Auto unlock secret space theme for the owner!
-          if (!isSpaceUnlocked) {
-            isSpaceUnlocked = true;
-            saveState();
-            const spaceTab = document.getElementById("tab-space");
+        // Auto unlock secret space theme for the owner!
+        if (!isSpaceUnlocked) {
+          isSpaceUnlocked = true;
+          saveState();
+          const spaceTab = document.getElementById("tab-space");
+          if (spaceTab) {
             spaceTab.classList.remove("secret-locked");
             spaceTab.classList.add("secret-unlocked");
             document.getElementById("space-tab-label").innerText = "🛸 สไตล์อวกาศ";
           }
-
-          // Ensure owner has at least 9,999 coins to test items
-          if (fishCoins < 1000) {
-            fishCoins = 9999;
-            saveState();
-            renderShop();
-          }
-
-          showToast("👑", "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry!");
-        } else {
-          pill.className = "header-user-badge";
-          icon.innerHTML = user.avatar
-            ? `<img src="${user.avatar}" class="user-avatar-img">`
-            : "🐱";
-          name.innerText = user.name.split(" ")[0] + " (ทาสแมว)";
-          name.style.color = "#cbd5e1";
-          pill.title = "ผู้มาเยือนฟาร์ม - คลิกเพื่อจัดการ";
         }
+
+        // Ensure owner has at least 9,999 coins to test items
+        if (fishCoins < 1000) {
+          fishCoins = 9999;
+          saveState();
+          renderShop();
+        }
+
+        showToast("👑", "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry!");
       } else {
-        pill.className = "header-user-badge";
-        icon.innerText = "👤";
-        name.innerText = "เข้าสู่ระบบ";
-        name.style.color = "#cbd5e1";
-        pill.title = "คลิกเพื่อเข้าสู่ระบบด้วย Facebook";
+        // Not Kanel Notarry (General player or guest): Strictly locked!
+        if (gate) gate.style.display = "flex";
       }
     }
 
