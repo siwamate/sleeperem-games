@@ -628,7 +628,7 @@
             <ellipse cx="18.4" cy="10.8" rx="1.6" ry="2.4" transform="rotate(24 18.4 10.8)" fill="#fda4af" />
           </svg>
         </span>
-        <span id="moon-count" class="moon-badge">2</span>
+        <span id="moon-count" class="moon-badge">1</span>
       </button>
     </div>
 
@@ -909,7 +909,7 @@
     // Game Variables
     let score = 0;
     let bestScore = parseInt(localStorage.getItem("sleeperem_best") || "0");
-    let moonShakesLeft = 2;
+    let moonShakesLeft = 1;
     let isGameOver = false;
     let dropCooldown = false;
     let aimX = 200;
@@ -1200,6 +1200,16 @@
               score += CAT_TIERS[nextTier].score;
               updateScoreUI();
 
+              // Special Reward: Unlocking King Cat Level 10 grants +1 Shake!
+              if (nextTier === CAT_TIERS.length - 1) {
+                moonShakesLeft++;
+                const countBadge = document.getElementById("moon-count");
+                const shakeBtn = document.getElementById("moon-shake-btn");
+                if (countBadge) countBadge.innerText = moonShakesLeft;
+                if (shakeBtn) shakeBtn.disabled = false;
+                showSkillToast("👑", "ราชาแมวเลเวล 10 ปรากฏตัว! เพิ่มสิทธิ์เขย่ากล่อง +1 ครั้ง!");
+              }
+
               // Spawn upgraded Cat
               setTimeout(() => {
                 const newCat = new Cat(midX, midY, nextTier);
@@ -1465,6 +1475,7 @@
         localStorage.setItem("sleeperem_best", bestScore);
       }
       document.getElementById("best-val").innerText = bestScore;
+      updateHighestCatHUD();
       
       // 10% of earned score is automatically saved as Fish Coins for Cat Farm
       const earnedCoins = Math.floor(score / 10);
@@ -1614,11 +1625,11 @@
       cats.length = 0;
       particles.length = 0;
       score = 0;
-      moonShakesLeft = 2;
+      moonShakesLeft = 1;
       isGameOver = false;
       dropCooldown = false;
       dangerTimer = 0;
-      document.getElementById("moon-count").innerText = "2";
+      document.getElementById("moon-count").innerText = "1";
       document.getElementById("moon-shake-btn").disabled = false;
       document.getElementById("game-over-modal").style.display = "none";
       updateScoreUI();
