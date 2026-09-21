@@ -7,27 +7,45 @@
   <style>
 
     /* UNIFIED APP CONTAINER (CAT BALL + CAT FARM SPA) */
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap');
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      background: #03060f;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0b0f19;
+      color: #f8fafc;
+      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
       -webkit-font-smoothing: antialiased;
+    }
+    @media (min-width: 768px) {
+      body { padding: 16px 0; }
     }
     .app-layout {
       width: 100%;
       height: 100%;
       position: relative;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .app-view {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
       display: none;
       flex-direction: column;
       overflow: hidden;
@@ -35,24 +53,58 @@
     .app-view.active {
       display: flex;
     }
+
+    /* === VIEW-GAME: matches original #game-container sizing === */
+    #view-game {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      height: 100dvh;
+      max-height: 100dvh;
+      background: #131b2e;
+      border: 1px solid #1e293b;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(99, 102, 241, 0.15);
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (min-width: 768px) {
+      #view-game {
+        width: 460px;
+        max-width: 90vw;
+        height: 840px;
+        max-height: 94dvh;
+        border: 3px solid #1e293b;
+        border-radius: 26px;
+      }
+    }
+
+    /* === VIEW-FARM: matches original .app-wrap sizing === */
     #view-farm {
-      background: #03060f;
+      width: 100%;
+      max-width: 520px;
+      height: 100dvh;
+      max-height: 100dvh;
+      background: #090e1a;
+      border-left: 1px solid #1a2333;
+      border-right: 1px solid #1a2333;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.85);
       color: #e2e8f0;
+    }
+    @media (min-width: 768px) {
+      #view-farm {
+        border-radius: 28px;
+        height: 94dvh;
+        max-height: 900px;
+        border: 2px solid #2d3b55;
+      }
     }
     #view-farm .app-wrap {
       width: 100%;
-      max-width: 100%;
       height: 100%;
-      margin: 0 auto;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
-    }
-    @media (min-width: 768px) {
-      #view-farm .app-wrap {
-        max-width: 100%;
-      }
     }
     .farm-header {
       width: 100%;
@@ -88,56 +140,58 @@
       color: #38bdf8;
     }
 
-    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
+    /* === CAT RUNWAY: repositioned to top header bar === */
+    .header {
+      position: relative;
+      overflow: hidden;
     }
-    body {
-      background: #0b0f19;
-      color: #f8fafc;
-      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+    #cat-runway-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 25;
+    }
+    .runway-cat {
+      position: absolute;
+      bottom: 2px;
+      left: -80px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow: hidden;
-      touch-action: none;
-      -webkit-touch-callout: none;
-      -webkit-tap-highlight-color: transparent;
-      overscroll-behavior: none;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.65));
+      transform-origin: center bottom;
+      pointer-events: none;
     }
-    #view-game {
-      position: relative;
-      width: 100%;
-      max-width: 440px;
-      height: 100dvh;
-      max-height: 100dvh;
-      background: #131b2e;
-      border: 1px solid #1e293b;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(99, 102, 241, 0.15);
+    .runway-cat img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .runway-bubble {
+      position: absolute;
+      top: -18px;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1.5px solid #fbbf24;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 11px;
       display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      padding-top: env(safe-area-inset-top, 0px);
-      padding-bottom: env(safe-area-inset-bottom, 0px);
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+      animation: popIn 0.2s ease-out;
+      white-space: nowrap;
     }
-    @media (min-width: 768px) {
-      /* iPad & Tablet / Desktop Chrome Center View */
-      #view-game {
-        width: 460px;
-        max-width: 90vw;
-        height: 840px;
-        max-height: 94dvh;
-        border: 3px solid #1e293b;
-        border-radius: 26px;
-      }
-    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
+    /* global reset in combinedCss */
+    /* body in combinedCss */
+    /* view-game container defined in combinedCss */
+    /* view-game iPad defined in combinedCss */
     
     .farm-nav-btn {
       background: linear-gradient(135deg, #10b981, #059669);
@@ -760,62 +814,7 @@
       font-family: 'Prompt', sans-serif;
     }
 
-    /* DEV STAGING SPECIFIC STYLES */
-    .dev-staging-ribbon {
-      background: linear-gradient(90deg, #b45309, #d97706, #b45309);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 4px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid #f59e0b;
-      z-index: 40;
-    }
-    .dev-tools-toggle-btn {
-      background: rgba(0,0,0,0.35);
-      border: 1px solid rgba(255,255,255,0.4);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .dev-tools-panel {
-      position: absolute;
-      top: 32px;
-      left: 10px;
-      right: 10px;
-      background: rgba(15, 23, 42, 0.96);
-      border: 1.5px solid #f59e0b;
-      border-radius: 14px;
-      padding: 12px;
-      z-index: 120;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-      backdrop-filter: blur(8px);
-    }
-    .dev-tools-btns {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .dev-btn {
-      background: #1e293b;
-      border: 1px solid #475569;
-      color: #f8fafc;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 7px 8px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.1s ease;
-    }
-    .dev-btn:active { transform: scale(0.95); }
+    /* dev styles removed */
 
   
 
@@ -845,20 +844,7 @@
       border-radius: 10px;
     }
 
-    /* Dev Staging Ribbon */
-    .dev-staging-ribbon {
-      background: linear-gradient(90deg, #92400e, #d97706, #92400e);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 4px 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid #f59e0b;
-      z-index: 40;
-    }
+    /* dev ribbon removed */
 
     /* Top Navigation Header */
     .farm-header {
@@ -2546,30 +2532,10 @@
   <div class="app-layout">
     <!-- VIEW 1: CAT BALL GAME -->
     <div id="view-game" class="app-view active">
-      
-
-  <div id="game-container">
-    <!-- Dev Staging Ribbon & Tools (Shown only on Staging) -->
-    <div id="dev-staging-ribbon" class="dev-staging-ribbon" style="display:none;">
-      <span>🧪 DEV STAGING (สำหรับทดสอบ)</span>
-      <button class="dev-tools-toggle-btn" onclick="toggleDevTools()">🛠️ เมนูทดสอบ</button>
-    </div>
-
-    <div id="dev-tools-panel" class="dev-tools-panel" style="display:none;">
-      <div style="font-size:11px; font-weight:700; color:#fbbf24; display:flex; justify-content:space-between; align-items:center;">
-        <span>🛠️ CATBALL DEV TOOLS</span>
-        <button onclick="toggleDevTools()" style="background:transparent; border:none; color:#94a3b8; font-size:14px; cursor:pointer;">✕</button>
-      </div>
-      <div class="dev-tools-btns">
-        <button onclick="devAddScore(1000)" class="dev-btn">➕ +1,000 แต้ม</button>
-        <button onclick="devAddScore(5000)" class="dev-btn">➕ +5,000 แต้ม</button>
-        <button onclick="devSpawnKingCat()" class="dev-btn" style="background:#6d28d9; border-color:#8b5cf6;">👑 เสก Tier 10</button>
-        <button onclick="devResetShake()" class="dev-btn" style="background:#047857; border-color:#10b981;">🐾 รีเซ็ตสิทธิ์เขย่า</button>
-        <button onclick="devTestCelebration()" class="dev-btn" style="background:#0284c7; border-color:#38bdf8;">🐾 ทดสอบรันเวย์แมวฉลอง</button>
-      </div>
-    </div>
+      <!-- Dev Staging Ribbon & Tools (Shown only on Staging) -->
     <!-- Header -->
     <div class="header">
+      <div id="cat-runway-container"></div>
       <div class="brand-title">
         <span>🐱</span> ฟาร์มแมว
       </div>
@@ -2607,7 +2573,6 @@
 
     <!-- Interactive Canvas (100% Unobstructed Playing Area) -->
     <div id="canvas-wrap">
-      <div id="cat-runway-container"></div>
       <canvas id="gameCanvas"></canvas>
     </div>
 
@@ -2771,9 +2736,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  
     </div>
 
     <!-- VIEW 2: 2.5D CAT FARM -->
@@ -3075,14 +3037,7 @@
           <span>🍰 มาการองแมว</span>
           <span class="cost">+1.0 kg (35 🐟)</span>
         </button>
-        <button class="feed-btn" onclick="openFeederUpgradeModal()" style="background:#451a03; border-color:#f59e0b;">
-          <span id="quick-feeder-icon">🥣</span>
-          <span class="cost" id="quick-feeder-label">ชามข้าว Lv.1 ⬆️</span>
-        </button>
-        <button class="feed-btn" onclick="openFountainUpgradeModal()" style="background:#082f49; border-color:#38bdf8;">
-          <span id="quick-fountain-icon">💧</span>
-          <span class="cost" id="quick-fountain-label">น้ำพุ Lv.1 ⬆️</span>
-        </button>
+
       </div>
 
       <!-- 20 Items Shop Section -->
@@ -3934,46 +3889,7 @@
              email.includes("notarry");
     }
 
-    /* ==========================================================================
-       DEV STAGING TOOLS & SHORTCUTS
-       ========================================================================== */
-    function toggleDevTools() {
-      const p = document.getElementById("dev-tools-panel");
-      if (p) p.style.display = p.style.display === "none" ? "block" : "none";
-    }
-
-    function devAddScore(pts) {
-      score += pts;
-      document.getElementById("score-val").innerText = score;
-      if (score > bestScore) {
-        bestScore = score;
-        document.getElementById("best-val").innerText = bestScore;
-        localStorage.setItem("sleeperem_catball_best", bestScore.toString());
-      }
-      showBanner("🐾", `[DEV] เพิ่ม +${pts.toLocaleString()} คะแนนสำเร็จ!`);
-    }
-
-    function devSpawnKingCat() {
-      // Spawn Tier 9 (Tier 10 in UI)
-      const kingCat = new Cat((width || 380) / 2, 100, 9);
-      cats.push(kingCat);
-      updateHighestCatHUD();
-      grantKingCatShakeBonus();
-      showBanner("👑", "[DEV] เสก Tier 10 ราชาแมวคู่สำเร็จ! (+1 สิทธิ์เขย่า)");
-    }
-
-    function devResetShake() {
-      moonShakesLeft = 2;
-      updateMoonShakeUI();
-      showBanner("🐾", "[DEV] รีเซ็ตสิทธิ์เขย่ากล่องเป็น 2 ครั้งแล้ว!");
-    }
-
-    function devTestCelebration() {
-      const randomTier = Math.floor(Math.random() * 9) + 1;
-      triggerTierUpgradeCelebration(randomTier);
-      showBanner("🐾", `[DEV] จำลองการฉลองรันเวย์แมว Tier ${randomTier + 1}!`);
-    }
-
+    /* dev tools removed */
     /* ==========================================================================
        ENVIRONMENT DETECTION & ZERO-EDIT PROMOTION PARITY
        ========================================================================== */
@@ -3981,22 +3897,7 @@
     const FARM_PATH = IS_DEV ? '/farm-dev' : '/farm';
 
     function initEnvironment() {
-      if (IS_DEV) {
-        if (!document.title.startsWith("🧪")) {
-          document.title = "🧪 [DEV] " + document.title;
-        }
-        const ribbon = document.getElementById("dev-staging-ribbon");
-        if (ribbon) ribbon.style.display = "flex";
-        const ownerBtnText = document.getElementById("owner-farm-direct-text");
-        if (ownerBtnText) ownerBtnText.innerText = "🏡 เข้าสู่ฟาร์มแมวของคุณ →";
-      } else {
-        const ribbon = document.getElementById("dev-staging-ribbon");
-        if (ribbon) ribbon.style.display = "none";
-        const panel = document.getElementById("dev-tools-panel");
-        if (panel) panel.style.display = "none";
-      }
-      const directBtn = document.getElementById("owner-farm-direct-btn");
-      if (directBtn) directBtn.href = FARM_PATH;
+      // 100% production parity — zero dev ribbons or panels
     }
 
     function handleFarmClick(e) { if(e) e.preventDefault(); switchView("farm"); }
@@ -5474,26 +5375,9 @@
        ENVIRONMENT DETECTION & ZERO-EDIT PROMOTION PARITY
        ========================================================================== */
     // IS_DEV unified
-    const CATBALL_PATH = IS_DEV ? '/catball-dev' : '/catball';
+    // CATBALL_PATH unified
 
-    function initEnvironment() {
-      if (IS_DEV) {
-        document.title = "🧪 [DEV] ฟาร์มแมว 2.5D Fairytale Contrast Macaron (Sleeperem Staging)";
-        const ribbon = document.getElementById("dev-staging-ribbon");
-        if (ribbon) ribbon.style.display = "flex";
-        const badge = document.getElementById("gatekeeper-badge");
-        if (badge) badge.innerText = "ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม (DEV)";
-        const gateBtn = document.getElementById("gate-catball-btn");
-        if (gateBtn) {
-          gateBtn.innerText = "🎮 กลับไปเล่นเกม Cat Ball (Staging)";
-        }
-      }
-      const catballLinks = document.querySelectorAll('.back-to-catball-link');
-      catballLinks.forEach(link => {
-        link.href = CATBALL_PATH;
-        if (IS_DEV && link.title) link.title = "กลับไปเล่นเกมหย่อนแมว (Staging)";
-      });
-    }
+    // initEnvironment unified
 
     // Init
     window.addEventListener('DOMContentLoaded', () => {
