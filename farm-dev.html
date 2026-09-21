@@ -2096,6 +2096,360 @@
     }
   
 
+    
+    /* ==========================================================================
+       DUAL DINING & HYDRATION STATIONS (ชามข้าว & น้ำพุแมว)
+       ========================================================================== */
+    .dining-hydration-hub {
+      position: absolute;
+      left: 410px;
+      bottom: 40px;
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      z-index: 18;
+    }
+    .station-interactive-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .station-interactive-wrap:hover {
+      transform: scale(1.08) translateY(-3px);
+    }
+    .station-interactive-wrap:active {
+      transform: scale(0.95);
+    }
+    .station-level-badge {
+      margin-top: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .badge-feeder {
+      background: linear-gradient(135deg, #b45309, #f59e0b);
+      color: #fff;
+    }
+    .badge-fountain {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #fff;
+    }
+
+    /* FEEDER LEVEL 1: BASIC CERAMIC BOWL */
+    .feeder-lv1-visual {
+      width: 48px;
+      height: 30px;
+      background: radial-gradient(ellipse at center, #f8fafc 0%, #cbd5e1 60%, #94a3b8 100%);
+      border: 2px solid #e2e8f0;
+      border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 -3px 6px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      position: relative;
+    }
+
+    /* FEEDER LEVEL 2: ELEVATED WOODEN TRAY */
+    .feeder-lv2-visual {
+      width: 68px;
+      height: 38px;
+      background: linear-gradient(180deg, #d97706 0%, #92400e 100%);
+      border: 2px solid #fde68a;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 4px;
+      transform: perspective(100px) rotateX(8deg);
+    }
+    .feeder-lv2-dish {
+      width: 26px;
+      height: 26px;
+      background: radial-gradient(circle, #e2e8f0 0%, #64748b 100%);
+      border-radius: 50%;
+      border: 1.5px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    /* FEEDER LEVEL 3: GRAVITY GRAIN SILO (โถไหลๆ) */
+    .feeder-lv3-visual {
+      width: 54px;
+      height: 72px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .silo-cylinder {
+      width: 38px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(4px);
+      border: 2px solid rgba(251, 191, 36, 0.8);
+      border-radius: 14px 14px 6px 6px;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.35), inset 0 0 10px rgba(255, 255, 255, 0.5);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .silo-grains-flow {
+      position: absolute;
+      inset: 2px;
+      background: repeating-radial-gradient(circle at 50% 50%, #b45309, #78350f 4px, transparent 6px);
+      animation: grainTrickle 2s infinite linear;
+      opacity: 0.85;
+    }
+    @keyframes grainTrickle {
+      0% { transform: translateY(-8px); }
+      100% { transform: translateY(8px); }
+    }
+    .silo-cap {
+      width: 44px;
+      height: 8px;
+      background: #f59e0b;
+      border-radius: 6px 6px 0 0;
+      border: 1px solid #fef08a;
+    }
+    .silo-tray {
+      width: 52px;
+      height: 20px;
+      background: radial-gradient(ellipse at center, #fbbf24 0%, #b45309 100%);
+      border: 1.5px solid #fde68a;
+      border-radius: 0 0 14px 14px;
+      margin-top: -3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+    }
+
+    /* FEEDER LEVEL 4: SMART CYBER TIMED FEEDER */
+    .feeder-lv4-visual {
+      width: 60px;
+      height: 74px;
+      background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid #38bdf8;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), 0 10px 25px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 4px;
+      position: relative;
+    }
+    .cyber-led-screen {
+      width: 42px;
+      height: 16px;
+      background: #0284c7;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 800;
+      color: #e0f2fe;
+      letter-spacing: 0.5px;
+      border: 1px solid #7dd3fc;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+      animation: cyberPulse 2s infinite alternate;
+    }
+    @keyframes cyberPulse {
+      0% { box-shadow: 0 0 6px rgba(56, 189, 248, 0.4); }
+      100% { box-shadow: 0 0 14px rgba(56, 189, 248, 0.9); }
+    }
+    .cyber-dispense-port {
+      margin-top: 4px;
+      font-size: 14px;
+      animation: bounceHatch 1.5s infinite ease-in-out;
+    }
+    @keyframes bounceHatch {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+    .cyber-bottom-dish {
+      width: 52px;
+      height: 18px;
+      background: #0369a1;
+      border: 1px solid #38bdf8;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    /* FOUNTAIN LEVEL 1: CLEAR WATER DISH */
+    .fountain-lv1-visual {
+      width: 48px;
+      height: 30px;
+      background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 60%, #0369a1 100%);
+      border: 2px solid #bae6fd;
+      border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.6), inset 0 0 10px rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      position: relative;
+    }
+
+    /* FOUNTAIN LEVEL 2: ZEN GRAVITY WATER RESERVOIR */
+    .fountain-lv2-visual {
+      width: 54px;
+      height: 68px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .fountain-lv2-bottle {
+      width: 32px;
+      height: 44px;
+      background: rgba(186, 230, 253, 0.35);
+      border: 2px solid #7dd3fc;
+      border-radius: 12px 12px 6px 6px;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.3), inset 0 0 8px rgba(255,255,255,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .fountain-bubble-up {
+      position: absolute;
+      font-size: 10px;
+      animation: bubbleRise 2s infinite ease-in;
+    }
+    @keyframes bubbleRise {
+      0% { transform: translateY(18px) scale(0.6); opacity: 0; }
+      50% { opacity: 0.9; }
+      100% { transform: translateY(-18px) scale(1.1); opacity: 0; }
+    }
+    .fountain-lv2-stone {
+      width: 54px;
+      height: 22px;
+      background: radial-gradient(ellipse at center, #475569 0%, #1e293b 100%);
+      border: 2px solid #94a3b8;
+      border-radius: 14px;
+      margin-top: -3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+    }
+
+    /* FOUNTAIN LEVEL 3: FLOWER PET FOUNTAIN */
+    .fountain-lv3-visual {
+      width: 64px;
+      height: 52px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .flower-spout-dome {
+      width: 58px;
+      height: 38px;
+      background: radial-gradient(circle at 50% 30%, #f0fdf4 0%, #bbf7d0 40%, #4ade80 100%);
+      border: 2px solid #86efac;
+      border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 12px rgba(255,255,255,0.7);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .flower-daisy-center {
+      font-size: 20px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      animation: flowerSpin 8s infinite linear;
+    }
+    @keyframes flowerSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .flower-ripple {
+      position: absolute;
+      inset: -4px;
+      border: 2px solid rgba(56, 189, 248, 0.7);
+      border-radius: 50%;
+      animation: rippleExpand 1.8s infinite ease-out;
+    }
+    @keyframes rippleExpand {
+      0% { transform: scale(0.85); opacity: 0.9; }
+      100% { transform: scale(1.3); opacity: 0; }
+    }
+
+    /* FOUNTAIN LEVEL 4: AURORA CRYSTAL ULTRA-SILENT FOUNTAIN */
+    .fountain-lv4-visual {
+      width: 66px;
+      height: 60px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .aurora-crystal-dome {
+      width: 58px;
+      height: 48px;
+      background: radial-gradient(circle at 50% 30%, #fdf4ff 0%, #e879f9 45%, #a855f7 75%, #4c1d95 100%);
+      border: 2.5px solid #f5d0fe;
+      border-radius: 50% 50% 45% 45%;
+      box-shadow: 0 0 25px rgba(217, 70, 239, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.8);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: auroraGlow 3s infinite alternate ease-in-out;
+    }
+    @keyframes auroraGlow {
+      0% { box-shadow: 0 0 15px rgba(217, 70, 239, 0.5), inset 0 0 10px rgba(255,255,255,0.7); }
+      100% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.8), inset 0 0 18px rgba(240,171,252,0.9); }
+    }
+    .crystal-core-gem {
+      font-size: 20px;
+      filter: drop-shadow(0 0 8px #f43f5e);
+      animation: floatGem 2s infinite ease-in-out;
+    }
+    @keyframes floatGem {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    /* Water Bubble particle on tap/drink */
+    .water-bubble-pop {
+      position: absolute;
+      pointer-events: none;
+      z-index: 50;
+      font-size: 18px;
+      animation: waterBubbleFloat 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+    @keyframes waterBubbleFloat {
+      0% { transform: translate(0, 0) scale(0.6); opacity: 1; }
+      100% { transform: translate(6px, -45px) scale(1.4); opacity: 0; }
+    }
+
+
   </style>
 </head>
 <body>
@@ -2123,6 +2477,9 @@
         <button onclick="devResetShake()" class="dev-btn" style="background:#047857; border-color:#10b981;">🐾 รีเซ็ตสิทธิ์เขย่า</button>
         <button onclick="devTestCelebration()" class="dev-btn" style="background:#0284c7; border-color:#38bdf8;">🐱 ทดสอบ Runway ฉลอง</button>
         <button onclick="devAddCoins(500)" class="dev-btn" style="background:#b45309; border-color:#f59e0b;">🐟 +500 เหรียญปลา</button>
+        <button onclick="devMaxFeeder()" class="dev-btn" style="background:#78350f; border-color:#fbbf24;">🥣 MAX ชามข้าว</button>
+        <button onclick="devMaxFountain()" class="dev-btn" style="background:#0369a1; border-color:#38bdf8;">💧 MAX น้ำพุแมว</button>
+        <button onclick="devResetStations()" class="dev-btn" style="background:#475569; border-color:#94a3b8;">🔄 รีเซ็ตชาม/น้ำพุ</button>
         <button onclick="unlockSpaceTheme()" class="dev-btn" style="background:#4c1d95; border-color:#a855f7;">🛸 ปลดล็อกธีมอวกาศ</button>
         <button onclick="switchView(currentView === 'game' ? 'farm' : 'game')" class="dev-btn" style="background:#334155; border-color:#64748b;">🔄 สลับหน้าจอ</button>
       </div>
@@ -2358,10 +2715,6 @@
             <div class="lantern-globe">🏮</div>
           </div>
 
-          <!-- Feeding Station (Japanese Style) -->
-          <div class="food-bowl-station" id="food-station-jp" style="left: 450px; bottom: 45px;" onclick="triggerFeedNearestCat()">
-            <div class="food-bowl-dish">🐟</div>
-            <div class="food-bowl-tag" id="food-label-jp">ชามปลาแห้ง</div>
           </div>
         </div>
 
@@ -2427,10 +2780,6 @@
             <div class="tower-disc-platform p4"></div>
           </div>
 
-          <!-- Feeding Station (Modern Style) -->
-          <div class="food-bowl-station" id="food-station-modern" style="left: 550px; bottom: 45px;" onclick="triggerFeedNearestCat()">
-            <div class="food-bowl-dish" style="background:radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 70%, #0c4a6e 100%); border-color:#bae6fd;">🥫</div>
-            <div class="food-bowl-tag" id="food-label-modern" style="border-color:#38bdf8; color:#e0f2fe;">ชามทูน่าพรีเมียม</div>
           </div>
         </div>
 
@@ -2481,14 +2830,26 @@
             <span style="font-size:42px; filter:drop-shadow(0 0 20px #e879f9); margin-top:20px;">🌺</span>
           </div>
 
-          <!-- Feeding Station (Cosmic Style) -->
-          <div class="food-bowl-station" id="food-station-space" style="left: 540px; bottom: 45px;" onclick="triggerFeedNearestCat()">
-            <div class="food-bowl-dish" style="background:radial-gradient(ellipse at center, #d946ef 0%, #86198f 70%, #4a044e 100%); border-color:#f5d0fe;">🍰</div>
-            <div class="food-bowl-tag" id="food-label-space" style="border-color:#d946ef; color:#fdf4ff;">แท่นมาการองควอนตัม</div>
           </div>
         </div>
 
         <!-- Dynamic Container for Live Cutout Cat Actors (NO BOX / NO FRAME) -->
+        
+        <!-- Dual Dining & Hydration Hub (Food Feeder + Water Fountain) -->
+        <div class="dining-hydration-hub">
+          <!-- Food Feeder Station (Upgradable: Lv 1-4) -->
+          <div class="station-interactive-wrap" onclick="openFeederUpgradeModal()" title="คลิกดูสถานะและอัปเกรดชามข้าว/โถจ่ายอาหาร">
+            <div id="feeder-visual"></div>
+            <div class="station-level-badge badge-feeder" id="feeder-level-badge">Lv.1 ชามเซรามิก</div>
+          </div>
+
+          <!-- Water Fountain Station (Upgradable: Lv 1-4) -->
+          <div class="station-interactive-wrap" onclick="openFountainUpgradeModal()" title="คลิกดูสถานะและอัปเกรดชามน้ำ/น้ำพุแมว">
+            <div id="fountain-visual"></div>
+            <div class="station-level-badge badge-fountain" id="fountain-level-badge">Lv.1 ชามน้ำใส</div>
+          </div>
+        </div>
+
         <div id="cats-stage-layer"></div>
 
       </div>
@@ -2511,7 +2872,15 @@
           <span>🥫 ทูน่ากระป๋อง</span>
           <span class="cost">+0.5 kg (15 🐟)</span>
         </button>
-        <button class="feed-btn" onclick="feedFood('macaron')">
+        
+        <button class="feed-btn" onclick="openFeederUpgradeModal()" style="background:#451a03; border-color:#f59e0b;">
+          <span id="quick-feeder-icon">🥣</span>
+          <span class="cost" id="quick-feeder-label">ชามข้าว Lv.1 ⬆️</span>
+        </button>
+        <button class="feed-btn" onclick="openFountainUpgradeModal()" style="background:#082f49; border-color:#38bdf8;">
+          <span id="quick-fountain-icon">💧</span>
+          <span class="cost" id="quick-fountain-label">น้ำพุ Lv.1 ⬆️</span>
+        </button>
           <span>🍰 มาการองแมว</span>
           <span class="cost">+1.0 kg (35 🐟)</span>
         </button>
@@ -2716,6 +3085,43 @@
   </div>
 
   
+    
+  <!-- Feeder Upgrade Modal -->
+  <div class="farm-modal-overlay" id="feeder-upgrade-modal">
+    <div class="farm-modal-card" style="text-align:center;">
+      <button class="close-modal-btn" onclick="closeModal('feeder-upgrade-modal')">✕</button>
+      <div id="feeder-modal-preview" style="font-size:52px; margin-bottom:8px; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.5));">🥣</div>
+      <h3 id="feeder-modal-title" style="font-size:17px; font-weight:700; color:#fbbf24; margin-bottom:4px;">ชามเซรามิกมินิมอล</h3>
+      <div id="feeder-modal-badge" style="display:inline-block; font-size:11px; font-weight:700; background:#b45309; color:#fff; padding:2px 10px; border-radius:10px; margin-bottom:12px;">ระดับ 1/4</div>
+      <p id="feeder-modal-desc" style="font-size:12px; color:#cbd5e1; line-height:1.6; margin-bottom:14px; text-align:center;"></p>
+      
+      <div style="background:#090e1a; border:1px solid #1e293b; border-radius:14px; padding:12px; margin-bottom:16px; text-align:left;">
+        <div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">คุณสมบัติพิเศษ:</div>
+        <div id="feeder-modal-perk" style="font-size:13px; font-weight:600; color:#38bdf8;">ความสุขพื้นฐานเมื่อแมวมากิน</div>
+      </div>
+
+      <div id="feeder-upgrade-action-area"></div>
+    </div>
+  </div>
+
+  <!-- Fountain Upgrade Modal -->
+  <div class="farm-modal-overlay" id="fountain-upgrade-modal">
+    <div class="farm-modal-card" style="text-align:center;">
+      <button class="close-modal-btn" onclick="closeModal('fountain-upgrade-modal')">✕</button>
+      <div id="fountain-modal-preview" style="font-size:52px; margin-bottom:8px; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.5));">💧</div>
+      <h3 id="fountain-modal-title" style="font-size:17px; font-weight:700; color:#38bdf8; margin-bottom:4px;">ชามน้ำเซรามิกใส</h3>
+      <div id="fountain-modal-badge" style="display:inline-block; font-size:11px; font-weight:700; background:#0284c7; color:#fff; padding:2px 10px; border-radius:10px; margin-bottom:12px;">ระดับ 1/4</div>
+      <p id="fountain-modal-desc" style="font-size:12px; color:#cbd5e1; line-height:1.6; margin-bottom:14px; text-align:center;"></p>
+      
+      <div style="background:#090e1a; border:1px solid #1e293b; border-radius:14px; padding:12px; margin-bottom:16px; text-align:left;">
+        <div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">คุณสมบัติพิเศษ:</div>
+        <div id="fountain-modal-perk" style="font-size:13px; font-weight:600; color:#4ade80;">ดับกระหายพื้นฐาน</div>
+      </div>
+
+      <div id="fountain-upgrade-action-area"></div>
+    </div>
+  </div>
+
   </div>
 
   <script>
@@ -2726,6 +3132,258 @@
     let currentView = 'game';
     let isGameLoopRunning = true;
     let coins = parseInt(localStorage.getItem('sleeperem_cat_coins') || localStorage.getItem('sleeperem_fish_coins') || '500', 10);
+
+    // ==========================================================================
+    // FEEDER & FOUNTAIN PROGRESSION DATA (4 TIERS EACH)
+    // ==========================================================================
+    let feederLevel = parseInt(localStorage.getItem('sleeperem_feeder_level') || '1', 10);
+    let fountainLevel = parseInt(localStorage.getItem('sleeperem_fountain_level') || '1', 10);
+
+    const FEEDER_TIERS = [
+      null,
+      {
+        level: 1,
+        name: "ชามเซรามิกมินิมอล",
+        icon: "🥣",
+        desc: "ชามเซรามิกเรียบง่ายสีขาวสะอาดตา สำหรับใส่อาหารเม็ดพื้นฐานอย่างอบอุ่น",
+        upgradeCost: 150,
+        perk: "ความสุขพื้นฐานเมื่อแมวแวะมากิน"
+      },
+      {
+        level: 2,
+        name: "ถาดคู่ไม้ยกสูงกันสำลัก",
+        icon: "🪵",
+        desc: "โครงไม้ไผ่ธรรมชาติยกเอียง 15 องศา ป้องกันการสำลักและถนอมกระดูกคอน้องแมว",
+        upgradeCost: 450,
+        perk: "+20% ความสุขและกินอาหารสะดวกขึ้น"
+      },
+      {
+        level: 3,
+        name: "โถแก้วจ่ายอาหารไหลอัตโนมัติ",
+        icon: "🏺",
+        desc: "โถแก้วทรงสูงจุอาหารเม็ดได้เต็มเปี่ยม เม็ดอาหารจะไหลลงสู่ชามเรื่อยๆ ตามแรงโน้มถ่วงอัตโนมัติ",
+        upgradeCost: 1200,
+        perk: "อาหารไหลเติมต่อเนื่อง + แมวอิ่มไวขึ้น"
+      },
+      {
+        level: 4,
+        name: "เครื่องให้อาหารดิจิทัล AI อัจฉริยะ",
+        icon: "🤖",
+        desc: "บอดี้ไฮเทค หน้าจอดิจิทัล LED พร้อมระบบเซนเซอร์อัจฉริยะจ่ายอาหารอัตโนมัติตามรอบเวลา",
+        upgradeCost: 0,
+        perk: "ระดับสูงสุด (MAX) บัฟสุขภาพและความสุขเต็ม 100%"
+      }
+    ];
+
+    const FOUNTAIN_TIERS = [
+      null,
+      {
+        level: 1,
+        name: "ชามน้ำเซรามิกใส",
+        icon: "💧",
+        desc: "ชามใส่น้ำเซรามิกขอบมน ผิวน้ำสะอาดใสสำหรับน้องแมวดื่มดับกระหาย",
+        upgradeCost: 150,
+        perk: "ดับกระหายพื้นฐาน"
+      },
+      {
+        level: 2,
+        name: "อ่างน้ำกาลักน้ำหินเซน",
+        icon: "🎍",
+        desc: "ขวดแก้วคว่ำบนฐานหินแม่น้ำ มีฟองอากาศผุดเติมน้ำอัตโนมัติเมื่อแมวดื่ม",
+        upgradeCost: 450,
+        perk: "+25% แมวแวะมาดื่มน้ำบ่อยขึ้น"
+      },
+      {
+        level: 3,
+        name: "น้ำพุแมวดอกไม้น้ำวน",
+        icon: "🌼",
+        desc: "หัวดอกไม้สีสดใสพ่นสายน้ำ 6 ทิศทางลงสู่อ่างกรองคาร์บอนพร้อมคลื่นน้ำวน",
+        upgradeCost: 1200,
+        perk: "น้ำวนกรองสะอาด กระตุ้นการดื่มน้ำ +35%"
+      },
+      {
+        level: 4,
+        name: "น้ำพุคริสตัลออโรร่าไร้สาย",
+        icon: "🌌",
+        desc: "โดมคริสตัลเรืองแสงออโรร่า มอเตอร์แม่เหล็กไร้สายเงียบกริบ พร้อมแสง UV ฆ่าเชื้อ",
+        upgradeCost: 0,
+        perk: "ระดับสูงสุด (MAX) มอบออร่าประกายดาวระยิบระยับให้แมว"
+      }
+    ];
+
+    function renderStations() {
+      const feederVisual = document.getElementById("feeder-visual");
+      const feederBadge = document.getElementById("feeder-level-badge");
+      const fountainVisual = document.getElementById("fountain-visual");
+      const fountainBadge = document.getElementById("fountain-level-badge");
+
+      // Render Feeder Visual
+      if (feederVisual) {
+        if (feederLevel === 1) {
+          feederVisual.innerHTML = '<div class="feeder-lv1-visual">🥣</div>';
+        } else if (feederLevel === 2) {
+          feederVisual.innerHTML = '<div class="feeder-lv2-visual"><div class="feeder-lv2-dish">🥣</div><div class="feeder-lv2-dish">🐟</div></div>';
+        } else if (feederLevel === 3) {
+          feederVisual.innerHTML = '<div class="feeder-lv3-visual"><div class="silo-cap"></div><div class="silo-cylinder"><div class="silo-grains-flow"></div></div><div class="silo-tray">🥣</div></div>';
+        } else {
+          feederVisual.innerHTML = '<div class="feeder-lv4-visual"><div class="cyber-led-screen">12:00 AUTO</div><div class="cyber-dispense-port">✨</div><div class="cyber-bottom-dish">🐟 💖</div></div>';
+        }
+      }
+      if (feederBadge) {
+        const cur = FEEDER_TIERS[feederLevel];
+        feederBadge.innerText = 'Lv.' + cur.level + ' ' + (cur.level === 4 ? cur.name.split(' ')[0] + ' (MAX)' : cur.name.split(' ')[0]);
+      }
+
+      // Render Fountain Visual
+      if (fountainVisual) {
+        if (fountainLevel === 1) {
+          fountainVisual.innerHTML = '<div class="fountain-lv1-visual">💧</div>';
+        } else if (fountainLevel === 2) {
+          fountainVisual.innerHTML = '<div class="fountain-lv2-visual"><div class="fountain-lv2-bottle">🫧<div class="fountain-bubble-up">🫧</div></div><div class="fountain-lv2-stone">💧</div></div>';
+        } else if (fountainLevel === 3) {
+          fountainVisual.innerHTML = '<div class="fountain-lv3-visual"><div class="flower-spout-dome"><div class="flower-daisy-center">🌼</div><div class="flower-ripple"></div></div></div>';
+        } else {
+          fountainVisual.innerHTML = '<div class="fountain-lv4-visual"><div class="aurora-crystal-dome"><div class="crystal-core-gem">💎</div></div></div>';
+        }
+      }
+      if (fountainBadge) {
+        const cur = FOUNTAIN_TIERS[fountainLevel];
+        fountainBadge.innerText = 'Lv.' + cur.level + ' ' + (cur.level === 4 ? cur.name.split(' ')[0] + ' (MAX)' : cur.name.split(' ')[0]);
+      }
+
+      // Update Quick Bar Badges
+      const qFeederIcon = document.getElementById("quick-feeder-icon");
+      const qFeederLabel = document.getElementById("quick-feeder-label");
+      if (qFeederIcon) qFeederIcon.innerText = FEEDER_TIERS[feederLevel].icon;
+      if (qFeederLabel) qFeederLabel.innerText = 'ชามข้าว Lv.' + feederLevel + (feederLevel === 4 ? ' (MAX)' : ' ⬆️');
+
+      const qFountainIcon = document.getElementById("quick-fountain-icon");
+      const qFountainLabel = document.getElementById("quick-fountain-label");
+      if (qFountainIcon) qFountainIcon.innerText = FOUNTAIN_TIERS[fountainLevel].icon;
+      if (qFountainLabel) qFountainLabel.innerText = 'น้ำพุ Lv.' + fountainLevel + (fountainLevel === 4 ? ' (MAX)' : ' ⬆️');
+    }
+
+    function openFeederUpgradeModal() {
+      const cur = FEEDER_TIERS[feederLevel];
+      const next = FEEDER_TIERS[feederLevel + 1];
+
+      document.getElementById("feeder-modal-preview").innerText = cur.icon;
+      document.getElementById("feeder-modal-title").innerText = cur.name;
+      document.getElementById("feeder-modal-badge").innerText = 'ระดับ ' + cur.level + '/4' + (cur.level === 4 ? ' (สูงสุด)' : '');
+      document.getElementById("feeder-modal-desc").innerText = cur.desc;
+      document.getElementById("feeder-modal-perk").innerText = cur.perk;
+
+      const area = document.getElementById("feeder-upgrade-action-area");
+      if (next) {
+        area.innerHTML = `
+          <div style="font-size:11px; color:#fbbf24; margin-bottom:8px;">ขั้นถัดไป: <b>${next.icon} ${next.name}</b> (${next.perk})</div>
+          <button class="item-buy-btn" onclick="upgradeFeeder()" style="padding:12px; font-size:13px; font-weight:700;">
+            <span>⬆️</span>
+            <span>อัปเกรดเป็น Lv.${next.level} (${next.upgradeCost.toLocaleString()} 🐟)</span>
+          </button>
+        `;
+      } else {
+        area.innerHTML = `
+          <div style="background:#064e3b; border:1px solid #10b981; color:#a7f3d0; font-size:12px; font-weight:700; padding:10px; border-radius:12px;">
+            👑 ชามข้าวอยู่ในระดับสูงสุดแล้ว (MAX)
+          </div>
+        `;
+      }
+      document.getElementById("feeder-upgrade-modal").classList.add("open");
+    }
+
+    function upgradeFeeder() {
+      if (feederLevel >= 4) return;
+      const next = FEEDER_TIERS[feederLevel + 1];
+      if (spendFarmCoins(next.upgradeCost)) {
+        feederLevel++;
+        try { localStorage.setItem('sleeperem_feeder_level', feederLevel.toString()); } catch(e) {}
+        renderStations();
+        openFeederUpgradeModal();
+        showToast("🎉", "อัปเกรดชามข้าวเป็น " + next.name + " สำเร็จ!");
+        sound.playPop(8);
+      } else {
+        showToast("⚠️", "เหรียญปลาไม่พอ! เล่น Cat Ball เพื่อสะสมเหรียญเพิ่ม");
+      }
+    }
+
+    function openFountainUpgradeModal() {
+      const cur = FOUNTAIN_TIERS[fountainLevel];
+      const next = FOUNTAIN_TIERS[fountainLevel + 1];
+
+      document.getElementById("fountain-modal-preview").innerText = cur.icon;
+      document.getElementById("fountain-modal-title").innerText = cur.name;
+      document.getElementById("fountain-modal-badge").innerText = 'ระดับ ' + cur.level + '/4' + (cur.level === 4 ? ' (สูงสุด)' : '');
+      document.getElementById("fountain-modal-desc").innerText = cur.desc;
+      document.getElementById("fountain-modal-perk").innerText = cur.perk;
+
+      const area = document.getElementById("fountain-upgrade-action-area");
+      if (next) {
+        area.innerHTML = `
+          <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">ขั้นถัดไป: <b>${next.icon} ${next.name}</b> (${next.perk})</div>
+          <button class="item-buy-btn" onclick="upgradeFountain()" style="padding:12px; font-size:13px; font-weight:700; background:linear-gradient(135deg, #0284c7, #0369a1); border-color:#38bdf8;">
+            <span>⬆️</span>
+            <span>อัปเกรดเป็น Lv.${next.level} (${next.upgradeCost.toLocaleString()} 🐟)</span>
+          </button>
+        `;
+      } else {
+        area.innerHTML = `
+          <div style="background:#064e3b; border:1px solid #10b981; color:#a7f3d0; font-size:12px; font-weight:700; padding:10px; border-radius:12px;">
+            👑 น้ำพุแมวอยู่ในระดับสูงสุดแล้ว (MAX)
+          </div>
+        `;
+      }
+      document.getElementById("fountain-upgrade-modal").classList.add("open");
+    }
+
+    function upgradeFountain() {
+      if (fountainLevel >= 4) return;
+      const next = FOUNTAIN_TIERS[fountainLevel + 1];
+      if (spendFarmCoins(next.upgradeCost)) {
+        fountainLevel++;
+        try { localStorage.setItem('sleeperem_fountain_level', fountainLevel.toString()); } catch(e) {}
+        renderStations();
+        openFountainUpgradeModal();
+        showToast("🎉", "อัปเกรดน้ำพุแมวเป็น " + next.name + " สำเร็จ!");
+        sound.playWaterLap();
+      } else {
+        showToast("⚠️", "เหรียญปลาไม่พอ! เล่น Cat Ball เพื่อสะสมเหรียญเพิ่ม");
+      }
+    }
+
+    function spawnWaterBubble(x, y) {
+      const b = document.createElement("div");
+      b.className = "water-bubble-pop";
+      b.innerText = "🫧";
+      b.style.left = x + "px";
+      b.style.bottom = y + "px";
+      document.getElementById("room-stage").appendChild(b);
+      setTimeout(() => { b.remove(); }, 1100);
+    }
+
+    // Dev Station Tools
+    function devMaxFeeder() {
+      feederLevel = 4;
+      try { localStorage.setItem('sleeperem_feeder_level', '4'); } catch(e) {}
+      renderStations();
+      showToast("🤖", "อัปเกรดชามข้าวเป็นระดับสูงสุด (AI Cyber Feeder) แล้ว!");
+    }
+    function devMaxFountain() {
+      fountainLevel = 4;
+      try { localStorage.setItem('sleeperem_fountain_level', '4'); } catch(e) {}
+      renderStations();
+      showToast("🌌", "อัปเกรดน้ำพุแมวเป็นระดับสูงสุด (Aurora Crystal) แล้ว!");
+    }
+    function devResetStations() {
+      feederLevel = 1;
+      fountainLevel = 1;
+      try {
+        localStorage.setItem('sleeperem_feeder_level', '1');
+        localStorage.setItem('sleeperem_fountain_level', '1');
+      } catch(e) {}
+      renderStations();
+      showToast("🔄", "รีเซ็ตชามข้าวและชามน้ำกลับสู่ Level 1 เรียบร้อย");
+    }
 
     function switchView(viewName) {
       const gameView = document.getElementById("view-game");
@@ -2744,6 +3402,7 @@
 
         // Initialize / Refresh Farm View
         updateCoinsDisplay();
+        renderStations();
         reloadActiveCats();
         renderShop();
         applyCameraTransform();
@@ -2895,6 +3554,25 @@
         sGain.connect(this.ctx.destination);
         sparkle.start();
         sparkle.stop(this.ctx.currentTime + 0.25);
+      }
+
+      playWaterLap() {
+        if (this.muted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        [850, 1250].forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, now + i * 0.08);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.6, now + i * 0.08 + 0.06);
+          gain.gain.setValueAtTime(0.08, now + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.08);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.08);
+          osc.stop(now + i * 0.08 + 0.08);
+        });
       }
 
       playMoonShake() {
@@ -4151,6 +4829,10 @@
           osc.stop(audioCtx.currentTime + 0.4);
         } catch(e) {}
       },
+      playWaterLap: () => {
+        if (!audioEnabled || !soundEngineAudioCtx) return;
+        sound.playWaterLap();
+      },
       playChomp: () => {
         if (!audioEnabled || !audioCtx) return;
         try {
@@ -4380,6 +5062,40 @@
           this.dom.classList.remove('is-jumping');
           this.isMoving = false;
         }, 650);
+      }
+
+      eatAtFeeder() {
+        if (this.isMoving) return;
+        const targetX = 405 + Math.floor(Math.random() * 25);
+        const targetY = 55;
+        this.moveTo(targetX, targetY, false);
+        setTimeout(() => {
+          if (!this.dom) return;
+          this.facing = 1;
+          this.applyChonkyTransform();
+          showSpeechBubble(this.dom, "ง่ำๆ 🥣 อร่อยจัง!");
+          spawnHeart(this.x + 25, this.y + 65);
+          audio.playChomp();
+          this.weight = Math.min(14.0, this.weight + 0.02);
+          catWeights[this.data.id] = this.weight;
+          try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
+          this.applyChonkyTransform();
+        }, 700);
+      }
+
+      drinkAtFountain() {
+        if (this.isMoving) return;
+        const targetX = 495 + Math.floor(Math.random() * 25);
+        const targetY = 55;
+        this.moveTo(targetX, targetY, false);
+        setTimeout(() => {
+          if (!this.dom) return;
+          this.facing = -1;
+          this.applyChonkyTransform();
+          showSpeechBubble(this.dom, "แผล็บๆ 💧 สดชื่น!");
+          spawnWaterBubble(this.x + 20, this.y + 60);
+          audio.playWaterLap();
+        }, 700);
       }
 
       moveToRandomWaypoint() {
@@ -4803,6 +5519,7 @@
     // Initialize View on Page Load
     window.addEventListener('DOMContentLoaded', () => {
       updateCoinsDisplay();
+      renderStations();
       if (window.location.hash === '#farm' || window.location.pathname.includes('/farm')) {
         switchView('farm');
       } else {
