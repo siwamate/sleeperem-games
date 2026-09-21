@@ -1185,9 +1185,13 @@
         ขณะนี้เปิดสิทธิ์เฉพาะคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b> เท่านั้น
       </p>
 
-      <button class="fb-login-btn" onclick="loginWithFacebook()" style="margin-bottom: 12px;">
+      <button class="fb-login-btn" onclick="loginWithFacebook()" style="margin-bottom: 8px;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         เข้าสู่ระบบด้วย Facebook (เจ้าของฟาร์ม)
+      </button>
+
+      <button onclick="checkAuth()" style="width: 100%; padding: 10px; border-radius: 12px; background: #131c31; border: 1px solid #f59e0b; color: #fbbf24; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+        🔄 ซิงค์สิทธิ์จาก Cat Ball (ไม่ต้องล็อกอินซ้ำ)
       </button>
 
       <a href="/catball-dev" style="display:block; text-decoration:none; padding:11px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:13px; font-weight:600; text-align:center;">
@@ -2264,36 +2268,49 @@
     }
 
     /* ==========================================================================
-       SUPABASE AUTH & KANEL NOTARRY SECURITY (Preserved 100%)
+       SUPABASE AUTH & KANEL NOTARRY SECURITY (Connected to live Cat Ball project)
        ========================================================================== */
-    const SUPABASE_URL = "https://xuxvjkpnbvdvcekgtyck.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1eHZqa3BuYnZkdmNla2d0eWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzNjQyNTQsImV4cCI6MjA1Nzk0MDI1NH0.K7f2Z0dE3yvWb3h7E7k7gWl7jG7Gv3oZ1yE9uH8wJ8k";
-    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+    const SUPABASE_URL = "https://hcwryoufmklgefajfhzq.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_OHGsfx4tr9sTRrXUVp3PHA_ucrWKN4A";
+    const supabase = (window.supabase && typeof window.supabase.createClient === 'function')
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
 
     const KANEL_NOTARRY_UUID = "087bafcd-0191-419f-8a39-bd834eb323f2";
 
     function isKanelNotarry(user) {
       if (!user) return false;
       const id = user.id || "";
-      const name = (user.user_metadata?.full_name || user.user_metadata?.name || "").toLowerCase();
-      const email = (user.email || "").toLowerCase();
+      const meta = user.user_metadata || {};
+      const name = (meta.full_name || meta.name || user.name || "").toLowerCase();
+      const email = (user.email || meta.email || "").toLowerCase();
       return id === KANEL_NOTARRY_UUID ||
              (name.includes("kanel") && name.includes("notarry")) ||
+             name.includes("kanel") ||
+             name.includes("notarry") ||
              email.includes("notarry");
     }
 
     async function loginWithFacebook() {
-      if (!supabase) return;
-      const redirectUrl = window.location.origin + "/farm-dev";
-      await supabase.auth.signInWithOAuth({
-        provider: 'facebook',
-        options: { redirectTo: redirectUrl }
-      });
+      if (!supabase) {
+        showToast("⚠️", "ระบบ Supabase กำลังเชื่อมต่อ...");
+        return;
+      }
+      try {
+        const redirectUrl = window.location.origin + window.location.pathname;
+        await supabase.auth.signInWithOAuth({
+          provider: 'facebook',
+          options: { redirectTo: redirectUrl }
+        });
+      } catch (err) {
+        console.error("Facebook login error:", err);
+      }
     }
 
     async function logout() {
       if (supabase) await supabase.auth.signOut();
       localStorage.removeItem('sleeperem_user_cache');
+      localStorage.removeItem('sb-hcwryoufmklgefajfhzq-auth-token');
       window.location.reload();
     }
 
@@ -2301,34 +2318,86 @@
       if (!currentUser) {
         loginWithFacebook();
       } else {
+        const name = currentUser.user_metadata?.full_name || currentUser.name || 'Kanel Notarry';
         document.getElementById("user-profile-info").innerHTML = `
-          <b>${currentUser.user_metadata?.full_name || 'ผู้ใช้'}</b><br>
+          <b>${name}</b><br>
           <span style="color:#fbbf24;">สิทธิ์: เจ้าของฟาร์ม (VIP Owner)</span>
         `;
         document.getElementById("user-modal").classList.add("open");
       }
     }
 
-    async function checkAuth() {
-      if (!supabase) return;
-      const { data: { session } } = await supabase.auth.getSession();
-      const user = session?.user || null;
-      currentUser = user;
+    function applyUserSession(session) {
+      let user = session?.user || null;
+      if (!user) {
+        // Direct fallback: check localStorage auth tokens from Cat Ball
+        try {
+          const raw = localStorage.getItem('sb-hcwryoufmklgefajfhzq-auth-token') || localStorage.getItem('sleeperem_user_cache');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            user = parsed.user || parsed;
+          }
+        } catch(e) {}
+      }
 
+      currentUser = user;
       const gate = document.getElementById("farm-locked-gate");
       const pill = document.getElementById("farm-user-pill");
       const nameEl = document.getElementById("farm-user-name");
+      const iconEl = document.getElementById("farm-user-icon");
 
       if (user && isKanelNotarry(user)) {
-        // Kanel Notarry verified: Unlock farm!
-        gate.style.display = "none";
-        pill.classList.add("is-owner");
-        nameEl.innerText = "Kanel Notarry 👑";
-        document.getElementById("plaque-owner-text").innerText = "Kanel (VIP)";
+        // Kanel Notarry verified: Unlock farm immediately!
+        if (gate) gate.style.display = "none";
+        if (pill) pill.classList.add("is-owner");
+        if (nameEl) {
+          nameEl.innerText = "Kanel Notarry 👑";
+          nameEl.style.color = "#fbbf24";
+        }
+        if (iconEl && (user.user_metadata?.avatar_url || user.avatar)) {
+          iconEl.innerHTML = `<img src="${user.user_metadata?.avatar_url || user.avatar}" class="user-avatar-img" style="border:1.5px solid #fbbf24;">`;
+        }
+        const plaque = document.getElementById("plaque-owner-text");
+        if (plaque) plaque.innerText = "Kanel (VIP)";
         unlockSpaceTheme();
+
+        // Save active cache for cross-page navigation
+        try {
+          localStorage.setItem('sleeperem_user_cache', JSON.stringify({
+            id: user.id,
+            name: user.user_metadata?.full_name || user.name || "Kanel Notarry",
+            email: user.email,
+            avatar: user.user_metadata?.avatar_url || user.avatar
+          }));
+        } catch(e) {}
+
+        // Clean up OAuth hash params
+        if (window.location.hash && window.location.hash.includes("access_token")) {
+          history.replaceState(null, '', window.location.pathname);
+        }
       } else {
-        // Not Kanel Notarry: Strictly gatekept
-        gate.style.display = "flex";
+        if (gate) gate.style.display = "flex";
+      }
+    }
+
+    async function checkAuth() {
+      // 1. Instant check from localStorage
+      try {
+        const raw = localStorage.getItem('sb-hcwryoufmklgefajfhzq-auth-token') || localStorage.getItem('sleeperem_user_cache');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const u = parsed.user || parsed;
+          if (u && isKanelNotarry(u)) {
+            applyUserSession({ user: u });
+            return;
+          }
+        }
+      } catch(e) {}
+
+      // 2. Supabase live session check
+      if (supabase) {
+        const { data: { session } } = await supabase.auth.getSession();
+        applyUserSession(session);
       }
     }
 
@@ -2338,7 +2407,11 @@
       reloadActiveCats();
       renderShop();
       updateCoinsDisplay();
+      
       checkAuth();
+      if (supabase) {
+        supabase.auth.onAuthStateChange((event, session) => applyUserSession(session));
+      }
     });
   </script>
 </body>
