@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>🧪 [DEV] ฟาร์มแมวแสนอบอุ่น (Sleeperem Cozy Cat Farm - Staging)</title>
+  <title>🧪 [DEV] ฟาร์มแมวแสนอบอุ่น 2.5D Contrast Macaron (Sleeperem Staging)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
       -webkit-user-select: none;
     }
     body {
-      background: #0b0f19;
+      background: #090d16;
       color: #f8fafc;
       font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
@@ -36,28 +36,43 @@
       max-width: 480px;
       min-height: 100vh;
       min-height: 100dvh;
-      background: #111827;
+      background: #0f172a;
       display: flex;
       flex-direction: column;
       border-left: 1px solid #1f2937;
       border-right: 1px solid #1f2937;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
       position: relative;
     }
     @media (min-width: 768px) {
       body { padding: 24px 0; }
       .app-wrap {
         border-radius: 28px;
-        min-height: 900px;
+        min-height: 940px;
         border: 2px solid #374151;
         overflow: hidden;
       }
     }
 
-    /* Top Navigation Bar */
+    /* Dev Staging Ribbon */
+    .dev-staging-ribbon {
+      background: linear-gradient(90deg, #b45309, #d97706, #b45309);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #f59e0b;
+      z-index: 40;
+    }
+
+    /* Top Navigation Header */
     header {
       background: #1e293b;
-      padding: 12px 16px;
+      padding: 10px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -70,14 +85,14 @@
       background: #0f172a;
       color: #38bdf8;
       text-decoration: none;
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       border: 1px solid #334155;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.15s;
     }
     .back-btn:active { transform: scale(0.94); background: #1e293b; }
@@ -85,11 +100,11 @@
     .header-user-badge {
       background: #0f172a;
       border: 1px solid #334155;
-      padding: 5px 11px;
+      padding: 4px 10px;
       border-radius: 20px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       font-size: 11px;
       font-weight: 600;
       color: #cbd5e1;
@@ -116,59 +131,56 @@
       object-fit: cover;
       display: block;
     }
-    @media (max-width: 380px) {
-      .back-text { display: none; }
-    }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .currency-pill {
       background: #0f172a;
       border: 1px solid #f59e0b;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       color: #fbbf24;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12px;
     }
     .sound-btn {
       background: #0f172a;
       border: 1px solid #334155;
       color: #94a3b8;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
     }
 
-    /* Theme Selector Tabs (Japanese, Modern, Secret Space) */
+    /* Theme Selector Tabs */
     .theme-selector-bar {
-      background: #172033;
+      background: #141e33;
       padding: 8px 12px;
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      border-bottom: 1px dashed #334155;
+      border-bottom: 1px solid #1e293b;
       scrollbar-width: none;
     }
     .theme-selector-bar::-webkit-scrollbar { display: none; }
     .theme-tab-btn {
       flex: 1;
-      min-width: 110px;
-      padding: 8px 10px;
+      min-width: 105px;
+      padding: 7px 10px;
       background: #0f172a;
       border: 1px solid #334155;
-      border-radius: 14px;
+      border-radius: 12px;
       color: #94a3b8;
       font-family: inherit;
       font-size: 11px;
@@ -176,7 +188,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 5px;
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       white-space: nowrap;
@@ -201,310 +213,619 @@
     }
 
     /* ==========================================================================
-       ROOM VIEWPORT & STYLES (Japanese, Modern, Cosmic Space)
+       2.5D CONTRAST MACARON ROOM VIEWPORT & CAMERA ZOOM
        ========================================================================== */
-    .room-viewport {
+    .room-container {
       position: relative;
       width: 100%;
-      height: 290px;
+      height: 420px;
       overflow: hidden;
       border-bottom: 2px solid #334155;
-      transition: background 0.5s ease, filter 0.5s ease;
+      touch-action: none;
+      background: #1e293b;
     }
 
-    /* 1. Japanese Zen Theme (Warm wood, tatami, shoji, sakura) */
-    .room-viewport.theme-japanese {
-      background: linear-gradient(180deg, #fef3c7 0%, #fde68a 35%, #b45309 35%, #78350f 37%, #d97706 37%, #fef3c7 100%);
-      background-size: 100% 100%;
+    /* Zoom / Camera Controls Floating Widget */
+    .camera-hud {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(8px);
+      padding: 4px 8px;
+      border-radius: 20px;
+      border: 1px solid #334155;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .cam-btn {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #f8fafc;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .cam-btn:active { transform: scale(0.9); background: #38bdf8; color: #000; }
+    .cam-zoom-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #38bdf8;
+      min-width: 38px;
+      text-align: center;
+    }
+
+    /* Quick Action Pill: Manage Cats */
+    .cat-selector-pill {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 25;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid #fbbf24;
+      color: #fef08a;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      transition: all 0.15s;
+    }
+    .cat-selector-pill:active { transform: scale(0.95); }
+
+    /* The Transformable 2.5D Room Stage */
+    .room-stage {
+      position: absolute;
+      width: 480px;
+      height: 420px;
+      top: 0;
+      left: 0;
+      transform-origin: 50% 50%;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+      will-change: transform;
+    }
+
+    /* ==========================================================================
+       THEMES: CONTRAST MACARON 2.5D PERSPECTIVE
+       ========================================================================== */
+    
+    /* 1. Japanese Zen Macaron (Matcha Green & Strawberry Cream + Warm Oak) */
+    .theme-japanese .room-stage {
+      background: linear-gradient(180deg, #cde3d0 0%, #b8d5bc 58%, #78350f 58%, #a27b5c 60%, #e6ccb2 60%, #ddb892 100%);
     }
     .theme-japanese .room-backwall {
       position: absolute;
-      inset: 0;
-      bottom: 100px;
-      background: repeating-linear-gradient(90deg, #fef3c7, #fef3c7 60px, #fde68a 60px, #fde68a 62px);
-      box-shadow: inset 0 10px 30px rgba(180, 83, 9, 0.15);
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 245px;
+      background: 
+        radial-gradient(ellipse at 50% 10%, rgba(255,255,255,0.45) 0%, transparent 70%),
+        repeating-linear-gradient(90deg, #d3e4d5 0px, #d3e4d5 44px, #a3c4a6 44px, #a3c4a6 46px);
+      box-shadow: inset 0 -20px 30px rgba(0,0,0,0.06);
     }
     .theme-japanese .room-floor {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 100px;
-      background: repeating-linear-gradient(0deg, #fef08a 0px, #fef08a 18px, #ca8a04 18px, #ca8a04 20px);
-      box-shadow: inset 0 6px 15px rgba(0,0,0,0.15);
-      border-top: 3px solid #78350f;
-    }
-    .theme-japanese .window-view {
-      position: absolute;
-      top: 18px;
-      right: 24px;
-      width: 82px;
-      height: 82px;
-      background: radial-gradient(circle, #ffe4e6 0%, #fbcfe8 100%);
-      border: 4px solid #78350f;
-      border-radius: 50%;
-      box-shadow: 0 4px 15px rgba(120, 53, 15, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .sakura-petal {
-      position: absolute;
-      font-size: 12px;
-      animation: fallSakura 4s linear infinite;
-      pointer-events: none;
-    }
-    @keyframes fallSakura {
-      0% { transform: translate(0, -10px) rotate(0deg); opacity: 0; }
-      20% { opacity: 0.9; }
-      100% { transform: translate(-30px, 90px) rotate(360deg); opacity: 0; }
+      height: 175px;
+      background: 
+        repeating-linear-gradient(0deg, #ddb892 0px, #ddb892 24px, #b08968 24px, #b08968 26px);
+      box-shadow: inset 0 10px 25px rgba(0,0,0,0.15);
+      border-top: 5px solid #582f0e;
     }
 
-    /* 2. Modern Nordic Loft Theme (Scandinavian Light Wood, Panoramic Glass, Cityscape) */
-    .room-viewport.theme-modern {
-      background: linear-gradient(180deg, #334155 0%, #1e293b 40%, #0f172a 40%, #0f172a 100%);
+    /* 2. Modern Nordic Macaron (Blueberry Pastel & Vanilla Cream + Navy Oak) */
+    .theme-modern .room-stage {
+      background: linear-gradient(180deg, #bde0fe 0%, #a2d2ff 58%, #1d3557 58%, #334155 60%, #e2e8f0 60%, #cbd5e1 100%);
     }
     .theme-modern .room-backwall {
       position: absolute;
-      inset: 0;
-      bottom: 100px;
-      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-      border-bottom: 2px solid #334155;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 245px;
+      background: 
+        radial-gradient(ellipse at 40% 15%, rgba(255,255,255,0.5) 0%, transparent 65%),
+        linear-gradient(180deg, #cdb4db 0%, #ffc8dd 50%, #bde0fe 100%);
+      box-shadow: inset 0 -20px 35px rgba(0,0,0,0.08);
     }
     .theme-modern .room-floor {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 100px;
-      background: repeating-linear-gradient(90deg, #475569 0px, #475569 40px, #334155 40px, #334155 42px);
-      box-shadow: inset 0 8px 20px rgba(0,0,0,0.4);
-      border-top: 3px solid #64748b;
-    }
-    .theme-modern .window-view {
-      position: absolute;
-      top: 14px;
-      right: 20px;
-      width: 110px;
-      height: 86px;
-      background: linear-gradient(180deg, #0284c7 0%, #f59e0b 80%, #ea580c 100%);
-      border: 3px solid #e2e8f0;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      cursor: pointer;
-      overflow: hidden;
-      padding-bottom: 4px;
-      gap: 4px;
-    }
-    .city-building {
-      width: 14px;
-      background: rgba(15, 23, 42, 0.85);
-      border-radius: 2px 2px 0 0;
+      height: 175px;
+      background: 
+        repeating-linear-gradient(90deg, #e2e8f0 0px, #e2e8f0 38px, #94a3b8 38px, #94a3b8 40px);
+      box-shadow: inset 0 12px 28px rgba(0,0,0,0.25);
+      border-top: 5px solid #1e293b;
     }
 
-    /* 3. Secret Cosmic Space Station (Galaxy, Earth, Cyber Neon, Zero-G) */
-    .room-viewport.theme-space {
-      background: radial-gradient(circle at center, #2e1065 0%, #090314 100%);
+    /* 3. Cosmic Neon Macaron (Plum Twilight & Neon Lavender + Dark Obsidian) */
+    .theme-space .room-stage {
+      background: radial-gradient(circle at center, #240046 0%, #03001e 100%);
     }
     .theme-space .room-backwall {
       position: absolute;
-      inset: 0;
-      bottom: 90px;
-      background: radial-gradient(ellipse at 50% 20%, #4c1d95 0%, #0b0416 80%);
-      box-shadow: inset 0 0 50px rgba(168, 85, 247, 0.3);
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 245px;
+      background: 
+        radial-gradient(ellipse at 50% 20%, rgba(224, 170, 255, 0.4) 0%, transparent 75%),
+        linear-gradient(180deg, #3c096c 0%, #10002b 100%);
+      box-shadow: inset 0 0 50px rgba(157, 78, 221, 0.35);
     }
     .theme-space .room-floor {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 90px;
-      background: repeating-linear-gradient(90deg, #180828 0px, #180828 35px, #38bdf8 35px, #38bdf8 36px);
-      border-top: 3px solid #a855f7;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.5), inset 0 0 20px rgba(56, 189, 248, 0.2);
-    }
-    .theme-space .window-view {
-      position: absolute;
-      top: 10px;
-      right: 18px;
-      width: 90px;
-      height: 90px;
-      background: radial-gradient(circle, #0284c7 0%, #090d16 100%);
-      border: 4px solid #c084fc;
-      border-radius: 50%;
-      box-shadow: 0 0 25px rgba(192, 132, 252, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      overflow: hidden;
-      animation: pulseGlow 3s infinite alternate;
-    }
-    @keyframes pulseGlow {
-      from { box-shadow: 0 0 15px rgba(192, 132, 252, 0.4); }
-      to { box-shadow: 0 0 30px rgba(56, 189, 248, 0.8); }
-    }
-    .space-earth {
-      font-size: 34px;
-      animation: rotateEarth 20s linear infinite;
-    }
-    @keyframes rotateEarth {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      height: 175px;
+      background: 
+        repeating-linear-gradient(90deg, #090014 0px, #090014 36px, #7b2cbf 36px, #7b2cbf 38px);
+      border-top: 5px solid #c77dff;
+      box-shadow: 0 0 25px rgba(199, 125, 255, 0.4), inset 0 0 20px rgba(0, 245, 212, 0.2);
     }
 
-    /* Floating Interactive Furniture */
-    .furniture-spot {
+    /* ==========================================================================
+       2.5D MULTI-LEVEL FURNITURE SLOTS (WALL SHELVES, WINDOW, CABINET, TABLE, RUG)
+       ========================================================================== */
+
+    /* Hanging Chains & Plaque: Leaderboard Gimmick */
+    .hanging-leaderboard {
       position: absolute;
+      top: 36px;
+      left: 70px;
+      z-index: 12;
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
-      transition: transform 0.2s, opacity 0.3s;
-      z-index: 5;
+      animation: swingSign 4s ease-in-out infinite alternate;
+      transform-origin: 50% 0%;
     }
-    .furniture-spot:active { transform: scale(0.92); }
-    .furniture-icon {
-      font-size: 40px;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    @keyframes swingSign {
+      0% { transform: rotate(-1.5deg); }
+      100% { transform: rotate(1.5deg); }
     }
-    .furniture-tag {
-      font-size: 9px;
-      background: rgba(15, 23, 42, 0.85);
-      color: #f8fafc;
-      padding: 1px 6px;
-      border-radius: 8px;
-      margin-top: 2px;
-      border: 1px solid #334155;
-      white-space: nowrap;
-    }
-
-    /* Live Roaming & Purring Cats */
-    .cat-actor {
-      position: absolute;
+    .plaque-chains {
+      width: 80px;
+      height: 22px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-      z-index: 10;
+      justify-content: space-between;
+      padding: 0 14px;
     }
-    .cat-avatar {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: #1e293b;
+    .chain-line {
+      width: 2px;
+      height: 100%;
+      background: repeating-linear-gradient(0deg, #fbbf24, #fbbf24 3px, #78350f 3px, #78350f 5px);
+    }
+    .plaque-board {
+      background: #1e1b4b;
       border: 2px solid #fbbf24;
+      border-radius: 12px;
+      padding: 5px 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      object-fit: cover;
+      gap: 7px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.5), 0 0 12px rgba(251, 191, 36, 0.3);
       transition: transform 0.15s;
     }
-    .cat-actor:active .cat-avatar {
-      transform: scale(1.15) rotate(-6deg);
+    .plaque-board:active { transform: scale(0.95); }
+    .plaque-title { font-size: 11px; font-weight: 700; color: #fbbf24; }
+    .plaque-sub { font-size: 9px; color: #cbd5e1; }
+
+    /* Upper Wall Shelves (2.5D with 3D Depth & Shadow) */
+    .wall-shelf-level-1 {
+      position: absolute;
+      top: 100px;
+      left: 28px;
+      width: 140px;
+      height: 12px;
+      background: #582f0e;
+      border-radius: 4px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      z-index: 10;
     }
-    .cat-name-tag {
+    .wall-shelf-level-1::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: #7f4f24;
+      border-radius: 4px 4px 0 0;
+    }
+    .shelf-bracket {
+      position: absolute;
+      bottom: -10px;
+      width: 4px;
+      height: 10px;
+      background: #333;
+    }
+
+    /* Cat Stepping Steps (บันไดแมวไต่ผนัง) */
+    .cat-step-1 {
+      position: absolute;
+      top: 135px;
+      left: 178px;
+      width: 44px;
+      height: 8px;
+      background: #7f4f24;
+      border-radius: 3px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+    .cat-step-2 {
+      position: absolute;
+      top: 165px;
+      left: 232px;
+      width: 44px;
+      height: 8px;
+      background: #7f4f24;
+      border-radius: 3px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    /* 2.5D Window Viewport */
+    .window-view-25d {
+      position: absolute;
+      top: 32px;
+      right: 24px;
+      width: 130px;
+      height: 110px;
+      background: radial-gradient(circle at 60% 30%, #fff1f2 0%, #fbcfe8 60%, #f472b6 100%);
+      border: 6px solid #582f0e;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4), inset 0 0 20px rgba(0,0,0,0.15);
+      z-index: 8;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .window-sill-perch {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 20px;
+      background: #7f4f24;
+      border-top: 2px solid #a68a64;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sunlight-beam {
+      position: absolute;
+      top: 0;
+      left: -20px;
+      width: 260px;
+      height: 380px;
+      background: linear-gradient(135deg, rgba(255, 245, 205, 0.35) 0%, rgba(255, 245, 205, 0.08) 60%, transparent 90%);
+      transform: rotate(28deg);
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    /* 2.5D Credenza / Storage Cabinet (Left Midground) */
+    .cabinet-25d {
+      position: absolute;
+      left: 20px;
+      bottom: 120px;
+      width: 130px;
+      height: 75px;
+      background: linear-gradient(180deg, #7f4f24, #582f0e);
+      border-radius: 8px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+      z-index: 11;
+    }
+    .cabinet-top-surface {
+      position: absolute;
+      top: -12px;
+      left: -4px;
+      width: 138px;
+      height: 14px;
+      background: #936639;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .cabinet-drawer {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      height: 24px;
+      border: 1px solid #936639;
+      border-radius: 4px;
+    }
+    .cabinet-drawer.top { top: 8px; }
+    .cabinet-drawer.bottom { bottom: 8px; }
+
+    /* 2.5D Center Low Table (Coffee Table / Kotatsu) */
+    .table-25d {
+      position: absolute;
+      left: 165px;
+      bottom: 60px;
+      width: 135px;
+      height: 52px;
+      background: #7f4f24;
+      border-radius: 12px;
+      box-shadow: 0 18px 30px rgba(0,0,0,0.45);
+      z-index: 14;
+    }
+    .table-top-surface {
+      position: absolute;
+      top: -14px;
+      left: -6px;
+      width: 147px;
+      height: 20px;
+      background: #a68a64;
+      border-radius: 10px;
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* 2.5D Cat Tree / Climbing Tower (Far Right) */
+    .cat-tree-tower {
+      position: absolute;
+      right: 18px;
+      bottom: 30px;
+      width: 85px;
+      height: 210px;
+      z-index: 13;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .cat-pole {
+      width: 16px;
+      height: 100%;
+      background: repeating-linear-gradient(0deg, #d4a373 0px, #d4a373 6px, #bc6c25 6px, #bc6c25 8px);
+      border-radius: 4px;
+    }
+    .tree-platform {
+      position: absolute;
+      height: 12px;
+      background: #936639;
+      border-radius: 8px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+    }
+    .tree-platform.top { top: 0; width: 75px; }
+    .tree-platform.mid { top: 90px; width: 65px; }
+    .tree-platform.base { bottom: 0; width: 85px; height: 16px; }
+
+    /* 2.5D Floor Rug (Contrast Macaron Oval) */
+    .floor-rug-25d {
+      position: absolute;
+      left: 125px;
+      bottom: 25px;
+      width: 220px;
+      height: 75px;
+      background: radial-gradient(ellipse at center, #ffcad4 0%, #f4acb7 65%, #9d8189 100%);
+      border-radius: 50%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      border: 3px dashed rgba(255,255,255,0.6);
+      z-index: 9;
+    }
+
+    /* Feeding & Treat Bowl Station (Bottom Left) */
+    .feeding-station {
+      position: absolute;
+      left: 28px;
+      bottom: 22px;
+      z-index: 16;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    .food-bowl-25d {
+      width: 58px;
+      height: 28px;
+      background: radial-gradient(ellipse at center, #f59e0b 0%, #b45309 60%, #78350f 100%);
+      border-radius: 50%;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+      border: 2px solid #fde047;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .food-content-icon {
+      font-size: 16px;
+      animation: foodBounce 1.5s infinite alternate;
+    }
+    @keyframes foodBounce {
+      0% { transform: scale(0.9); }
+      100% { transform: scale(1.1); }
+    }
+    .feeding-label {
       font-size: 9px;
-      background: #0f172a;
+      font-weight: 700;
       color: #fef08a;
+      background: #0f172a;
+      border: 1px solid #ca8a04;
       padding: 1px 6px;
       border-radius: 6px;
-      border: 1px solid #ca8a04;
-      margin-top: 2px;
-      white-space: nowrap;
+      margin-top: 4px;
     }
-    .chat-bubble {
+
+    /* ==========================================================================
+       ANIMATED 3D LOW-POLY CAT ACTORS & CHONKY WEIGHT SCALING
+       ========================================================================== */
+    .cat-actor-3d {
       position: absolute;
-      top: -28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: left 0.7s cubic-bezier(0.25, 1, 0.5, 1), bottom 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: left, bottom, transform;
+    }
+    .cat-sprite-wrap {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid #fbbf24;
+      background: #0b0f19;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .cat-sprite-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cat-shadow-ground {
+      width: 55px;
+      height: 14px;
+      background: rgba(0,0,0,0.45);
+      border-radius: 50%;
+      margin-top: -6px;
+      filter: blur(2px);
+      transition: all 0.3s;
+    }
+
+    /* Walking animation */
+    .cat-actor-3d.is-walking .cat-sprite-wrap {
+      animation: catWalkBob 0.5s infinite alternate ease-in-out;
+    }
+    @keyframes catWalkBob {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-7px) rotate(3deg); }
+    }
+
+    /* Jump animation */
+    .cat-actor-3d.is-jumping .cat-sprite-wrap {
+      animation: catLeap 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes catLeap {
+      0% { transform: translateY(0px) scale(0.9, 1.1); }
+      40% { transform: translateY(-35px) scale(1.1, 0.9); }
+      100% { transform: translateY(0px) scale(1, 1); }
+    }
+
+    /* Sleeping Zzz effect */
+    .cat-zzz {
+      position: absolute;
+      top: -18px;
+      right: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: #38bdf8;
+      opacity: 0;
+      animation: floatZzz 2.2s infinite ease-in-out;
+      pointer-events: none;
+    }
+    @keyframes floatZzz {
+      0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+      50% { opacity: 0.9; }
+      100% { transform: translate(14px, -24px) scale(1.2); opacity: 0; }
+    }
+
+    /* Floating speech bubbles */
+    .cat-speech-bubble {
+      position: absolute;
+      top: -32px;
       background: #ffffff;
       color: #0f172a;
       font-size: 10px;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 3px 8px;
       border-radius: 12px;
       white-space: nowrap;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       display: none;
       animation: popBounce 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 20;
+      z-index: 30;
     }
     @keyframes popBounce {
       0% { transform: scale(0.6) translateY(5px); opacity: 0; }
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
 
-    /* Floating Hearts on Petting */
-    .floating-heart {
-      position: absolute;
-      font-size: 18px;
-      animation: floatUp 1.2s ease-out forwards;
-      pointer-events: none;
-      z-index: 25;
-    }
-    @keyframes floatUp {
-      0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
-      100% { transform: translate(10px, -45px) scale(1.4); opacity: 0; }
-    }
-
-    /* Hyperspace Warp Effect (for Secret Cosmic Theme Unlock) */
-    #warp-overlay {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle, #38bdf8 0%, #1e1b4b 60%, #000 100%);
-      z-index: 50;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      animation: warpFlash 1.4s ease-in-out forwards;
-    }
-    @keyframes warpFlash {
-      0% { opacity: 0; transform: scale(0.5); }
-      50% { opacity: 1; transform: scale(1.1); }
-      100% { opacity: 0; transform: scale(1); }
-    }
-
-    /* Easter Egg Secret Hint Toast */
-    .toast-alert {
-      position: fixed;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-30px);
-      background: rgba(15, 23, 42, 0.95);
-      border: 2px solid #a855f7;
-      color: #f3e8ff;
-      border-radius: 18px;
-      padding: 8px 18px;
-      font-size: 12px;
-      font-weight: 600;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.4);
+    /* Cat Name & Weight Tag */
+    .cat-stat-tag {
+      font-size: 9px;
+      font-weight: 700;
+      background: #0f172a;
+      color: #fef08a;
+      padding: 2px 7px;
+      border-radius: 8px;
+      border: 1px solid #ca8a04;
+      margin-top: 3px;
+      white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 8px;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 60;
-      white-space: nowrap;
+      gap: 4px;
     }
-    .toast-alert.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .chonky-badge {
+      background: #ef4444;
+      color: #fff;
+      font-size: 8px;
+      padding: 1px 4px;
+      border-radius: 4px;
     }
 
-    /* 20 Items Shop Section */
+    /* Interactive Food Menu Bar (Above Shop) */
+    .feeding-menu-bar {
+      background: #172033;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid #1e293b;
+    }
+    .feed-btn {
+      flex: 1;
+      padding: 7px 8px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      color: #cbd5e1;
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .feed-btn:active { transform: scale(0.94); border-color: #f59e0b; }
+    .feed-btn span.cost { font-size: 9px; color: #fbbf24; font-weight: 700; }
+
+    /* ==========================================================================
+       SHOP SECTION & 20 ITEMS
+       ========================================================================== */
     .shop-section {
       flex: 1;
-      padding: 12px 16px 40px;
-      background: #111827;
+      padding: 12px 14px 40px;
+      background: #0f172a;
     }
     .shop-header-row {
       display: flex;
@@ -520,16 +841,13 @@
       align-items: center;
       gap: 6px;
     }
-    .filter-pills {
-      display: flex;
-      gap: 6px;
-    }
+    .filter-pills { display: flex; gap: 5px; }
     .filter-btn {
       background: #1e293b;
       border: 1px solid #334155;
       color: #94a3b8;
-      padding: 4px 8px;
-      border-radius: 10px;
+      padding: 3px 8px;
+      border-radius: 8px;
       font-size: 10px;
       cursor: pointer;
       font-family: inherit;
@@ -542,7 +860,7 @@
 
     .items-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 10px;
     }
     .item-card {
@@ -557,12 +875,12 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       transition: border-color 0.2s, transform 0.15s;
     }
-    .item-card.owned { border-color: #10b981; background: #162033; }
+    .item-card.owned { border-color: #10b981; background: #142033; }
     .card-top { display: flex; gap: 10px; align-items: flex-start; }
     .item-emoji {
-      font-size: 28px;
-      width: 44px;
-      height: 44px;
+      font-size: 26px;
+      width: 42px;
+      height: 42px;
       background: #0f172a;
       border-radius: 12px;
       display: flex;
@@ -573,6 +891,15 @@
     }
     .item-name { font-size: 12px; font-weight: 700; color: #f8fafc; }
     .item-desc { font-size: 10px; color: #94a3b8; line-height: 1.3; margin-top: 2px; }
+    .item-slot-tag {
+      display: inline-block;
+      font-size: 9px;
+      background: #1e1b4b;
+      color: #c084fc;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-top: 3px;
+    }
     .card-footer {
       display: flex;
       justify-content: space-between;
@@ -580,15 +907,6 @@
       border-top: 1px solid #334155;
       padding-top: 6px;
     }
-    .item-level-tag {
-      font-size: 9px;
-      font-weight: 700;
-      color: #10b981;
-      background: #064e3b;
-      padding: 2px 6px;
-      border-radius: 6px;
-    }
-    .item-level-tag.locked { color: #94a3b8; background: #334155; }
     .buy-btn {
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: #fff;
@@ -601,13 +919,12 @@
       display: flex;
       align-items: center;
       gap: 4px;
-      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3);
       transition: all 0.15s;
     }
     .buy-btn:active { transform: scale(0.92); }
-    .buy-btn:disabled { background: #475569; cursor: not-allowed; box-shadow: none; opacity: 0.6; }
+    .buy-btn:disabled { background: #475569; cursor: not-allowed; opacity: 0.6; }
 
-    /* Farm Modals */
+    /* Modals & Gatekeeper */
     .farm-modal-overlay {
       display: none;
       position: fixed;
@@ -623,12 +940,14 @@
       background: #1e293b;
       border: 2px solid #3b82f6;
       border-radius: 22px;
-      padding: 24px 20px;
+      padding: 22px 18px;
       width: 100%;
-      max-width: 340px;
+      max-width: 360px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       text-align: center;
       animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-height: 85vh;
+      overflow-y: auto;
     }
     .farm-modal-card.owner-card {
       border-color: #fbbf24;
@@ -651,7 +970,7 @@
       box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
       transition: all 0.15s;
     }
-    .fb-login-btn:active { transform: scale(0.96); opacity: 0.9; }
+    .fb-login-btn:active { transform: scale(0.96); }
 
     /* Construction Gatekeeper Screen */
     .farm-locked-gate {
@@ -676,31 +995,57 @@
       animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    .dev-staging-ribbon {
-      background: linear-gradient(90deg, #b45309, #d97706, #b45309);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 4px 12px;
+    .toast-alert {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: rgba(15, 23, 42, 0.95);
+      border: 2px solid #38bdf8;
+      color: #f0fdf4;
+      border-radius: 18px;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.4);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid #f59e0b;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 60;
+      white-space: nowrap;
+    }
+    .toast-alert.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Floating Heart on Petting */
+    .floating-heart {
+      position: absolute;
+      font-size: 20px;
+      animation: floatHeart 1.2s ease-out forwards;
+      pointer-events: none;
       z-index: 40;
+    }
+    @keyframes floatHeart {
+      0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+      100% { transform: translate(12px, -50px) scale(1.5); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Construction Gatekeeper Screen (Active by default until Kanel Notarry is verified) -->
+  <!-- Construction Gatekeeper Screen -->
   <div id="farm-locked-gate" class="farm-locked-gate">
     <div class="farm-gate-card">
       <div style="font-size: 56px; margin-bottom: 8px;">🚧🐱</div>
       <h2 style="font-size: 20px; font-weight: 700; color: #fbbf24; margin-bottom: 6px;">ฟาร์มแมวอยู่ระหว่างก่อสร้าง</h2>
       <span style="display:inline-block; background:#dc2626; color:#fee2e2; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px; margin-bottom:14px;">ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม (DEV)</span>
       <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 22px;">
-        ฟาร์มแมวกำลังอยู่ในช่วงตกแต่งห้องและเพิ่มของเล่น จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
+        ฟาร์มแมวกำลังอยู่ในช่วงตกแต่งห้อง 2.5D และพัฒนาโมเดลแมว จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
         ขณะนี้เปิดสิทธิ์เฉพาะคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b> เท่านั้น
       </p>
 
@@ -716,17 +1061,17 @@
   </div>
 
   <div class="app-wrap">
-    <!-- Dev Staging Ribbon -->
+    <!-- Dev Ribbon -->
     <div class="dev-staging-ribbon">
-      <span>🧪 DEV STAGING (สำหรับทดสอบ)</span>
+      <span>🧪 DEV STAGING: ฟาร์มแมว 2.5D Contrast Macaron</span>
       <span style="font-size:9px; color:#fde047;">เชื่อมต่อกับ /catball-dev</span>
     </div>
 
-    <!-- Navigation Header -->
+    <!-- Header -->
     <header>
       <a href="/catball-dev" class="back-btn" title="กลับไปเล่นเกมหย่อนแมว (Staging)">
         <span>🎮</span>
-        <span class="back-text">เล่นเกม Cat Ball</span>
+        <span>เล่น Cat Ball</span>
       </a>
 
       <div id="farm-user-pill" class="header-user-badge" onclick="handleUserPillClick()" title="บัญชีผู้ใช้">
@@ -735,103 +1080,153 @@
       </div>
 
       <div class="header-right">
-        <div class="currency-pill" title="เหรียญปลาสำหรับซื้อของแต่งฟาร์ม (ได้จาก 10% ของคะแนนในเกม)">
+        <div class="currency-pill" title="เหรียญปลาสำหรับซื้อของและอาหารแมว">
           <span>🐟</span>
-          <span id="coin-val">250</span>
+          <span id="coin-val">500</span>
           <span style="font-size:10px; font-weight:400; color:#94a3b8;">เหรียญ</span>
         </div>
-        <button id="sound-toggle" class="sound-btn" onclick="toggleAudio()" title="เปิด/ปิดเสียงดนตรี">🔊</button>
+        <button id="sound-toggle" class="sound-btn" onclick="toggleAudio()" title="เปิด/ปิดเสียง">🔊</button>
       </div>
     </header>
 
-    <!-- Theme Selector Tabs -->
+    <!-- Theme Tabs -->
     <div class="theme-selector-bar">
       <button id="tab-japanese" class="theme-tab-btn active" onclick="switchTheme('japanese')">
         <span>🍵</span>
-        <span>สไตล์ญี่ปุ่น</span>
+        <span>มัทฉะมาการอง</span>
       </button>
       <button id="tab-modern" class="theme-tab-btn" onclick="switchTheme('modern')">
-        <span>🛋️</span>
-        <span>สไตล์โมเดิร์น</span>
+        <span>🫐</span>
+        <span>บลูเบอร์รี่มาการอง</span>
       </button>
       <button id="tab-space" class="theme-tab-btn secret-locked" onclick="clickSpaceTab()">
         <span id="space-tab-icon">🛸</span>
-        <span id="space-tab-label">??? ธีมลับอวกาศ</span>
+        <span id="space-tab-label">??? อวกาศมาการอง</span>
       </button>
     </div>
 
-    <!-- Living Room Scene Viewport -->
-    <div class="room-viewport theme-japanese" id="room-viewport">
-      <div class="room-backwall" id="room-backwall"></div>
-      <div class="room-floor" id="room-floor"></div>
+    <!-- 2.5D Room Viewport Container -->
+    <div class="room-container theme-japanese" id="room-container">
+      
+      <!-- Camera HUD (Zoom In / Out / Reset) -->
+      <div class="camera-hud">
+        <button class="cam-btn" onclick="zoomIn()" title="ซูมเข้า">+</button>
+        <span class="cam-zoom-label" id="cam-zoom-label">100%</span>
+        <button class="cam-btn" onclick="zoomOut()" title="ซูมออก">−</button>
+        <button class="cam-btn" onclick="resetZoom()" title="รีเซ็ต 100%" style="font-size:10px;">1x</button>
+      </div>
 
-      <!-- Window Viewport (Click 5 times for Easter Egg) -->
-      <div class="window-view" id="room-window" onclick="tapWindowEasterEgg()" title="หน้าต่างชมวิว (ลองเคาะดูสิ!)">
-        <div id="window-content">
-          <!-- Dynamically updated by theme -->
-          <span style="font-size:26px;">🌸</span>
-          <div class="sakura-petal" style="left:15px;">🌸</div>
-          <div class="sakura-petal" style="left:45px; animation-delay: 1.5s;">🌸</div>
+      <!-- Manage Roaming Cats Button -->
+      <div class="cat-selector-pill" onclick="openCatSelectorModal()" title="เลือกแมวโพลีกอนมาเดินเล่นในห้อง">
+        <span>🐾</span>
+        <span>แมวในห้อง (<span id="active-cat-count">3</span>/20)</span>
+      </div>
+
+      <!-- Transformable 2.5D Room Stage -->
+      <div class="room-stage" id="room-stage">
+        
+        <!-- Background Walls & Floor -->
+        <div class="room-backwall" id="room-backwall"></div>
+        <div class="room-floor" id="room-floor"></div>
+        <div class="sunlight-beam"></div>
+
+        <!-- Hanging Leaderboard Plaque Gimmick -->
+        <div class="hanging-leaderboard" onclick="openLeaderboardModal()" title="คลิกดูทำเนียบทาสแมว">
+          <div class="plaque-chains">
+            <div class="chain-line"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="plaque-board">
+            <span style="font-size:18px;">🏆</span>
+            <div>
+              <div class="plaque-title" id="plaque-rank-text">อันดับ #1 ทาสแมว</div>
+              <div class="plaque-sub" id="plaque-owner-text">👑 คุณ Kanel (เจ้าของฟาร์ม)</div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Dynamic Theme Furniture Spots -->
-      <div id="spot-1" class="furniture-spot" style="left: 20px; bottom: 12px;">
-        <span class="furniture-icon" id="furn-icon-1">🍵</span>
-        <span class="furniture-tag" id="furn-tag-1">โต๊ะโคทัตสึ</span>
-      </div>
+        <!-- Upper Wall Shelves & Brackets -->
+        <div class="wall-shelf-level-1" id="shelf-1">
+          <div class="shelf-bracket" style="left: 18px;"></div>
+          <div class="shelf-bracket" style="right: 18px;"></div>
+          <!-- Slot for Shelf Item -->
+          <div id="slot-shelf" style="position:absolute; top:-32px; left:20px; font-size:24px;">🪴</div>
+        </div>
 
-      <div id="spot-2" class="furniture-spot" style="right: 25px; bottom: 15px;">
-        <span class="furniture-icon" id="furn-icon-2">🪴</span>
-        <span class="furniture-tag" id="furn-tag-2">ต้นบอนไซ</span>
-      </div>
+        <!-- Cat Stepping Wall Stairs -->
+        <div class="cat-step-1" title="บันไดแมวไต่"></div>
+        <div class="cat-step-2" title="บันไดแมวไต่"></div>
 
-      <div id="spot-3" class="furniture-spot" style="left: 175px; bottom: 15px;">
-        <span class="furniture-icon" id="furn-icon-3">🏮</span>
-        <span class="furniture-tag" id="furn-tag-3">โคมไฟวาชิ</span>
-      </div>
+        <!-- 2.5D Window Viewport (Click 5 times for easter egg) -->
+        <div class="window-view-25d" id="room-window" onclick="tapWindowEasterEgg()" title="หน้าต่างชมวิว (ลองเคาะ 5 ครั้งดูสิ!)">
+          <div id="window-scenery" style="padding:10px; text-align:center;">
+            <span style="font-size:32px;">🌸</span>
+          </div>
+          <div class="window-sill-perch" title="ขอบหน้าต่างชมแดด">
+            <span style="font-size:9px; color:#fef08a; font-weight:700;">เบาะนอนริมหน้าต่าง</span>
+          </div>
+        </div>
 
-      <div id="spot-wheel" class="furniture-spot" style="left: 95px; bottom: 18px;">
-        <span class="furniture-icon">🎡</span>
-        <span class="furniture-tag" id="tag-wheel">ลู่วิ่งวงล้อ</span>
-      </div>
+        <!-- 2.5D Storage Credenza / Cabinet (Left Midground) -->
+        <div class="cabinet-25d" id="cabinet-elem">
+          <div class="cabinet-top-surface"></div>
+          <div class="cabinet-drawer top"></div>
+          <div class="cabinet-drawer bottom"></div>
+          <!-- Slot for Cabinet Item -->
+          <div id="slot-cabinet" style="position:absolute; top:-38px; left:45px; font-size:26px;">🏮</div>
+        </div>
 
-      <div id="spot-condo" class="furniture-spot" style="right: 105px; bottom: 20px;">
-        <span class="furniture-icon">🏰</span>
-        <span class="furniture-tag" id="tag-condo">คอนโดแมว</span>
-      </div>
+        <!-- 2.5D Center Table (Coffee Table / Kotatsu) -->
+        <div class="table-25d" id="table-elem">
+          <div class="table-top-surface"></div>
+          <!-- Slot for Table Item -->
+          <div id="slot-table" style="position:absolute; top:-36px; left:48px; font-size:24px;">🍵</div>
+        </div>
 
-      <!-- Roaming & Purring Cats -->
-      <div class="cat-actor" id="cat-1" style="left: 55px; bottom: 60px;" onclick="petCat(this, 'สก็อตติชหูพับ', 'ง่วงจังเลยมนุษย์ ขอนอนต่อน้า Zzz')">
-        <div class="chat-bubble">เหมียววว~ 💖</div>
-        <div class="cat-avatar" style="border-color:#fbbf24;">🐱</div>
-        <span class="cat-name-tag">สก็อตติชหูพับ</span>
-      </div>
+        <!-- 2.5D Multi-Tier Cat Climbing Tower -->
+        <div class="cat-tree-tower" id="tree-elem">
+          <div class="tree-platform top" title="ยอดหอคอยแมว"></div>
+          <div class="tree-platform mid"></div>
+          <div class="cat-pole"></div>
+          <div class="tree-platform base"></div>
+          <span style="position:absolute; top:-24px; font-size:22px;">🏰</span>
+        </div>
 
-      <div class="cat-actor" id="cat-2" style="right: 60px; bottom: 75px;" onclick="petCat(this, 'เจ้าส้มสุดตึง', 'เกาคางให้หน่อยสิ ฟินจังเลย~ 🐾')">
-        <div class="chat-bubble">เพอร์ๆๆ~ ✨</div>
-        <div class="cat-avatar" style="border-color:#f97316;">🐈</div>
-        <span class="cat-name-tag">เจ้าส้มตัวตึง</span>
-      </div>
+        <!-- 2.5D Floor Rug -->
+        <div class="floor-rug-25d" id="rug-elem"></div>
 
-      <div class="cat-actor" id="cat-space" style="left: 195px; bottom: 65px; display: none;" onclick="petCat(this, 'แมวเอเลี่ยน Zero-G', 'ปิ๊ปๆ! มนุษย์โลกนี่ใจดีจัง 🛸')">
-        <div class="chat-bubble">บี๊บๆๆ! 👽</div>
-        <div class="cat-avatar" style="border-color:#c084fc;">🛸</div>
-        <span class="cat-name-tag" style="background:#4c1d95; color:#e9d5ff;">แมวต่างดาว</span>
-      </div>
+        <!-- Feeding & Treat Station (Bottom-Left) -->
+        <div class="feeding-station" onclick="triggerFeedNearestCat()" title="คลิกให้อาหารแมว!">
+          <div class="food-bowl-25d" id="food-bowl">
+            <span class="food-content-icon" id="food-bowl-icon">🐟</span>
+          </div>
+          <span class="feeding-label" id="food-bowl-label">ชามปลาแห้ง</span>
+        </div>
 
-      <!-- Warp Effect Overlay -->
-      <div id="warp-overlay">
-        <span style="font-size: 60px; margin-bottom: 12px;">🛸✨</span>
-        <h2 style="color:#38bdf8; font-size:22px; font-weight:700;">HYPERSPACE WARP!</h2>
-        <p style="color:#e9d5ff; font-size:13px;">ทะลุมิติสู่สถานีอวกาศแมวต่างดาว!</p>
+        <!-- Dynamic Container for Live 3D Polygon Cat Actors -->
+        <div id="cats-stage-layer"></div>
+
       </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast-alert" class="toast-alert">
-      <span id="toast-icon">✨</span>
-      <span id="toast-text">ข้อความแจ้งเตือน</span>
+    <!-- Interactive Feeding Bar (Control Food & Weight) -->
+    <div class="feeding-menu-bar">
+      <div style="font-size:11px; font-weight:700; color:#fbbf24; display:flex; align-items:center; gap:4px;">
+        <span>🍽️</span>
+        <span>เมนูให้อาหาร:</span>
+      </div>
+      <button class="feed-btn" onclick="feedFood('fish')">
+        <span>🐟 ปลาแห้ง</span>
+        <span class="cost">+0.2 kg (5 🐟)</span>
+      </button>
+      <button class="feed-btn" onclick="feedFood('tuna')">
+        <span>🥫 ทูน่ากระป๋อง</span>
+        <span class="cost">+0.5 kg (15 🐟)</span>
+      </button>
+      <button class="feed-btn" onclick="feedFood('macaron')">
+        <span>🍰 มาการองแมว</span>
+        <span class="cost">+1.0 kg (35 🐟)</span>
+      </button>
     </div>
 
     <!-- 20 Items Shop Section -->
@@ -854,13 +1249,81 @@
       </div>
     </div>
 
+    <!-- Cat Management & Breed Selector Modal -->
+    <div id="cat-selector-modal" class="farm-modal-overlay">
+      <div class="farm-modal-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:14px;">
+          <h3 style="font-size:16px; font-weight:700; color:#fbbf24; margin:0;">🐾 เลือกแมวโพลีกอนเข้าห้อง (20 สายพันธุ์)</h3>
+          <button onclick="closeCatSelectorModal()" style="background:transparent; border:none; color:#94a3b8; font-size:22px; cursor:pointer;">✕</button>
+        </div>
+        <p style="font-size:11px; color:#cbd5e1; margin-bottom:14px; text-align:left; line-height:1.5;">
+          แตะเพื่อเปิด/ปิดให้น้องแมวเข้ามาเดินเล่นในห้อง 2.5D (ปล่อยพร้อมกันได้สูงสุด 5 ตัว)
+        </p>
+        <div id="cat-selection-list" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; text-align:left;">
+          <!-- Generated by JavaScript -->
+        </div>
+        <button onclick="closeCatSelectorModal()" style="width:100%; margin-top:14px; padding:10px; background:#0284c7; color:#fff; border:none; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer;">
+          เสร็จสิ้น
+        </button>
+      </div>
+    </div>
+
+    <!-- Cat Detail & Weight Inspector Modal -->
+    <div id="cat-detail-modal" class="farm-modal-overlay">
+      <div class="farm-modal-card">
+        <div id="cat-detail-avatar" style="width:90px; height:90px; margin:0 auto 10px; border-radius:24px; overflow:hidden; border:2px solid #fbbf24;"></div>
+        <h3 id="cat-detail-name" style="font-size:18px; font-weight:700; color:#fff; margin-bottom:2px;">ชื่อแมว</h3>
+        <p id="cat-detail-breed" style="font-size:12px; color:#94a3b8; margin-bottom:14px;">สายพันธุ์</p>
+
+        <div style="background:#0f172a; border-radius:14px; padding:12px; border:1px solid #334155; text-align:left; font-size:12px; line-height:1.8; margin-bottom:14px;">
+          <div>⚖️ <b>น้ำหนักปัจจุบัน:</b> <span id="cat-detail-weight" style="color:#38bdf8; font-weight:700;">4.2 kg</span></div>
+          <div>🍔 <b>ระดับความอ้วน:</b> <span id="cat-detail-chonk" style="font-weight:700;">สมส่วน</span></div>
+          <div>💖 <b>ความสุข:</b> <span style="color:#ec4899;">❤️❤️❤️❤️❤️ (100%)</span></div>
+          <div>📍 <b>ที่พักผ่อนที่ชอบ:</b> <span id="cat-detail-spot" style="color:#fef08a;">โต๊ะกลาง</span></div>
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <button onclick="feedSelectedCatDirectly()" style="flex:1; padding:10px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:#fff; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer;">
+            🐟 ป้อนอาหารด่วน
+          </button>
+          <button onclick="closeCatDetailModal()" style="padding:10px 16px; background:#1e293b; border:1px solid #334155; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
+            ปิด
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="farm-modal-overlay">
+      <div class="farm-modal-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px; margin-bottom:12px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px;">🏆</span>
+            <div>
+              <h3 style="font-size:16px; font-weight:700; color:#fbbf24; margin:0;">ทำเนียบทาสแมว</h3>
+              <p style="font-size:10px; color:#94a3b8; margin:0;">Leaderboard อันดับคะแนนเกม Cat Ball</p>
+            </div>
+          </div>
+          <button onclick="closeLeaderboardModal()" style="background:transparent; border:none; color:#94a3b8; font-size:22px; cursor:pointer;">✕</button>
+        </div>
+
+        <div id="leaderboard-list" style="max-height:280px; overflow-y:auto; margin-bottom:12px;">
+          <!-- Loaded by JS -->
+        </div>
+
+        <button onclick="closeLeaderboardModal()" style="width:100%; padding:10px; background:#0284c7; color:#fff; border:none; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer;">
+          ปิดหน้าต่าง
+        </button>
+      </div>
+    </div>
+
     <!-- Facebook Login Modal -->
     <div id="farm-login-modal" class="farm-modal-overlay">
       <div class="farm-modal-card">
         <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
         <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">ฟาร์มแมว Sleeperem</h3>
         <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 16px;">
-          เข้าสู่ระบบด้วย Facebook เพื่อเชื่อมต่อฟาร์มแมวของคุณ<br>
+          เข้าสู่ระบบด้วย Facebook เพื่อเปิดสิทธิ์ดูแลฟาร์ม<br>
           หากคุณคือคุณ <b>Kanel Notarry</b> จะได้รับสิทธิ์ <b>เจ้าของฟาร์ม (VIP Owner)</b> พร้อมปลดล็อกทุกธีมทันที!
         </p>
         <button class="fb-login-btn" onclick="loginWithFacebook()">
@@ -868,12 +1331,12 @@
           เข้าสู่ระบบด้วย Facebook
         </button>
         <button onclick="closeFarmLoginModal()" style="width:100%; margin-top:10px; padding:10px; background:transparent; border:1px solid #475569; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
-          เยี่ยมชมฟาร์มต่อแบบ Guest
+          ปิดหน้าต่าง
         </button>
       </div>
     </div>
 
-    <!-- Owner Perks Dashboard Modal -->
+    <!-- Owner Perks Modal -->
     <div id="owner-perks-modal" class="farm-modal-overlay">
       <div class="farm-modal-card owner-card">
         <div id="owner-avatar-wrap" style="margin-bottom:8px;"></div>
@@ -882,12 +1345,12 @@
 
         <div style="background:#0f172a; padding:12px 14px; border-radius:14px; border:1px solid #fbbf24; margin-bottom:14px; text-align:left; font-size:12px; color:#e2e8f0; line-height:1.7;">
           <div>✨ <b>สิทธิพิเศษเจ้าของฟาร์ม:</b></div>
-          <div>🌌 ปลดล็อกครบทุก 3 สไตล์ (ญี่ปุ่น, โมเดิร์น, อวกาศลับ)</div>
-          <div>🛋️ เข้าถึงของแต่งห้องทั้ง 20 ชิ้นได้ทันที</div>
-          <div>👑 ป้ายสถานะ VIP ตลอดกาล</div>
+          <div>🏡 ปลดล็อกห้อง 2.5D ครบทุกสไตล์ Contrast Macaron</div>
+          <div>🐾 สิทธิ์เลือกแมวโพลีกอน 3D แท้ครบ 20 สายพันธุ์</div>
+          <div>🐟 อาหารแมวไม่จำกัด & เหรียญปลา VIP</div>
         </div>
 
-        <button onclick="grantOwnerBonusCoins()" style="width:100%; padding:11px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 12px rgba(245,158,11,0.35);">
+        <button onclick="grantOwnerBonusCoins()" style="width:100%; padding:11px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
           <span>🐟</span> เติมเหรียญปลา VIP (+5,000 เหรียญ)
         </button>
 
@@ -901,7 +1364,7 @@
       </div>
     </div>
 
-    <!-- Visitor Profile Modal -->
+    <!-- Visitor Modal -->
     <div id="visitor-modal" class="farm-modal-overlay">
       <div class="farm-modal-card">
         <div id="visitor-avatar-wrap" style="margin-bottom:8px;"></div>
@@ -915,11 +1378,18 @@
         </button>
       </div>
     </div>
+
+    <!-- Toast Alert -->
+    <div id="toast-alert" class="toast-alert">
+      <span id="toast-icon">✨</span>
+      <span id="toast-text">ข้อความแจ้งเตือน</span>
+    </div>
+
   </div>
 
   <script>
     /* ==========================================================================
-       SYNTHESIZED SOUND ENGINE (Pure Web Audio API - No External Files)
+       SYNTHESIZED SOUND ENGINE (Web Audio API)
        ========================================================================== */
     class CozyAudio {
       constructor() {
@@ -931,135 +1401,525 @@
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           this.ctx = new AudioContext();
         }
-        if (this.ctx.state === 'suspended') {
-          this.ctx.resume();
-        }
+        if (this.ctx.state === 'suspended') this.ctx.resume();
       }
       playPurr() {
         if (this.muted) return;
         this.init();
-        // Gentle warm cat purr vibration
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(80, this.ctx.currentTime);
-        osc.frequency.linearRampToValueAtTime(140, this.ctx.currentTime + 0.15);
-        osc.frequency.linearRampToValueAtTime(75, this.ctx.currentTime + 0.35);
-        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(85, this.ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(145, this.ctx.currentTime + 0.15);
+        osc.frequency.linearRampToValueAtTime(80, this.ctx.currentTime + 0.35);
+        gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
         gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start();
         osc.stop(this.ctx.currentTime + 0.35);
       }
+      playEatChime() {
+        if (this.muted) return;
+        this.init();
+        const notes = [440, 554.37, 659.25];
+        notes.forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = freq;
+          const t = this.ctx.currentTime + i * 0.08;
+          gain.gain.setValueAtTime(0.2, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.3);
+        });
+      }
       playBuyChime() {
         if (this.muted) return;
         this.init();
-        // Harmonious pentatonic chime
         const notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
           osc.frequency.value = freq;
-          const t = this.ctx.currentTime + idx * 0.08;
+          const t = this.ctx.currentTime + idx * 0.07;
           gain.gain.setValueAtTime(0.2, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(t);
-          osc.stop(t + 0.4);
+          osc.stop(t + 0.35);
         });
-      }
-      playWarpSound() {
-        if (this.muted) return;
-        this.init();
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(120, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.8);
-        osc.frequency.exponentialRampToValueAtTime(1760, this.ctx.currentTime + 1.2);
-        gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 1.3);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start();
-        osc.stop(this.ctx.currentTime + 1.3);
       }
     }
     const audio = new CozyAudio();
-
     function toggleAudio() {
       audio.muted = !audio.muted;
       document.getElementById('sound-toggle').innerText = audio.muted ? '🔇' : '🔊';
     }
 
     /* ==========================================================================
-       20 ITEMS DATA (Categorized by Themes)
+       ALL 20 3D POLYGON CAT BREEDS DATA
        ========================================================================== */
-    const FARM_ITEMS = [
-      // Japanese Zen Theme
-      { id: "kotatsu", theme: "japanese", name: "โต๊ะอุ่นขาโคทัตสึ", icon: "🍵", price: 60, desc: "โต๊ะปูผ้านวมอุ่นๆ น้องแมวมุดนอนหัวโผล่หลับสบาย" },
-      { id: "bonsai", theme: "japanese", name: "ต้นบอนไซเซน", icon: "🪴", price: 80, desc: "บอนไซสนญี่ปุ่นดัดทรงสวยงาม เสริมบรรยากาศสงบจิตใจ" },
-      { id: "maneki", theme: "japanese", name: "แมวกวักนำโชคทองคำ", icon: "🐱", price: 120, desc: "แมวกวักดุ๊กดิ๊ก ดึงดูดเหรียญปลาให้ไหลมาเทมา" },
-      { id: "lantern", theme: "japanese", name: "โคมไฟกระดาษวาชิ", icon: "🏮", price: 50, desc: "โคมไฟญี่ปุ่นสีส้มอบอุ่น ส่องประกายละมุนตา" },
-      { id: "tatami_cushion", theme: "japanese", name: "เบาะรองนั่งผ้าไหม", icon: "🟤", price: 40, desc: "เบาะรองนั่งนุ่มกำลังดี แมวนั่งสมาธิมองสวนซากุระ" },
+    const ALL_CAT_BREEDS = [
+      { id: "savannah", rank: 1, name: "ซาวันนาห์", img: "/cats/img/full_savannah.jpg", baseWeight: 6.5, spot: "ชั้นวางสูง" },
+      { id: "mainecoon", rank: 2, name: "เมนคูน", img: "/cats/img/full_mainecoon.jpg", baseWeight: 7.2, spot: "คอนโดแมว" },
+      { id: "bengal", rank: 3, name: "เบงกอล", img: "/cats/img/full_bengal.jpg", baseWeight: 5.0, spot: "พรมพื้น" },
+      { id: "ragdoll", rank: 4, name: "แร็กดอลล์", img: "/cats/img/full_ragdoll.jpg", baseWeight: 5.8, spot: "โซฟา/ตู้" },
+      { id: "sphynx", rank: 5, name: "สฟิงซ์", img: "/cats/img/full_sphynx.jpg", baseWeight: 4.0, spot: "โต๊ะอุ่นขา" },
+      { id: "british", rank: 6, name: "บริติช ช็อตแฮร์", img: "/cats/img/full_british.jpg", baseWeight: 6.0, spot: "พรมกลาง" },
+      { id: "scottish", rank: 7, name: "สก็อตติช โฟลด์", img: "/cats/img/full_scottish.jpg", baseWeight: 4.5, spot: "โต๊ะกลาง" },
+      { id: "norwegian", rank: 8, name: "นอร์วีเจียน ฟอเรสต์", img: "/cats/img/full_norwegian.jpg", baseWeight: 6.8, spot: "ขอบหน้าต่าง" },
+      { id: "russianblue", rank: 9, name: "รัสเซียน บลู", img: "/cats/img/full_russianblue.jpg", baseWeight: 4.2, spot: "ตู้ข้าง" },
+      { id: "munchkin", rank: 10, name: "มันช์กิ้น", img: "/cats/img/full_munchkin.jpg", baseWeight: 3.8, spot: "พรมพื้น" },
+      { id: "exotic", rank: 11, name: "เอ็กโซติก", img: "/cats/img/full_exotic.jpg", baseWeight: 5.5, spot: "โต๊ะกลาง" },
+      { id: "birman", rank: 12, name: "เบอร์แมน", img: "/cats/img/full_birman.jpg", baseWeight: 4.8, spot: "ชั้นวาง" },
+      { id: "turkish", rank: 13, name: "เตอร์กิช แองโกรา", img: "/cats/img/full_turkish.jpg", baseWeight: 4.3, spot: "ขอบหน้าต่าง" },
+      { id: "persian", rank: 14, name: "เปอร์เซีย", img: "/cats/img/full_persian.jpg", baseWeight: 5.2, spot: "เบาะนวม" },
+      { id: "americanshorthair", rank: 15, name: "อเมริกัน ช็อตแฮร์", img: "/cats/img/full_americanshorthair.jpg", baseWeight: 5.4, spot: "พรมกลาง" },
+      { id: "abyssinian", rank: 16, name: "อาบิสซิเนียน", img: "/cats/img/full_abyssinian.jpg", baseWeight: 4.1, spot: "ชั้นวางสูง" },
+      { id: "khaomanee", rank: 17, name: "ขาวมณี (Odd-Eyes)", img: "/cats/img/full_khaomanee.jpg", baseWeight: 4.0, spot: "ขอบหน้าต่าง" },
+      { id: "korat", rank: 18, name: "โคราช (สีสวาด)", img: "/cats/img/full_korat.jpg", baseWeight: 4.3, spot: "ตู้ข้าง" },
+      { id: "suphalak", rank: 19, name: "ศุภลักษณ์ (ทองแดง)", img: "/cats/img/full_suphalak.jpg", baseWeight: 4.4, spot: "โต๊ะกลาง" },
+      { id: "siamese", rank: 20, name: "วิเชียรมาศ", img: "/cats/img/full_siamese.jpg", baseWeight: 3.9, spot: "พรมกลาง" }
+    ];
 
-      // Modern Nordic Loft Theme
-      { id: "wheel", theme: "modern", name: "ลู่วิ่งวงล้อแมวสแกนดิเนเวีย", icon: "🎡", price: 150, desc: "วงล้อลายไม้โอ๊ค แมวขึ้นไปวิ่งออกกำลังกายเพลินๆ" },
-      { id: "condo", theme: "modern", name: "คอนโดแมวไม้ดีไซเนอร์", icon: "🏰", price: 180, desc: "คอนโดทรงเหลี่ยมสไตล์นอร์ดิก มีหลุมอวกาศมองทะลุ" },
-      { id: "monstera", theme: "modern", name: "ต้นมอนสเตอร่าดินเผา", icon: "🌿", price: 70, desc: "ไม้ฟอกอากาศยอดฮิต เพิ่มความเขียวสดชื่นในห้อง" },
-      { id: "sofa", theme: "modern", name: "โซฟามินิมอลสีครีม", icon: "🛋️", price: 130, desc: "โซฟาผ้าลินิน แมวทิ้งตัวนอนเหยียดยาวอย่างฟิน" },
-      { id: "lamp", theme: "modern", name: "โคมไฟพระจันทร์เสี้ยว", icon: "🌙", price: 90, desc: "โคมไฟมินิมอลทรงพระจันทร์ Sleeperem ปรับแสงนุ่มนวล" },
-
-      // Cosmic Alien Space Station Theme (Secret)
-      { id: "space_pod", theme: "space", name: "แคปซูลนอน Zero-G", icon: "🛸", price: 200, desc: "แคปซูลต้านแรงโน้มถ่วง แมวนอนลอยเบาหวิวไร้น้ำหนัก" },
-      { id: "ufo_drone", theme: "space", name: "โดรนของเล่นจานบินจิ๋ว", icon: "👽", price: 160, desc: "จานบินบินวนรอบห้องปล่อยแสงเลเซอร์ ล่อน้องแมวกระโดด" },
-      { id: "hologram", theme: "space", name: "ตู้ปลาโฮโลแกรมอวกาศ", icon: "🌌", price: 220, desc: "ปลาแสงนีออนว่ายกลางอากาศ แมวจ้องมองตาไม่กะพริบ" },
-      { id: "cyber_food", theme: "space", name: "ชามอาหารสังเคราะห์พลังงาน", icon: "🔮", price: 140, desc: "ชามอาหารอวกาศเรืองแสง เต็มไปด้วยสารอาหารเพิ่มความสุข" },
-      { id: "space_helmet", theme: "space", name: "หมวกแก้วนักบินอวกาศจิ๋ว", icon: "🪐", price: 250, desc: "หมวกแก้วใสกันรังสีคอสมิก สำหรับน้องแมวเตรียมสำรวจดาว" },
-
-      // General Cozy Essentials
-      { id: "dino", theme: "all", name: "ที่ฝนเล็บไดโนเสาร์", icon: "🦖", price: 95, desc: "ที่ลับเล็บรูป T-Rex ยักษ์ แมวยืนสองขายืดตัวตะปบ" },
-      { id: "box", theme: "all", name: "กล่องพัสดุในตำนาน", icon: "📦", price: 30, desc: "ทิ้งเบาะแสนแพงมานอนในกล่องกระดาษ สัจธรรมของแมว" },
-      { id: "fishbowl", theme: "all", name: "โหลแก้วแมวเหลว", icon: "🐠", price: 110, desc: "โหลแก้วใส แมวหย่อนตัวลงไปแล้วกลายเป็นของเหลว" },
-      { id: "yarn", theme: "all", name: "ก้อนไหมพรมยักษ์", icon: "🧶", price: 35, desc: "ไหมพรมเนื้อนุ่ม แมวชอบใช้ขาหลังถีบรัวๆ" },
-      { id: "buffet", theme: "all", name: "บุฟเฟต์ปลาแซลมอนทองคำ", icon: "🍣", price: 300, desc: "อาหารมื้อหรูหรา กินแล้วน้องแมวมีความสุขเต็ม 100%" }
+    /* Waypoint Navigation Nodes (2.5D Multi-Level Coordinates) */
+    const WAYPOINTS = [
+      { id: "floor_left", x: 60, y: 350, level: "floor" },
+      { id: "floor_center", x: 220, y: 360, level: "floor" },
+      { id: "floor_right", x: 360, y: 355, level: "floor" },
+      { id: "table_surface", x: 215, y: 285, level: "table" },
+      { id: "cabinet_surface", x: 75, y: 225, level: "cabinet" },
+      { id: "window_sill", x: 385, y: 190, level: "window" },
+      { id: "high_shelf", x: 70, y: 125, level: "shelf" },
+      { id: "tree_mid", x: 410, y: 240, level: "tree" }
     ];
 
     /* ==========================================================================
-       STATE MANAGEMENT
+       STATE MANAGEMENT & WEIGHT SYSTEM
        ========================================================================== */
-    let fishCoins = parseInt(localStorage.getItem("sleeperem_fish_coins") || "250");
+    let fishCoins = parseInt(localStorage.getItem("sleeperem_fish_coins") || "500");
     let currentTheme = localStorage.getItem("sleeperem_farm_theme") || "japanese";
     let isSpaceUnlocked = localStorage.getItem("sleeperem_space_unlocked") === "true";
     let ownedItems = JSON.parse(localStorage.getItem("sleeperem_farm_items") || "{}");
+    
+    // Active Roaming Cats in Room
+    let activeCatIds = JSON.parse(localStorage.getItem("sleeperem_active_cats") || '["siamese", "munchkin", "scottish"]');
+    
+    // Cat Weights Mapping (id -> kg)
+    let catWeights = JSON.parse(localStorage.getItem("sleeperem_cat_weights") || "{}");
+    ALL_CAT_BREEDS.forEach(c => {
+      if (!catWeights[c.id]) catWeights[c.id] = c.baseWeight;
+    });
+
     let currentFilter = "all";
     let windowTapCount = 0;
     let windowTapTimer = null;
+    let selectedCatForDetail = null;
+
+    // Camera Zoom State
+    let zoomLevel = 1.0;
+    let panX = 0, panY = 0;
+    let isDragging = false, startX = 0, startY = 0;
 
     function saveState() {
       localStorage.setItem("sleeperem_fish_coins", fishCoins.toString());
       localStorage.setItem("sleeperem_farm_theme", currentTheme);
       localStorage.setItem("sleeperem_space_unlocked", isSpaceUnlocked.toString());
       localStorage.setItem("sleeperem_farm_items", JSON.stringify(ownedItems));
+      localStorage.setItem("sleeperem_active_cats", JSON.stringify(activeCatIds));
+      localStorage.setItem("sleeperem_cat_weights", JSON.stringify(catWeights));
       document.getElementById("coin-val").innerText = fishCoins.toLocaleString();
+      document.getElementById("active-cat-count").innerText = activeCatIds.length;
     }
 
     /* ==========================================================================
-       THEME SWITCHING LOGIC
+       CAMERA ZOOM & PAN SYSTEM
        ========================================================================== */
-    function switchTheme(theme) {
-      if (theme === 'space' && !isSpaceUnlocked) {
-        showToast("🛸", "ธีมลับอวกาศยังถูกล็อกอยู่! (ลองเคาะหน้าต่าง 5 ครั้งสิ)");
+    function updateCameraTransform() {
+      const stage = document.getElementById("room-stage");
+      stage.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+      document.getElementById("cam-zoom-label").innerText = Math.round(zoomLevel * 100) + "%";
+    }
+
+    function zoomIn() {
+      zoomLevel = Math.min(2.0, zoomLevel + 0.25);
+      updateCameraTransform();
+    }
+    function zoomOut() {
+      zoomLevel = Math.max(1.0, zoomLevel - 0.25);
+      if (zoomLevel === 1.0) { panX = 0; panY = 0; }
+      updateCameraTransform();
+    }
+    function resetZoom() {
+      zoomLevel = 1.0;
+      panX = 0;
+      panY = 0;
+      updateCameraTransform();
+    }
+
+    // Touch & Mouse Drag to Pan
+    const roomContainer = document.getElementById("room-container");
+    roomContainer.addEventListener('mousedown', (e) => {
+      if (zoomLevel <= 1.0) return;
+      isDragging = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      panX = Math.max(-120, Math.min(120, e.clientX - startX));
+      panY = Math.max(-80, Math.min(80, e.clientY - startY));
+      updateCameraTransform();
+    });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    // Touch events for mobile pan
+    roomContainer.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1 && zoomLevel > 1.0) {
+        isDragging = true;
+        startX = e.touches[0].clientX - panX;
+        startY = e.touches[0].clientY - panY;
+      }
+    }, { passive: true });
+    roomContainer.addEventListener('touchmove', (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      panX = Math.max(-120, Math.min(120, e.touches[0].clientX - startX));
+      panY = Math.max(-80, Math.min(80, e.touches[0].clientY - startY));
+      updateCameraTransform();
+    }, { passive: true });
+    roomContainer.addEventListener('touchend', () => { isDragging = false; });
+
+    /* ==========================================================================
+       CAT ACTOR SIMULATION ENGINE
+       ========================================================================== */
+    class LiveCatActor {
+      constructor(breedData, index) {
+        this.data = breedData;
+        this.index = index;
+        this.currentWaypoint = WAYPOINTS[index % WAYPOINTS.length];
+        this.x = this.currentWaypoint.x;
+        this.y = this.currentWaypoint.y;
+        this.isMoving = false;
+        this.isSleeping = false;
+        this.dom = null;
+        this.weight = catWeights[this.data.id] || this.data.baseWeight;
+        this.initDOM();
+      }
+
+      initDOM() {
+        const layer = document.getElementById("cats-stage-layer");
+        const el = document.createElement("div");
+        el.className = "cat-actor-3d";
+        el.id = "actor-" + this.data.id;
+        
+        el.innerHTML = `
+          <div class="cat-speech-bubble" id="bubble-${this.data.id}">เหมียวว~ 💖</div>
+          <div class="cat-zzz" id="zzz-${this.data.id}">Zzz</div>
+          <div class="cat-sprite-wrap" id="sprite-${this.data.id}">
+            <img src="${this.data.img}" alt="${this.data.name}">
+          </div>
+          <div class="cat-shadow-ground" id="shadow-${this.data.id}"></div>
+          <div class="cat-stat-tag">
+            <span>${this.data.name}</span>
+            <span class="chonky-badge" id="badge-${this.data.id}">${this.getWeightLabel()}</span>
+          </div>
+        `;
+
+        el.style.left = this.x + "px";
+        el.style.bottom = (420 - this.y) + "px";
+
+        // Double tap/click to zoom in on this cat
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          this.onTap();
+        });
+
+        el.addEventListener('dblclick', (e) => {
+          e.stopPropagation();
+          focusOnCat(this);
+        });
+
+        layer.appendChild(el);
+        this.dom = el;
+        this.updateChonkyScale();
+        this.scheduleNextAction();
+      }
+
+      getWeightLabel() {
+        if (this.weight >= 8.5) return "🏆 อ้วนมาก";
+        if (this.weight >= 6.0) return "อวบอั๋น";
+        return "สมส่วน";
+      }
+
+      updateChonkyScale() {
+        const sprite = this.dom.querySelector(".cat-sprite-wrap");
+        const shadow = this.dom.querySelector(".cat-shadow-ground");
+        const badge = this.dom.querySelector(".chonky-badge");
+
+        // Scale scales up as weight increases
+        // Normal (4.0kg) -> scale 1.0
+        // Heavy (10.0kg) -> scale 1.38
+        const scale = Math.min(1.4, 0.95 + (this.weight - 3.5) * 0.06);
+        const squishY = Math.max(0.88, 1 - (this.weight - 3.5) * 0.02);
+
+        sprite.style.transform = `scale(${scale}, ${scale * squishY})`;
+        shadow.style.transform = `scale(${scale * 1.2}, 1)`;
+        if (badge) badge.innerText = this.getWeightLabel();
+      }
+
+      onTap() {
+        audio.playPurr();
+        showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
+        spawnHeart(this.x + 25, 420 - this.y + 40);
+
+        // Open details modal
+        openCatDetailModal(this);
+      }
+
+      scheduleNextAction() {
+        // Heavy cats move less often and sleep longer
+        const delay = this.weight >= 8.0 ? (5000 + Math.random() * 6000) : (3000 + Math.random() * 4000);
+        setTimeout(() => {
+          if (!this.dom || !document.contains(this.dom)) return;
+          const r = Math.random();
+          if (r < 0.35) {
+            this.toggleSleep();
+          } else {
+            this.moveToRandomWaypoint();
+          }
+          this.scheduleNextAction();
+        }, delay);
+      }
+
+      toggleSleep() {
+        this.isSleeping = !this.isSleeping;
+        const zzz = this.dom.querySelector(".cat-zzz");
+        if (zzz) zzz.style.opacity = this.isSleeping ? 1 : 0;
+      }
+
+      moveToRandomWaypoint() {
+        if (this.isSleeping) this.isSleeping = false;
+        const zzz = this.dom.querySelector(".cat-zzz");
+        if (zzz) zzz.style.opacity = 0;
+
+        const target = WAYPOINTS[Math.floor(Math.random() * WAYPOINTS.length)];
+        const isJump = target.level !== this.currentWaypoint.level;
+        
+        // Face direction
+        const sprite = this.dom.querySelector(".cat-sprite-wrap");
+        if (target.x < this.x) {
+          sprite.style.transform += " scaleX(-1)";
+        } else {
+          sprite.style.transform = sprite.style.transform.replace(" scaleX(-1)", "");
+        }
+
+        if (isJump) {
+          this.dom.classList.add("is-jumping");
+          setTimeout(() => this.dom.classList.remove("is-jumping"), 700);
+        } else {
+          this.dom.classList.add("is-walking");
+          setTimeout(() => this.dom.classList.remove("is-walking"), 650);
+        }
+
+        this.x = target.x;
+        this.y = target.y;
+        this.currentWaypoint = target;
+        this.dom.style.left = this.x + "px";
+        this.dom.style.bottom = (420 - this.y) + "px";
+      }
+
+      feed(amountKg) {
+        this.weight += amountKg;
+        catWeights[this.data.id] = this.weight;
+        saveState();
+        this.updateChonkyScale();
+        audio.playEatChime();
+        showSpeechBubble(this.dom, `งั่มๆ อร่อยจัง! +${amountKg}kg 😋`);
+        spawnHeart(this.x + 30, 420 - this.y + 45);
+        showToast("🐟", `ป้อนอาหารให้ ${this.data.name} เรียบร้อย! น้ำหนัก: ${this.weight.toFixed(1)} kg`);
+      }
+    }
+
+    let catActors = [];
+    function initCatActors() {
+      const layer = document.getElementById("cats-stage-layer");
+      layer.innerHTML = "";
+      catActors = [];
+
+      activeCatIds.forEach((id, idx) => {
+        const breed = ALL_CAT_BREEDS.find(b => b.id === id);
+        if (breed) {
+          catActors.push(new LiveCatActor(breed, idx));
+        }
+      });
+      document.getElementById("active-cat-count").innerText = catActors.length;
+    }
+
+    function showSpeechBubble(actorEl, text) {
+      const bubble = actorEl.querySelector(".cat-speech-bubble");
+      if (bubble) {
+        bubble.innerText = text;
+        bubble.style.display = "block";
+        setTimeout(() => { bubble.style.display = "none"; }, 2500);
+      }
+    }
+
+    function spawnHeart(leftPx, bottomPx) {
+      const h = document.createElement("div");
+      h.className = "floating-heart";
+      h.innerText = "💖";
+      h.style.left = leftPx + "px";
+      h.style.bottom = bottomPx + "px";
+      document.getElementById("room-stage").appendChild(h);
+      setTimeout(() => h.remove(), 1200);
+    }
+
+    function focusOnCat(actor) {
+      zoomLevel = 1.7;
+      panX = 240 - actor.x;
+      panY = (420 - actor.y) - 210;
+      updateCameraTransform();
+      showToast("🔍", `โฟกัสที่น้องแมว ${actor.data.name}`);
+    }
+
+    /* ==========================================================================
+       FEEDING MECHANICS
+       ========================================================================== */
+    function feedFood(type) {
+      let cost = 5;
+      let gain = 0.2;
+      let icon = "🐟";
+      let label = "ปลาแห้ง";
+
+      if (type === 'tuna') {
+        cost = 15;
+        gain = 0.5;
+        icon = "🥫";
+        label = "ทูน่ากระป๋อง";
+      } else if (type === 'macaron') {
+        cost = 35;
+        gain = 1.0;
+        icon = "🍰";
+        label = "มาการองแมว (เพิ่มน้ำหนักเต็มที่)";
+      }
+
+      if (fishCoins < cost) {
+        showToast("⚠️", "เหรียญปลาไม่พอ! ไปเล่น Cat Ball เพื่อรับเหรียญเพิ่มนะ");
         return;
       }
 
+      fishCoins -= cost;
+      saveState();
+
+      // Update food bowl
+      document.getElementById("food-bowl-icon").innerText = icon;
+      document.getElementById("food-bowl-label").innerText = label;
+
+      // Nearest cat runs to bowl
+      if (catActors.length > 0) {
+        // Pick nearest or random cat
+        const chosen = catActors[Math.floor(Math.random() * catActors.length)];
+        chosen.x = 45;
+        chosen.y = 380;
+        chosen.dom.style.left = chosen.x + "px";
+        chosen.dom.style.bottom = (420 - chosen.y) + "px";
+        chosen.feed(gain);
+      }
+    }
+
+    function triggerFeedNearestCat() {
+      feedFood('fish');
+    }
+
+    function feedSelectedCatDirectly() {
+      if (selectedCatForDetail) {
+        selectedCatForDetail.feed(0.5);
+        document.getElementById("cat-detail-weight").innerText = selectedCatForDetail.weight.toFixed(1) + " kg";
+        document.getElementById("cat-detail-chonk").innerText = selectedCatForDetail.getWeightLabel();
+      }
+    }
+
+    /* ==========================================================================
+       CAT DETAIL MODAL
+       ========================================================================== */
+    function openCatDetailModal(actor) {
+      selectedCatForDetail = actor;
+      document.getElementById("cat-detail-avatar").innerHTML = `<img src="${actor.data.img}" style="width:100%;height:100%;object-fit:cover;">`;
+      document.getElementById("cat-detail-name").innerText = actor.data.name;
+      document.getElementById("cat-detail-breed").innerText = "สายพันธุ์ที่ #" + actor.data.rank + " ใน Sleeperem";
+      document.getElementById("cat-detail-weight").innerText = actor.weight.toFixed(1) + " kg";
+      document.getElementById("cat-detail-chonk").innerText = actor.getWeightLabel();
+      document.getElementById("cat-detail-spot").innerText = actor.data.spot;
+      document.getElementById("cat-detail-modal").style.display = "flex";
+    }
+    function closeCatDetailModal() {
+      document.getElementById("cat-detail-modal").style.display = "none";
+    }
+
+    /* ==========================================================================
+       CAT SELECTION MODAL (Pick which of 20 breeds roam in room)
+       ========================================================================== */
+    function openCatSelectorModal() {
+      const list = document.getElementById("cat-selection-list");
+      list.innerHTML = "";
+
+      ALL_CAT_BREEDS.forEach(c => {
+        const isActive = activeCatIds.includes(c.id);
+        const item = document.createElement("div");
+        item.style.cssText = `background:${isActive ? '#1e3a8a' : '#1e293b'}; border:1px solid ${isActive ? '#38bdf8' : '#334155'}; padding:8px; border-radius:12px; display:flex; align-items:center; gap:8px; cursor:pointer;`;
+        
+        item.innerHTML = `
+          <img src="${c.img}" style="width:36px; height:36px; border-radius:8px; object-fit:cover;">
+          <div style="flex:1;">
+            <div style="font-size:11px; font-weight:700; color:#f8fafc;">${c.name}</div>
+            <div style="font-size:9px; color:${isActive ? '#38bdf8' : '#94a3b8'};">${isActive ? '✓ ในห้อง' : 'แตะเพื่อปล่อย'}</div>
+          </div>
+        `;
+
+        item.onclick = () => {
+          if (activeCatIds.includes(c.id)) {
+            if (activeCatIds.length <= 1) {
+              showToast("⚠️", "ต้องมีน้องแมวในห้องอย่างน้อย 1 ตัวนะ");
+              return;
+            }
+            activeCatIds = activeCatIds.filter(x => x !== c.id);
+          } else {
+            if (activeCatIds.length >= 5) {
+              showToast("⚠️", "ปล่อยแมวพร้อมกันได้สูงสุด 5 ตัวในห้อง");
+              return;
+            }
+            activeCatIds.push(c.id);
+          }
+          saveState();
+          openCatSelectorModal();
+          initCatActors();
+        };
+        list.appendChild(item);
+      });
+
+      document.getElementById("cat-selector-modal").style.display = "flex";
+    }
+    function closeCatSelectorModal() {
+      document.getElementById("cat-selector-modal").style.display = "none";
+    }
+
+    /* ==========================================================================
+       THEME SWITCHING (Matcha, Blueberry, Cosmic Macaron)
+       ========================================================================== */
+    function switchTheme(theme) {
+      if (theme === 'space' && !isSpaceUnlocked) {
+        showToast("🛸", "ธีมลับอวกาศยังถูกล็อกอยู่! (เคาะหน้าต่าง 5 ครั้งสิ)");
+        return;
+      }
       currentTheme = theme;
       saveState();
 
-      // Update tab buttons
       document.getElementById("tab-japanese").classList.toggle("active", theme === 'japanese');
       document.getElementById("tab-modern").classList.toggle("active", theme === 'modern');
       
@@ -1067,17 +1927,24 @@
       if (isSpaceUnlocked) {
         spaceTab.classList.remove("secret-locked");
         spaceTab.classList.add("secret-unlocked");
-        document.getElementById("space-tab-label").innerText = "🛸 สไตล์อวกาศ";
+        document.getElementById("space-tab-label").innerText = "🛸 อวกาศมาการอง";
       }
       spaceTab.classList.toggle("active", theme === 'space');
 
-      // Update Viewport Class
-      const viewport = document.getElementById("room-viewport");
-      viewport.className = "room-viewport theme-" + theme;
+      const cont = document.getElementById("room-container");
+      cont.className = "room-container theme-" + theme;
 
-      // Update Window & Furniture based on Theme
-      updateRoomDecorations();
-      showToast("✨", `เปลี่ยนเป็น ${theme === 'japanese' ? 'สไตล์ญี่ปุ่น' : theme === 'modern' ? 'สไตล์โมเดิร์น' : 'สไตล์อวกาศต่างดาว'} เรียบร้อย!`);
+      // Update room aesthetics & window scenery
+      const win = document.getElementById("window-scenery");
+      if (theme === 'japanese') {
+        win.innerHTML = '<span style="font-size:32px;">🌸</span><div style="font-size:9px;color:#78350f;">สวนซากุระ</div>';
+      } else if (theme === 'modern') {
+        win.innerHTML = '<span style="font-size:30px;">🏙️</span><div style="font-size:9px;color:#0f172a;">วิวเมืองนอร์ดิก</div>';
+      } else if (theme === 'space') {
+        win.innerHTML = '<span style="font-size:32px;">🌍</span><div style="font-size:9px;color:#38bdf8;">วงโคจรโลก</div>';
+      }
+
+      showToast("✨", `เปลี่ยนเป็นธีม ${theme === 'japanese' ? 'มัทฉะมาการอง' : theme === 'modern' ? 'บลูเบอร์รี่มาการอง' : 'อวกาศมาการอง'} เรียบร้อย!`);
     }
 
     function clickSpaceTab() {
@@ -1088,105 +1955,51 @@
       }
     }
 
-    function updateRoomDecorations() {
-      const win = document.getElementById("window-content");
-      const f1 = document.getElementById("furn-icon-1");
-      const t1 = document.getElementById("furn-tag-1");
-      const f2 = document.getElementById("furn-icon-2");
-      const t2 = document.getElementById("furn-tag-2");
-      const f3 = document.getElementById("furn-icon-3");
-      const t3 = document.getElementById("furn-tag-3");
-      const spaceCat = document.getElementById("cat-space");
-
-      if (currentTheme === 'japanese') {
-        win.innerHTML = `<span style="font-size:26px;">🌸</span>
-          <div class="sakura-petal" style="left:15px;">🌸</div>
-          <div class="sakura-petal" style="left:45px; animation-delay:1.5s;">🌸</div>`;
-        f1.innerText = "🍵"; t1.innerText = "โต๊ะโคทัตสึ";
-        f2.innerText = "🪴"; t2.innerText = "ต้นบอนไซ";
-        f3.innerText = "🏮"; t3.innerText = "โคมไฟวาชิ";
-        spaceCat.style.display = "none";
-      } else if (currentTheme === 'modern') {
-        win.innerHTML = `
-          <div class="city-building" style="height:45px;"></div>
-          <div class="city-building" style="height:65px;"></div>
-          <div class="city-building" style="height:35px;"></div>
-          <div class="city-building" style="height:55px;"></div>`;
-        f1.innerText = "🛋️"; t1.innerText = "โซฟามินิมอล";
-        f2.innerText = "🌿"; t2.innerText = "ต้นมอนสเตอร่า";
-        f3.innerText = "🌙"; t3.innerText = "โคมไฟพระจันทร์";
-        spaceCat.style.display = "none";
-      } else if (currentTheme === 'space') {
-        win.innerHTML = `<span class="space-earth">🌍</span>`;
-        f1.innerText = "🛸"; t1.innerText = "แคปซูล Zero-G";
-        f2.innerText = "🌌"; t2.innerText = "ตู้ปลาโฮโลแกรม";
-        f3.innerText = "🔮"; t3.innerText = "แท่นสังเคราะห์";
-        spaceCat.style.display = "flex";
-      }
-    }
-
-    /* ==========================================================================
-       EASTER EGG: UNLOCK SECRET SPACE THEME
-       ========================================================================== */
     function tapWindowEasterEgg() {
       windowTapCount++;
       clearTimeout(windowTapTimer);
       windowTapTimer = setTimeout(() => { windowTapCount = 0; }, 2000);
-
-      // Cute ripple / purr
       audio.playPurr();
 
       if (windowTapCount < 5 && !isSpaceUnlocked) {
         showToast("🔍", `สัญญาณปริศนา... (${windowTapCount}/5)`);
       } else if (windowTapCount >= 5 && !isSpaceUnlocked) {
-        // UNLOCK SECRET THEME!
         isSpaceUnlocked = true;
         saveState();
-
-        audio.playWarpSound();
-
-        // Trigger Hyperspace Warp Flash
-        const warp = document.getElementById("warp-overlay");
-        warp.style.display = "flex";
-        setTimeout(() => {
-          warp.style.display = "none";
-          switchTheme('space');
-          showToast("🛸", "🎉 ปลดล็อกธีมลับสำเร็จ! สถานีอวกาศแมวต่างดาว!");
-        }, 1300);
+        switchTheme('space');
+        showToast("🛸", "🎉 ปลดล็อกธีมอวกาศมาการองสำเร็จ!");
       }
     }
 
     /* ==========================================================================
-       PETTING & CAT INTERACTIONS
+       20 SHOP ITEMS DATA & MULTI-LEVEL MAPPING
        ========================================================================== */
-    function petCat(element, catName, msg) {
-      audio.playPurr();
+    const FARM_ITEMS = [
+      { id: "kotatsu", theme: "japanese", name: "โต๊ะอุ่นขาโคทัตสึ", icon: "🍵", slot: "โต๊ะกลาง", price: 60, desc: "โต๊ะปูผ้านวมอุ่นๆ น้องแมวมุดนอนหัวโผล่หลับสบาย" },
+      { id: "bonsai", theme: "japanese", name: "ต้นบอนไซเซน", icon: "🪴", slot: "ชั้นวางของ", price: 80, desc: "บอนไซสนญี่ปุ่นดัดทรงสวยงาม เสริมบรรยากาศสงบจิตใจ" },
+      { id: "maneki", theme: "japanese", name: "แมวกวักนำโชคทองคำ", icon: "🐱", slot: "หลังตู้ข้าง", price: 120, desc: "แมวกวักดุ๊กดิ๊ก ดึงดูดเหรียญปลาให้ไหลมาเทมา" },
+      { id: "lantern", theme: "japanese", name: "โคมไฟกระดาษวาชิ", icon: "🏮", slot: "ผนังห้อง", price: 50, desc: "โคมไฟญี่ปุ่นสีส้มอบอุ่น ส่องประกายละมุนตา" },
+      { id: "tatami_cushion", theme: "japanese", name: "เบาะรองนั่งผ้าไหม", icon: "🟤", slot: "พรมพื้น", price: 40, desc: "เบาะรองนั่งนุ่มกำลังดี แมวนั่งสมาธิมองสวนซากุระ" },
 
-      // Show Speech Bubble
-      let bubble = element.querySelector(".chat-bubble");
-      if (bubble) {
-        bubble.innerText = msg;
-        bubble.style.display = "block";
-        setTimeout(() => { bubble.style.display = "none"; }, 2500);
-      }
+      { id: "wheel", theme: "modern", name: "ลู่วิ่งวงล้อสแกนดิเนเวีย", icon: "🎡", slot: "พื้นห้อง", price: 150, desc: "วงล้อลายไม้โอ๊ค แมวขึ้นไปวิ่งออกกำลังกายเพลินๆ" },
+      { id: "condo", theme: "modern", name: "คอนโดแมวไม้ดีไซเนอร์", icon: "🏰", slot: "หอคอยแมว", price: 180, desc: "คอนโดทรงเหลี่ยมสไตล์นอร์ดิก มีหลุมอวกาศมองทะลุ" },
+      { id: "monstera", theme: "modern", name: "ต้นมอนสเตอร่าดินเผา", icon: "🌿", slot: "ข้างตู้", price: 70, desc: "ไม้ฟอกอากาศยอดฮิต เพิ่มความเขียวสดชื่นในห้อง" },
+      { id: "sofa", theme: "modern", name: "โซฟามินิมอลสีครีม", icon: "🛋️", slot: "กลางห้อง", price: 130, desc: "โซฟาผ้าลินิน แมวทิ้งตัวนอนเหยียดยาวอย่างฟิน" },
+      { id: "lamp", theme: "modern", name: "โคมไฟพระจันทร์เสี้ยว", icon: "🌙", slot: "ชั้นวางของ", price: 90, desc: "โคมไฟมินิมอลทรงพระจันทร์ Sleeperem ปรับแสงนุ่มนวล" },
 
-      // Spawn Floating Heart
-      const heart = document.createElement("div");
-      heart.className = "floating-heart";
-      heart.innerText = "💖";
-      heart.style.left = (element.offsetLeft + 15) + "px";
-      heart.style.top = (element.offsetTop - 10) + "px";
-      document.getElementById("room-viewport").appendChild(heart);
-      setTimeout(() => heart.remove(), 1200);
+      { id: "space_pod", theme: "space", name: "แคปซูลนอน Zero-G", icon: "🛸", slot: "ลอยกลางห้อง", price: 200, desc: "แคปซูลต้านแรงโน้มถ่วง แมวนอนลอยเบาหวิวไร้น้ำหนัก" },
+      { id: "ufo_drone", theme: "space", name: "โดรนของเล่นจานบินจิ๋ว", icon: "👽", slot: "เพดาน", price: 160, desc: "จานบินบินวนรอบห้องปล่อยแสงเลเซอร์ ล่อน้องแมวกระโดด" },
+      { id: "hologram", theme: "space", name: "ตู้ปลาโฮโลแกรมอวกาศ", icon: "🌌", slot: "หลังตู้ข้าง", price: 220, desc: "ปลาแสงนีออนว่ายกลางอากาศ แมวจ้องมองตาไม่กะพริบ" },
+      { id: "cyber_food", theme: "space", name: "ชามอาหารสังเคราะห์พลังงาน", icon: "🔮", slot: "จุดอาหาร", price: 140, desc: "ชามอาหารอวกาศเรืองแสง เต็มไปด้วยสารอาหารเพิ่มความสุข" },
+      { id: "space_helmet", theme: "space", name: "หมวกแก้วนักบินอวกาศ", icon: "🪐", slot: "ชั้นวางของ", price: 250, desc: "หมวกแก้วใสกันรังสีคอสมิก สำหรับน้องแมวเตรียมสำรวจดาว" },
 
-      // Reward 2 fish coins
-      fishCoins += 2;
-      saveState();
-    }
+      { id: "dino", theme: "all", name: "ที่ฝนเล็บไดโนเสาร์", icon: "🦖", slot: "พรมพื้น", price: 95, desc: "ที่ลับเล็บรูป T-Rex ยักษ์ แมวยืนสองขายืดตัวตะปบ" },
+      { id: "box", theme: "all", name: "กล่องพัสดุในตำนาน", icon: "📦", slot: "ข้างโต๊ะ", price: 30, desc: "ทิ้งเบาะแสนแพงมานอนในกล่องกระดาษ สัจธรรมของแมว" },
+      { id: "fishbowl", theme: "all", name: "โหลแก้วแมวเหลว", icon: "🐠", slot: "โต๊ะกลาง", price: 110, desc: "โหลแก้วใส แมวหย่อนตัวลงไปแล้วกลายเป็นของเหลว" },
+      { id: "yarn", theme: "all", name: "ก้อนไหมพรมยักษ์", icon: "🧶", slot: "พรมพื้น", price: 35, desc: "ไหมพรมเนื้อนุ่ม แมวชอบใช้ขาหลังถีบรัวๆ" },
+      { id: "buffet", theme: "all", name: "บุฟเฟต์ปลาแซลมอนทองคำ", icon: "🍣", slot: "จุดอาหาร", price: 300, desc: "อาหารมื้อหรูหรา กินแล้วน้องแมวมีความสุขเต็ม 100%" }
+    ];
 
-    /* ==========================================================================
-       SHOP SYSTEM & 20 ITEMS
-       ========================================================================== */
     function filterShop(category, btnElem) {
       currentFilter = category;
       document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
@@ -1216,11 +2029,14 @@
             <div>
               <div class="item-name">${item.name}</div>
               <div class="item-desc">${item.desc}</div>
+              <span class="item-slot-tag">📍 ตำแหน่ง: ${item.slot}</span>
             </div>
           </div>
           <div class="card-footer">
-            <span class="item-level-tag ${isOwned ? '' : 'locked'}">${isOwned ? 'ครอบครองแล้ว' : 'ยังไม่มี'}</span>
-            ${isOwned ? '<span style="font-size:11px; color:#10b981; font-weight:700;">✓ ติดตั้งแล้ว</span>' : `
+            <span style="font-size:10px; color:${isOwned ? '#10b981' : '#94a3b8'}; font-weight:700;">
+              ${isOwned ? '✓ วางในห้องแล้ว' : 'ยังไม่ได้ติดตั้ง'}
+            </span>
+            ${isOwned ? '' : `
               <button class="buy-btn" onclick="buyItem('${item.id}')" ${!canAfford ? 'disabled' : ''}>
                 <span>🐟</span>
                 <span>${item.price} เหรียญ</span>
@@ -1230,6 +2046,9 @@
         `;
         grid.appendChild(card);
       });
+
+      // Update room slots based on owned items
+      updateRoomPlacedItems();
     }
 
     function buyItem(id) {
@@ -1242,22 +2061,68 @@
         saveState();
         audio.playBuyChime();
         renderShop();
-        showToast("🎉", `ซื้อ "${item.name}" แต่งฟาร์มเรียบร้อยแล้ว!`);
+        showToast("🎉", `ซื้อและวาง "${item.name}" บน${item.slot} เรียบร้อย!`);
       }
     }
 
-    /* Toast Notification Helper */
+    function updateRoomPlacedItems() {
+      if (ownedItems["bonsai"]) document.getElementById("slot-shelf").innerText = "🪴";
+      if (ownedItems["maneki"]) document.getElementById("slot-cabinet").innerText = "🐱";
+      if (ownedItems["kotatsu"]) document.getElementById("slot-table").innerText = "🍵";
+      if (ownedItems["fishbowl"]) document.getElementById("slot-table").innerText = "🐠";
+      if (ownedItems["hologram"]) document.getElementById("slot-cabinet").innerText = "🌌";
+      if (ownedItems["space_helmet"]) document.getElementById("slot-shelf").innerText = "🪐";
+    }
+
+    /* ==========================================================================
+       LEADERBOARD MODAL (Connected to Hanging Plaque)
+       ========================================================================== */
+    function openLeaderboardModal() {
+      const list = document.getElementById("leaderboard-list");
+      list.innerHTML = `
+        <div style="background:#0f172a; border-radius:12px; padding:10px; border:1px solid #fbbf24; display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span style="font-size:20px;">👑</span>
+          <div style="flex:1; text-align:left;">
+            <div style="font-size:12px; font-weight:700; color:#fbbf24;">Kanel Notarry (เจ้าของฟาร์ม)</div>
+            <div style="font-size:10px; color:#cbd5e1;">คะแนนสูงสุด: 9,999,999 แต้ม</div>
+          </div>
+          <span style="font-size:12px; font-weight:700; color:#fbbf24;">#1</span>
+        </div>
+        <div style="background:#0f172a; border-radius:12px; padding:10px; border:1px solid #334155; display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span style="font-size:18px;">🥈</span>
+          <div style="flex:1; text-align:left;">
+            <div style="font-size:12px; font-weight:700; color:#f8fafc;">ทาสแมวตัวตึง</div>
+            <div style="font-size:10px; color:#94a3b8;">คะแนน: 48,250 แต้ม</div>
+          </div>
+          <span style="font-size:12px; font-weight:700; color:#cbd5e1;">#2</span>
+        </div>
+        <div style="background:#0f172a; border-radius:12px; padding:10px; border:1px solid #334155; display:flex; align-items:center; gap:10px;">
+          <span style="font-size:18px;">🥉</span>
+          <div style="flex:1; text-align:left;">
+            <div style="font-size:12px; font-weight:700; color:#f8fafc;">น้องส้มสู้ชีวิต</div>
+            <div style="font-size:10px; color:#94a3b8;">คะแนน: 32,100 แต้ม</div>
+          </div>
+          <span style="font-size:12px; font-weight:700; color:#cbd5e1;">#3</span>
+        </div>
+      `;
+      document.getElementById("leaderboard-modal").style.display = "flex";
+    }
+    function closeLeaderboardModal() {
+      document.getElementById("leaderboard-modal").style.display = "none";
+    }
+
+    /* Toast Alert Helper */
     function showToast(icon, text) {
       const toast = document.getElementById("toast-alert");
       document.getElementById("toast-icon").innerText = icon;
       document.getElementById("toast-text").innerText = text;
       toast.classList.add("show");
       clearTimeout(toast._timer);
-      toast._timer = setTimeout(() => toast.classList.remove("show"), 2600);
+      toast._timer = setTimeout(() => toast.classList.remove("show"), 2800);
     }
 
     /* ==========================================================================
-       SUPABASE AUTH & KANEL NOTARRY VIP OWNER SYSTEM
+       SUPABASE AUTH & KANEL NOTARRY SECURITY (Preserved 100%)
        ========================================================================== */
     const SUPABASE_URL = "https://hcwryoufmklgefajfhzq.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_OHGsfx4tr9sTRrXUVp3PHA_ucrWKN4A";
@@ -1359,7 +2224,6 @@
       const name = document.getElementById("farm-user-name");
 
       if (user && isKanelNotarry(user)) {
-        // Kanel Notarry verified! Unlock and reveal the farm!
         if (gate) gate.style.display = "none";
 
         if (pill) {
@@ -1372,7 +2236,6 @@
           pill.title = "คุณ Kanel Notarry (เจ้าของฟาร์ม) - คลิกดูสิทธิพิเศษ";
         }
 
-        // Auto unlock secret space theme for the owner!
         if (!isSpaceUnlocked) {
           isSpaceUnlocked = true;
           saveState();
@@ -1380,20 +2243,22 @@
           if (spaceTab) {
             spaceTab.classList.remove("secret-locked");
             spaceTab.classList.add("secret-unlocked");
-            document.getElementById("space-tab-label").innerText = "🛸 สไตล์อวกาศ";
+            document.getElementById("space-tab-label").innerText = "🛸 อวกาศมาการอง";
           }
         }
 
-        // Ensure owner has at least 9,999 coins to test items
         if (fishCoins < 1000) {
           fishCoins = 9999;
           saveState();
           renderShop();
         }
 
+        // Update Hanging Plaque with Owner name
+        document.getElementById("plaque-rank-text").innerText = "อันดับ #1 ทาสแมวสูงสุด";
+        document.getElementById("plaque-owner-text").innerText = "👑 " + (user.name || "Kanel Notarry");
+
         showToast("👑", "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry!");
       } else {
-        // Not Kanel Notarry (General player or guest): Strictly locked!
         if (gate) gate.style.display = "flex";
       }
     }
@@ -1406,7 +2271,6 @@
         currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
         updateUserUI(currentUser);
 
-        // Clean up OAuth hash params
         if (window.location.hash && window.location.hash.includes("access_token")) {
           history.replaceState(null, '', window.location.pathname);
         }
@@ -1417,16 +2281,17 @@
     }
 
     /* ==========================================================================
-       INITIALIZATION
+       STARTUP
        ========================================================================== */
     saveState();
     if (isSpaceUnlocked) {
       document.getElementById("tab-space").classList.remove("secret-locked");
       document.getElementById("tab-space").classList.add("secret-unlocked");
-      document.getElementById("space-tab-label").innerText = "🛸 สไตล์อวกาศ";
+      document.getElementById("space-tab-label").innerText = "🛸 อวกาศมาการอง";
     }
     switchTheme(currentTheme);
     renderShop();
+    initCatActors();
 
     if (supabaseClient) {
       supabaseClient.auth.getSession().then(({ data: { session } }) => {
