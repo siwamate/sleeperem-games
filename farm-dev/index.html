@@ -3,86 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title id="app-page-title">🐱 Cat Ball & 🏡 ฟาร์มแมว 2.5D (Sleeperem)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>Sleeperem Games - Cat Ball & ฟาร์มแมว 2.5D</title>
   <style>
 
-    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap');
-    * {
-      box-sizing: border-box;
+    /* UNIFIED APP CONTAINER (CAT BALL + CAT FARM SPA) */
+    html, body {
       margin: 0;
       padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    body {
-      background: #040711;
-      color: #f8fafc;
-      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
-      height: 100vh;
-      height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      overflow: hidden;
-      touch-action: none;
-      -webkit-touch-callout: none;
-      -webkit-tap-highlight-color: transparent;
-      overscroll-behavior: none;
-    }
-    #app-container {
-      position: relative;
-      width: 100%;
-      max-width: 480px;
-      height: 100vh;
-      height: 100dvh;
-      max-height: 100dvh;
-      background: #090e1a;
-      border-left: 1px solid #1a2333;
-      border-right: 1px solid #1a2333;
-      box-shadow: 0 10px 50px rgba(0,0,0,0.85);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      margin: 0 auto;
-    }
-    @media (min-width: 768px) {
-      body { padding: 14px 0; }
-      #app-container {
-        border-radius: 26px;
-        height: 94dvh;
-        max-height: 900px;
-        border: 2px solid #2d3b55;
-      }
-    }
-    .app-view {
       width: 100%;
       height: 100%;
-      display: flex;
+      background: #03060f;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    .app-layout {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-view {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
       flex-direction: column;
       overflow: hidden;
+    }
+    .app-view.active {
+      display: flex;
+    }
+    #view-farm {
+      background: #03060f;
+      color: #e2e8f0;
+    }
+    #view-farm .app-wrap {
+      width: 100%;
+      max-width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
       position: relative;
-      flex: 1;
+      overflow: hidden;
     }
-    .dev-view-switch-btn {
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #fde047;
-      font-size: 9px;
+    @media (min-width: 768px) {
+      #view-farm .app-wrap {
+        max-width: 100%;
+      }
+    }
+    .farm-header {
+      width: 100%;
+      height: 52px;
+      background: rgba(10, 15, 29, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      box-sizing: border-box;
+      z-index: 60;
+      flex-shrink: 0;
+    }
+    .farm-header .back-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      border-radius: 18px;
+      padding: 6px 12px;
+      font-size: 12px;
       font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 6px;
       cursor: pointer;
-      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
     }
-    .dev-view-switch-btn:active { transform: scale(0.95); }
+    .farm-header .back-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
 
-    
     @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
     * {
       box-sizing: border-box;
@@ -814,7 +819,6 @@
 
   
 
-    
     
     
     
@@ -1754,88 +1758,7 @@
       align-items: center;
     }
 
-    /* ==========================================================================
-       AUTHENTIC 3D LOW-POLY CUTOUT CAT ENGINE (NO BOX / NO BORDER)
-       ========================================================================== */
-    .cat-actor-cutout {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      z-index: 22;
-      will-change: left, bottom, transform;
-      transition: left 0.65s cubic-bezier(0.25, 1, 0.5, 1), bottom 0.65s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-
-    /* Pure Character Image Container (Zero Frame / Zero Border) */
-    .cat-cutout-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .cat-cutout-img {
-      display: block;
-      height: 64px;
-      width: auto;
-      max-width: 90px;
-      object-fit: contain;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.65));
-      pointer-events: auto;
-    }
-
-    /* Contact Drop Shadow on Ground / Surface */
-    .cat-contact-shadow {
-      width: 52px;
-      height: 12px;
-      background: radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
-      border-radius: 50%;
-      margin-top: -4px;
-      transition: all 0.3s;
-    }
-
-    /* True Walking Locomotion Gait */
-    .cat-actor-cutout.is-walking .cat-cutout-wrap {
-      animation: catPacing 0.4s infinite alternate ease-in-out;
-    }
-    @keyframes catPacing {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-5px) rotate(2deg); }
-      100% { transform: translateY(0px) rotate(-2deg); }
-    }
-
-    /* Leaping trajectory */
-    .cat-actor-cutout.is-jumping .cat-cutout-wrap {
-      animation: catArcJump 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes catArcJump {
-      0% { transform: translateY(0) scale(0.9, 1.15); }
-      40% { transform: translateY(-42px) scale(1.15, 0.9); }
-      100% { transform: translateY(0) scale(1, 1); }
-    }
-
-    /* Sleeping curled pose */
-    .cat-actor-cutout.is-sleeping .cat-cutout-wrap {
-      transform: scale(1.08, 0.72) translateY(6px);
-      filter: brightness(0.9);
-    }
-
-    /* Floating Zzz */
-    .cat-sleep-zzz {
-      position: absolute;
-      top: -20px;
-      right: 4px;
-      font-size: 13px;
-      font-weight: 700;
-      color: #38bdf8;
-      opacity: 0;
-      pointer-events: none;
-      animation: floatZzz 2.4s infinite ease-in-out;
-    }
-    @keyframes floatZzz {
-      0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+    
       45% { opacity: 0.95; }
       100% { transform: translate(16px, -28px) scale(1.2); opacity: 0; }
     }
@@ -2096,9 +2019,8 @@
     }
   
 
-    
     /* ==========================================================================
-       DUAL DINING & HYDRATION STATIONS (ชามข้าว & น้ำพุแมว)
+       DUAL DINING & HYDRATION STATIONS (ชามข้าว & น้ำพุแมว 4 ระดับ)
        ========================================================================== */
     .dining-hydration-hub {
       position: absolute;
@@ -2319,36 +2241,39 @@
       align-items: center;
     }
     .fountain-lv2-bottle {
-      width: 32px;
+      width: 36px;
       height: 44px;
-      background: rgba(186, 230, 253, 0.35);
-      border: 2px solid #7dd3fc;
-      border-radius: 12px 12px 6px 6px;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.3), inset 0 0 8px rgba(255,255,255,0.5);
+      background: rgba(186, 230, 253, 0.3);
+      backdrop-filter: blur(4px);
+      border: 2px solid #38bdf8;
+      border-radius: 18px 18px 6px 6px;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 0 12px rgba(255, 255, 255, 0.6);
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
-      position: relative;
-      overflow: hidden;
     }
-    .fountain-bubble-up {
+    .air-bubble {
       position: absolute;
-      font-size: 10px;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 50%;
       animation: bubbleRise 2s infinite ease-in;
     }
     @keyframes bubbleRise {
-      0% { transform: translateY(18px) scale(0.6); opacity: 0; }
+      0% { transform: translateY(20px) scale(0.6); opacity: 0; }
       50% { opacity: 0.9; }
-      100% { transform: translateY(-18px) scale(1.1); opacity: 0; }
+      100% { transform: translateY(-20px) scale(1.1); opacity: 0; }
     }
-    .fountain-lv2-stone {
-      width: 54px;
+    .fountain-lv2-base {
+      width: 52px;
       height: 22px;
-      background: radial-gradient(ellipse at center, #475569 0%, #1e293b 100%);
+      background: linear-gradient(180deg, #475569 0%, #1e293b 100%);
       border: 2px solid #94a3b8;
-      border-radius: 14px;
-      margin-top: -3px;
+      border-radius: 8px 8px 12px 12px;
+      margin-top: -2px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2358,7 +2283,7 @@
 
     /* FOUNTAIN LEVEL 3: FLOWER PET FOUNTAIN */
     .fountain-lv3-visual {
-      width: 64px;
+      width: 62px;
       height: 52px;
       position: relative;
       display: flex;
@@ -2366,87 +2291,251 @@
       align-items: center;
       justify-content: center;
     }
-    .flower-spout-dome {
-      width: 58px;
-      height: 38px;
-      background: radial-gradient(circle at 50% 30%, #f0fdf4 0%, #bbf7d0 40%, #4ade80 100%);
-      border: 2px solid #86efac;
-      border-radius: 50%;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 12px rgba(255,255,255,0.7);
+    .flower-fountain-basin {
+      width: 60px;
+      height: 34px;
+      background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 50%, #0369a1 100%);
+      border: 2.5px solid #e0f2fe;
+      border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(255,255,255,0.7);
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .flower-daisy-center {
+    .flower-spout {
+      position: absolute;
+      top: -14px;
       font-size: 20px;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
       animation: flowerSpin 8s infinite linear;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
     }
     @keyframes flowerSpin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-    .flower-ripple {
+    .water-ripple-ring {
       position: absolute;
-      inset: -4px;
-      border: 2px solid rgba(56, 189, 248, 0.7);
+      width: 38px;
+      height: 20px;
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
       border-radius: 50%;
       animation: rippleExpand 1.8s infinite ease-out;
     }
     @keyframes rippleExpand {
-      0% { transform: scale(0.85); opacity: 0.9; }
+      0% { transform: scale(0.3); opacity: 1; }
       100% { transform: scale(1.3); opacity: 0; }
     }
 
     /* FOUNTAIN LEVEL 4: AURORA CRYSTAL ULTRA-SILENT FOUNTAIN */
     .fountain-lv4-visual {
-      width: 66px;
-      height: 60px;
+      width: 64px;
+      height: 74px;
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
     }
-    .aurora-crystal-dome {
+    .aurora-floating-gem {
+      font-size: 22px;
+      filter: drop-shadow(0 0 16px #38bdf8) drop-shadow(0 0 24px #a855f7);
+      animation: floatGem 2.5s infinite ease-in-out;
+      z-index: 2;
+    }
+    @keyframes floatGem {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(6deg); }
+    }
+    .aurora-pedestal {
       width: 58px;
       height: 48px;
-      background: radial-gradient(circle at 50% 30%, #fdf4ff 0%, #e879f9 45%, #a855f7 75%, #4c1d95 100%);
-      border: 2.5px solid #f5d0fe;
-      border-radius: 50% 50% 45% 45%;
-      box-shadow: 0 0 25px rgba(217, 70, 239, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.8);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+      border: 2px solid #c084fc;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(192, 132, 252, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.3);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .aurora-glow-beam {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.3) 0%, rgba(168, 85, 247, 0.4) 50%, transparent 100%);
+      animation: auroraGlow 3s infinite alternate;
+    }
+    @keyframes auroraGlow {
+      0% { opacity: 0.4; }
+      100% { opacity: 0.9; }
+    }
+    .aurora-dish-surface {
+      z-index: 1;
+      font-size: 13px;
+      color: #e0f2fe;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Floating Water Bubbles for Drinking Interaction */
+    .water-bubble-pop {
+      position: absolute;
+      font-size: 16px;
+      pointer-events: none;
+      z-index: 50;
+      animation: waterBubbleFloat 1.2s ease-out forwards;
+    }
+    @keyframes waterBubbleFloat {
+      0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+      60% { opacity: 0.9; }
+      100% { transform: translate(var(--dx, 6px), -45px) scale(1.2); opacity: 0; }
+    }
+
+    /* ==========================================================================
+       AUTHENTIC 2.5D FELINE CUTOUT ACTORS & LIFELIKE LOCOMOTION ENGINE
+       ========================================================================== */
+    .cat-actor-cutout {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      z-index: 22;
+      will-change: left, bottom, transform;
+      user-select: none;
+    }
+
+    /* Pure Character Image Container (Zero Frame / Zero Border) */
+    .cat-cutout-wrap {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: auroraGlow 3s infinite alternate ease-in-out;
+      transform-origin: center bottom;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    @keyframes auroraGlow {
-      0% { box-shadow: 0 0 15px rgba(217, 70, 239, 0.5), inset 0 0 10px rgba(255,255,255,0.7); }
-      100% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.8), inset 0 0 18px rgba(240,171,252,0.9); }
-    }
-    .crystal-core-gem {
-      font-size: 20px;
-      filter: drop-shadow(0 0 8px #f43f5e);
-      animation: floatGem 2s infinite ease-in-out;
-    }
-    @keyframes floatGem {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
+    .cat-cutout-img {
+      display: block;
+      height: 64px;
+      width: auto;
+      max-width: 90px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.65));
+      pointer-events: auto;
     }
 
-    /* Water Bubble particle on tap/drink */
-    .water-bubble-pop {
-      position: absolute;
-      pointer-events: none;
-      z-index: 50;
-      font-size: 18px;
-      animation: waterBubbleFloat 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    /* Contact Drop Shadow on Ground / Surface */
+    .cat-contact-shadow {
+      width: 52px;
+      height: 12px;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
+      border-radius: 50%;
+      margin-top: -4px;
+      transition: transform 0.3s, opacity 0.3s;
     }
-    @keyframes waterBubbleFloat {
-      0% { transform: translate(0, 0) scale(0.6); opacity: 1; }
-      100% { transform: translate(6px, -45px) scale(1.4); opacity: 0; }
+
+    /* 1. SITTING / IDLE GAZE (สงบนิ่ง หางขยับเบาๆ) */
+    .cat-actor-cutout.is-sitting .cat-cutout-wrap {
+      animation: catSitBreathe 3.5s infinite ease-in-out;
+    }
+    @keyframes catSitBreathe {
+      0%, 100% { transform: scale(var(--facing, 1), 1) translateY(0); }
+      50% { transform: scale(var(--facing, 1), 1.015) translateY(-1px); }
+    }
+
+    /* 2. WALKING / PACING (ก้าวเดินเป็นธรรมชาติ นุ่มนวล) */
+    .cat-actor-cutout.is-walking .cat-cutout-wrap {
+      animation: catWalkGait 0.45s infinite alternate ease-in-out;
+    }
+    @keyframes catWalkGait {
+      0% { transform: scale(var(--facing, 1), 1) translateY(0px) rotate(0deg); }
+      50% { transform: scale(var(--facing, 1), 1) translateY(-4px) rotate(2deg); }
+      100% { transform: scale(var(--facing, 1), 1) translateY(0px) rotate(-1.5deg); }
+    }
+
+    /* 3. CROUCHING / ANTICIPATION (ย่อตัวต่ำเตรียมส่งแรงกระโดด) */
+    .cat-actor-cutout.is-crouching .cat-cutout-wrap {
+      transform: scale(calc(var(--facing, 1) * 1.15), 0.72) translateY(6px);
+      animation: catWiggleButt 0.25s infinite alternate ease-in-out;
+    }
+    @keyframes catWiggleButt {
+      0% { transform: scale(calc(var(--facing, 1) * 1.15), 0.72) translateY(6px) rotate(-2deg); }
+      100% { transform: scale(calc(var(--facing, 1) * 1.15), 0.72) translateY(6px) rotate(2deg); }
+    }
+    .cat-actor-cutout.is-crouching .cat-contact-shadow {
+      transform: scale(1.3, 0.8);
+    }
+
+    /* 4. JUMPING / SPRING LEAP (วิถีโค้งพุ่งตัว ยืดตัวกลางอากาศ) */
+    .cat-actor-cutout.is-jumping .cat-cutout-wrap {
+      animation: catSpringLeap 0.75s ease-out forwards;
+    }
+    @keyframes catSpringLeap {
+      0% { transform: scale(calc(var(--facing, 1) * 0.9), 1.25) translateY(0); }
+      40% { transform: scale(calc(var(--facing, 1) * 1.05), 0.95) translateY(-22px); }
+      75% { transform: scale(calc(var(--facing, 1) * 1.0), 1.0) translateY(-6px); }
+      100% { transform: scale(calc(var(--facing, 1) * 1.18), 0.82) translateY(2px); }
+    }
+    .cat-actor-cutout.is-jumping .cat-contact-shadow {
+      transform: scale(0.6, 0.4);
+      opacity: 0.3;
+    }
+
+    /* 5. GROOMING / LICKING FUR (ก้มเลียขน เกาหู สบายอารมณ์) */
+    .cat-actor-cutout.is-grooming .cat-cutout-wrap {
+      animation: catLickGroom 0.8s infinite alternate ease-in-out;
+    }
+    @keyframes catLickGroom {
+      0% { transform: scale(var(--facing, 1), 1) rotate(0deg) translateY(0); }
+      50% { transform: scale(calc(var(--facing, 1) * 0.96), 1.03) rotate(-6deg) translateY(2px); }
+      100% { transform: scale(calc(var(--facing, 1) * 0.98), 1.01) rotate(-3deg) translateY(1px); }
+    }
+    .cat-groom-sparkle {
+      position: absolute;
+      top: -12px;
+      right: 12px;
+      font-size: 15px;
+      opacity: 0;
+      pointer-events: none;
+      animation: groomSparkleFade 1.6s infinite ease-in-out;
+    }
+    @keyframes groomSparkleFade {
+      0% { transform: scale(0.3) rotate(0deg); opacity: 0; }
+      40% { transform: scale(1.1) rotate(15deg); opacity: 0.95; }
+      80% { transform: scale(1.2) rotate(30deg) translateY(-8px); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    /* 6. SLEEPING / CURLED NAP (นอนขดตัว Zzz) */
+    .cat-actor-cutout.is-sleeping .cat-cutout-wrap {
+      transform: scale(calc(var(--facing, 1) * 1.15), 0.68) translateY(8px);
+      filter: brightness(0.92);
+      transition: transform 0.4s ease;
+    }
+    .cat-actor-cutout.is-sleeping .cat-sleep-zzz {
+      display: block !important;
+      opacity: 0.9;
+    }
+    .cat-sleep-zzz {
+      position: absolute;
+      top: -20px;
+      right: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #38bdf8;
+      opacity: 0;
+      display: none;
+      pointer-events: none;
+      animation: floatZzz 2.4s infinite ease-in-out;
+    }
+    @keyframes floatZzz {
+      0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+      45% { opacity: 0.95; }
+      100% { transform: translate(16px, -28px) scale(1.2); opacity: 0; }
     }
 
 
@@ -2454,20 +2543,21 @@
 </head>
 <body>
 
-  <div id="app-container">
-    <!-- Dev Staging Ribbon & Navigation -->
+  <div class="app-layout">
+    <!-- VIEW 1: CAT BALL GAME -->
+    <div id="view-game" class="app-view active">
+      
+
+  <div id="game-container">
+    <!-- Dev Staging Ribbon & Tools (Shown only on Staging) -->
     <div id="dev-staging-ribbon" class="dev-staging-ribbon" style="display:none;">
-      <span>🧪 DEV STAGING (โหมดทดสอบ)</span>
-      <div style="display:flex; gap:6px; align-items:center;">
-        <button class="dev-view-switch-btn" onclick="switchView('game')">🎮 เกม</button>
-        <button class="dev-view-switch-btn" onclick="switchView('farm')">🏡 ฟาร์ม</button>
-        <button class="dev-tools-toggle-btn" onclick="toggleDevTools()">🛠️ เมนูทดสอบ</button>
-      </div>
+      <span>🧪 DEV STAGING (สำหรับทดสอบ)</span>
+      <button class="dev-tools-toggle-btn" onclick="toggleDevTools()">🛠️ เมนูทดสอบ</button>
     </div>
 
     <div id="dev-tools-panel" class="dev-tools-panel" style="display:none;">
       <div style="font-size:11px; font-weight:700; color:#fbbf24; display:flex; justify-content:space-between; align-items:center;">
-        <span>🛠️ DEV TOOLS (CAT BALL & CAT FARM)</span>
+        <span>🛠️ CATBALL DEV TOOLS</span>
         <button onclick="toggleDevTools()" style="background:transparent; border:none; color:#94a3b8; font-size:14px; cursor:pointer;">✕</button>
       </div>
       <div class="dev-tools-btns">
@@ -2475,19 +2565,10 @@
         <button onclick="devAddScore(5000)" class="dev-btn">➕ +5,000 แต้ม</button>
         <button onclick="devSpawnKingCat()" class="dev-btn" style="background:#6d28d9; border-color:#8b5cf6;">👑 เสก Tier 10</button>
         <button onclick="devResetShake()" class="dev-btn" style="background:#047857; border-color:#10b981;">🐾 รีเซ็ตสิทธิ์เขย่า</button>
-        <button onclick="devTestCelebration()" class="dev-btn" style="background:#0284c7; border-color:#38bdf8;">🐱 ทดสอบ Runway ฉลอง</button>
-        <button onclick="devAddCoins(500)" class="dev-btn" style="background:#b45309; border-color:#f59e0b;">🐟 +500 เหรียญปลา</button>
-        <button onclick="devMaxFeeder()" class="dev-btn" style="background:#78350f; border-color:#fbbf24;">🥣 MAX ชามข้าว</button>
-        <button onclick="devMaxFountain()" class="dev-btn" style="background:#0369a1; border-color:#38bdf8;">💧 MAX น้ำพุแมว</button>
-        <button onclick="devResetStations()" class="dev-btn" style="background:#475569; border-color:#94a3b8;">🔄 รีเซ็ตชาม/น้ำพุ</button>
-        <button onclick="unlockSpaceTheme()" class="dev-btn" style="background:#4c1d95; border-color:#a855f7;">🛸 ปลดล็อกธีมอวกาศ</button>
-        <button onclick="switchView(currentView === 'game' ? 'farm' : 'game')" class="dev-btn" style="background:#334155; border-color:#64748b;">🔄 สลับหน้าจอ</button>
+        <button onclick="devTestCelebration()" class="dev-btn" style="background:#0284c7; border-color:#38bdf8;">🐾 ทดสอบรันเวย์แมวฉลอง</button>
       </div>
     </div>
-
-    <!-- VIEW 1: CAT BALL GAME -->
-    <div id="view-game" class="app-view">
-      <!-- Header -->
+    <!-- Header -->
     <div class="header">
       <div class="brand-title">
         <span>🐱</span> ฟาร์มแมว
@@ -2505,8 +2586,7 @@
       </div>
     </div>
 
-    
-      <!-- Next Cat Preview Bar & Highest Cat HUD -->
+    <!-- Next Cat Preview Bar & Highest Cat HUD -->
     <div class="preview-bar">
       <div class="next-indicator">
         <span>ถัดไป:</span>
@@ -2519,24 +2599,21 @@
       </div>
     </div>
 
-    
-      <!-- Skill & Toast Notification Banner -->
+    <!-- Skill & Toast Notification Banner -->
     <div id="skill-banner" class="skill-banner">
       <span id="skill-icon" style="font-size:20px;">🐾</span>
       <span id="skill-text" style="font-size:12px; font-weight:600; color:#f8fafc;"></span>
     </div>
 
-    
-      <!-- Interactive Canvas (100% Unobstructed Playing Area) -->
+    <!-- Interactive Canvas (100% Unobstructed Playing Area) -->
     <div id="canvas-wrap">
       <div id="cat-runway-container"></div>
       <canvas id="gameCanvas"></canvas>
     </div>
 
-    
-      <!-- Bottom Action Bar (Farm, Leaderboard, Player Profile, Moon Shake) -->
+    <!-- Bottom Action Bar (Farm, Leaderboard, Player Profile, Moon Shake) -->
     <div class="bottom-action-bar">
-      <button id="farm-nav-btn" class="action-btn-pill farm-btn-active" onclick="switchView('farm')" title="ไปเที่ยวฟาร์มแมวแสนอบอุ่น">
+      <button id="farm-nav-btn" class="action-btn-pill farm-btn-active" onclick="handleFarmClick(event)" title="ไปเที่ยวฟาร์มแมวแสนอบอุ่น">
         <span id="farm-btn-icon" style="font-size:14px;">🏡</span>
         <span id="farm-btn-text" class="btn-text">ฟาร์มแมว</span>
       </button>
@@ -2573,18 +2650,141 @@
     </div>
 
     
-    
+    <!-- Facebook Login & User Profile Modal -->
+    <div id="login-modal">
+      <div class="modal-card">
+        <button class="modal-close-x" onclick="closeLoginModal()" title="ปิด">✕</button>
+        <div id="modal-guest-view">
+          <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
+          <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
+          <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;">
+            เข้าสู่ระบบด้วย Facebook เพื่อบันทึกคะแนนสูงสุด ชิงอันดับบน <b>Leaderboard</b> และรับสิทธิ์ดูแลฟาร์มแมว!
+          </p>
+
+          <button class="fb-login-btn" onclick="loginWithFacebook()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            เข้าสู่ระบบด้วย Facebook
+          </button>
+        </div>
+
+        <div id="modal-user-view" style="display:none;">
+          <div id="modal-user-avatar-wrap" style="margin-bottom:8px;"></div>
+          <h3 id="modal-user-name" style="font-size: 17px; font-weight: 700; color: #f8fafc; margin-bottom: 2px;">ทาสแมว</h3>
+          
+          <!-- VIP Owner Badge in Profile -->
+          <div id="owner-vip-badge-tag" style="display:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; margin-bottom:10px; text-align:center; box-shadow:0 0 10px rgba(245,158,11,0.3);">
+            👑 เจ้าของฟาร์ม Sleeperem
+          </div>
+
+          <p id="modal-user-status" style="font-size: 11px; color: #34d399; margin-bottom: 14px;">● เชื่อมต่อ Facebook แล้ว</p>
+
+          <div style="background:#0f172a; padding:12px; border-radius:14px; border:1px solid #334155; margin-bottom:14px;">
+            <div style="font-size:11px; color:#94a3b8;">สถิติสูงสุดของคุณ</div>
+            <div id="modal-high-score" style="font-size:22px; font-weight:700; color:#fbbf24; font-family:monospace;">0</div>
+          </div>
+
+          <!-- Direct Farm Button for Owner -->
+          <a id="owner-farm-direct-btn" href="/farm" style="display:none; text-decoration:none; width:100%; padding:10px; background:linear-gradient(135deg, #7c3aed, #4338ca); border:1.5px solid #fbbf24; border-radius:12px; color:#fbbf24; font-size:13px; font-weight:700; margin-bottom:8px; text-align:center; box-sizing:border-box; box-shadow:0 0 14px rgba(251,191,36,0.35);">
+            <span id="owner-farm-direct-text">🏡 เข้าสู่ฟาร์มแมวของคุณ →</span>
+          </a>
+
+          <button onclick="closeLoginModal(); openLeaderboardModal();" style="width:100%; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <span>🏆</span> เปิดดูตารางอันดับ (Leaderboard)
+          </button>
+
+          <button onclick="logoutFacebook()" style="width:100%; padding:9px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer;">
+            ออกจากระบบ (Logout)
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- VIEW 2: CAT FARM 2.5D -->
-    <div id="view-farm" class="app-view" style="display:none;">
-      <header class="farm-header">
+    <!-- Farm Admission Modal -->
+    <div id="vip-farm-modal">
+      <div class="modal-card">
+        <button class="modal-close-x" onclick="closeVipFarmModal()" title="ปิด">✕</button>
+        <div style="font-size: 44px; margin-bottom: 6px;">🚧🐱</div>
+        <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">ฟาร์มแมวอยู่ระหว่างก่อสร้าง</h3>
+        <span style="display:inline-block; background:#dc2626; color:#fee2e2; font-size:10px; font-weight:700; padding:2px 10px; border-radius:10px; margin-bottom:12px;">🚧 ยังไม่เปิดให้บุคคลทั่วไปเข้าชม</span>
+        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 18px; text-align:center;">
+          ฟาร์มแมวกำลังอยู่ในช่วงปรับปรุงห้อง 2.5D และโมเดลแมวโพลีกอนคัตเอาท์ จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
+          ขณะนี้เปิดสิทธิ์เฉพาะคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b> เท่านั้น หากคุณคือเจ้าของฟาร์ม โปรดเข้าสู่ระบบด้วย Facebook
+        </p>
+
+        <button class="fb-login-btn" onclick="loginWithFacebook()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          เข้าสู่ระบบด้วย Facebook (เจ้าของฟาร์ม)
+        </button>
+      </div>
+    </div>
+
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal">
+      <div class="leaderboard-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:24px;">🏆</span>
+            <div>
+              <h3 style="font-size:16px; font-weight:700; color:#fbbf24; margin:0;">ทำเนียบทาสแมว</h3>
+              <p style="font-size:11px; color:#94a3b8; margin:0;">ตารางอันดับคะแนนสูงสุด (Leaderboard)</p>
+            </div>
+          </div>
+          <button onclick="closeLeaderboardModal()" style="background:transparent; border:none; color:#94a3b8; font-size:22px; cursor:pointer; padding:2px 8px;">✕</button>
+        </div>
+
+        <div id="leaderboard-list" class="leaderboard-list">
+          <div style="text-align:center; padding:32px 16px; color:#94a3b8;">
+            <div style="font-size:28px; margin-bottom:8px;">🐱</div>
+            <div style="font-size:12px;">กำลังโหลดตารางอันดับ...</div>
+          </div>
+        </div>
+
+        <div style="margin-top:8px;">
+          <button onclick="loadLeaderboardData()" style="width:100%; padding:10px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit;">
+            🔄 รีเฟรช
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal">
+      <div class="modal-card">
+        <button class="modal-close-x" onclick="restartGame()" title="ปิด">✕</button>
+        <div style="font-size: 48px; margin-bottom: 8px;">😿</div>
+        <h2 style="font-size: 20px; font-weight: 700; color: #f87171; margin-bottom: 4px;">กล่องแมวเต็มแย้ว!</h2>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก</p>
+        
+        <div style="background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #334155;">
+          <div style="font-size: 11px; color: #94a3b8;">คะแนนรอบนี้</div>
+          <div id="final-score" style="font-size: 28px; font-weight: 700; color: #38bdf8; font-family: monospace;">0</div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-top:14px;">
+          <button class="restart-btn" onclick="restartGame()" style="flex:1; margin-top:0;">
+            🔄 เล่นใหม่
+          </button>
+          <button onclick="openLeaderboardModal()" style="padding:12px 16px; background:#0284c7; color:#fff; font-size:13px; font-weight:700; border:none; border-radius:14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:5px; box-shadow:0 4px 12px rgba(2, 132, 199, 0.3);">
+            <span>🏆</span> อันดับ
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+    </div>
+
+    <!-- VIEW 2: 2.5D CAT FARM -->
+    <div id="view-farm" class="app-view">
+      <div class="app-wrap">
+        <header class="farm-header">
       
       <button id="header-catball-btn" class="back-btn" onclick="switchView('game')" title="กลับไปเล่นเกมหย่อนแมว (Cat Ball)">
         <span>🎮</span>
         <span>เล่น Cat Ball</span>
       </button>
-
 
       <div id="farm-user-pill" class="header-user-badge" onclick="openLoginModal()" title="บัญชีผู้ใช้">
         <span id="farm-user-icon">👤</span>
@@ -2600,7 +2800,7 @@
         <button id="sound-toggle" class="sound-btn" onclick="toggleAudio()" title="เปิด/ปิดเสียง">🔊</button>
       </div>
     </header>
-      <!-- Theme Tabs -->
+        <!-- Theme Tabs -->
     <div class="theme-selector-bar">
       <button id="tab-japanese" class="theme-tab-btn active" onclick="switchTheme('japanese')">
         <span>🍵</span>
@@ -2617,7 +2817,7 @@
     </div>
 
     
-      <!-- 2.5D Viewport Container (Interactive Wheel & Touch Pinch) -->
+        <!-- 2.5D Viewport Container (Interactive Wheel & Touch Pinch) -->
     <div class="room-viewport" id="room-viewport">
       
       <!-- Top Overlay Controls -->
@@ -2715,7 +2915,7 @@
             <div class="lantern-globe">🏮</div>
           </div>
 
-          </div>
+
         </div>
 
         <!-- ================================================================
@@ -2780,7 +2980,7 @@
             <div class="tower-disc-platform p4"></div>
           </div>
 
-          </div>
+
         </div>
 
         <!-- ================================================================
@@ -2830,12 +3030,11 @@
             <span style="font-size:42px; filter:drop-shadow(0 0 20px #e879f9); margin-top:20px;">🌺</span>
           </div>
 
-          </div>
+
         </div>
 
         <!-- Dynamic Container for Live Cutout Cat Actors (NO BOX / NO FRAME) -->
-        
-        <!-- Dual Dining & Hydration Hub (Food Feeder + Water Fountain) -->
+                <!-- Dual Dining & Hydration Hub (Food Feeder + Water Fountain) -->
         <div class="dining-hydration-hub">
           <!-- Food Feeder Station (Upgradable: Lv 1-4) -->
           <div class="station-interactive-wrap" onclick="openFeederUpgradeModal()" title="คลิกดูสถานะและอัปเกรดชามข้าว/โถจ่ายอาหาร">
@@ -2856,7 +3055,7 @@
     </div>
 
     
-      <!-- Internal App Scroll Container (iOS Native App Style - No Page Bounce) -->
+        <!-- Internal App Scroll Container (iOS Native App Style - No Page Bounce) -->
     <div class="farm-bottom-scroll-container">
       <!-- Feeding Menu Bar -->
       <div class="feeding-menu-bar">
@@ -2872,7 +3071,10 @@
           <span>🥫 ทูน่ากระป๋อง</span>
           <span class="cost">+0.5 kg (15 🐟)</span>
         </button>
-        
+        <button class="feed-btn" onclick="feedFood('macaron')">
+          <span>🍰 มาการองแมว</span>
+          <span class="cost">+1.0 kg (35 🐟)</span>
+        </button>
         <button class="feed-btn" onclick="openFeederUpgradeModal()" style="background:#451a03; border-color:#f59e0b;">
           <span id="quick-feeder-icon">🥣</span>
           <span class="cost" id="quick-feeder-label">ชามข้าว Lv.1 ⬆️</span>
@@ -2880,9 +3082,6 @@
         <button class="feed-btn" onclick="openFountainUpgradeModal()" style="background:#082f49; border-color:#38bdf8;">
           <span id="quick-fountain-icon">💧</span>
           <span class="cost" id="quick-fountain-label">น้ำพุ Lv.1 ⬆️</span>
-        </button>
-          <span>🍰 มาการองแมว</span>
-          <span class="cost">+1.0 kg (35 🐟)</span>
         </button>
       </div>
 
@@ -2909,120 +3108,38 @@
   </div>
 
   
-    </div>
+      <!-- Real Leaderboard Modal (No Bots / No Mock Data) -->
+  <div class="farm-modal-overlay" id="leaderboard-modal">
+    <div class="farm-modal-card">
+      <button class="close-modal-btn" onclick="closeModal('leaderboard-modal')">✕</button>
+      <div style="font-size: 36px; text-align: center; margin-bottom: 6px;">🏆</div>
+      <h3 style="font-size: 16px; font-weight: 700; color: #fbbf24; text-align: center; margin-bottom: 4px;">ทำเนียบทาสแมว</h3>
+      <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 16px;">สถิติและอันดับจริงจากระบบ Sleeperem</p>
 
-    <!-- SHARED MODALS -->
-    <!-- Facebook Login & User Profile Modal -->
-    <div id="login-modal">
-      <div class="modal-card">
-        <button class="modal-close-x" onclick="closeLoginModal()" title="ปิด">✕</button>
-        <div id="modal-guest-view">
-          <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
-          <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
-          <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;">
-            เข้าสู่ระบบด้วย Facebook เพื่อบันทึกคะแนนสูงสุด ชิงอันดับบน <b>Leaderboard</b> และรับสิทธิ์ดูแลฟาร์มแมว!
-          </p>
-
-          <button class="fb-login-btn" onclick="loginWithFacebook()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            เข้าสู่ระบบด้วย Facebook
-          </button>
-        </div>
-
-        <div id="modal-user-view" style="display:none;">
-          <div id="modal-user-avatar-wrap" style="margin-bottom:8px;"></div>
-          <h3 id="modal-user-name" style="font-size: 17px; font-weight: 700; color: #f8fafc; margin-bottom: 2px;">ทาสแมว</h3>
-          
-          <!-- VIP Owner Badge in Profile -->
-          <div id="owner-vip-badge-tag" style="display:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; margin-bottom:10px; text-align:center; box-shadow:0 0 10px rgba(245,158,11,0.3);">
-            👑 เจ้าของฟาร์ม Sleeperem
-          </div>
-
-          <p id="modal-user-status" style="font-size: 11px; color: #34d399; margin-bottom: 14px;">● เชื่อมต่อ Facebook แล้ว</p>
-
-          <div style="background:#0f172a; padding:12px; border-radius:14px; border:1px solid #334155; margin-bottom:14px;">
-            <div style="font-size:11px; color:#94a3b8;">สถิติสูงสุดของคุณ</div>
-            <div id="modal-high-score" style="font-size:22px; font-weight:700; color:#fbbf24; font-family:monospace;">0</div>
-          </div>
-
-          <!-- Direct Farm Button for Owner -->
-          <a id="owner-farm-direct-btn" href="/farm" style="display:none; text-decoration:none; width:100%; padding:10px; background:linear-gradient(135deg, #7c3aed, #4338ca); border:1.5px solid #fbbf24; border-radius:12px; color:#fbbf24; font-size:13px; font-weight:700; margin-bottom:8px; text-align:center; box-sizing:border-box; box-shadow:0 0 14px rgba(251,191,36,0.35);">
-            <span id="owner-farm-direct-text">🏡 เข้าสู่ฟาร์มแมวของคุณ →</span>
-          </a>
-
-          <button onclick="closeLoginModal(); openLeaderboardModal();" style="width:100%; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
-            <span>🏆</span> เปิดดูตารางอันดับ (Leaderboard)
-          </button>
-
-          <button onclick="logoutFacebook()" style="width:100%; padding:9px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer;">
-            ออกจากระบบ (Logout)
-          </button>
-        </div>
-      </div>
-    </div>
-
-    
-    <!-- Leaderboard Modal -->
-    <div id="leaderboard-modal">
-      <div class="leaderboard-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #334155; padding-bottom:10px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:24px;">🏆</span>
+      <div style="background: #090e1a; border: 1px solid #1e293b; border-radius: 14px; padding: 12px; margin-bottom: 14px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 18px;">👑</span>
             <div>
-              <h3 style="font-size:16px; font-weight:700; color:#fbbf24; margin:0;">ทำเนียบทาสแมว</h3>
-              <p style="font-size:11px; color:#94a3b8; margin:0;">ตารางอันดับคะแนนสูงสุด (Leaderboard)</p>
+              <div style="font-size: 13px; font-weight: 700; color: #fbbf24;">คุณ Kanel Notarry</div>
+              <div style="font-size: 10px; color: #38bdf8;">เจ้าของฟาร์ม Sleeperem</div>
             </div>
           </div>
-          <button onclick="closeLeaderboardModal()" style="background:transparent; border:none; color:#94a3b8; font-size:22px; cursor:pointer; padding:2px 8px;">✕</button>
-        </div>
-
-        <div id="leaderboard-list" class="leaderboard-list">
-          <div style="text-align:center; padding:32px 16px; color:#94a3b8;">
-            <div style="font-size:28px; margin-bottom:8px;">🐱</div>
-            <div style="font-size:12px;">กำลังโหลดตารางอันดับ...</div>
+          <div style="text-align: right;">
+            <div style="font-size: 14px; font-weight: 800; color: #fde047;" id="modal-user-score">18,450 แต้ม</div>
+            <div style="font-size: 9px; color: #10b981;">อันดับ #1</div>
           </div>
         </div>
-
-        <div style="margin-top:8px;">
-          <button onclick="loadLeaderboardData()" style="width:100%; padding:10px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit;">
-            🔄 รีเฟรช
-          </button>
-        </div>
       </div>
-    </div>
 
-    
-    <!-- Game Over Modal -->
-    <div id="game-over-modal">
-      <div class="modal-card">
-        <button class="modal-close-x" onclick="restartGame()" title="ปิด">✕</button>
-        <div style="font-size: 48px; margin-bottom: 8px;">😿</div>
-        <h2 style="font-size: 20px; font-weight: 700; color: #f87171; margin-bottom: 4px;">กล่องแมวเต็มแย้ว!</h2>
-        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก</p>
-        
-        <div style="background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #334155;">
-          <div style="font-size: 11px; color: #94a3b8;">คะแนนรอบนี้</div>
-          <div id="final-score" style="font-size: 28px; font-weight: 700; color: #38bdf8; font-family: monospace;">0</div>
-        </div>
-
-        <div style="display:flex; gap:6px; margin-top:14px;">
-          
-          <button onclick="restartGame(); switchView('farm');" style="padding:12px 14px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-size:12px; font-weight:700; border:none; border-radius:14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:4px; box-shadow:0 4px 12px rgba(16, 185, 129, 0.3);">
-            <span>🏡</span> ฟาร์มแมว
-          </button>
-          <button class="restart-btn" onclick="restartGame()" style="flex:1; margin-top:0;">
-            🔄 เล่นใหม่
-          </button>
-          <button onclick="openLeaderboardModal()" style="padding:12px 16px; background:#0284c7; color:#fff; font-size:13px; font-weight:700; border:none; border-radius:14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:5px; box-shadow:0 4px 12px rgba(2, 132, 199, 0.3);">
-            <span>🏆</span> อันดับ
-          </button>
-        </div>
+      <div style="background: #111a2e; border: 1px dashed #334155; border-radius: 12px; padding: 10px; font-size: 11px; color: #94a3b8; text-align: center; line-height: 1.5;">
+        ℹ️ <b>สถานะ Staging:</b> ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม จึงแสดงเฉพาะข้อมูลจริงของเจ้าของฟาร์มเท่านั้น (ไม่มีบอทจำลอง)
       </div>
     </div>
   </div>
 
   
-    <!-- Cat Selector Modal -->
+      <!-- Cat Selector Modal -->
   <div class="farm-modal-overlay" id="cat-selector-modal">
     <div class="farm-modal-card">
       <button class="close-modal-btn" onclick="closeModal('cat-selector-modal')">✕</button>
@@ -3035,7 +3152,7 @@
   </div>
 
   
-    <!-- Cat Detail & Feed Modal -->
+      <!-- Cat Detail & Feed Modal -->
   <div class="farm-modal-overlay" id="cat-detail-modal">
     <div class="farm-modal-card" style="text-align: center;">
       <button class="close-modal-btn" onclick="closeModal('cat-detail-modal')">✕</button>
@@ -3066,7 +3183,62 @@
   </div>
 
   
-    <!-- User Account Modal -->
+      
+  <!-- Feeder Upgrade Modal -->
+  <div class="farm-modal-overlay" id="feeder-upgrade-modal">
+    <div class="farm-modal-card" style="text-align:center;">
+      <button class="close-modal-btn" onclick="closeModal('feeder-upgrade-modal')">✕</button>
+      <div style="font-size: 38px; margin-bottom: 4px;">🥣</div>
+      <h3 style="font-size: 16px; font-weight: 700; color: #f59e0b; margin-bottom: 2px;">อัปเกรดชามข้าว/โถจ่ายอาหาร</h3>
+      <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 12px;">แมวจะเดินมากินอาหารเม็ดที่สถานีนี้อย่างเอร็ดอร่อย</div>
+      
+      <div id="feeder-current-tier-card" style="background:#1e293b; border:1px solid #334155; border-radius:12px; padding:10px; margin-bottom:12px; text-align:left;">
+        <div style="font-size:12px; font-weight:700; color:#fbbf24;" id="feeder-status-title">สถานะปัจจุบัน: Lv.1 ชามเซรามิกมินิมอล</div>
+        <div style="font-size:11px; color:#94a3b8; margin-top:2px;" id="feeder-status-desc">ชามเซรามิกมาตรฐาน อาหารเม็ดสะอาด</div>
+      </div>
+
+      <div id="feeder-next-tier-card" style="background:#0f172a; border:1.5px solid #f59e0b; border-radius:12px; padding:10px; margin-bottom:14px; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-size:12px; font-weight:700; color:#e2e8f0;" id="feeder-next-title">ระดับถัดไป: Lv.2 ถาดคู่ไม้ยกสูง</div>
+          <div style="font-size:11px; font-weight:800; color:#fbbf24;" id="feeder-upgrade-cost">150 🐟</div>
+        </div>
+        <div style="font-size:11px; color:#94a3b8; margin-top:3px;" id="feeder-next-desc">ฐานไม้โอ๊คยกระดับ กันสำลักและถูกหลักสรีระแมว</div>
+      </div>
+
+      <button class="item-buy-btn" id="feeder-upgrade-action-btn" onclick="executeFeederUpgrade()" style="width:100%; padding:10px; font-size:13px; font-weight:700; background:linear-gradient(135deg, #b45309, #f59e0b);">
+        <span>⬆️ อัปเกรดชามข้าวทันที</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Fountain Upgrade Modal -->
+  <div class="farm-modal-overlay" id="fountain-upgrade-modal">
+    <div class="farm-modal-card" style="text-align:center;">
+      <button class="close-modal-btn" onclick="closeModal('fountain-upgrade-modal')">✕</button>
+      <div style="font-size: 38px; margin-bottom: 4px;">💧</div>
+      <h3 style="font-size: 16px; font-weight: 700; color: #38bdf8; margin-bottom: 2px;">อัปเกรดชามน้ำ/น้ำพุแมว</h3>
+      <div style="font-size: 11px; color: #cbd5e1; margin-bottom: 12px;">แมวจะเดินมาเลียน้ำที่สถานีนี้เพื่อความสดชื่น</div>
+      
+      <div id="fountain-current-tier-card" style="background:#1e293b; border:1px solid #334155; border-radius:12px; padding:10px; margin-bottom:12px; text-align:left;">
+        <div style="font-size:12px; font-weight:700; color:#38bdf8;" id="fountain-status-title">สถานะปัจจุบัน: Lv.1 ชามน้ำเซรามิกใส</div>
+        <div style="font-size:11px; color:#94a3b8; margin-top:2px;" id="fountain-status-desc">ชามน้ำเซรามิกขอบมน สะอาดปลอดภัย</div>
+      </div>
+
+      <div id="fountain-next-tier-card" style="background:#0f172a; border:1.5px solid #38bdf8; border-radius:12px; padding:10px; margin-bottom:14px; text-align:left;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-size:12px; font-weight:700; color:#e2e8f0;" id="fountain-next-title">ระดับถัดไป: Lv.2 อ่างน้ำกาลักน้ำหินเซน</div>
+          <div style="font-size:11px; font-weight:800; color:#38bdf8;" id="fountain-upgrade-cost">150 🐟</div>
+        </div>
+        <div style="font-size:11px; color:#94a3b8; margin-top:3px;" id="fountain-next-desc">แท็งก์น้ำใสทรงขวดคว่ำ เติมน้ำอัตโนมัติพร้อมฟองอากาศ</div>
+      </div>
+
+      <button class="item-buy-btn" id="fountain-upgrade-action-btn" onclick="executeFountainUpgrade()" style="width:100%; padding:10px; font-size:13px; font-weight:700; background:linear-gradient(135deg, #0284c7, #38bdf8);">
+        <span>⬆️ อัปเกรดน้ำพุทันที</span>
+      </button>
+    </div>
+  </div>
+
+      <!-- User Account Modal -->
   <div class="farm-modal-overlay" id="user-modal">
     <div class="farm-modal-card" style="text-align:center;">
       <button class="close-modal-btn" onclick="closeModal('user-modal')">✕</button>
@@ -3078,402 +3250,19 @@
   </div>
 
   
-    <!-- Toast Alert -->
+      <!-- Toast Alert -->
   <div class="toast-alert" id="toast-alert">
     <span id="toast-icon">✨</span>
     <span id="toast-msg">ข้อความ</span>
   </div>
 
   
-    
-  <!-- Feeder Upgrade Modal -->
-  <div class="farm-modal-overlay" id="feeder-upgrade-modal">
-    <div class="farm-modal-card" style="text-align:center;">
-      <button class="close-modal-btn" onclick="closeModal('feeder-upgrade-modal')">✕</button>
-      <div id="feeder-modal-preview" style="font-size:52px; margin-bottom:8px; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.5));">🥣</div>
-      <h3 id="feeder-modal-title" style="font-size:17px; font-weight:700; color:#fbbf24; margin-bottom:4px;">ชามเซรามิกมินิมอล</h3>
-      <div id="feeder-modal-badge" style="display:inline-block; font-size:11px; font-weight:700; background:#b45309; color:#fff; padding:2px 10px; border-radius:10px; margin-bottom:12px;">ระดับ 1/4</div>
-      <p id="feeder-modal-desc" style="font-size:12px; color:#cbd5e1; line-height:1.6; margin-bottom:14px; text-align:center;"></p>
-      
-      <div style="background:#090e1a; border:1px solid #1e293b; border-radius:14px; padding:12px; margin-bottom:16px; text-align:left;">
-        <div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">คุณสมบัติพิเศษ:</div>
-        <div id="feeder-modal-perk" style="font-size:13px; font-weight:600; color:#38bdf8;">ความสุขพื้นฐานเมื่อแมวมากิน</div>
-      </div>
-
-      <div id="feeder-upgrade-action-area"></div>
     </div>
-  </div>
-
-  <!-- Fountain Upgrade Modal -->
-  <div class="farm-modal-overlay" id="fountain-upgrade-modal">
-    <div class="farm-modal-card" style="text-align:center;">
-      <button class="close-modal-btn" onclick="closeModal('fountain-upgrade-modal')">✕</button>
-      <div id="fountain-modal-preview" style="font-size:52px; margin-bottom:8px; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.5));">💧</div>
-      <h3 id="fountain-modal-title" style="font-size:17px; font-weight:700; color:#38bdf8; margin-bottom:4px;">ชามน้ำเซรามิกใส</h3>
-      <div id="fountain-modal-badge" style="display:inline-block; font-size:11px; font-weight:700; background:#0284c7; color:#fff; padding:2px 10px; border-radius:10px; margin-bottom:12px;">ระดับ 1/4</div>
-      <p id="fountain-modal-desc" style="font-size:12px; color:#cbd5e1; line-height:1.6; margin-bottom:14px; text-align:center;"></p>
-      
-      <div style="background:#090e1a; border:1px solid #1e293b; border-radius:14px; padding:12px; margin-bottom:16px; text-align:left;">
-        <div style="font-size:11px; color:#94a3b8; margin-bottom:4px;">คุณสมบัติพิเศษ:</div>
-        <div id="fountain-modal-perk" style="font-size:13px; font-weight:600; color:#4ade80;">ดับกระหายพื้นฐาน</div>
-      </div>
-
-      <div id="fountain-upgrade-action-area"></div>
-    </div>
-  </div>
-
   </div>
 
   <script>
 
-    const soundEngineAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const cutoutImgBase = window.location.pathname.includes('/catball') ? '../cats/img/' : 'cats/img/';
-
-    let currentView = 'game';
-    let isGameLoopRunning = true;
-    let coins = parseInt(localStorage.getItem('sleeperem_cat_coins') || localStorage.getItem('sleeperem_fish_coins') || '500', 10);
-
-    // ==========================================================================
-    // FEEDER & FOUNTAIN PROGRESSION DATA (4 TIERS EACH)
-    // ==========================================================================
-    let feederLevel = parseInt(localStorage.getItem('sleeperem_feeder_level') || '1', 10);
-    let fountainLevel = parseInt(localStorage.getItem('sleeperem_fountain_level') || '1', 10);
-
-    const FEEDER_TIERS = [
-      null,
-      {
-        level: 1,
-        name: "ชามเซรามิกมินิมอล",
-        icon: "🥣",
-        desc: "ชามเซรามิกเรียบง่ายสีขาวสะอาดตา สำหรับใส่อาหารเม็ดพื้นฐานอย่างอบอุ่น",
-        upgradeCost: 150,
-        perk: "ความสุขพื้นฐานเมื่อแมวแวะมากิน"
-      },
-      {
-        level: 2,
-        name: "ถาดคู่ไม้ยกสูงกันสำลัก",
-        icon: "🪵",
-        desc: "โครงไม้ไผ่ธรรมชาติยกเอียง 15 องศา ป้องกันการสำลักและถนอมกระดูกคอน้องแมว",
-        upgradeCost: 450,
-        perk: "+20% ความสุขและกินอาหารสะดวกขึ้น"
-      },
-      {
-        level: 3,
-        name: "โถแก้วจ่ายอาหารไหลอัตโนมัติ",
-        icon: "🏺",
-        desc: "โถแก้วทรงสูงจุอาหารเม็ดได้เต็มเปี่ยม เม็ดอาหารจะไหลลงสู่ชามเรื่อยๆ ตามแรงโน้มถ่วงอัตโนมัติ",
-        upgradeCost: 1200,
-        perk: "อาหารไหลเติมต่อเนื่อง + แมวอิ่มไวขึ้น"
-      },
-      {
-        level: 4,
-        name: "เครื่องให้อาหารดิจิทัล AI อัจฉริยะ",
-        icon: "🤖",
-        desc: "บอดี้ไฮเทค หน้าจอดิจิทัล LED พร้อมระบบเซนเซอร์อัจฉริยะจ่ายอาหารอัตโนมัติตามรอบเวลา",
-        upgradeCost: 0,
-        perk: "ระดับสูงสุด (MAX) บัฟสุขภาพและความสุขเต็ม 100%"
-      }
-    ];
-
-    const FOUNTAIN_TIERS = [
-      null,
-      {
-        level: 1,
-        name: "ชามน้ำเซรามิกใส",
-        icon: "💧",
-        desc: "ชามใส่น้ำเซรามิกขอบมน ผิวน้ำสะอาดใสสำหรับน้องแมวดื่มดับกระหาย",
-        upgradeCost: 150,
-        perk: "ดับกระหายพื้นฐาน"
-      },
-      {
-        level: 2,
-        name: "อ่างน้ำกาลักน้ำหินเซน",
-        icon: "🎍",
-        desc: "ขวดแก้วคว่ำบนฐานหินแม่น้ำ มีฟองอากาศผุดเติมน้ำอัตโนมัติเมื่อแมวดื่ม",
-        upgradeCost: 450,
-        perk: "+25% แมวแวะมาดื่มน้ำบ่อยขึ้น"
-      },
-      {
-        level: 3,
-        name: "น้ำพุแมวดอกไม้น้ำวน",
-        icon: "🌼",
-        desc: "หัวดอกไม้สีสดใสพ่นสายน้ำ 6 ทิศทางลงสู่อ่างกรองคาร์บอนพร้อมคลื่นน้ำวน",
-        upgradeCost: 1200,
-        perk: "น้ำวนกรองสะอาด กระตุ้นการดื่มน้ำ +35%"
-      },
-      {
-        level: 4,
-        name: "น้ำพุคริสตัลออโรร่าไร้สาย",
-        icon: "🌌",
-        desc: "โดมคริสตัลเรืองแสงออโรร่า มอเตอร์แม่เหล็กไร้สายเงียบกริบ พร้อมแสง UV ฆ่าเชื้อ",
-        upgradeCost: 0,
-        perk: "ระดับสูงสุด (MAX) มอบออร่าประกายดาวระยิบระยับให้แมว"
-      }
-    ];
-
-    function renderStations() {
-      const feederVisual = document.getElementById("feeder-visual");
-      const feederBadge = document.getElementById("feeder-level-badge");
-      const fountainVisual = document.getElementById("fountain-visual");
-      const fountainBadge = document.getElementById("fountain-level-badge");
-
-      // Render Feeder Visual
-      if (feederVisual) {
-        if (feederLevel === 1) {
-          feederVisual.innerHTML = '<div class="feeder-lv1-visual">🥣</div>';
-        } else if (feederLevel === 2) {
-          feederVisual.innerHTML = '<div class="feeder-lv2-visual"><div class="feeder-lv2-dish">🥣</div><div class="feeder-lv2-dish">🐟</div></div>';
-        } else if (feederLevel === 3) {
-          feederVisual.innerHTML = '<div class="feeder-lv3-visual"><div class="silo-cap"></div><div class="silo-cylinder"><div class="silo-grains-flow"></div></div><div class="silo-tray">🥣</div></div>';
-        } else {
-          feederVisual.innerHTML = '<div class="feeder-lv4-visual"><div class="cyber-led-screen">12:00 AUTO</div><div class="cyber-dispense-port">✨</div><div class="cyber-bottom-dish">🐟 💖</div></div>';
-        }
-      }
-      if (feederBadge) {
-        const cur = FEEDER_TIERS[feederLevel];
-        feederBadge.innerText = 'Lv.' + cur.level + ' ' + (cur.level === 4 ? cur.name.split(' ')[0] + ' (MAX)' : cur.name.split(' ')[0]);
-      }
-
-      // Render Fountain Visual
-      if (fountainVisual) {
-        if (fountainLevel === 1) {
-          fountainVisual.innerHTML = '<div class="fountain-lv1-visual">💧</div>';
-        } else if (fountainLevel === 2) {
-          fountainVisual.innerHTML = '<div class="fountain-lv2-visual"><div class="fountain-lv2-bottle">🫧<div class="fountain-bubble-up">🫧</div></div><div class="fountain-lv2-stone">💧</div></div>';
-        } else if (fountainLevel === 3) {
-          fountainVisual.innerHTML = '<div class="fountain-lv3-visual"><div class="flower-spout-dome"><div class="flower-daisy-center">🌼</div><div class="flower-ripple"></div></div></div>';
-        } else {
-          fountainVisual.innerHTML = '<div class="fountain-lv4-visual"><div class="aurora-crystal-dome"><div class="crystal-core-gem">💎</div></div></div>';
-        }
-      }
-      if (fountainBadge) {
-        const cur = FOUNTAIN_TIERS[fountainLevel];
-        fountainBadge.innerText = 'Lv.' + cur.level + ' ' + (cur.level === 4 ? cur.name.split(' ')[0] + ' (MAX)' : cur.name.split(' ')[0]);
-      }
-
-      // Update Quick Bar Badges
-      const qFeederIcon = document.getElementById("quick-feeder-icon");
-      const qFeederLabel = document.getElementById("quick-feeder-label");
-      if (qFeederIcon) qFeederIcon.innerText = FEEDER_TIERS[feederLevel].icon;
-      if (qFeederLabel) qFeederLabel.innerText = 'ชามข้าว Lv.' + feederLevel + (feederLevel === 4 ? ' (MAX)' : ' ⬆️');
-
-      const qFountainIcon = document.getElementById("quick-fountain-icon");
-      const qFountainLabel = document.getElementById("quick-fountain-label");
-      if (qFountainIcon) qFountainIcon.innerText = FOUNTAIN_TIERS[fountainLevel].icon;
-      if (qFountainLabel) qFountainLabel.innerText = 'น้ำพุ Lv.' + fountainLevel + (fountainLevel === 4 ? ' (MAX)' : ' ⬆️');
-    }
-
-    function openFeederUpgradeModal() {
-      const cur = FEEDER_TIERS[feederLevel];
-      const next = FEEDER_TIERS[feederLevel + 1];
-
-      document.getElementById("feeder-modal-preview").innerText = cur.icon;
-      document.getElementById("feeder-modal-title").innerText = cur.name;
-      document.getElementById("feeder-modal-badge").innerText = 'ระดับ ' + cur.level + '/4' + (cur.level === 4 ? ' (สูงสุด)' : '');
-      document.getElementById("feeder-modal-desc").innerText = cur.desc;
-      document.getElementById("feeder-modal-perk").innerText = cur.perk;
-
-      const area = document.getElementById("feeder-upgrade-action-area");
-      if (next) {
-        area.innerHTML = `
-          <div style="font-size:11px; color:#fbbf24; margin-bottom:8px;">ขั้นถัดไป: <b>${next.icon} ${next.name}</b> (${next.perk})</div>
-          <button class="item-buy-btn" onclick="upgradeFeeder()" style="padding:12px; font-size:13px; font-weight:700;">
-            <span>⬆️</span>
-            <span>อัปเกรดเป็น Lv.${next.level} (${next.upgradeCost.toLocaleString()} 🐟)</span>
-          </button>
-        `;
-      } else {
-        area.innerHTML = `
-          <div style="background:#064e3b; border:1px solid #10b981; color:#a7f3d0; font-size:12px; font-weight:700; padding:10px; border-radius:12px;">
-            👑 ชามข้าวอยู่ในระดับสูงสุดแล้ว (MAX)
-          </div>
-        `;
-      }
-      document.getElementById("feeder-upgrade-modal").classList.add("open");
-    }
-
-    function upgradeFeeder() {
-      if (feederLevel >= 4) return;
-      const next = FEEDER_TIERS[feederLevel + 1];
-      if (spendFarmCoins(next.upgradeCost)) {
-        feederLevel++;
-        try { localStorage.setItem('sleeperem_feeder_level', feederLevel.toString()); } catch(e) {}
-        renderStations();
-        openFeederUpgradeModal();
-        showToast("🎉", "อัปเกรดชามข้าวเป็น " + next.name + " สำเร็จ!");
-        sound.playPop(8);
-      } else {
-        showToast("⚠️", "เหรียญปลาไม่พอ! เล่น Cat Ball เพื่อสะสมเหรียญเพิ่ม");
-      }
-    }
-
-    function openFountainUpgradeModal() {
-      const cur = FOUNTAIN_TIERS[fountainLevel];
-      const next = FOUNTAIN_TIERS[fountainLevel + 1];
-
-      document.getElementById("fountain-modal-preview").innerText = cur.icon;
-      document.getElementById("fountain-modal-title").innerText = cur.name;
-      document.getElementById("fountain-modal-badge").innerText = 'ระดับ ' + cur.level + '/4' + (cur.level === 4 ? ' (สูงสุด)' : '');
-      document.getElementById("fountain-modal-desc").innerText = cur.desc;
-      document.getElementById("fountain-modal-perk").innerText = cur.perk;
-
-      const area = document.getElementById("fountain-upgrade-action-area");
-      if (next) {
-        area.innerHTML = `
-          <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">ขั้นถัดไป: <b>${next.icon} ${next.name}</b> (${next.perk})</div>
-          <button class="item-buy-btn" onclick="upgradeFountain()" style="padding:12px; font-size:13px; font-weight:700; background:linear-gradient(135deg, #0284c7, #0369a1); border-color:#38bdf8;">
-            <span>⬆️</span>
-            <span>อัปเกรดเป็น Lv.${next.level} (${next.upgradeCost.toLocaleString()} 🐟)</span>
-          </button>
-        `;
-      } else {
-        area.innerHTML = `
-          <div style="background:#064e3b; border:1px solid #10b981; color:#a7f3d0; font-size:12px; font-weight:700; padding:10px; border-radius:12px;">
-            👑 น้ำพุแมวอยู่ในระดับสูงสุดแล้ว (MAX)
-          </div>
-        `;
-      }
-      document.getElementById("fountain-upgrade-modal").classList.add("open");
-    }
-
-    function upgradeFountain() {
-      if (fountainLevel >= 4) return;
-      const next = FOUNTAIN_TIERS[fountainLevel + 1];
-      if (spendFarmCoins(next.upgradeCost)) {
-        fountainLevel++;
-        try { localStorage.setItem('sleeperem_fountain_level', fountainLevel.toString()); } catch(e) {}
-        renderStations();
-        openFountainUpgradeModal();
-        showToast("🎉", "อัปเกรดน้ำพุแมวเป็น " + next.name + " สำเร็จ!");
-        sound.playWaterLap();
-      } else {
-        showToast("⚠️", "เหรียญปลาไม่พอ! เล่น Cat Ball เพื่อสะสมเหรียญเพิ่ม");
-      }
-    }
-
-    function spawnWaterBubble(x, y) {
-      const b = document.createElement("div");
-      b.className = "water-bubble-pop";
-      b.innerText = "🫧";
-      b.style.left = x + "px";
-      b.style.bottom = y + "px";
-      document.getElementById("room-stage").appendChild(b);
-      setTimeout(() => { b.remove(); }, 1100);
-    }
-
-    // Dev Station Tools
-    function devMaxFeeder() {
-      feederLevel = 4;
-      try { localStorage.setItem('sleeperem_feeder_level', '4'); } catch(e) {}
-      renderStations();
-      showToast("🤖", "อัปเกรดชามข้าวเป็นระดับสูงสุด (AI Cyber Feeder) แล้ว!");
-    }
-    function devMaxFountain() {
-      fountainLevel = 4;
-      try { localStorage.setItem('sleeperem_fountain_level', '4'); } catch(e) {}
-      renderStations();
-      showToast("🌌", "อัปเกรดน้ำพุแมวเป็นระดับสูงสุด (Aurora Crystal) แล้ว!");
-    }
-    function devResetStations() {
-      feederLevel = 1;
-      fountainLevel = 1;
-      try {
-        localStorage.setItem('sleeperem_feeder_level', '1');
-        localStorage.setItem('sleeperem_fountain_level', '1');
-      } catch(e) {}
-      renderStations();
-      showToast("🔄", "รีเซ็ตชามข้าวและชามน้ำกลับสู่ Level 1 เรียบร้อย");
-    }
-
-    function switchView(viewName) {
-      const gameView = document.getElementById("view-game");
-      const farmView = document.getElementById("view-farm");
-      if (!gameView || !farmView) return;
-
-      currentView = viewName;
-
-      if (viewName === 'farm') {
-        gameView.style.display = 'none';
-        farmView.style.display = 'flex';
-        history.replaceState(null, '', '#farm');
-
-        // Pause Cat Ball loop to save CPU & battery
-        isGameLoopRunning = false;
-
-        // Initialize / Refresh Farm View
-        updateCoinsDisplay();
-        renderStations();
-        reloadActiveCats();
-        renderShop();
-        applyCameraTransform();
-      } else {
-        farmView.style.display = 'none';
-        gameView.style.display = 'flex';
-        history.replaceState(null, '', '#game');
-
-        // Resume Cat Ball loop
-        if (!isGameLoopRunning) {
-          isGameLoopRunning = true;
-          lastTime = performance.now();
-          requestAnimationFrame(gameLoop);
-          resizeCanvas();
-        }
-      }
-    }
-
-    window.addEventListener('hashchange', () => {
-      if (window.location.hash === '#farm') {
-        if (currentView !== 'farm') switchView('farm');
-      } else {
-        if (currentView !== 'game') switchView('game');
-      }
-    });
-
-    // Unified Coins Manager
-    function addFarmCoins(amount) {
-      coins += amount;
-      fishCoins = coins;
-      saveCoins();
-    }
-
-    function spendFarmCoins(amount) {
-      if (coins < amount) return false;
-      coins -= amount;
-      fishCoins = coins;
-      saveCoins();
-      return true;
-    }
-
-    function saveCoins() {
-      try {
-        localStorage.setItem('sleeperem_cat_coins', coins.toString());
-        localStorage.setItem('sleeperem_fish_coins', coins.toString());
-      } catch(e) {}
-      updateCoinsDisplay();
-    }
-
-    function updateCoinsDisplay() {
-      const el = document.getElementById("coin-val");
-      if (el) el.innerText = coins.toLocaleString();
-    }
-
-    function devAddCoins(amount) {
-      addFarmCoins(amount);
-      showToast("🪙", "เพิ่ม +" + amount + " เหรียญปลาเรียบร้อย!");
-    }
-
-    // Unified Sound Sync
-    function toggleAudio() {
-      sound.muted = !sound.muted;
-      audioEnabled = !sound.muted;
-      const muteBtn = document.getElementById("mute-btn");
-      const soundBtn = document.getElementById("sound-toggle");
-      if (muteBtn) muteBtn.innerText = sound.muted ? "🔇" : "🔊";
-      if (soundBtn) soundBtn.innerText = sound.muted ? "🔇" : "🔊";
-      showToast(sound.muted ? "🔇" : "🔊", sound.muted ? "ปิดเสียงเกม" : "เปิดเสียงเกม");
-    }
-
-
+    
     /* ==========================================================================
        CAT TIERS CONFIGURATION (Sleeperem Mascot Integrated)
        ========================================================================== */
@@ -3554,25 +3343,6 @@
         sGain.connect(this.ctx.destination);
         sparkle.start();
         sparkle.stop(this.ctx.currentTime + 0.25);
-      }
-
-      playWaterLap() {
-        if (this.muted) return;
-        this.init();
-        const now = this.ctx.currentTime;
-        [850, 1250].forEach((freq, i) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = "sine";
-          osc.frequency.setValueAtTime(freq, now + i * 0.08);
-          osc.frequency.exponentialRampToValueAtTime(freq * 1.6, now + i * 0.08 + 0.06);
-          gain.gain.setValueAtTime(0.08, now + i * 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.08);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(now + i * 0.08);
-          osc.stop(now + i * 0.08 + 0.08);
-        });
       }
 
       playMoonShake() {
@@ -4483,10 +4253,14 @@
       // 1% of earned score is automatically saved as Fish Coins for Cat Farm (discarding fractions)
       
       const earnedCoins = Math.floor(score * 0.01);
-      if (earnedCoins > 0) {
-        addFarmCoins(earnedCoins);
-        showToast("🪙", "ได้รับ +" + earnedCoins + " เหรียญปลาสำหรับฟาร์มแมว!");
-      }
+      fishCoins += earnedCoins;
+      coins = fishCoins;
+      try {
+        localStorage.setItem("sleeperem_fish_coins", fishCoins);
+        localStorage.setItem("sleeperem_farm_coins", fishCoins);
+        const headerCoinEl = document.getElementById("farm-coins-count");
+        if (headerCoinEl) headerCoinEl.innerText = fishCoins.toLocaleString();
+      } catch(e) {}
 
     }
 
@@ -4720,31 +4494,31 @@
     updateNextCatUI();
     requestAnimationFrame(gameLoop);
   
-
+    
     /* ==========================================================================
        ALL 20 3D LOW-POLY CUTOUT CAT BREEDS (TRANSPARENT PNG / NO BOX)
        ========================================================================== */
     const CAT_BREEDS = [
-      { id: "savannah", name: "ซาวันนาห์", trait: "คล่องแคล่ว ปราดเปรียว", baseWeight: 6.2, img: cutoutImgBase + "cutout_savannah.png" },
-      { id: "mainecoon", name: "เมนคูน", trait: "ยักษ์ใหญ่ใจดี ขนฟูหนา", baseWeight: 7.8, img: cutoutImgBase + "cutout_mainecoon.png" },
-      { id: "bengal", name: "เบงกอล", trait: "ลายเสือดาว ชอบกระโดดสูง", baseWeight: 5.5, img: cutoutImgBase + "cutout_bengal.png" },
-      { id: "ragdoll", name: "แร็กดอลล์", trait: "นุ่มฟู ยอมคน ขี้อ้อน", baseWeight: 6.0, img: cutoutImgBase + "cutout_ragdoll.png" },
-      { id: "sphynx", name: "สฟิงซ์", trait: "ขี้เล่น รักอบอุ่น ฉลาด", baseWeight: 4.2, img: cutoutImgBase + "cutout_sphynx.png" },
-      { id: "british", name: "บริติช ช็อตแฮร์", trait: "แก้มกลม สุขุม นิ่งสงบ", baseWeight: 5.8, img: cutoutImgBase + "cutout_british.png" },
-      { id: "scottish", name: "สก็อตติช โฟลด์", trait: "หูพับ หน้ากลม นั่งสองขา", baseWeight: 4.6, img: cutoutImgBase + "cutout_scottish.png" },
-      { id: "norwegian", name: "นอร์วีเจียน ฟอเรสต์", trait: "ปีนป่ายเก่ง ทนหนาว", baseWeight: 6.5, img: cutoutImgBase + "cutout_norwegian.png" },
-      { id: "russianblue", name: "รัสเซียน บลู", trait: "ขนสีเงิน ตาเขียว สง่างาม", baseWeight: 4.4, img: cutoutImgBase + "cutout_russianblue.png" },
-      { id: "munchkin", name: "มันช์กิ้น", trait: "ขาสั้น ปุ๊กปิ๊ก น่าเอ็นดู", baseWeight: 3.8, img: cutoutImgBase + "cutout_munchkin.png" },
-      { id: "exotic", name: "เอ็กโซติก ช็อตแฮร์", trait: "หน้าบี้ ขนสั้น น่ากอด", baseWeight: 5.2, img: cutoutImgBase + "cutout_exotic.png" },
-      { id: "birman", name: "เบอร์แมน", trait: "ถุงเท้าขาว ตาฟ้าเสน่ห์ล้น", baseWeight: 4.9, img: cutoutImgBase + "cutout_birman.png" },
-      { id: "turkish", name: "เตอร์กิช แองโกรา", trait: "ขนพลิ้ว พลังล้นเหลือ", baseWeight: 4.5, img: cutoutImgBase + "cutout_turkish.png" },
-      { id: "persian", name: "เปอร์เซีย", trait: "ราชินีขนสวย นุ่มนวล", baseWeight: 5.0, img: cutoutImgBase + "cutout_persian.png" },
-      { id: "americanshorthair", name: "อเมริกัน ช็อตแฮร์", trait: "ลวดลายคลาสสิก แข็งแรง", baseWeight: 5.4, img: cutoutImgBase + "cutout_americanshorthair.png" },
-      { id: "abyssinian", name: "อาบิสซิเนียน", trait: "กระตือรือร้น คมเข้ม", baseWeight: 4.0, img: cutoutImgBase + "cutout_abyssinian.png" },
-      { id: "khaomanee", name: "ขาวมณี", trait: "ขาวปลอด อัญมณีคู่ตา", baseWeight: 4.3, img: cutoutImgBase + "cutout_khaomanee.png" },
-      { id: "korat", name: "โคราช (สีสวาด)", trait: "แมวนำโชค ตาเขียวมรกต", baseWeight: 4.5, img: cutoutImgBase + "cutout_korat.png" },
-      { id: "suphalak", name: "ศุภลักษณ์", trait: "สีทองแดง เสริมโชคบารมี", baseWeight: 4.7, img: cutoutImgBase + "cutout_suphalak.png" },
-      { id: "siamese", name: "วิเชียรมาศ", trait: "แต้ม 9 จุด ฉลาดช่างคุย", baseWeight: 4.2, img: cutoutImgBase + "cutout_siamese.png" }
+      { id: "savannah", name: "ซาวันนาห์", trait: "คล่องแคล่ว ปราดเปรียว", baseWeight: 6.2, img: "/cats/img/cutout_savannah.png" },
+      { id: "mainecoon", name: "เมนคูน", trait: "ยักษ์ใหญ่ใจดี ขนฟูหนา", baseWeight: 7.8, img: "/cats/img/cutout_mainecoon.png" },
+      { id: "bengal", name: "เบงกอล", trait: "ลายเสือดาว ชอบกระโดดสูง", baseWeight: 5.5, img: "/cats/img/cutout_bengal.png" },
+      { id: "ragdoll", name: "แร็กดอลล์", trait: "นุ่มฟู ยอมคน ขี้อ้อน", baseWeight: 6.0, img: "/cats/img/cutout_ragdoll.png" },
+      { id: "sphynx", name: "สฟิงซ์", trait: "ขี้เล่น รักอบอุ่น ฉลาด", baseWeight: 4.2, img: "/cats/img/cutout_sphynx.png" },
+      { id: "british", name: "บริติช ช็อตแฮร์", trait: "แก้มกลม สุขุม นิ่งสงบ", baseWeight: 5.8, img: "/cats/img/cutout_british.png" },
+      { id: "scottish", name: "สก็อตติช โฟลด์", trait: "หูพับ หน้ากลม นั่งสองขา", baseWeight: 4.6, img: "/cats/img/cutout_scottish.png" },
+      { id: "norwegian", name: "นอร์วีเจียน ฟอเรสต์", trait: "ปีนป่ายเก่ง ทนหนาว", baseWeight: 6.5, img: "/cats/img/cutout_norwegian.png" },
+      { id: "russianblue", name: "รัสเซียน บลู", trait: "ขนสีเงิน ตาเขียว สง่างาม", baseWeight: 4.4, img: "/cats/img/cutout_russianblue.png" },
+      { id: "munchkin", name: "มันช์กิ้น", trait: "ขาสั้น ปุ๊กปิ๊ก น่าเอ็นดู", baseWeight: 3.8, img: "/cats/img/cutout_munchkin.png" },
+      { id: "exotic", name: "เอ็กโซติก ช็อตแฮร์", trait: "หน้าบี้ ขนสั้น น่ากอด", baseWeight: 5.2, img: "/cats/img/cutout_exotic.png" },
+      { id: "birman", name: "เบอร์แมน", trait: "ถุงเท้าขาว ตาฟ้าเสน่ห์ล้น", baseWeight: 4.9, img: "/cats/img/cutout_birman.png" },
+      { id: "turkish", name: "เตอร์กิช แองโกรา", trait: "ขนพลิ้ว พลังล้นเหลือ", baseWeight: 4.5, img: "/cats/img/cutout_turkish.png" },
+      { id: "persian", name: "เปอร์เซีย", trait: "ราชินีขนสวย นุ่มนวล", baseWeight: 5.0, img: "/cats/img/cutout_persian.png" },
+      { id: "americanshorthair", name: "อเมริกัน ช็อตแฮร์", trait: "ลวดลายคลาสสิก แข็งแรง", baseWeight: 5.4, img: "/cats/img/cutout_americanshorthair.png" },
+      { id: "abyssinian", name: "อาบิสซิเนียน", trait: "กระตือรือร้น คมเข้ม", baseWeight: 4.0, img: "/cats/img/cutout_abyssinian.png" },
+      { id: "khaomanee", name: "ขาวมณี", trait: "ขาวปลอด อัญมณีคู่ตา", baseWeight: 4.3, img: "/cats/img/cutout_khaomanee.png" },
+      { id: "korat", name: "โคราช (สีสวาด)", trait: "แมวนำโชค ตาเขียวมรกต", baseWeight: 4.5, img: "/cats/img/cutout_korat.png" },
+      { id: "suphalak", name: "ศุภลักษณ์", trait: "สีทองแดง เสริมโชคบารมี", baseWeight: 4.7, img: "/cats/img/cutout_suphalak.png" },
+      { id: "siamese", name: "วิเชียรมาศ", trait: "แต้ม 9 จุด ฉลาดช่างคุย", baseWeight: 4.2, img: "/cats/img/cutout_siamese.png" }
     ];
 
     /* ==========================================================================
@@ -4789,8 +4563,8 @@
        STATE & AUDIO
        ========================================================================== */
     let currentTheme = 'japanese';
-    // coins unified
-    // currentUser unified
+    // coins unified with catball fishCoins
+    // currentUser unified with catball currentUser
     let activeCatIds = ['siamese', 'bengal', 'munchkin'];
     let catWeights = {};
     let catInstances = [];
@@ -4811,7 +4585,7 @@
       if (!catWeights[b.id]) catWeights[b.id] = b.baseWeight;
     });
 
-    const audioCtx = soundEngineAudioCtx;
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const audio = {
       playPurr: () => {
         if (!audioEnabled || !audioCtx) return;
@@ -4828,10 +4602,6 @@
           osc.start();
           osc.stop(audioCtx.currentTime + 0.4);
         } catch(e) {}
-      },
-      playWaterLap: () => {
-        if (!audioEnabled || !soundEngineAudioCtx) return;
-        sound.playWaterLap();
       },
       playChomp: () => {
         if (!audioEnabled || !audioCtx) return;
@@ -4965,31 +4735,45 @@
     /* ==========================================================================
        CAT ACTOR ENGINE: PROCEDURAL CUTOUT WALKING LOCOMOTION
        ========================================================================== */
+    
+    /* ==========================================================================
+       LIFELIKE 2.5D FELINE CUTOUT ACTOR ENGINE (MULTI-ACTION STATE MACHINE)
+       Actions: Sit, Walk (smooth realistic speed), Crouch/Anticipate, Jump Arc, Groom, Sleep, Eat, Drink
+       ========================================================================== */
     class LiveCatActor {
       constructor(breedData, index) {
         this.data = breedData;
         this.index = index;
-        const waypoints = THEME_WAYPOINTS[currentTheme];
-        this.currentWaypoint = waypoints[index % waypoints.length];
-        this.x = this.currentWaypoint.x;
-        this.y = this.currentWaypoint.y;
         this.weight = catWeights[this.data.id] || this.data.baseWeight;
-        this.isMoving = false;
-        this.isSleeping = false;
+        this.state = 'sitting'; // 'sitting', 'sleeping', 'grooming', 'walking', 'crouching', 'jumping', 'eating', 'drinking'
+        this.isBusy = false;
         this.facing = 1; // 1 = right, -1 = left
         this.dom = null;
+        this.actionTimer = null;
+        this.stepTimer = null;
+
+        // Position cat at a valid initial waypoint
+        const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
+        const initialWp = themeWps[index % themeWps.length];
+        this.x = initialWp.x;
+        this.y = initialWp.y;
+        this.currentWaypoint = initialWp;
+
         this.initDOM();
       }
 
       initDOM() {
         const layer = document.getElementById("cats-stage-layer");
+        if (!layer) return;
+
         const el = document.createElement("div");
-        el.className = "cat-actor-cutout";
+        el.className = "cat-actor-cutout is-sitting";
         el.id = "actor-" + this.data.id;
 
         el.innerHTML = `
           <div class="cat-speech-bubble" id="bubble-${this.data.id}">เหมียวว~ 💖</div>
           <div class="cat-sleep-zzz" id="zzz-${this.data.id}">Zzz</div>
+          <div class="cat-groom-sparkle" id="sparkle-${this.data.id}">✨</div>
           <div class="cat-cutout-wrap" id="wrap-${this.data.id}">
             <img class="cat-cutout-img" src="${this.data.img}" alt="${this.data.name}">
           </div>
@@ -5002,6 +4786,7 @@
 
         el.style.left = this.x + "px";
         el.style.bottom = this.y + "px";
+        el.style.setProperty('--facing', this.facing);
 
         el.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -5021,120 +4806,254 @@
       }
 
       applyChonkyTransform() {
+        if (!this.dom) return;
         const wrap = this.dom.querySelector(".cat-cutout-wrap");
         const shadow = this.dom.querySelector(".cat-contact-shadow");
         const badge = this.dom.querySelector(".chonky-badge");
 
-        // Scale factor increases with weight, squashing slightly for chubby belly
         const scale = Math.min(1.4, 0.95 + (this.weight - 3.5) * 0.055);
         const squishY = Math.max(0.85, 1.0 - (this.weight - 3.5) * 0.02);
 
+        this.dom.style.setProperty('--facing', this.facing);
         wrap.style.transform = `scale(${this.facing * scale}, ${scale * squishY})`;
         shadow.style.transform = `scale(${scale * 1.25}, 1)`;
         if (badge) badge.innerText = this.getWeightLabel();
       }
 
-      moveTo(targetX, targetY, isJump = false) {
-        if (!this.dom || this.isMoving) return;
-        this.isMoving = true;
-        this.isSleeping = false;
-        this.dom.classList.remove('is-sleeping');
-
-        // Turn facing direction
-        this.facing = (targetX >= this.x) ? 1 : -1;
-        this.applyChonkyTransform();
-
-        if (isJump) {
-          this.dom.classList.add('is-jumping');
-          audio.playPurr();
-        } else {
-          this.dom.classList.add('is-walking');
-        }
-
-        this.x = targetX;
-        this.y = targetY;
-        this.dom.style.left = this.x + "px";
-        this.dom.style.bottom = this.y + "px";
-
-        setTimeout(() => {
-          if (!this.dom) return;
-          this.dom.classList.remove('is-walking');
-          this.dom.classList.remove('is-jumping');
-          this.isMoving = false;
-        }, 650);
-      }
-
-      eatAtFeeder() {
-        if (this.isMoving) return;
-        const targetX = 405 + Math.floor(Math.random() * 25);
-        const targetY = 55;
-        this.moveTo(targetX, targetY, false);
-        setTimeout(() => {
-          if (!this.dom) return;
-          this.facing = 1;
-          this.applyChonkyTransform();
-          showSpeechBubble(this.dom, "ง่ำๆ 🥣 อร่อยจัง!");
-          spawnHeart(this.x + 25, this.y + 65);
-          audio.playChomp();
-          this.weight = Math.min(14.0, this.weight + 0.02);
-          catWeights[this.data.id] = this.weight;
-          try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
-          this.applyChonkyTransform();
-        }, 700);
-      }
-
-      drinkAtFountain() {
-        if (this.isMoving) return;
-        const targetX = 495 + Math.floor(Math.random() * 25);
-        const targetY = 55;
-        this.moveTo(targetX, targetY, false);
-        setTimeout(() => {
-          if (!this.dom) return;
-          this.facing = -1;
-          this.applyChonkyTransform();
-          showSpeechBubble(this.dom, "แผล็บๆ 💧 สดชื่น!");
-          spawnWaterBubble(this.x + 20, this.y + 60);
-          audio.playWaterLap();
-        }, 700);
-      }
-
-      moveToRandomWaypoint() {
-        if (this.isMoving) return;
-        const waypoints = THEME_WAYPOINTS[currentTheme];
-        const next = waypoints[Math.floor(Math.random() * waypoints.length)];
-        const isJump = Math.abs(next.y - this.y) > 60;
-        this.moveTo(next.x, next.y, isJump);
-      }
-
-      toggleSleep() {
-        if (this.isMoving) return;
-        this.isSleeping = !this.isSleeping;
-        if (this.isSleeping) {
-          this.dom.classList.add('is-sleeping');
-        } else {
-          this.dom.classList.remove('is-sleeping');
-        }
+      setState(newState) {
+        if (!this.dom) return;
+        this.state = newState;
+        this.dom.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping');
+        this.dom.classList.add('is-' + newState);
       }
 
       onTap() {
+        if (this.isBusy) return;
         audio.playPurr();
         showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
         spawnHeart(this.x + 30, this.y + 70);
         openCatDetailModal(this);
       }
 
-      scheduleNextAction() {
-        const delay = this.weight >= 8.0 ? (5000 + Math.random() * 5000) : (2500 + Math.random() * 3500);
-        setTimeout(() => {
-          if (!this.dom || !document.contains(this.dom)) return;
-          const r = Math.random();
-          if (r < 0.35) {
-            this.toggleSleep();
-          } else {
-            this.moveToRandomWaypoint();
+      // Smooth step-by-step navigation path generator
+      planPath(targetX, targetY) {
+        const steps = [];
+        const yDiff = targetY - this.y;
+
+        if (Math.abs(yDiff) <= 25) {
+          // Same elevation: direct stroll along the surface
+          const dist = Math.abs(targetX - this.x);
+          const duration = Math.max(1.2, dist / 80);
+          steps.push({ type: 'walk', toX: targetX, toY: targetY, duration });
+        } else if (yDiff > 25) {
+          // Target is elevated: 1) walk horizontally to approach under target, 2) crouch, 3) leap up arc
+          const walkDist = Math.abs(targetX - this.x);
+          if (walkDist > 30) {
+            const walkDuration = Math.max(1.0, walkDist / 80);
+            steps.push({ type: 'walk', toX: targetX, toY: this.y, duration: walkDuration });
           }
+          steps.push({ type: 'crouch', duration: 0.55 });
+          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: 0.72 });
+          steps.push({ type: 'land', duration: 0.25 });
+        } else {
+          // Target is lower: 1) crouch at edge, 2) leap down arc, 3) land & walk to final X
+          steps.push({ type: 'crouch', duration: 0.4 });
+          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: 0.58 });
+          steps.push({ type: 'land', duration: 0.25 });
+        }
+        return steps;
+      }
+
+      // Execute sequence of path actions smoothly
+      executePath(steps, onDone) {
+        if (!steps || steps.length === 0) {
+          if (onDone) onDone();
+          return;
+        }
+
+        const step = steps.shift();
+        if (!this.dom || !document.contains(this.dom)) return;
+
+        if (step.type === 'walk') {
+          this.setState('walking');
+          this.facing = step.toX >= this.x ? 1 : -1;
+          this.applyChonkyTransform();
+          
+          this.dom.style.transition = `left ${step.duration}s linear, bottom ${step.duration}s linear`;
+          this.x = step.toX;
+          this.y = step.toY;
+          this.dom.style.left = this.x + "px";
+          this.dom.style.bottom = this.y + "px";
+
+          this.stepTimer = setTimeout(() => {
+            this.executePath(steps, onDone);
+          }, step.duration * 1000);
+
+        } else if (step.type === 'crouch') {
+          this.setState('crouching');
+          this.dom.style.transition = 'none';
+          this.stepTimer = setTimeout(() => {
+            this.executePath(steps, onDone);
+          }, step.duration * 1000);
+
+        } else if (step.type === 'jump') {
+          this.setState('jumping');
+          this.facing = step.toX >= this.x ? 1 : -1;
+          this.applyChonkyTransform();
+          audio.playPurr();
+
+          this.dom.style.transition = `left ${step.duration}s cubic-bezier(0.25, 0.8, 0.35, 1), bottom ${step.duration}s cubic-bezier(0.2, 0.9, 0.3, 1)`;
+          this.x = step.toX;
+          this.y = step.toY;
+          this.dom.style.left = this.x + "px";
+          this.dom.style.bottom = this.y + "px";
+
+          this.stepTimer = setTimeout(() => {
+            this.executePath(steps, onDone);
+          }, step.duration * 1000);
+
+        } else if (step.type === 'land') {
+          this.setState('sitting');
+          this.dom.style.transition = 'none';
+          this.stepTimer = setTimeout(() => {
+            this.executePath(steps, onDone);
+          }, step.duration * 1000);
+        }
+      }
+
+      // Calm Autonomous Decision Cycle (Happens every 8 to 22 seconds)
+      scheduleNextAction() {
+        if (this.actionTimer) clearTimeout(this.actionTimer);
+
+        // Chonky cats rest longer
+        const baseDelay = this.weight >= 7.0 ? (12000 + Math.random() * 10000) : (8000 + Math.random() * 8000);
+
+        this.actionTimer = setTimeout(() => {
+          if (!this.dom || !document.contains(this.dom)) return;
+          if (this.isBusy) {
+            this.scheduleNextAction();
+            return;
+          }
+
+          // If currently sleeping, 45% chance to remain sleeping peacefully
+          if (this.state === 'sleeping' && Math.random() < 0.45) {
+            this.scheduleNextAction();
+            return;
+          }
+
+          const roll = Math.random();
+          if (roll < 0.28) {
+            // Action 1: Sleep / Nap (นอนหลับพักผ่อน)
+            this.doNap();
+          } else if (roll < 0.50) {
+            // Action 2: Sit & Look Around (นั่งมองรอบๆ นิ่งๆ หางกระดิก)
+            this.doSit();
+          } else if (roll < 0.70) {
+            // Action 3: Groom & Lick Fur (เลียขน แต่งตัว มีประกายวิ้งๆ)
+            this.doGroom();
+          } else if (roll < 0.82) {
+            // Action 4: Eat at Feeder or Drink at Fountain
+            if (Math.random() < 0.5) {
+              this.eatAtFeeder();
+            } else {
+              this.drinkAtFountain();
+            }
+          } else {
+            // Action 5: Walk / Jump to explore a new waypoint
+            this.wanderToWaypoint();
+          }
+        }, baseDelay);
+      }
+
+      doSit() {
+        this.setState('sitting');
+        // Occasional head tilt
+        if (Math.random() < 0.5) {
+          this.facing = this.facing * -1;
+          this.applyChonkyTransform();
+        }
+        this.scheduleNextAction();
+      }
+
+      doNap() {
+        this.setState('sleeping');
+        this.scheduleNextAction();
+      }
+
+      doGroom() {
+        this.setState('grooming');
+        const sparkle = this.dom.querySelector(".cat-groom-sparkle");
+        if (sparkle) sparkle.style.opacity = "1";
+
+        setTimeout(() => {
+          if (!this.dom) return;
+          if (sparkle) sparkle.style.opacity = "0";
+          this.setState('sitting');
           this.scheduleNextAction();
-        }, delay);
+        }, 5500 + Math.random() * 3000);
+      }
+
+      wanderToWaypoint() {
+        this.isBusy = true;
+        const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
+        // Filter out current waypoint to ensure actual relocation
+        const candidates = themeWps.filter(w => Math.abs(w.x - this.x) > 40 || Math.abs(w.y - this.y) > 30);
+        const target = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
+
+        const steps = this.planPath(target.x, target.y);
+        this.executePath(steps, () => {
+          this.isBusy = false;
+          this.setState('sitting');
+          this.currentWaypoint = target;
+          this.scheduleNextAction();
+        });
+      }
+
+      eatAtFeeder() {
+        this.isBusy = true;
+        const targetX = 415 + Math.floor(Math.random() * 20);
+        const targetY = 50;
+
+        const steps = this.planPath(targetX, targetY);
+        this.executePath(steps, () => {
+          this.facing = 1;
+          this.setState('sitting');
+          this.applyChonkyTransform();
+          showSpeechBubble(this.dom, "ง่ำๆ 🥣 อร่อยจัง!");
+          spawnHeart(this.x + 25, this.y + 65);
+          audio.playChomp();
+
+          this.weight = Math.min(14.0, this.weight + 0.02);
+          catWeights[this.data.id] = this.weight;
+          try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
+          this.applyChonkyTransform();
+
+          setTimeout(() => {
+            this.isBusy = false;
+            this.scheduleNextAction();
+          }, 4500);
+        });
+      }
+
+      drinkAtFountain() {
+        this.isBusy = true;
+        const targetX = 490 + Math.floor(Math.random() * 20);
+        const targetY = 50;
+
+        const steps = this.planPath(targetX, targetY);
+        this.executePath(steps, () => {
+          this.facing = -1;
+          this.setState('sitting');
+          this.applyChonkyTransform();
+          showSpeechBubble(this.dom, "แผล็บๆ 💧 สดชื่น!");
+          spawnWaterBubble(this.x + 20, this.y + 60);
+          audio.playWaterLap();
+
+          setTimeout(() => {
+            this.isBusy = false;
+            this.scheduleNextAction();
+          }, 4500);
+        });
       }
 
       feed(kgGained) {
@@ -5271,6 +5190,17 @@
     /* ==========================================================================
        REAL LEADERBOARD MODAL (ZERO BOTS / ZERO PLACEHOLDERS)
        ========================================================================== */
+    function openLeaderboardModal() {
+      const modal = document.getElementById("leaderboard-modal");
+      let currentScore = 18450;
+      try {
+        const score = localStorage.getItem('catball_highscore');
+        if (score) currentScore = parseInt(score, 10);
+      } catch(e) {}
+      document.getElementById("modal-user-score").innerText = currentScore.toLocaleString() + " แต้ม";
+      modal.classList.add("open");
+    }
+
     function closeModal(id) {
       document.getElementById(id).classList.remove("open");
     }
@@ -5457,19 +5387,33 @@
       showToast(audioEnabled ? "🔊" : "🔇", audioEnabled ? "เปิดเสียงเกม" : "ปิดเสียงเกม");
     }
 
-    
+    /* ==========================================================================
+       SUPABASE AUTH & KANEL NOTARRY SECURITY (Connected to live Cat Ball project)
+       ========================================================================== */
+    // SUPABASE_URL unified
+    // SUPABASE_ANON_KEY unified
+    // supabaseClient unified
 
-    // Unified Auth Handler (Overriding applyUserSession to update both views)
-    const origApplyUserSession = applyUserSession;
-    applyUserSession = function(session) {
-      origApplyUserSession(session);
+    // KANEL_NOTARRY_UUID unified
+    // currentUser unified with catball currentUser
 
+    // isKanelNotarry unified
+
+    // loginWithFacebook unified
+
+    // logout unified
+
+    // handleUserPillClick unified
+
+    function updateUserUI(user) {
+      const gate = document.getElementById("farm-locked-gate");
       const pill = document.getElementById("farm-user-pill");
       const nameEl = document.getElementById("farm-user-name");
       const iconEl = document.getElementById("farm-user-icon");
-      const plaque = document.getElementById("plaque-owner-text");
 
-      if (currentUser && isKanelNotarry(currentUser)) {
+      if (user && isKanelNotarry(user)) {
+        // Kanel Notarry verified: Unlock farm
+        if (gate) gate.style.display = "none";
         if (pill) {
           pill.className = "header-user-badge is-owner";
           pill.title = "คุณ Kanel Notarry (เจ้าของฟาร์ม)";
@@ -5478,54 +5422,352 @@
           nameEl.innerText = "👑 Kanel (เจ้าของ)";
           nameEl.style.color = "#fbbf24";
         }
-        const avatarUrl = currentUser.avatar || currentUser.user_metadata?.avatar_url || currentUser.user_metadata?.picture;
+        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || user.avatar;
         if (iconEl) {
           iconEl.innerHTML = avatarUrl
             ? `<img src="${avatarUrl}" class="user-avatar-img" style="border:1.5px solid #fbbf24;">`
             : "👑";
         }
-        if (plaque) plaque.innerText = "Kanel (เจ้าของฟาร์ม)";
+        const plaque = document.getElementById("plaque-owner-text");
+        if (plaque) plaque.innerText = "Kanel (VIP)";
         unlockSpaceTheme();
-      } else if (currentUser) {
+        showToast("👑", "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry!");
+      } else {
+        // Not Kanel Notarry: Locked
+        if (gate) gate.style.display = "flex";
         if (pill) {
           pill.className = "header-user-badge";
-          pill.title = currentUser.name;
+          pill.title = user ? "ผู้เล่นทั่วไป" : "คลิกเพื่อเข้าสู่ระบบด้วย Facebook";
         }
         if (nameEl) {
-          nameEl.innerText = currentUser.name.split(" ")[0];
+          nameEl.innerText = user ? (user.name ? user.name.split(" ")[0] : "ผู้มาเยือน") : "เข้าสู่ระบบ";
           nameEl.style.color = "#cbd5e1";
         }
-        const avatarUrl = currentUser.avatar;
         if (iconEl) {
+          const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture || user?.avatar;
           iconEl.innerHTML = avatarUrl
             ? `<img src="${avatarUrl}" class="user-avatar-img">`
             : "👤";
         }
-        if (plaque) plaque.innerText = currentUser.name.split(" ")[0];
-      } else {
-        if (pill) {
-          pill.className = "header-user-badge";
-          pill.title = "คลิกเพื่อเข้าสู่ระบบด้วย Facebook";
-        }
-        if (nameEl) {
-          nameEl.innerText = "เข้าสู่ระบบ";
-          nameEl.style.color = "#cbd5e1";
-        }
-        if (iconEl) iconEl.innerHTML = "👤";
-        if (plaque) plaque.innerText = "Sleeperem";
       }
-    };
+    }
 
-    // Initialize View on Page Load
-    window.addEventListener('DOMContentLoaded', () => {
-      updateCoinsDisplay();
-      renderStations();
-      if (window.location.hash === '#farm' || window.location.pathname.includes('/farm')) {
-        switchView('farm');
+    function applyUserSession(session) {
+      if (session && session.user) {
+        const u = session.user;
+        const name = u.user_metadata?.full_name || u.user_metadata?.name || u.name || "ทาสแมว Facebook";
+        const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || u.avatar;
+        currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
+        updateUserUI(currentUser);
+
+        // Clean up OAuth hash params
+        if (window.location.hash && window.location.hash.includes("access_token")) {
+          history.replaceState(null, '', window.location.pathname);
+        }
       } else {
-        switchView('game');
+        currentUser = null;
+        updateUserUI(null);
+      }
+    }
+
+    /* ==========================================================================
+       ENVIRONMENT DETECTION & ZERO-EDIT PROMOTION PARITY
+       ========================================================================== */
+    // IS_DEV unified
+    const CATBALL_PATH = IS_DEV ? '/catball-dev' : '/catball';
+
+    function initEnvironment() {
+      if (IS_DEV) {
+        document.title = "🧪 [DEV] ฟาร์มแมว 2.5D Fairytale Contrast Macaron (Sleeperem Staging)";
+        const ribbon = document.getElementById("dev-staging-ribbon");
+        if (ribbon) ribbon.style.display = "flex";
+        const badge = document.getElementById("gatekeeper-badge");
+        if (badge) badge.innerText = "ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม (DEV)";
+        const gateBtn = document.getElementById("gate-catball-btn");
+        if (gateBtn) {
+          gateBtn.innerText = "🎮 กลับไปเล่นเกม Cat Ball (Staging)";
+        }
+      }
+      const catballLinks = document.querySelectorAll('.back-to-catball-link');
+      catballLinks.forEach(link => {
+        link.href = CATBALL_PATH;
+        if (IS_DEV && link.title) link.title = "กลับไปเล่นเกมหย่อนแมว (Staging)";
+      });
+    }
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      initEnvironment();
+      applyCameraTransform();
+      reloadActiveCats();
+      renderShop();
+      updateCoinsDisplay();
+
+      if (supabaseClient) {
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+          applyUserSession(session);
+        });
+        supabaseClient.auth.onAuthStateChange((event, session) => applyUserSession(session));
+      } else {
+        updateUserUI(null);
       }
     });
+  
+    
+    /* ==========================================================================
+       UPGRADABLE FOOD FEEDER & WATER FOUNTAIN STATIONS (4 TIERS)
+       ========================================================================== */
+    const FEEDER_TIERS = [
+      { level: 1, name: "Lv.1 ชามเซรามิกมินิมอล", desc: "ชามเซรามิกมาตรฐาน อาหารเม็ดสะอาด", nextName: "Lv.2 ถาดคู่ไม้ยกสูง", cost: 150, visualClass: "feeder-lv1-visual", html: '🥣' },
+      { level: 2, name: "Lv.2 ถาดคู่ไม้ยกสูง", desc: "ฐานไม้โอ๊คยกระดับ กันสำลักและถูกหลักสรีระแมว", nextName: "Lv.3 โถแก้วจ่ายอาหารแบบไหลอัตโนมัติ", cost: 450, visualClass: "feeder-lv2-visual", html: '<div class="feeder-lv2-dish">🐟</div><div class="feeder-lv2-dish">🥣</div>' },
+      { level: 3, name: "Lv.3 โถแก้วจ่ายอาหารแบบไหลอัตโนมัติ", desc: "ไซโลแก้วทรงกระบอกใส อาหารเม็ดไหลเติมลงถาดล่างตลอดเวลา", nextName: "Lv.4 เครื่องให้อาหารดิจิทัล AI อัจฉริยะ", cost: 1200, visualClass: "feeder-lv3-visual", html: '<div class="silo-cap"></div><div class="silo-cylinder"><div class="silo-grains-flow"></div><span style="z-index:2; font-size:16px;">🌾</span></div><div class="silo-tray">🥣</div>' },
+      { level: 4, name: "Lv.4 เครื่องให้อาหารดิจิทัล AI อัจฉริยะ", desc: "หน้าปัด LED ไซเบอร์ คำนวณสารอาหารและปล่อยอัตโนมัติตรงเวลา", nextName: "ระดับสูงสุดแล้ว (MAX)", cost: 0, visualClass: "feeder-lv4-visual", html: '<div class="cyber-led-screen">12:00 AUTO</div><div class="cyber-dispense-port">⚡</div><div class="cyber-bottom-dish">🥣 ✨</div>' }
+    ];
+
+    const FOUNTAIN_TIERS = [
+      { level: 1, name: "Lv.1 ชามน้ำเซรามิกใส", desc: "ชามน้ำเซรามิกขอบมน สะอาดปลอดภัย", nextName: "Lv.2 อ่างน้ำกาลักน้ำหินเซน", cost: 150, visualClass: "fountain-lv1-visual", html: '💧' },
+      { level: 2, name: "Lv.2 อ่างน้ำกาลักน้ำหินเซน", desc: "แท็งก์น้ำใสทรงขวดคว่ำ เติมน้ำอัตโนมัติพร้อมฟองอากาศ", nextName: "Lv.3 น้ำพุแมวดอกไม้น้ำวน", cost: 450, visualClass: "fountain-lv2-visual", html: '<div class="fountain-lv2-bottle"><div class="air-bubble" style="left:12px; animation-delay:0.2s;"></div><div class="air-bubble" style="left:22px; animation-delay:1.1s;"></div><span style="font-size:18px;">💧</span></div><div class="fountain-lv2-base">🪨</div>' },
+      { level: 3, name: "Lv.3 น้ำพุแมวดอกไม้น้ำวน", desc: "หัวจ่ายดอกเดซี่หมุนได้ พร้อมวงน้ำวนระลอกคลื่นรอบทิศทาง", nextName: "Lv.4 น้ำพุคริสตัลออโรร่าไร้สาย", cost: 1200, visualClass: "fountain-lv3-visual", html: '<div class="flower-fountain-basin"><div class="flower-spout">🌼</div><div class="water-ripple-ring"></div><div class="water-ripple-ring" style="animation-delay:0.9s;"></div></div>' },
+      { level: 4, name: "Lv.4 น้ำพุคริสตัลออโรร่าไร้สาย", desc: "แกนคริสตัลลอยกลางอากาศ ปล่อยน้ำพุไร้สายพร้อมแสงนีออนออโรร่า", nextName: "ระดับสูงสุดแล้ว (MAX)", cost: 0, visualClass: "fountain-lv4-visual", html: '<div class="aurora-floating-gem">💎</div><div class="aurora-pedestal"><div class="aurora-glow-beam"></div><div class="aurora-dish-surface">🌊 ✨</div></div>' }
+    ];
+
+    let feederLevel = 1;
+    let fountainLevel = 1;
+
+    try {
+      feederLevel = parseInt(localStorage.getItem('sleeperem_feeder_level')) || 1;
+      fountainLevel = parseInt(localStorage.getItem('sleeperem_fountain_level')) || 1;
+    } catch(e) {}
+
+    function renderStationVisuals() {
+      const feederVisual = document.getElementById("feeder-visual");
+      const feederBadge = document.getElementById("feeder-level-badge");
+      const fountainVisual = document.getElementById("fountain-visual");
+      const fountainBadge = document.getElementById("fountain-level-badge");
+
+      const fTier = FEEDER_TIERS[feederLevel - 1] || FEEDER_TIERS[0];
+      if (feederVisual) {
+        feederVisual.className = fTier.visualClass;
+        feederVisual.innerHTML = fTier.html;
+      }
+      if (feederBadge) {
+        feederBadge.innerText = fTier.name.split(" ")[0] + " " + fTier.name.split(" ")[1];
+      }
+
+      const wTier = FOUNTAIN_TIERS[fountainLevel - 1] || FOUNTAIN_TIERS[0];
+      if (fountainVisual) {
+        fountainVisual.className = wTier.visualClass;
+        fountainVisual.innerHTML = wTier.html;
+      }
+      if (fountainBadge) {
+        fountainBadge.innerText = wTier.name.split(" ")[0] + " " + wTier.name.split(" ")[1];
+      }
+
+      const qfLabel = document.getElementById("quick-feeder-label");
+      if (qfLabel) qfLabel.innerText = "ชามข้าว Lv." + feederLevel + (feederLevel >= 4 ? " (MAX)" : " ⬆️");
+      const qwLabel = document.getElementById("quick-fountain-label");
+      if (qwLabel) qwLabel.innerText = "น้ำพุ Lv." + fountainLevel + (fountainLevel >= 4 ? " (MAX)" : " ⬆️");
+    }
+
+    function openFeederUpgradeModal() {
+      const cur = FEEDER_TIERS[feederLevel - 1] || FEEDER_TIERS[0];
+      const next = feederLevel < 4 ? FEEDER_TIERS[feederLevel] : null;
+
+      document.getElementById("feeder-status-title").innerText = "สถานะปัจจุบัน: " + cur.name;
+      document.getElementById("feeder-status-desc").innerText = cur.desc;
+
+      const nextCard = document.getElementById("feeder-next-tier-card");
+      const actionBtn = document.getElementById("feeder-upgrade-action-btn");
+
+      if (next) {
+        nextCard.style.display = "block";
+        document.getElementById("feeder-next-title").innerText = "ระดับถัดไป: " + next.name;
+        document.getElementById("feeder-next-desc").innerText = next.desc;
+        document.getElementById("feeder-upgrade-cost").innerText = next.cost.toLocaleString() + " 🐟";
+        actionBtn.style.display = "block";
+        actionBtn.innerHTML = "<span>⬆️ อัปเกรดชามข้าว (" + next.cost + " 🐟)</span>";
+      } else {
+        nextCard.style.display = "none";
+        actionBtn.style.display = "none";
+      }
+
+      document.getElementById("feeder-upgrade-modal").classList.add("active");
+    }
+
+    function executeFeederUpgrade() {
+      if (feederLevel >= 4) return;
+      const next = FEEDER_TIERS[feederLevel];
+      const currentCoins = fishCoins;
+      if (currentCoins < next.cost) {
+        showToast("⚠️", "เหรียญปลาไม่พอ! ต้องการ " + next.cost + " 🐟 (คุณมี " + currentCoins + " 🐟)");
+        return;
+      }
+
+      fishCoins -= next.cost;
+      coins = fishCoins;
+      feederLevel++;
+      try {
+        localStorage.setItem("sleeperem_fish_coins", fishCoins);
+        localStorage.setItem("sleeperem_farm_coins", fishCoins);
+        localStorage.setItem("sleeperem_feeder_level", feederLevel);
+      } catch(e) {}
+
+      updateCoinDisplay();
+      renderStationVisuals();
+      closeModal('feeder-upgrade-modal');
+      audio.playPurr();
+      showToast("🥣", "อัปเกรดชามข้าวเป็น " + next.name + " สำเร็จ!");
+    }
+
+    function openFountainUpgradeModal() {
+      const cur = FOUNTAIN_TIERS[fountainLevel - 1] || FOUNTAIN_TIERS[0];
+      const next = fountainLevel < 4 ? FOUNTAIN_TIERS[fountainLevel] : null;
+
+      document.getElementById("fountain-status-title").innerText = "สถานะปัจจุบัน: " + cur.name;
+      document.getElementById("fountain-status-desc").innerText = cur.desc;
+
+      const nextCard = document.getElementById("fountain-next-tier-card");
+      const actionBtn = document.getElementById("fountain-upgrade-action-btn");
+
+      if (next) {
+        nextCard.style.display = "block";
+        document.getElementById("fountain-next-title").innerText = "ระดับถัดไป: " + next.name;
+        document.getElementById("fountain-next-desc").innerText = next.desc;
+        document.getElementById("fountain-upgrade-cost").innerText = next.cost.toLocaleString() + " 🐟";
+        actionBtn.style.display = "block";
+        actionBtn.innerHTML = "<span>⬆️ อัปเกรดน้ำพุ (" + next.cost + " 🐟)</span>";
+      } else {
+        nextCard.style.display = "none";
+        actionBtn.style.display = "none";
+      }
+
+      document.getElementById("fountain-upgrade-modal").classList.add("active");
+    }
+
+    function executeFountainUpgrade() {
+      if (fountainLevel >= 4) return;
+      const next = FOUNTAIN_TIERS[fountainLevel];
+      const currentCoins = fishCoins;
+      if (currentCoins < next.cost) {
+        showToast("⚠️", "เหรียญปลาไม่พอ! ต้องการ " + next.cost + " 🐟 (คุณมี " + currentCoins + " 🐟)");
+        return;
+      }
+
+      fishCoins -= next.cost;
+      coins = fishCoins;
+      fountainLevel++;
+      try {
+        localStorage.setItem("sleeperem_fish_coins", fishCoins);
+        localStorage.setItem("sleeperem_farm_coins", fishCoins);
+        localStorage.setItem("sleeperem_fountain_level", fountainLevel);
+      } catch(e) {}
+
+      updateCoinDisplay();
+      renderStationVisuals();
+      closeModal('fountain-upgrade-modal');
+      audio.playPurr();
+      showToast("💧", "อัปเกรดน้ำพุแมวเป็น " + next.name + " สำเร็จ!");
+    }
+
+    function spawnWaterBubble(x, y) {
+      const bubble = document.createElement("div");
+      bubble.className = "water-bubble-pop";
+      bubble.innerText = "💧";
+      bubble.style.left = x + "px";
+      bubble.style.bottom = y + "px";
+      bubble.style.setProperty('--dx', ((Math.random() - 0.5) * 24) + "px");
+      const stage = document.getElementById("room-stage");
+      if (stage) {
+        stage.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 1200);
+      }
+    }
+
+    // Dev Tools shortcuts
+    window.devMaxFeeder = function() {
+      feederLevel = 4;
+      try { localStorage.setItem("sleeperem_feeder_level", 4); } catch(e) {}
+      renderStationVisuals();
+      showToast("🥣", "Dev: ชามข้าวปรับเป็น Lv.4 MAX");
+    };
+    window.devMaxFountain = function() {
+      fountainLevel = 4;
+      try { localStorage.setItem("sleeperem_fountain_level", 4); } catch(e) {}
+      renderStationVisuals();
+      showToast("💧", "Dev: น้ำพุปรับเป็น Lv.4 MAX");
+    };
+    window.devResetStations = function() {
+      feederLevel = 1;
+      fountainLevel = 1;
+      try {
+        localStorage.setItem("sleeperem_feeder_level", 1);
+        localStorage.setItem("sleeperem_fountain_level", 1);
+      } catch(e) {}
+      renderStationVisuals();
+      showToast("🔄", "Dev: รีเซ็ตสถานีทั้งสองเป็น Lv.1");
+    };
+
+    
+    /* ==========================================================================
+       SPA UNIFIED VIEW ROUTER (Cat Ball <-> 2.5D Cat Farm)
+       ========================================================================== */
+    let currentView = 'game';
+    let isGameLoopRunning = true;
+
+    function switchView(viewName) {
+      if (viewName !== 'game' && viewName !== 'farm') return;
+      currentView = viewName;
+
+      const viewGame = document.getElementById("view-game");
+      const viewFarm = document.getElementById("view-farm");
+
+      if (viewName === 'game') {
+        viewGame.classList.add("active");
+        viewFarm.classList.remove("active");
+        isGameLoopRunning = true;
+        history.replaceState(null, "", window.location.pathname);
+      } else {
+        viewFarm.classList.add("active");
+        viewGame.classList.remove("active");
+        isGameLoopRunning = false;
+        history.replaceState(null, "", window.location.pathname + "#farm");
+
+        // Sync coins and user info
+        updateCoinDisplay();
+        renderStationVisuals();
+
+        // Check if roaming cats need init
+        if (catInstances.length === 0) {
+          reloadActiveCats();
+        }
+      }
+    }
+
+    function updateCoinDisplay() {
+      const headerCoinEl = document.getElementById("farm-coins-count");
+      if (headerCoinEl) headerCoinEl.innerText = fishCoins.toLocaleString();
+      const catballCoinEl = document.getElementById("catball-coins-count");
+      if (catballCoinEl) catballCoinEl.innerText = fishCoins.toLocaleString();
+      coins = fishCoins;
+    }
+
+    // Handle back button / hash navigation
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#farm') {
+        if (currentView !== 'farm') switchView('farm');
+      } else {
+        if (currentView !== 'game') switchView('game');
+      }
+    });
+
+    // Check direct access via hash on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderStationVisuals();
+      if (window.location.hash === '#farm') {
+        switchView('farm');
+      }
+    });
+
 
   </script>
 </body>
