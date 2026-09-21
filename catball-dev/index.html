@@ -378,6 +378,7 @@
       padding: 24px;
     }
     .modal-card {
+      position: relative;
       background: #1e293b;
       border: 2px solid #3b82f6;
       border-radius: 24px;
@@ -386,6 +387,90 @@
       max-width: 320px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .modal-close-x {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 30px;
+      height: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      z-index: 20;
+    }
+    .modal-close-x:hover, .modal-close-x:active {
+      background: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+      border-color: #ef4444;
+      transform: scale(1.08);
+    }
+
+    /* Top Celebration Cat Runway */
+    #cat-runway-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 72px;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 35;
+    }
+    .runway-cat {
+      position: absolute;
+      bottom: 6px;
+      left: -80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.65));
+      transform-origin: center bottom;
+      pointer-events: none;
+    }
+    .runway-cat img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .runway-bubble {
+      position: absolute;
+      top: -24px;
+      background: rgba(15, 23, 42, 0.94);
+      border: 1.5px solid #fbbf24;
+      border-radius: 12px;
+      padding: 2px 8px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+      animation: popIn 0.2s ease-out;
+      white-space: nowrap;
+    }
+    @keyframes runwayBob {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(2deg); }
+    }
+    @keyframes runwayZzz {
+      0% { opacity: 0; transform: translateY(0) scale(0.7); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-14px) scale(1.1); }
+    }
+    .zzz-float {
+      display: inline-block;
+      animation: runwayZzz 1.2s infinite ease-out;
+      font-weight: 700;
+      color: #93c5fd;
     }
     @keyframes popIn {
       from { transform: scale(0.8); opacity: 0; }
@@ -671,6 +756,7 @@
         <button onclick="devAddScore(5000)" class="dev-btn">➕ +5,000 แต้ม</button>
         <button onclick="devSpawnKingCat()" class="dev-btn" style="background:#6d28d9; border-color:#8b5cf6;">👑 เสก Tier 10</button>
         <button onclick="devResetShake()" class="dev-btn" style="background:#047857; border-color:#10b981;">🐾 รีเซ็ตสิทธิ์เขย่า</button>
+        <button onclick="devTestCelebration()" class="dev-btn" style="background:#0284c7; border-color:#38bdf8;">🐾 ทดสอบรันเวย์แมวฉลอง</button>
       </div>
     </div>
     <!-- Header -->
@@ -712,6 +798,7 @@
 
     <!-- Interactive Canvas (100% Unobstructed Playing Area) -->
     <div id="canvas-wrap">
+      <div id="cat-runway-container"></div>
       <canvas id="gameCanvas"></canvas>
     </div>
 
@@ -757,6 +844,7 @@
     <!-- Facebook Login & User Profile Modal -->
     <div id="login-modal">
       <div class="modal-card">
+        <button class="modal-close-x" onclick="closeLoginModal()" title="ปิด">✕</button>
         <div id="modal-guest-view">
           <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
           <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
@@ -768,10 +856,6 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             เข้าสู่ระบบด้วย Facebook
           </button>
-
-          <button onclick="closeLoginModal()" style="width:100%; margin-top:10px; padding:10px; background:transparent; border:1px solid #475569; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
-            เล่นต่อแบบ Guest
-          </button>
         </div>
 
         <div id="modal-user-view" style="display:none;">
@@ -780,7 +864,7 @@
           
           <!-- VIP Owner Badge in Profile -->
           <div id="owner-vip-badge-tag" style="display:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; margin-bottom:10px; text-align:center; box-shadow:0 0 10px rgba(245,158,11,0.3);">
-            👑 เจ้าของฟาร์ม Sleeperem (VIP Owner)
+            👑 เจ้าของฟาร์ม Sleeperem
           </div>
 
           <p id="modal-user-status" style="font-size: 11px; color: #34d399; margin-bottom: 14px;">● เชื่อมต่อ Facebook แล้ว</p>
@@ -790,9 +874,9 @@
             <div id="modal-high-score" style="font-size:22px; font-weight:700; color:#fbbf24; font-family:monospace;">0</div>
           </div>
 
-          <!-- Direct VIP Farm Button for Owner -->
+          <!-- Direct Farm Button for Owner -->
           <a id="owner-farm-direct-btn" href="/farm" style="display:none; text-decoration:none; width:100%; padding:10px; background:linear-gradient(135deg, #7c3aed, #4338ca); border:1.5px solid #fbbf24; border-radius:12px; color:#fbbf24; font-size:13px; font-weight:700; margin-bottom:8px; text-align:center; box-sizing:border-box; box-shadow:0 0 14px rgba(251,191,36,0.35);">
-            <span id="owner-farm-direct-text">🏡 เข้าสู่ฟาร์มแมวของคุณ (VIP) →</span>
+            <span id="owner-farm-direct-text">🏡 เข้าสู่ฟาร์มแมวของคุณ →</span>
           </a>
 
           <button onclick="closeLoginModal(); openLeaderboardModal();" style="width:100%; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
@@ -802,32 +886,25 @@
           <button onclick="logoutFacebook()" style="width:100%; padding:9px; background:#334155; border:none; border-radius:12px; color:#f87171; font-size:12px; font-weight:600; cursor:pointer;">
             ออกจากระบบ (Logout)
           </button>
-
-          <button onclick="closeLoginModal()" style="width:100%; margin-top:8px; padding:8px; background:transparent; border:none; color:#94a3b8; font-size:12px; cursor:pointer;">
-            ปิดหน้าต่าง
-          </button>
         </div>
       </div>
     </div>
 
-    <!-- VIP Early Access / Farm Admission Modal -->
+    <!-- Farm Admission Modal -->
     <div id="vip-farm-modal">
       <div class="modal-card">
+        <button class="modal-close-x" onclick="closeVipFarmModal()" title="ปิด">✕</button>
         <div style="font-size: 44px; margin-bottom: 6px;">🚧🐱</div>
         <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">ฟาร์มแมวอยู่ระหว่างก่อสร้าง</h3>
         <span style="display:inline-block; background:#dc2626; color:#fee2e2; font-size:10px; font-weight:700; padding:2px 10px; border-radius:10px; margin-bottom:12px;">🚧 ยังไม่เปิดให้บุคคลทั่วไปเข้าชม</span>
         <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 18px; text-align:center;">
-          ฟาร์มแมวกำลังอยู่ในช่วงตกแต่งห้องและเพิ่มของเล่น จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
+          ฟาร์มแมวกำลังอยู่ในช่วงปรับปรุงห้อง 2.5D และโมเดลแมวโพลีกอนคัตเอาท์ จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
           ขณะนี้เปิดสิทธิ์เฉพาะคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b> เท่านั้น หากคุณคือเจ้าของฟาร์ม โปรดเข้าสู่ระบบด้วย Facebook
         </p>
 
-        <button class="fb-login-btn" onclick="loginWithFacebook()" style="margin-bottom:10px;">
+        <button class="fb-login-btn" onclick="loginWithFacebook()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           เข้าสู่ระบบด้วย Facebook (เจ้าของฟาร์ม)
-        </button>
-
-        <button onclick="closeVipFarmModal()" style="width:100%; padding:10px; background:#1e293b; border:1px solid #334155; color:#94a3b8; border-radius:12px; font-size:12px; cursor:pointer;">
-          เล่นเกม Cat Ball ต่อ
         </button>
       </div>
     </div>
@@ -854,12 +931,9 @@
           </div>
         </div>
 
-        <div style="display:flex; gap:8px; margin-top:8px;">
-          <button onclick="loadLeaderboardData()" style="flex:1; padding:10px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit;">
+        <div style="margin-top:8px;">
+          <button onclick="loadLeaderboardData()" style="width:100%; padding:10px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit;">
             🔄 รีเฟรช
-          </button>
-          <button onclick="closeLeaderboardModal()" style="flex:1; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; color:#fff; border-radius:12px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;">
-            ปิดหน้าต่าง
           </button>
         </div>
       </div>
@@ -868,6 +942,7 @@
     <!-- Game Over Modal -->
     <div id="game-over-modal">
       <div class="modal-card">
+        <button class="modal-close-x" onclick="restartGame()" title="ปิด">✕</button>
         <div style="font-size: 48px; margin-bottom: 8px;">😿</div>
         <h2 style="font-size: 20px; font-weight: 700; color: #f87171; margin-bottom: 4px;">กล่องแมวเต็มแย้ว!</h2>
         <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก</p>
@@ -1354,6 +1429,9 @@
               score += CAT_TIERS[nextTier].score;
               updateScoreUI();
 
+              // Trigger Top Celebration Cat Runway Animation
+              triggerTierUpgradeCelebration(nextTier);
+
               // Special Reward: Unlocking King Cat Level 10 grants +1 Shake!
               if (nextTier === CAT_TIERS.length - 1) {
                 moonShakesLeft++;
@@ -1427,6 +1505,123 @@
       }
     }
 
+    /* ==========================================================================
+       TOP CELEBRATION CAT RUNWAY ANIMATION ENGINE
+       ========================================================================== */
+    const TIER_CUTOUTS = [
+      "cutout_munchkin.png",          // Tier 0: ก้อนไหมพรม / ลูกแมวจิ๋ว
+      "cutout_bengal.png",            // Tier 1: ลูกแมวส้มจิ๋ว
+      "cutout_americanshorthair.png", // Tier 2: แมวสลิดขี้เซา
+      "cutout_scottish.png",          // Tier 3: แมวสามสีอบอุ่น
+      "cutout_russianblue.png",       // Tier 4: แมวดำนำโชค
+      "cutout_siamese.png",           // Tier 5: แมววิเชียรมาศ
+      "cutout_persian.png",           // Tier 6: แมวเปอร์เซียปุย
+      "cutout_british.png",           // Tier 7: พี่ส้มตัวตึง
+      "cutout_mainecoon.png",         // Tier 8: ท่านอนก้อนขนยักษ์
+      "cutout_suphalak.png"           // Tier 9: ราชาแมวคู่ Sleeperem
+    ];
+
+    let runwayQueue = [];
+    let isRunwayBusy = false;
+
+    function triggerTierUpgradeCelebration(tier) {
+      if (tier === undefined || tier === null || tier < 1) return;
+      runwayQueue.push(tier);
+      if (!isRunwayBusy) {
+        processNextRunwayCelebration();
+      }
+    }
+
+    function processNextRunwayCelebration() {
+      if (runwayQueue.length === 0) {
+        isRunwayBusy = false;
+        return;
+      }
+      isRunwayBusy = true;
+      const tier = runwayQueue.shift();
+      const container = document.getElementById("cat-runway-container");
+      if (!container) {
+        isRunwayBusy = false;
+        return;
+      }
+
+      // Pick breed cutout file
+      const cutoutFilename = TIER_CUTOUTS[Math.min(tier, TIER_CUTOUTS.length - 1)] || "cutout_bengal.png";
+      const cutoutBase = window.location.pathname.includes('/catball') ? '../cats/img/' : 'cats/img/';
+      const cutoutUrl = cutoutBase + cutoutFilename;
+
+      // Random action at center: sit (นั่ง), sleep (นอน), walk (เดินผ่าน)
+      const actions = ["sit", "sleep", "walk"];
+      const action = actions[Math.floor(Math.random() * actions.length)];
+
+      const catEl = document.createElement("div");
+      catEl.className = "runway-cat";
+      catEl.innerHTML = `<img src="${cutoutUrl}" alt="tier-${tier}-cat">`;
+      container.appendChild(catEl);
+
+      const containerWidth = container.offsetWidth || 360;
+      const startX = -70;
+      const midX = (containerWidth / 2) - 26;
+      const endX = containerWidth + 70;
+
+      // Start position
+      catEl.style.left = `${startX}px`;
+      catEl.style.animation = "runwayBob 0.28s infinite ease-in-out";
+      catEl.style.transition = "left 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.2s ease";
+
+      // Animate to center
+      requestAnimationFrame(() => {
+        catEl.style.left = `${midX}px`;
+      });
+
+      // Reached center
+      setTimeout(() => {
+        catEl.style.animation = "none";
+
+        let pauseDuration = 1200;
+
+        if (action === "sit") {
+          // Pose 1: นั่ง + Heart
+          catEl.style.transform = "scale(1.1) translateY(3px)";
+          const bubble = document.createElement("div");
+          bubble.className = "runway-bubble";
+          bubble.innerHTML = `<span>💖</span> <span style="font-size:11px; color:#f472b6; font-weight:700;">เหมียว~</span>`;
+          catEl.appendChild(bubble);
+          pauseDuration = 1300;
+        } else if (action === "sleep") {
+          // Pose 2: นอน + Zzz
+          catEl.style.transform = "rotate(14deg) translateY(6px) scale(0.95)";
+          const bubble = document.createElement("div");
+          bubble.className = "runway-bubble";
+          bubble.innerHTML = `<span class="zzz-float">💤</span> <span style="font-size:11px; color:#93c5fd; font-weight:700;">ง่วงแย้ว</span>`;
+          catEl.appendChild(bubble);
+          pauseDuration = 1400;
+        } else {
+          // Pose 3: เดินผ่าน + Stars
+          catEl.style.transform = "scale(1.05)";
+          const bubble = document.createElement("div");
+          bubble.className = "runway-bubble";
+          bubble.innerHTML = `<span>✨</span> <span style="font-size:11px; color:#fbbf24; font-weight:700;">ยินดีด้วย!</span>`;
+          catEl.appendChild(bubble);
+          pauseDuration = 750;
+        }
+
+        // Resume walking to the right
+        setTimeout(() => {
+          catEl.style.transform = "none";
+          catEl.style.animation = "runwayBob 0.28s infinite ease-in-out";
+          catEl.style.transition = "left 1.2s cubic-bezier(0.55, 0.085, 0.68, 0.53)";
+          catEl.style.left = `${endX}px`;
+
+          setTimeout(() => {
+            if (catEl.parentNode) catEl.parentNode.removeChild(catEl);
+            processNextRunwayCelebration();
+          }, 1250);
+        }, pauseDuration);
+
+      }, 1350);
+    }
+
     let currentUser = null;
     const KANEL_NOTARRY_UUID = "087bafcd-0191-419f-8a39-bd834eb323f2";
 
@@ -1475,6 +1670,12 @@
       showBanner("🐾", "[DEV] รีเซ็ตสิทธิ์เขย่ากล่องเป็น 2 ครั้งแล้ว!");
     }
 
+    function devTestCelebration() {
+      const randomTier = Math.floor(Math.random() * 9) + 1;
+      triggerTierUpgradeCelebration(randomTier);
+      showBanner("🐾", `[DEV] จำลองการฉลองรันเวย์แมว Tier ${randomTier + 1}!`);
+    }
+
     /* ==========================================================================
        ENVIRONMENT DETECTION & ZERO-EDIT PROMOTION PARITY
        ========================================================================== */
@@ -1489,7 +1690,7 @@
         const ribbon = document.getElementById("dev-staging-ribbon");
         if (ribbon) ribbon.style.display = "flex";
         const ownerBtnText = document.getElementById("owner-farm-direct-text");
-        if (ownerBtnText) ownerBtnText.innerText = "🏡 เข้าสู่ฟาร์มแมวของคุณ (VIP Staging) →";
+        if (ownerBtnText) ownerBtnText.innerText = "🏡 เข้าสู่ฟาร์มแมวของคุณ →";
       } else {
         const ribbon = document.getElementById("dev-staging-ribbon");
         if (ribbon) ribbon.style.display = "none";
@@ -1620,14 +1821,14 @@
           avatarElem.innerHTML = `<img src="${avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${isOwner ? '#fbbf24' : '#38bdf8'};">`;
         }
 
-        // Special VIP Owner badge for Kanel Notarry
+        // Special Owner badge for Kanel Notarry
         if (isOwner) {
           if (farmBtn) {
             farmBtn.classList.add("is-owner-vip");
             farmBtn.title = "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry! (คลิกเพื่อเข้าฟาร์ม)";
           }
           if (farmText) {
-            farmText.innerText = "ฟาร์มแมว VIP";
+            farmText.innerText = "ฟาร์มแมว";
             farmText.style.color = "#fbbf24";
           }
           if (farmIcon) {
@@ -1759,8 +1960,8 @@
       document.getElementById("best-val").innerText = bestScore;
       updateHighestCatHUD();
       
-      // 10% of earned score is automatically saved as Fish Coins for Cat Farm
-      const earnedCoins = Math.floor(score / 10);
+      // 1% of earned score is automatically saved as Fish Coins for Cat Farm (discarding fractions)
+      const earnedCoins = Math.floor(score * 0.01);
       localStorage.setItem("sleeperem_fish_coins", (100 + earnedCoins).toString());
     }
 
