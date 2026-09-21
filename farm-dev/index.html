@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>🧪 [DEV] ฟาร์มแมว 2.5D Fairytale Contrast Macaron (Sleeperem Staging)</title>
+  <title id="farm-page-title">🏡 ฟาร์มแมว 2.5D แสนอบอุ่น (Sleeperem Cat Farm)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1179,7 +1179,7 @@
     <div class="farm-gate-card">
       <div style="font-size: 56px; margin-bottom: 8px;">🚧🐱</div>
       <h2 style="font-size: 20px; font-weight: 700; color: #fbbf24; margin-bottom: 6px;">ฟาร์มแมวอยู่ระหว่างก่อสร้าง</h2>
-      <span style="display:inline-block; background:#dc2626; color:#fee2e2; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px; margin-bottom:14px;">ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม (DEV)</span>
+      <span id="gatekeeper-badge" style="display:inline-block; background:#dc2626; color:#fee2e2; font-size:11px; font-weight:700; padding:3px 12px; border-radius:12px; margin-bottom:14px;">ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม</span>
       <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 22px;">
         ฟาร์มแมวกำลังอยู่ในช่วงปรับปรุงห้อง 2.5D และโมเดลแมวโพลีกอนคัตเอาท์ จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
         ขณะนี้เปิดสิทธิ์เฉพาะคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b> เท่านั้น
@@ -1190,22 +1190,22 @@
         เข้าสู่ระบบด้วย Facebook (เจ้าของฟาร์ม)
       </button>
 
-      <a href="/catball-dev" style="display:block; text-decoration:none; padding:11px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:13px; font-weight:600; text-align:center;">
-        🎮 กลับไปเล่นเกม Cat Ball (Staging)
+      <a id="gate-catball-btn" href="/catball" class="back-to-catball-link" style="display:block; text-decoration:none; padding:11px; background:#1e293b; border:1px solid #334155; color:#38bdf8; border-radius:12px; font-size:13px; font-weight:600; text-align:center;">
+        🎮 กลับไปเล่นเกม Cat Ball
       </a>
     </div>
   </div>
 
   <div class="app-wrap">
-    <!-- Dev Ribbon -->
-    <div class="dev-staging-ribbon">
+    <!-- Dev Ribbon (Dynamically shown on Staging only) -->
+    <div id="dev-staging-ribbon" class="dev-staging-ribbon" style="display: none;">
       <span>🧪 DEV STAGING: ห้อง 2.5D Fairytale Contrast</span>
       <span style="font-size:9px; color:#fde047;">เชื่อมต่อกับ /catball-dev</span>
     </div>
 
     <!-- Header -->
     <header>
-      <a href="/catball-dev" class="back-btn" title="กลับไปเล่นเกมหย่อนแมว (Staging)">
+      <a id="header-catball-btn" href="/catball" class="back-btn back-to-catball-link" title="กลับไปเล่นเกมหย่อนแมว (Cat Ball)">
         <span>🎮</span>
         <span>เล่น Cat Ball</span>
       </a>
@@ -2398,8 +2398,34 @@
       }
     }
 
+    /* ==========================================================================
+       ENVIRONMENT DETECTION & ZERO-EDIT PROMOTION PARITY
+       ========================================================================== */
+    const IS_DEV = window.location.pathname.includes('-dev') || window.location.hostname === 'localhost';
+    const CATBALL_PATH = IS_DEV ? '/catball-dev' : '/catball';
+
+    function initEnvironment() {
+      if (IS_DEV) {
+        document.title = "🧪 [DEV] ฟาร์มแมว 2.5D Fairytale Contrast Macaron (Sleeperem Staging)";
+        const ribbon = document.getElementById("dev-staging-ribbon");
+        if (ribbon) ribbon.style.display = "flex";
+        const badge = document.getElementById("gatekeeper-badge");
+        if (badge) badge.innerText = "ยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม (DEV)";
+        const gateBtn = document.getElementById("gate-catball-btn");
+        if (gateBtn) {
+          gateBtn.innerText = "🎮 กลับไปเล่นเกม Cat Ball (Staging)";
+        }
+      }
+      const catballLinks = document.querySelectorAll('.back-to-catball-link');
+      catballLinks.forEach(link => {
+        link.href = CATBALL_PATH;
+        if (IS_DEV && link.title) link.title = "กลับไปเล่นเกมหย่อนแมว (Staging)";
+      });
+    }
+
     // Init
     window.addEventListener('DOMContentLoaded', () => {
+      initEnvironment();
       applyCameraTransform();
       reloadActiveCats();
       renderShop();

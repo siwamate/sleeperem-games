@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>🧪 [DEV] ฟาร์มแมว - Cat Drop & Merge: Sleepy Cats (Staging)</title>
+  <title>ฟาร์มแมว - Cat Drop & Merge: Sleepy Cats (Sleeperem)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
     * {
@@ -655,8 +655,8 @@
 <body>
 
   <div id="game-container">
-    <!-- Dev Staging Ribbon & Tools -->
-    <div class="dev-staging-ribbon">
+    <!-- Dev Staging Ribbon & Tools (Shown only on Staging) -->
+    <div id="dev-staging-ribbon" class="dev-staging-ribbon" style="display:none;">
       <span>🧪 DEV STAGING (สำหรับทดสอบ)</span>
       <button class="dev-tools-toggle-btn" onclick="toggleDevTools()">🛠️ เมนูทดสอบ</button>
     </div>
@@ -791,8 +791,8 @@
           </div>
 
           <!-- Direct VIP Farm Button for Owner -->
-          <a id="owner-farm-direct-btn" href="/farm-dev" style="display:none; text-decoration:none; width:100%; padding:10px; background:linear-gradient(135deg, #7c3aed, #4338ca); border:1.5px solid #fbbf24; border-radius:12px; color:#fbbf24; font-size:13px; font-weight:700; margin-bottom:8px; text-align:center; box-sizing:border-box; box-shadow:0 0 14px rgba(251,191,36,0.35);">
-            🏡 เข้าสู่ฟาร์มแมวของคุณ (VIP Staging) →
+          <a id="owner-farm-direct-btn" href="/farm" style="display:none; text-decoration:none; width:100%; padding:10px; background:linear-gradient(135deg, #7c3aed, #4338ca); border:1.5px solid #fbbf24; border-radius:12px; color:#fbbf24; font-size:13px; font-weight:700; margin-bottom:8px; text-align:center; box-sizing:border-box; box-shadow:0 0 14px rgba(251,191,36,0.35);">
+            <span id="owner-farm-direct-text">🏡 เข้าสู่ฟาร์มแมวของคุณ (VIP) →</span>
           </a>
 
           <button onclick="closeLoginModal(); openLeaderboardModal();" style="width:100%; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
@@ -1475,10 +1475,35 @@
       showBanner("🐾", "[DEV] รีเซ็ตสิทธิ์เขย่ากล่องเป็น 2 ครั้งแล้ว!");
     }
 
+    /* ==========================================================================
+       ENVIRONMENT DETECTION & ZERO-EDIT PROMOTION PARITY
+       ========================================================================== */
+    const IS_DEV = window.location.pathname.includes('-dev') || window.location.hostname === 'localhost';
+    const FARM_PATH = IS_DEV ? '/farm-dev' : '/farm';
+
+    function initEnvironment() {
+      if (IS_DEV) {
+        if (!document.title.startsWith("🧪")) {
+          document.title = "🧪 [DEV] " + document.title;
+        }
+        const ribbon = document.getElementById("dev-staging-ribbon");
+        if (ribbon) ribbon.style.display = "flex";
+        const ownerBtnText = document.getElementById("owner-farm-direct-text");
+        if (ownerBtnText) ownerBtnText.innerText = "🏡 เข้าสู่ฟาร์มแมวของคุณ (VIP Staging) →";
+      } else {
+        const ribbon = document.getElementById("dev-staging-ribbon");
+        if (ribbon) ribbon.style.display = "none";
+        const panel = document.getElementById("dev-tools-panel");
+        if (panel) panel.style.display = "none";
+      }
+      const directBtn = document.getElementById("owner-farm-direct-btn");
+      if (directBtn) directBtn.href = FARM_PATH;
+    }
+
     function handleFarmClick(e) {
       if (e) e.preventDefault();
       if (currentUser && isKanelNotarry(currentUser)) {
-        window.location.href = "/farm-dev";
+        window.location.href = FARM_PATH;
       } else {
         openVipFarmModal();
       }
@@ -1961,6 +1986,7 @@
     }
 
     // INITIALIZATION
+    initEnvironment();
     resizeCanvas();
     currentCatTier = getRandomInitialTier();
     nextCatTier = getRandomInitialTier();
