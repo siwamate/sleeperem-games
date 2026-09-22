@@ -160,35 +160,181 @@
     }
     .runway-cat {
       position: absolute;
-      bottom: 2px;
+      bottom: 8px;
       left: -80px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.65));
-      transform-origin: center bottom;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.7));
       pointer-events: none;
-    }
-    .runway-cat img {
-      width: 44px;
-      height: 44px;
-      object-fit: contain;
-      image-rendering: -webkit-optimize-contrast;
+      z-index: 26;
     }
     .runway-bubble {
       position: absolute;
-      top: -18px;
-      background: rgba(15, 23, 42, 0.94);
+      left: 40px;
+      top: 2px;
+      transform: rotate(-3deg);
+      background: rgba(15, 23, 42, 0.95);
       border: 1.5px solid #fbbf24;
       border-radius: 12px;
       padding: 2px 8px;
-      font-size: 11px;
+      font-size: 10px;
       display: flex;
       align-items: center;
-      gap: 4px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
-      animation: popIn 0.2s ease-out;
+      gap: 3px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.75);
       white-space: nowrap;
+      animation: popIn 0.2s ease-out;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    /* ==========================================================================
+       ARTICULATED FELINE RIG (True Stepping Legs, Poses: Walk, Sit, Sleep)
+       ========================================================================== */
+    .feline-rig {
+      width: 42px;
+      height: 30px;
+      overflow: visible;
+      display: block;
+    }
+
+    /* 1. WALKING GAIT (Real Quadruped Step Cycle with Active Stepping Legs) */
+    .feline-rig.is-walking .leg-fl {
+      animation: stepLegFL 0.4s infinite ease-in-out;
+      transform-origin: 18px 22px;
+    }
+    .feline-rig.is-walking .leg-fr {
+      animation: stepLegFR 0.4s infinite ease-in-out;
+      transform-origin: 22px 22px;
+    }
+    .feline-rig.is-walking .leg-bl {
+      animation: stepLegBL 0.4s infinite ease-in-out;
+      transform-origin: 38px 22px;
+    }
+    .feline-rig.is-walking .leg-br {
+      animation: stepLegBR 0.4s infinite ease-in-out;
+      transform-origin: 42px 22px;
+    }
+    .feline-rig.is-walking .cat-torso {
+      animation: trotBody 0.2s infinite alternate ease-in-out;
+      transform-origin: center;
+    }
+    .feline-rig.is-walking .cat-tail {
+      animation: tailSwayWalk 0.4s infinite ease-in-out;
+      transform-origin: 46px 18px;
+    }
+    .feline-rig.is-walking .cat-head {
+      animation: headBobWalk 0.2s infinite alternate ease-in-out;
+      transform-origin: 16px 18px;
+    }
+
+    @keyframes stepLegFL {
+      0%   { transform: rotate(-28deg); }
+      35%  { transform: rotate(18deg) translateY(-2px); }
+      70%  { transform: rotate(26deg); }
+      100% { transform: rotate(-28deg); }
+    }
+    @keyframes stepLegFR {
+      0%   { transform: rotate(26deg); }
+      35%  { transform: rotate(-28deg); }
+      70%  { transform: rotate(18deg) translateY(-2px); }
+      100% { transform: rotate(26deg); }
+    }
+    @keyframes stepLegBL {
+      0%   { transform: rotate(22deg); }
+      40%  { transform: rotate(-24deg); }
+      80%  { transform: rotate(14deg) translateY(-2px); }
+      100% { transform: rotate(22deg); }
+    }
+    @keyframes stepLegBR {
+      0%   { transform: rotate(-24deg); }
+      40%  { transform: rotate(14deg) translateY(-2px); }
+      80%  { transform: rotate(22deg); }
+      100% { transform: rotate(-24deg); }
+    }
+    @keyframes trotBody {
+      0%   { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-1.5px) rotate(-1deg); }
+    }
+    @keyframes tailSwayWalk {
+      0%, 100% { transform: rotate(-15deg); }
+      50%      { transform: rotate(12deg); }
+    }
+    @keyframes headBobWalk {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(1px); }
+    }
+
+    /* 2. SITTING POSE (Legs Fold Down, Torso Upright, Tail Curls) */
+    .feline-rig.is-sitting .leg-fl,
+    .feline-rig.is-sitting .leg-fr {
+      transform: rotate(0deg) translateY(0);
+      transform-origin: 18px 22px;
+      transition: transform 0.3s ease;
+    }
+    .feline-rig.is-sitting .leg-bl,
+    .feline-rig.is-sitting .leg-br {
+      transform: rotate(65deg) scale(0.7, 0.9) translateY(4px) translateX(-4px);
+      transform-origin: 38px 22px;
+      transition: transform 0.3s ease;
+    }
+    .feline-rig.is-sitting .cat-torso {
+      transform: rotate(-18deg) translateY(2px) translateX(2px);
+      transform-origin: 40px 24px;
+      transition: transform 0.3s ease;
+      animation: sitBreathe 3s infinite ease-in-out;
+    }
+    .feline-rig.is-sitting .cat-head {
+      transform: translateY(-2px) rotate(8deg);
+      transform-origin: 16px 18px;
+      transition: transform 0.3s ease;
+    }
+    .feline-rig.is-sitting .cat-tail {
+      transform: rotate(45deg) translateY(-2px);
+      transform-origin: 46px 18px;
+      animation: sitTailSwish 2.5s infinite ease-in-out;
+    }
+    @keyframes sitBreathe {
+      0%, 100% { transform: rotate(-18deg) translateY(2px) translateX(2px) scale(1, 1); }
+      50%      { transform: rotate(-18deg) translateY(2px) translateX(2px) scale(1.02, 1.02); }
+    }
+    @keyframes sitTailSwish {
+      0%, 100% { transform: rotate(45deg); }
+      50%      { transform: rotate(30deg); }
+    }
+
+    /* 3. SLEEPING POSE (Loaf / Curled, Hidden Paws, Slow Breathing) */
+    .feline-rig.is-sleeping .leg-fl,
+    .feline-rig.is-sleeping .leg-fr,
+    .feline-rig.is-sleeping .leg-bl,
+    .feline-rig.is-sleeping .leg-br {
+      opacity: 0;
+      transform: translateY(6px) scale(0.2);
+      transition: all 0.35s ease;
+    }
+    .feline-rig.is-sleeping .cat-torso {
+      transform: scale(1.15, 0.72) translateY(8px) translateX(2px);
+      transform-origin: 30px 24px;
+      transition: transform 0.35s ease;
+      animation: sleepRibcage 2.6s infinite ease-in-out;
+    }
+    .feline-rig.is-sleeping .cat-head {
+      transform: translateY(6px) translateX(4px) rotate(14deg) scale(0.95);
+      transform-origin: 16px 18px;
+      transition: transform 0.35s ease;
+    }
+    .feline-rig.is-sleeping .cat-tail {
+      transform: rotate(70deg) translateY(-4px) translateX(-6px);
+      transform-origin: 46px 18px;
+      transition: transform 0.35s ease;
+    }
+    .feline-rig.is-sleeping .eye-open { display: none; }
+    .feline-rig.is-sleeping .eye-closed { display: block !important; }
+    .feline-rig:not(.is-sleeping) .eye-closed { display: none; }
+
+    @keyframes sleepRibcage {
+      0%, 100% { transform: scale(1.15, 0.72) translateY(8px) translateX(2px); }
+      50%      { transform: scale(1.17, 0.78) translateY(7px) translateX(2px); }
     }
 
     @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap');
@@ -3778,11 +3924,65 @@
       "cutout_suphalak.png"           // Tier 9: ราชาแมวคู่ Sleeperem
     ];
 
+    
+    /* ==========================================================================
+       ARTICULATED RUNWAY CELEBRATION ENGINE (Real Stepping Legs, Poses: Walk, Sit, Sleep)
+       - Cooldown: 45 seconds (between 30 and 60 seconds as requested)
+       - Compact size fitting cleanly in top header
+       - Tilted side speech bubble that never overflows header boundary
+       ========================================================================== */
+    const BREED_PALETTES = {
+      0: { body: '#f59e0b', dark: '#b45309', eye: '#10b981', stripe: '#92400e', nose: '#f43f5e' }, // Tier 1 ลูกแมวส้ม
+      1: { body: '#fef3c7', dark: '#451a03', eye: '#38bdf8', stripe: 'none', nose: '#451a03' },     // Tier 2 วิเชียรมาศ
+      2: { body: '#ea580c', dark: '#7c2d12', eye: '#10b981', stripe: '#451a03', nose: '#f43f5e' }, // Tier 3 เบงกอล
+      3: { body: '#64748b', dark: '#334155', eye: '#10b981', stripe: 'none', nose: '#475569' },     // Tier 4 โคราช
+      4: { body: '#f8fafc', dark: '#cbd5e1', eye: '#38bdf8', stripe: 'none', nose: '#fda4af' },     // Tier 5 ขาวมณี
+      5: { body: '#78350f', dark: '#451a03', eye: '#fbbf24', stripe: 'none', nose: '#451a03' },     // Tier 6 ศุภลักษณ์
+      6: { body: '#475569', dark: '#1e293b', eye: '#34d399', stripe: 'none', nose: '#334155' },     // Tier 7 รัสเซียนบลู
+      7: { body: '#94a3b8', dark: '#475569', eye: '#f59e0b', stripe: 'none', nose: '#fda4af' },     // Tier 8 บริติช
+      8: { body: '#fbbf24', dark: '#d97706', eye: '#38bdf8', stripe: '#b45309', nose: '#f43f5e' }, // Tier 9 เมนคูน
+      9: { body: '#a855f7', dark: '#6b21a8', eye: '#fbbf24', stripe: '#facc15', nose: '#f43f5e' }  // Tier 10 ราชาแมวคู่
+    };
+
+    function renderFelineSvg(tier, state = 'walking') {
+      const p = BREED_PALETTES[tier % 10] || BREED_PALETTES[0];
+      return `
+        <svg class="feline-rig is-${state}" viewBox="0 0 56 38">
+          <g class="leg-br"><rect x="38" y="18" width="4" height="15" rx="2" fill="${p.dark}"/></g>
+          <g class="leg-fr"><rect x="18" y="16" width="4" height="17" rx="2" fill="${p.dark}"/></g>
+          <g class="cat-tail"><path d="M46 16 C 52 10, 54 4, 52 0" stroke="${p.body}" stroke-width="4" stroke-linecap="round" fill="none"/></g>
+          <g class="cat-torso">
+            <ellipse cx="28" cy="18" rx="16" ry="10" fill="${p.body}"/>
+            ${p.stripe !== 'none' ? `<path d="M22 10 L 24 16 M 28 9 L 29 17 M 34 10 L 33 16" stroke="${p.stripe}" stroke-width="2" stroke-linecap="round"/>` : ''}
+          </g>
+          <g class="cat-head">
+            <polygon points="10,6 6,-2 14,2" fill="${p.dark}"/>
+            <polygon points="18,6 22,-2 14,2" fill="${p.dark}"/>
+            <circle cx="14" cy="12" r="8" fill="${p.body}"/>
+            <circle class="eye-open" cx="11" cy="11" r="1.5" fill="${p.eye}"/>
+            <circle class="eye-open" cx="16" cy="11" r="1.5" fill="${p.eye}"/>
+            <path class="eye-closed" d="M10 12 Q 11 14 12 12 M 15 12 Q 16 14 17 12" stroke="${p.dark}" stroke-width="1.2" fill="none"/>
+            <polygon points="13,14 15,14 14,15.5" fill="${p.nose}"/>
+          </g>
+          <g class="leg-bl"><rect x="34" y="18" width="4" height="15" rx="2" fill="${p.body}"/></g>
+          <g class="leg-fl"><rect x="14" y="16" width="4" height="17" rx="2" fill="${p.body}"/></g>
+        </svg>
+      `;
+    }
+
+    let lastRunwayCelebrationTime = 0;
+    const RUNWAY_COOLDOWN_MS = 45000; // 45 seconds (between 30 and 60 seconds as requested)
     let runwayQueue = [];
     let isRunwayBusy = false;
 
     function triggerTierUpgradeCelebration(tier) {
       if (tier === undefined || tier === null || tier < 1) return;
+      const now = Date.now();
+      // Throttle: maximum once every 30-60 seconds (user requested: สัก 30 ถึง 60 วิก็พอ)
+      if (now - lastRunwayCelebrationTime < RUNWAY_COOLDOWN_MS) {
+        return;
+      }
+      lastRunwayCelebrationTime = now;
       runwayQueue.push(tier);
       if (!isRunwayBusy) {
         processNextRunwayCelebration();
@@ -3802,84 +4002,84 @@
         return;
       }
 
-      // Pick breed cutout file
-      const cutoutFilename = TIER_CUTOUTS[Math.min(tier, TIER_CUTOUTS.length - 1)] || "cutout_bengal.png";
-      const cutoutBase = window.location.pathname.includes('/catball') ? '../cats/img/' : 'cats/img/';
-      const cutoutUrl = cutoutBase + cutoutFilename;
-
-      // Random action at center: sit (นั่ง), sleep (นอน), walk (เดินผ่าน)
+      // Actions at center: sit (นั่งพักผ่อน), sleep (นอนขด Zzz), walk (ก้าวเดินผ่าน)
       const actions = ["sit", "sleep", "walk"];
       const action = actions[Math.floor(Math.random() * actions.length)];
 
       const catEl = document.createElement("div");
       catEl.className = "runway-cat";
-      catEl.innerHTML = `<img src="${cutoutUrl}" alt="tier-${tier}-cat">`;
+      catEl.innerHTML = renderFelineSvg(tier, "walking");
       container.appendChild(catEl);
 
       const containerWidth = container.offsetWidth || 360;
-      const startX = -70;
-      const midX = (containerWidth / 2) - 26;
-      const endX = containerWidth + 70;
+      const startX = -60;
+      const midX = (containerWidth / 2) - 22;
+      const endX = containerWidth + 60;
 
-      // Start position
+      // Start position with real 4-beat stepping legs
       catEl.style.left = `${startX}px`;
-      catEl.style.animation = "runwayBob 0.28s infinite ease-in-out";
-      catEl.style.transition = "left 1.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.2s ease";
+      catEl.style.transition = "left 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
 
-      // Animate to center
+      // Animate stepping to center
       requestAnimationFrame(() => {
         catEl.style.left = `${midX}px`;
       });
 
       // Reached center
       setTimeout(() => {
-        catEl.style.animation = "none";
-
-        let pauseDuration = 1200;
+        const svg = catEl.querySelector(".feline-rig");
+        let pauseDuration = 1400;
 
         if (action === "sit") {
-          // Pose 1: นั่ง + Heart
-          catEl.style.transform = "scale(1.1) translateY(3px)";
+          // Pose 1: นั่งพับขาจริง + บอลลูนข้างๆ เอียงนิดๆ
+          if (svg) { svg.classList.remove("is-walking"); svg.classList.add("is-sitting"); }
           const bubble = document.createElement("div");
           bubble.className = "runway-bubble";
-          bubble.innerHTML = `<span>💖</span> <span style="font-size:11px; color:#f472b6; font-weight:700;">เหมียว~</span>`;
+          bubble.style.transform = "rotate(-4deg)";
+          bubble.innerHTML = `<span>💖</span> <span style="font-size:10px; color:#f472b6; font-weight:700;">เหมียว~</span>`;
           catEl.appendChild(bubble);
-          pauseDuration = 1300;
+          pauseDuration = 1500;
         } else if (action === "sleep") {
-          // Pose 2: นอน + Zzz
-          catEl.style.transform = "rotate(14deg) translateY(6px) scale(0.95)";
+          // Pose 2: นอนขดตัว หุบขา หลับตา หายใจช้าๆ + บอลลูนข้างๆ เอียงนิดๆ
+          if (svg) { svg.classList.remove("is-walking"); svg.classList.add("is-sleeping"); }
           const bubble = document.createElement("div");
           bubble.className = "runway-bubble";
-          bubble.innerHTML = `<span class="zzz-float">💤</span> <span style="font-size:11px; color:#93c5fd; font-weight:700;">ง่วงแย้ว</span>`;
+          bubble.style.transform = "rotate(3deg)";
+          bubble.innerHTML = `<span class="zzz-float">💤</span> <span style="font-size:10px; color:#93c5fd; font-weight:700;">Zzz...</span>`;
           catEl.appendChild(bubble);
-          pauseDuration = 1400;
+          pauseDuration = 1600;
         } else {
-          // Pose 3: เดินผ่าน + Stars
-          catEl.style.transform = "scale(1.05)";
+          // Pose 3: เดินผ่าน + บอลลูนข้างๆ
           const bubble = document.createElement("div");
           bubble.className = "runway-bubble";
-          bubble.innerHTML = `<span>✨</span> <span style="font-size:11px; color:#fbbf24; font-weight:700;">ยินดีด้วย!</span>`;
+          bubble.style.transform = "rotate(-2deg)";
+          bubble.innerHTML = `<span>✨</span> <span style="font-size:10px; color:#fbbf24; font-weight:700;">เก่งมาก!</span>`;
           catEl.appendChild(bubble);
-          pauseDuration = 750;
+          pauseDuration = 900;
         }
 
-        // Resume walking to the right
+        // Resume active walking step to the right
         setTimeout(() => {
-          catEl.style.transform = "none";
-          catEl.style.animation = "runwayBob 0.28s infinite ease-in-out";
-          catEl.style.transition = "left 1.2s cubic-bezier(0.55, 0.085, 0.68, 0.53)";
+          if (svg) {
+            svg.classList.remove("is-sitting", "is-sleeping");
+            svg.classList.add("is-walking");
+          }
+          const b = catEl.querySelector(".runway-bubble");
+          if (b) b.remove();
+          catEl.style.transition = "left 1.4s cubic-bezier(0.55, 0.085, 0.68, 0.53)";
           catEl.style.left = `${endX}px`;
 
           setTimeout(() => {
             if (catEl.parentNode) catEl.parentNode.removeChild(catEl);
             processNextRunwayCelebration();
-          }, 1250);
+          }, 1450);
         }, pauseDuration);
 
-      }, 1350);
+      }, 1450);
     }
 
     let currentUser = null;
+
     const KANEL_NOTARRY_UUID = "087bafcd-0191-419f-8a39-bd834eb323f2";
 
     function isKanelNotarry(user) {
@@ -4688,7 +4888,7 @@
           <div class="cat-sleep-zzz" id="zzz-${this.data.id}">Zzz</div>
           <div class="cat-groom-sparkle" id="sparkle-${this.data.id}">✨</div>
           <div class="cat-cutout-wrap" id="wrap-${this.data.id}">
-            <img class="cat-cutout-img" src="${this.data.img}" alt="${this.data.name}">
+            ${renderFelineSvg(this.index, 'sitting')}
           </div>
           <div class="cat-contact-shadow" id="shadow-${this.data.id}"></div>
           <div class="cat-stat-tag">
@@ -4738,6 +4938,11 @@
         this.state = newState;
         this.dom.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping');
         this.dom.classList.add('is-' + newState);
+        const svg = this.dom.querySelector('.feline-rig');
+        if (svg) {
+          svg.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping');
+          svg.classList.add('is-' + newState);
+        }
       }
 
       onTap() {
