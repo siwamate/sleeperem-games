@@ -1205,24 +1205,6 @@
       white-space: nowrap;
     }
 
-    /* Active Cats Pill Button */
-    .cat-selector-pill {
-      background: rgba(13, 21, 39, 0.85);
-      border: 1px solid #38bdf8;
-      backdrop-filter: blur(8px);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #e0f2fe;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5), 0 0 10px rgba(56, 189, 248, 0.25);
-      transition: all 0.15s;
-    }
-    .cat-selector-pill:active { transform: scale(0.95); }
 
     /* Hint Bubble for Gestures (Fades after 4s) */
     .gesture-hint-pill {
@@ -3383,10 +3365,7 @@
       <!-- Top Overlay Controls -->
       <div class="viewport-controls-overlay">
         <!-- Manage Roaming Cats -->
-        <div class="cat-selector-pill" onclick="openCatSelectorModal()" title="เลือกแมวโพลีกอนคัตเอาท์มาเดินเล่นในห้อง">
-          <span>🐾</span>
-          <span>แมวในห้อง (<span id="active-cat-count">3</span>/20)</span>
-        </div>
+        <!-- Cat Spawning System Removed -->
       </div>
 
       <!-- Gesture Hint (Fades out) -->
@@ -3633,7 +3612,7 @@
           </div>
         </div>
 
-        <div id="cats-stage-layer"></div>
+        <div id="cats-stage-layer" style="display: none !important;"></div>
 
       </div>
     </div>
@@ -3716,59 +3695,8 @@
   </div>
 
   
-      <!-- Cat Selector Modal -->
-  <div class="farm-modal-overlay" id="cat-selector-modal">
-    <div class="farm-modal-card">
-      <button class="close-modal-btn" onclick="closeModal('cat-selector-modal')">✕</button>
-      <h3 style="font-size: 15px; font-weight: 700; color: #38bdf8; margin-bottom: 4px;">🐾 จัดการแมวในห้อง</h3>
-      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">เลือกแมวโพลีกอนคัตเอาท์มาเดินเล่นในห้อง (สูงสุด 5 ตัว)</p>
-      <div id="cat-selector-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 380px; overflow-y: auto;">
-        <!-- Injected via JS -->
-      </div>
-    </div>
-  </div>
-
-  
-      <!-- Cat Detail & Feed Modal -->
-  <div class="farm-modal-overlay" id="cat-detail-modal">
-    <div class="farm-modal-card" style="text-align: center;">
-      <button class="close-modal-btn" onclick="closeModal('cat-detail-modal')">✕</button>
-      <!-- Lively Articulated Animated Cat Avatar -->
-      <div class="modal-cat-stage" id="modal-cat-interactive-avatar" onclick="triggerPetCurrentCat(event)" title="แตะตัวหรือหัวน้องแมวเพื่อลูบหัว 💖">
-        <div class="modal-pet-floating-fx" id="modal-pet-fx-container"></div>
-        <div class="modal-cat-speech-bubble" id="modal-pet-speech">เหมียวว~ 💖</div>
-        <div class="modal-cat-svg-box" id="modal-cat-svg-container">
-          <!-- Dynamically injected Articulated SVG Rig with breathing, tail wag, blinking eyes -->
-        </div>
-        <div class="modal-cat-pedestal-shadow"></div>
-        <div class="modal-pet-tap-hint">🖐️ แตะที่ตัวน้องแมวเพื่อลูบหัว</div>
-      </div>
-      <h3 id="modal-cat-name" style="font-size: 16px; font-weight: 700; color: #fde047;">แมว</h3>
-      <p id="modal-cat-desc" style="font-size: 11px; color: #94a3b8; margin: 4px 0 12px;"></p>
       
-      <div style="background: #090e1a; border: 1px solid #1e293b; border-radius: 14px; padding: 10px; display: flex; justify-content: space-around; margin-bottom: 14px;">
-        <div>
-          <div style="font-size: 10px; color: #94a3b8;">น้ำหนัก</div>
-          <div id="modal-cat-weight" style="font-size: 14px; font-weight: 700; color: #38bdf8;">4.5 kg</div>
-        </div>
-        <div>
-          <div style="font-size: 10px; color: #94a3b8;">รูปร่าง</div>
-          <div id="modal-cat-shape" style="font-size: 14px; font-weight: 700; color: #10b981;">สมส่วน</div>
-        </div>
-        <div>
-          <div style="font-size: 10px; color: #94a3b8;">ความสุข</div>
-          <div style="font-size: 14px; font-weight: 700; color: #f43f5e;">💖 100%</div>
-        </div>
-      </div>
-
-      <button class="item-buy-btn" onclick="triggerPetCurrentCat()" style="padding: 10px; font-size: 13px;">
-        <span>🖐️</span>
-        <span>ลูบหัวน้องแมว (+ความสุข)</span>
-      </button>
-    </div>
-  </div>
-
-  
+      
       
       <!-- User Account Modal -->
   <div class="farm-modal-overlay" id="user-modal">
@@ -5387,393 +5315,24 @@
        CAT ACTOR ENGINE: PROCEDURAL CUTOUT WALKING LOCOMOTION
        ========================================================================== */
     /* ==========================================================================
-   LIFELIKE 2.5D FELINE CUTOUT ACTOR ENGINE (MULTI-ACTION STATE MACHINE)
-   Actions: Sit, Walk (smooth realistic speed), Crouch/Anticipate, Jump Arc, Groom, Sleep, Eat, Drink
-   - Natural architecture-based spawning on active theme perches
-   - Stage bounds protection [260 - 1140] preventing edge drops
-   - Full 0-cat support (allows completely empty relaxing room)
+       CAT SPAWNING SYSTEM DISABLED & REMOVED
+       ========================================================================== */
+    /* ==========================================================================
+   CAT ACTOR ENGINE DISABLED - CAT SPAWNING REMOVED
    ========================================================================== */
 class LiveCatActor {
-  constructor(breedData, index) {
-    this.data = breedData;
-    this.index = index;
-    this.weight = catWeights[this.data.id] || this.data.baseWeight;
-    this.state = 'sitting';
-    this.isBusy = false;
-    this.facing = (index % 2 === 0) ? 1 : -1;
-    this.dom = null;
-    this.actionTimer = null;
-    this.stepTimer = null;
-
-    // Spawn at a valid, natural waypoint of the CURRENT active theme
-    const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
-    const primarySpawnPoints = themeWps.filter(w => w.surface !== 'pod' && w.id !== 'feeder_dish' && w.id !== 'fountain_dish');
-    const spawnWp = primarySpawnPoints[index % primarySpawnPoints.length] || themeWps[0];
-    
-    const jitter = (index % 3 === 0 ? 0 : (index % 3 === 1 ? -18 : 18));
-    this.x = spawnWp.x + jitter;
-    this.y = spawnWp.y;
-    this.currentWaypoint = spawnWp;
-
-    this.initDOM();
-  }
-
-  initDOM() {
-    const layer = document.getElementById("cats-stage-layer");
-    if (!layer) return;
-
-    const el = document.createElement("div");
-    el.className = "cat-actor-cutout is-sitting";
-    el.id = "actor-" + this.data.id;
-
-    el.innerHTML = `
-      <div class="cat-speech-bubble" id="bubble-${this.data.id}">เหมียวว~ 💖</div>
-      <div class="cat-sleep-zzz" id="zzz-${this.data.id}">Zzz</div>
-      <div class="cat-groom-sparkle" id="sparkle-${this.data.id}">✨</div>
-      <div class="cat-cutout-wrap" id="wrap-${this.data.id}">
-        ${renderFelineSvg(this.data.id, 'sitting')}
-      </div>
-      <div class="cat-contact-shadow" id="shadow-${this.data.id}"></div>
-      <div class="cat-stat-tag">
-        <span>${this.data.name}</span>
-        <span class="chonky-badge" id="badge-${this.data.id}">${this.getWeightLabel()}</span>
-      </div>
-    `;
-
-    el.style.left = this.x + "px";
-    el.style.bottom = this.y + "px";
-    el.style.setProperty('--facing', this.facing);
-
-    const wrap = el.querySelector(".cat-cutout-wrap");
-    const tag = el.querySelector(".cat-stat-tag");
-    const clickHandler = (e) => {
-      e.stopPropagation();
-      this.onTap();
-    };
-    if (wrap) wrap.addEventListener('click', clickHandler);
-    if (tag) tag.addEventListener('click', clickHandler);
-
-    layer.appendChild(el);
-    this.dom = el;
-    this.applyChonkyTransform();
-    this.scheduleNextAction();
-  }
-
-  cleanup() {
-    if (this.actionTimer) { clearTimeout(this.actionTimer); this.actionTimer = null; }
-    if (this.stepTimer) { clearTimeout(this.stepTimer); this.stepTimer = null; }
-    if (this.dom && this.dom.parentNode) {
-      this.dom.parentNode.removeChild(this.dom);
-    }
-    this.dom = null;
-  }
-
-  stopCurrentMovement() {
-    if (this.stepTimer) { clearTimeout(this.stepTimer); this.stepTimer = null; }
-    if (this.actionTimer) { clearTimeout(this.actionTimer); this.actionTimer = null; }
-    this.isBusy = false;
-    if (this.dom) {
-      this.setState('sitting');
-    }
-  }
-
-  getWeightLabel() {
-    if (this.weight >= 8.5) return "🏆 อ้วนมาก";
-    if (this.weight >= 6.0) return "อวบอั๋น";
-    return "สมส่วน";
-  }
-
-  applyChonkyTransform() {
-    if (!this.dom) return;
-    const wrap = this.dom.querySelector(".cat-cutout-wrap");
-    const shadow = this.dom.querySelector(".cat-contact-shadow");
-    const badge = this.dom.querySelector(".chonky-badge");
-
-    const scale = Math.min(1.4, 0.95 + (this.weight - 3.5) * 0.055);
-    const squishY = Math.max(0.85, 1.0 - (this.weight - 3.5) * 0.02);
-
-    this.dom.style.setProperty('--facing', this.facing);
-    if (wrap) wrap.style.transform = `scale(${this.facing * scale}, ${scale * squishY})`;
-    if (shadow) shadow.style.transform = `scale(${scale * 1.25}, 1)`;
-    if (badge) badge.innerText = this.getWeightLabel();
-  }
-
-  setState(newState) {
-    if (!this.dom) return;
-    this.state = newState;
-    this.dom.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping', 'is-eating', 'is-drinking');
-    this.dom.classList.add('is-' + newState);
-    const svg = this.dom.querySelector('.feline-rig');
-    if (svg) {
-      svg.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping', 'is-eating', 'is-drinking');
-      const svgState = (newState === 'eating' || newState === 'drinking') ? 'sitting' : newState;
-      svg.classList.add('is-' + svgState);
-    }
-  }
-
-  onTap() {
-    if ((typeof hasPanned !== 'undefined' && hasPanned) || (typeof dragDist !== 'undefined' && dragDist > 8)) return;
-    audio.playPurr();
-    showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
-    spawnHeart(this.x, this.y + 60);
-    openCatDetailModal(this);
-  }
-
-  // Smooth step-by-step navigation path generator with diagonal leaps
-  planPath(targetX, targetY) {
-    const steps = [];
-    const yDiff = targetY - this.y;
-
-    if (Math.abs(yDiff) <= 25) {
-      // Same elevation: direct stroll along the surface
-      const dist = Math.abs(targetX - this.x);
-      const duration = Math.max(1.2, dist / 80);
-      steps.push({ type: 'walk', toX: targetX, toY: targetY, duration });
-    } else if (yDiff > 25) {
-      // Target is elevated: 1) approach launch spot within 45px, 2) crouch, 3) diagonal arc leap up to perch
-      const rawLaunchX = (Math.abs(targetX - this.x) > 55)
-        ? (targetX > this.x ? targetX - 45 : targetX + 45)
-        : this.x;
-      const launchX = Math.max(260, Math.min(1140, rawLaunchX));
-      if (Math.abs(launchX - this.x) > 15) {
-        const walkDist = Math.abs(launchX - this.x);
-        const walkDuration = Math.max(0.7, walkDist / 80);
-        steps.push({ type: 'walk', toX: launchX, toY: this.y, duration: walkDuration });
-      }
-      steps.push({ type: 'crouch', duration: 0.5 });
-      const leapDist = Math.hypot(targetX - launchX, yDiff);
-      const jumpDuration = Math.min(1.0, Math.max(0.65, leapDist / 170));
-      steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
-      steps.push({ type: 'land', duration: 0.25 });
-    } else {
-      // Target is lower: 1) crouch at edge, 2) leap down arc, 3) land
-      steps.push({ type: 'crouch', duration: 0.4 });
-      const dropDist = Math.hypot(targetX - this.x, yDiff);
-      const jumpDuration = Math.min(0.9, Math.max(0.55, dropDist / 190));
-      steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
-      steps.push({ type: 'land', duration: 0.25 });
-    }
-    return steps;
-  }
-
-  // Execute sequence of path actions smoothly without transition killing
-  executePath(steps, onDone) {
-    if (!steps || steps.length === 0) {
-      if (onDone) onDone();
-      return;
-    }
-
-    const step = steps.shift();
-    if (!this.dom || !document.contains(this.dom)) return;
-
-    if (step.type === 'walk') {
-      this.setState('walking');
-      this.facing = step.toX >= this.x ? 1 : -1;
-      this.applyChonkyTransform();
-      void this.dom.offsetWidth;
-      
-      this.dom.style.transition = `left ${step.duration}s ease-in-out, bottom ${step.duration}s ease-in-out`;
-      this.x = step.toX;
-      this.y = step.toY;
-      this.dom.style.left = this.x + "px";
-      this.dom.style.bottom = this.y + "px";
-
-      this.stepTimer = setTimeout(() => {
-        this.executePath(steps, onDone);
-      }, step.duration * 1000);
-
-    } else if (step.type === 'crouch') {
-      this.setState('crouching');
-      this.stepTimer = setTimeout(() => {
-        this.executePath(steps, onDone);
-      }, step.duration * 1000);
-
-    } else if (step.type === 'jump') {
-      this.setState('jumping');
-      this.facing = step.toX >= this.x ? 1 : -1;
-      this.applyChonkyTransform();
-      audio.playPurr();
-      void this.dom.offsetWidth;
-
-      this.dom.style.transition = `left ${step.duration}s cubic-bezier(0.25, 0.8, 0.35, 1), bottom ${step.duration}s cubic-bezier(0.2, 0.9, 0.3, 1)`;
-      this.x = step.toX;
-      this.y = step.toY;
-      this.dom.style.left = this.x + "px";
-      this.dom.style.bottom = this.y + "px";
-
-      this.stepTimer = setTimeout(() => {
-        this.executePath(steps, onDone);
-      }, step.duration * 1000);
-
-    } else if (step.type === 'land') {
-      this.setState('sitting');
-      this.stepTimer = setTimeout(() => {
-        this.executePath(steps, onDone);
-      }, step.duration * 1000);
-    }
-  }
-
-  // Calm Autonomous Decision Cycle (Happens every 8 to 22 seconds)
-  scheduleNextAction() {
-    if (this.actionTimer) clearTimeout(this.actionTimer);
-
-    const baseDelay = this.weight >= 7.0 ? (12000 + Math.random() * 10000) : (8000 + Math.random() * 8000);
-
-    this.actionTimer = setTimeout(() => {
-      if (!this.dom || !document.contains(this.dom)) return;
-      if (this.isBusy) {
-        this.scheduleNextAction();
-        return;
-      }
-
-      if (this.state === 'sleeping' && Math.random() < 0.45) {
-        this.scheduleNextAction();
-        return;
-      }
-
-      // Only eat/drink if player has actually filled the bowl!
-      if (feederHasFood && !window.__stationActiveUser && Math.random() < 0.35) {
-        this.eatAtFeeder();
-        return;
-      }
-      if (fountainHasWater && !window.__stationActiveUser && Math.random() < 0.35) {
-        this.drinkAtFountain();
-        return;
-      }
-
-      const roll = Math.random();
-      if (roll < 0.30) {
-        this.doSit();
-      } else if (roll < 0.50) {
-        this.doNap();
-      } else if (roll < 0.65) {
-        this.doGroom();
-      } else {
-        this.wanderToWaypoint();
-      }
-    }, baseDelay);
-  }
-
-  doSit() {
-    this.setState('sitting');
-    this.scheduleNextAction();
-  }
-
-  doNap() {
-    this.setState('sleeping');
-    this.scheduleNextAction();
-  }
-
-  doGroom() {
-    this.setState('grooming');
-    const sparkle = this.dom.querySelector(".cat-groom-sparkle");
-    if (sparkle) sparkle.style.opacity = "1";
-
-    setTimeout(() => {
-      if (!this.dom) return;
-      if (sparkle) sparkle.style.opacity = "0";
-      this.setState('sitting');
-      this.scheduleNextAction();
-    }, 5500 + Math.random() * 3000);
-  }
-
-  wanderToWaypoint() {
-    this.isBusy = true;
-    const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
-    const candidates = themeWps.filter(w => Math.abs(w.x - this.x) > 35 || Math.abs(w.y - this.y) > 25);
-    const rawTarget = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
-    const target = {
-      x: Math.max(260, Math.min(1140, rawTarget.x)),
-      y: Math.max(120, Math.min(380, rawTarget.y))
-    };
-
-    const steps = this.planPath(target.x, target.y);
-    this.executePath(steps, () => {
-      this.isBusy = false;
-      this.setState('sitting');
-      this.currentWaypoint = rawTarget;
-      this.scheduleNextAction();
-    });
-  }
-
-  eatAtFeeder() {
-    if (!feederHasFood || window.__stationActiveUser) {
-      this.scheduleNextAction();
-      return;
-    }
-    window.__stationActiveUser = this.data.id;
-    this.isBusy = true;
-    const targetX = 605;
-    const targetY = 125;
-
-    const steps = this.planPath(targetX, targetY);
-    this.executePath(steps, () => {
-      this.facing = 1;
-      this.setState('sitting');
-      this.applyChonkyTransform();
-      showSpeechBubble(this.dom, "ง่ำๆ 🥣 อร่อยจัง!");
-      spawnHeart(this.x + 25, this.y + 65);
-      audio.playPurr();
-
-      this.weight = Math.min(14.0, this.weight + 0.05);
-      catWeights[this.data.id] = this.weight;
-      try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
-      this.applyChonkyTransform();
-
-      setTimeout(() => {
-        feederHasFood = false;
-        try { localStorage.setItem('sleeperem_feeder_filled', 'false'); } catch(e) {}
-        renderStationVisuals();
-        showSpeechBubble(this.dom, "อิ่มแปล้~ 💖 ขอบคุณนะ!");
-
-        window.__stationActiveUser = null;
-        this.isBusy = false;
-        this.scheduleNextAction();
-      }, 4500);
-    });
-  }
-
-  drinkAtFountain() {
-    if (!fountainHasWater || window.__stationActiveUser) {
-      this.scheduleNextAction();
-      return;
-    }
-    window.__stationActiveUser = this.data.id;
-    this.isBusy = true;
-    const targetX = 745;
-    const targetY = 125;
-
-    const steps = this.planPath(targetX, targetY);
-    this.executePath(steps, () => {
-      this.facing = -1;
-      this.setState('sitting');
-      this.applyChonkyTransform();
-      showSpeechBubble(this.dom, "แผล็บๆ 💧 สดชื่น!");
-      spawnWaterBubble(this.x + 20, this.y + 60);
-      audio.playPurr();
-
-      setTimeout(() => {
-        fountainHasWater = false;
-        try { localStorage.setItem('sleeperem_fountain_filled', 'false'); } catch(e) {}
-        renderStationVisuals();
-        showSpeechBubble(this.dom, "สดชื่นจัง ✨ ขอบคุณนะ!");
-
-        window.__stationActiveUser = null;
-        this.isBusy = false;
-        this.scheduleNextAction();
-      }, 4500);
-    });
-  }
-
-  feed(kgGained) {
-    this.weight = Math.min(14.0, this.weight + kgGained);
-    catWeights[this.data.id] = this.weight;
-    try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
-    this.applyChonkyTransform();
-    showSpeechBubble(this.dom, `ง่ำๆ อร่อยมาก! (+ ${kgGained} kg) 💖`);
-    spawnHeart(this.x + 30, this.y + 70);
-    audio.playChomp();
-  }
+  constructor() {}
+  cleanup() {}
+  stopCurrentMovement() {}
+  setState() {}
+  onTap() {}
+  planPath() { return []; }
+  executePath(steps, onDone) { if (onDone) onDone(); }
+  scheduleNextAction() {}
+  wanderToWaypoint() {}
+  eatAtFeeder() {}
+  drinkAtFountain() {}
+  feed() {}
 }
 
     function reloadActiveCats() {
@@ -5937,108 +5496,10 @@ class LiveCatActor {
     /* ==========================================================================
        CAT SELECTOR & DETAIL MODAL
        ========================================================================== */
-    function openCatSelectorModal() {
-      const list = document.getElementById("cat-selector-list");
-      list.innerHTML = "";
-      CAT_BREEDS.forEach(b => {
-        const isSelected = activeCatIds.includes(b.id);
-        const row = document.createElement("div");
-        row.style.cssText = `display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#111a2e; border:1px solid ${isSelected ? '#10b981' : '#334155'}; border-radius:12px;`;
-        row.innerHTML = `
-          <div style="display:flex; align-items:center; gap:8px;">
-            <img src="${b.img}" style="width:36px; height:36px; object-fit:contain;">
-            <div>
-              <div style="font-size:12px; font-weight:700; color:#f8fafc;">${b.name}</div>
-              <div style="font-size:10px; color:#94a3b8;">นน. ${(catWeights[b.id] || b.baseWeight).toFixed(1)} kg</div>
-            </div>
-          </div>
-          <button style="padding:4px 10px; font-size:11px; font-weight:600; border-radius:8px; border:none; cursor:pointer; background:${isSelected ? '#10b981' : '#1e293b'}; color:${isSelected ? '#fff' : '#94a3b8'};" onclick="toggleCatSelection('${b.id}')">
-            ${isSelected ? '✓ อยู่ในห้อง' : '+ เชิญเข้าห้อง'}
-          </button>
-        `;
-        list.appendChild(row);
-      });
-      document.getElementById("cat-selector-modal").classList.add("open");
-    }
-
-    function toggleCatSelection(id) {
-      if (activeCatIds.includes(id)) {
-        activeCatIds = activeCatIds.filter(x => x !== id);
-      } else {
-        if (activeCatIds.length >= 20) {
-          showToast("⚠️", "ห้องแมวรองรับได้สูงสุด 20 ตัวเท่านั้น");
-          return;
-        }
-        activeCatIds.push(id);
-      }
-      try { localStorage.setItem('sleeperem_active_cats', JSON.stringify(activeCatIds)); } catch(e) {}
-      reloadActiveCats();
-      openCatSelectorModal();
-    }
-
-    let currentModalCat = null;
-    function openCatDetailModal(catActor) {
-      currentModalCat = catActor;
-      const svgBox = document.getElementById("modal-cat-svg-container");
-      if (svgBox && typeof renderFelineSvg === 'function') {
-        svgBox.innerHTML = renderFelineSvg(catActor.data.id, 'sitting', true);
-      }
-      document.getElementById("modal-cat-name").innerText = catActor.data.name;
-      document.getElementById("modal-cat-desc").innerText = catActor.data.trait;
-      document.getElementById("modal-cat-weight").innerText = catActor.weight.toFixed(1) + " kg";
-      document.getElementById("modal-cat-shape").innerText = catActor.getWeightLabel();
-      const modal = document.getElementById("cat-detail-modal");
-      modal.classList.add("open");
-      modal.classList.add("active");
-    }
-
-    function triggerPetCurrentCat(event) {
-      if (!currentModalCat) return;
-      if (event && event.stopPropagation) event.stopPropagation();
-      audio.playPurr();
-
-      // 1. Squish and bounce animation on the modal cat avatar
-      const svgBox = document.getElementById("modal-cat-svg-container");
-      if (svgBox) {
-        svgBox.classList.add("is-petted");
-        setTimeout(() => svgBox.classList.remove("is-petted"), 600);
-      }
-
-      // 2. Spawn burst of floating hearts directly inside the modal
-      const fxArea = document.getElementById("modal-pet-fx-container");
-      if (fxArea) {
-        const heartIcons = ['💖', '💕', '✨', '🥰', '🐾', '💓'];
-        for (let i = 0; i < 6; i++) {
-          const h = document.createElement('div');
-          h.className = 'modal-burst-heart';
-          h.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-          const offsetX = (Math.random() - 0.5) * 90;
-          const offsetY = -20 - Math.random() * 40;
-          h.style.left = `calc(50% + ${offsetX}px)`;
-          h.style.top = `60px`;
-          h.style.setProperty('--dx', `${offsetX * 1.4}px`);
-          h.style.setProperty('--dy', `${offsetY - 60}px`);
-          fxArea.appendChild(h);
-          setTimeout(() => h.remove(), 1100);
-        }
-      }
-
-      // 3. Cute Speech bubble
-      const b = document.getElementById("modal-pet-speech");
-      if (b) {
-        const purrPhrases = ['งือออ~ อุ่นจัง 🥰', 'ฟินที่สุดเลย 💖', 'Purr Purr~ ✨', 'เหมียวว รักจัง 💕'];
-        b.innerText = purrPhrases[Math.floor(Math.random() * purrPhrases.length)];
-        b.classList.add('show');
-        setTimeout(() => b.classList.remove('show'), 2200);
-      }
-
-      // 4. Also spawn heart on stage if cat actor is alive
-      if (currentModalCat.dom) {
-        spawnHeart(currentModalCat.x + 30, currentModalCat.y + 70);
-      }
-
-      showToast("💖", `คุณลูบหัว ${currentModalCat.data.name} ด้วยความเอ็นดู!`);
-    }
+    function openCatSelectorModal() {}
+    function toggleCatSelection(id) {}
+    function openCatDetailModal(catActor) {}
+    function triggerPetCurrentCat(event) {}
 
     /* ==========================================================================
        SHOP SECTION & 20 FURNITURE ITEMS
@@ -6531,10 +5992,7 @@ class LiveCatActor {
         updateCoinDisplay();
         renderStationVisuals();
 
-        // Check if roaming cats need init
-        if (typeof catInstances !== 'undefined' && catInstances.length === 0 && typeof reloadActiveCats === 'function') {
-          reloadActiveCats();
-        }
+        // Roaming cats spawning disabled
 
         // Reflect purchased room decorations
         if (typeof updateRoomDecorations === 'function') {
@@ -6576,7 +6034,7 @@ class LiveCatActor {
       // Init stations & farm
       renderStationVisuals();
       if (typeof applyCameraTransform === 'function') applyCameraTransform();
-      if (typeof reloadActiveCats === 'function') reloadActiveCats();
+      // reloadActiveCats disabled
       if (typeof renderShop === 'function') renderShop();
       if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
       if (typeof updateRoomDecorations === 'function') updateRoomDecorations();
