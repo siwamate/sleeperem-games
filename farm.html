@@ -920,6 +920,32 @@
     .viewport-controls-overlay > * {
       pointer-events: auto;
     }
+    .cat-selector-pill {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      color: #fef08a;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 8px rgba(251, 191, 36, 0.2);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .cat-selector-pill:hover {
+      background: rgba(30, 41, 59, 0.95);
+      border-color: #fbbf24;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6), 0 0 14px rgba(251, 191, 36, 0.4);
+    }
+    .cat-selector-pill:active {
+      transform: scale(0.95);
+    }
 
     /* Mini Hanging Leaderboard Plaque (Small & Cute) */
     .mini-hanging-plaque {
@@ -1820,6 +1846,60 @@
       align-items: center;
       justify-content: center;
     }
+    .cat-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding: 4px;
+      margin: 12px 0;
+    }
+    .cat-select-card {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+    .cat-select-card:hover {
+      border-color: #64748b;
+      transform: translateY(-2px);
+    }
+    .cat-select-card.selected {
+      border-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.12);
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
+    }
+    .cat-select-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 14px;
+    }
+    .cat-select-thumb {
+      width: 58px;
+      height: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+      margin-bottom: 6px;
+    }
+    .cat-select-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #f8fafc;
+      text-align: center;
+    }
+    .cat-select-info {
+      font-size: 9px;
+      color: #94a3b8;
+      text-align: center;
+    }
 
     .toast-alert {
       position: fixed;
@@ -2229,10 +2309,90 @@
       height: 100%;
       pointer-events: none;
       z-index: 22;
-      display: none !important;
+      display: block;
     }
     #cat-runway-container, .runway-cat, .runway-bubble {
       display: none !important;
+    }
+    .cat-selector-pill {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      color: #fef08a;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5), 0 0 8px rgba(251, 191, 36, 0.2);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .cat-selector-pill:hover {
+      background: rgba(30, 41, 59, 0.95);
+      border-color: #fbbf24;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6), 0 0 14px rgba(251, 191, 36, 0.4);
+    }
+    .cat-selector-pill:active {
+      transform: scale(0.95);
+    }
+    .cat-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding: 4px;
+      margin: 12px 0;
+    }
+    .cat-select-card {
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 14px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+    .cat-select-card:hover {
+      border-color: #64748b;
+      transform: translateY(-2px);
+    }
+    .cat-select-card.selected {
+      border-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.12);
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.35);
+    }
+    .cat-select-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      font-size: 14px;
+    }
+    .cat-select-thumb {
+      width: 58px;
+      height: 48px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+      margin-bottom: 6px;
+    }
+    .cat-select-name {
+      font-size: 11px;
+      font-weight: 700;
+      color: #f8fafc;
+      text-align: center;
+    }
+    .cat-select-info {
+      font-size: 9px;
+      color: #94a3b8;
+      text-align: center;
     }
     .station-interactive-wrap {
       display: flex;
@@ -3125,8 +3285,10 @@
       
       <!-- Top Overlay Controls -->
       <div class="viewport-controls-overlay">
-        <!-- Manage Roaming Cats -->
-        <!-- Cat Spawning System Removed -->
+        <!-- Manage Roaming Cats Button (0-5 cats) -->
+        <button class="cat-selector-pill" onclick="openCatSelectorModal()" title="เลือกแมวเข้ามาวิ่งเล่นในห้อง (0-5 ตัว)">
+          <span>🐾 แมวในห้อง (<span id="active-cat-count">0</span>/5)</span>
+        </button>
       </div>
 
       <!-- Gesture Hint (Fades out) -->
@@ -3373,7 +3535,7 @@
           </div>
         </div>
 
-        <div id="cats-stage-layer" style="display: none !important;"></div>
+        <div id="cats-stage-layer"></div>
 
       </div>
     </div>
@@ -3456,8 +3618,79 @@
   </div>
 
   
+      <!-- Cat Selector Modal (Select 0 - 5 cats) -->
+  <div class="farm-modal-overlay" id="cat-selector-modal">
+    <div class="farm-modal-card">
+      <button class="close-modal-btn" onclick="closeModal('cat-selector-modal')">✕</button>
+      <div style="font-size: 32px; text-align: center; margin-bottom: 4px;">🐾</div>
+      <h3 style="font-size: 16px; font-weight: 700; color: #fbbf24; text-align: center; margin-bottom: 2px;">จัดการแมวในห้อง</h3>
+      <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 8px;">เลือกน้องแมวให้ออกมาวิ่งเล่นในห้องฟาร์ม (0 ถึง 5 ตัว)</p>
       
-      
+      <div style="background: #090e1a; border: 1px solid #1e293b; border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span style="font-size: 12px; color: #cbd5e1;">จำนวนแมวในห้อง:</span>
+        <span style="font-size: 13px; font-weight: 800; color: #fde047;" id="modal-cat-count-val">0 / 5 ตัว</span>
+      </div>
+
+      <div class="cat-selector-grid" id="cat-selector-grid">
+        <!-- Injected via JS -->
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button class="item-buy-btn" onclick="clearAllCats()" style="flex: 1; background: #334155; font-size: 11px;">
+          🚫 เอาแมวออกหมด (0 ตัว)
+        </button>
+        <button class="item-buy-btn" onclick="closeModal('cat-selector-modal')" style="flex: 1; font-size: 11px;">
+          ✓ ตกลง
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+      <!-- Interactive Cat Detail & Petting Modal -->
+  <div class="farm-modal-overlay" id="cat-detail-modal">
+    <div class="farm-modal-card" style="text-align: center;">
+      <button class="close-modal-btn" onclick="closeModal('cat-detail-modal')">✕</button>
+      <div id="modal-cat-badge" style="font-size: 10px; font-weight: 700; color: #fbbf24; background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.4); border-radius: 12px; padding: 2px 10px; display: inline-block; margin-bottom: 6px;">
+        🐱 แมวในห้องฟาร์ม
+      </div>
+      <h3 id="modal-cat-name" style="font-size: 18px; font-weight: 800; color: #f8fafc; margin-bottom: 4px;">ชื่อแมว</h3>
+      <p id="modal-cat-trait" style="font-size: 11px; color: #94a3b8; margin-bottom: 12px;">นิสัยแมว</p>
+
+      <div class="modal-cat-stage" onclick="triggerPetCurrentCat(event)" title="แตะเพื่อลูบหัวน้องแมว 💖">
+        <div class="modal-cat-speech-bubble" id="modal-pet-speech">ฟินนน~ เหมียว 💖</div>
+        <div class="modal-pet-floating-fx" id="modal-pet-fx-container"></div>
+        <div id="modal-cat-interactive-avatar" class="modal-cat-svg-box">
+          <!-- Injected via JS -->
+        </div>
+        <div class="modal-cat-pedestal-shadow"></div>
+        <div class="modal-pet-tap-hint">👆 แตะเพื่อลูบหัวน้องแมว</div>
+      </div>
+
+      <!-- Weight & Chonk Bar -->
+      <div style="background: #090e1a; border: 1px solid #1e293b; border-radius: 14px; padding: 12px; margin-bottom: 14px; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 11px; color: #94a3b8;">น้ำหนักตัว:</span>
+          <span id="modal-cat-weight-display" style="font-size: 13px; font-weight: 800; color: #fde047;">5.0 kg (สมส่วน)</span>
+        </div>
+        <div style="width: 100%; height: 8px; background: #1e293b; border-radius: 4px; overflow: hidden;">
+          <div id="modal-cat-weight-bar" style="width: 40%; height: 100%; background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444); border-radius: 4px; transition: width 0.3s ease;"></div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div style="display: flex; gap: 8px;">
+        <button class="item-buy-btn" onclick="triggerPetCurrentCat(event)" style="flex: 1; font-size: 11px; background: linear-gradient(135deg, #e11d48, #f43f5e);">
+          💖 ลูบหัวน้องแมว
+        </button>
+        <button class="item-buy-btn" onclick="feedCurrentDetailCat()" style="flex: 1; font-size: 11px;">
+          🐟 ป้อนปลาแห้ง (5 🐟)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
       
       <!-- User Account Modal -->
   <div class="farm-modal-overlay" id="user-modal">
@@ -4899,32 +5132,360 @@
        CAT ACTOR ENGINE: PROCEDURAL CUTOUT WALKING LOCOMOTION
        ========================================================================== */
     /* ==========================================================================
-       CAT SPAWNING SYSTEM DISABLED & REMOVED
-       ========================================================================== */
-    /* ==========================================================================
-   CAT ACTOR ENGINE DISABLED - CAT SPAWNING REMOVED
+   AUTHENTIC 2.5D FELINE CUTOUT ACTORS & LIFELIKE LOCOMOTION ENGINE (REQ-03)
+   - 7 Autonomous States: sitting, sleeping, grooming, walking, crouching, jumping, eating/drinking
+   - Calm Decision Pacing: 8 to 18 seconds (12 to 25s for chonky cats >= 7.0 kg)
+   - Strict Verified Theme Waypoints: No edge clustering, no wall glitching
+   - True Differential Management: No respawn flicker, no teleportation
+   - Web Audio Purr & Petting Squish Integration
    ========================================================================== */
+
 class LiveCatActor {
-  constructor() {}
-  cleanup() {}
-  stopCurrentMovement() {}
-  setState() {}
-  onTap() {}
-  planPath() { return []; }
-  executePath(steps, onDone) { if (onDone) onDone(); }
-  scheduleNextAction() {}
-  wanderToWaypoint() {}
-  eatAtFeeder() {}
-  drinkAtFountain() {}
-  feed() {}
+  constructor(breedData, preferredWaypoint = null) {
+    this.data = breedData;
+    this.weight = (typeof catWeights !== 'undefined' && catWeights[this.data.id])
+      ? catWeights[this.data.id]
+      : this.data.baseWeight;
+
+    // Pick a valid initial waypoint for current theme
+    const waypoints = (typeof THEME_WAYPOINTS !== 'undefined' && THEME_WAYPOINTS[currentTheme])
+      ? THEME_WAYPOINTS[currentTheme]
+      : [{ id: "floor_default", x: 680, y: 125, surface: "floor" }];
+
+    // Use preferred or pick a vacant waypoint with subtle jitter (+- 14px)
+    let wp = preferredWaypoint;
+    if (!wp) {
+      const candidates = waypoints.filter(w => !w.id.includes("dish") && !w.id.includes("pod"));
+      wp = candidates[Math.floor(Math.random() * candidates.length)] || waypoints[0];
+    }
+    this.currentWaypoint = wp;
+    const jitterX = (Math.random() - 0.5) * 28;
+    this.x = Math.round(wp.x + jitterX);
+    this.y = wp.y;
+
+    // State machine
+    this.state = 'sitting'; // sitting, sleeping, grooming, walking, crouching, jumping, eating, drinking
+    this.isMoving = false;
+    this.isBusy = false; // Locked when feeding or custom action
+    this.facing = Math.random() < 0.5 ? 1 : -1; // 1 = right, -1 = left
+
+    // Timers
+    this.actionTimer = null;
+    this.moveTimer = null;
+
+    // DOM References
+    this.dom = null;
+    this.initDOM();
+  }
+
+  initDOM() {
+    const layer = document.getElementById("cats-stage-layer");
+    if (!layer) return;
+
+    const el = document.createElement("div");
+    el.className = `cat-actor-cutout is-${this.state}`;
+    el.id = `actor-${this.data.id}`;
+    el.style.left = `${this.x}px`;
+    el.style.bottom = `${this.y}px`;
+    el.style.pointerEvents = 'auto'; // Enable direct tapping
+    el.style.cursor = 'pointer';
+
+    el.innerHTML = `
+      <div class="cat-speech-bubble" id="bubble-${this.data.id}">เหมียว~ 💖</div>
+      <div class="cat-sleep-zzz" id="zzz-${this.data.id}">Zzz...</div>
+      <div class="cat-cutout-wrap" id="wrap-${this.data.id}">
+        <img class="cat-cutout-img" src="${this.data.img}" alt="${this.data.name}" draggable="false">
+      </div>
+      <div class="cat-contact-shadow" id="shadow-${this.data.id}"></div>
+      <div class="cat-stat-tag">
+        <span class="cat-name-label">${this.data.name}</span>
+        <span class="chonky-badge" id="badge-${this.data.id}">${this.getWeightLabel()}</span>
+      </div>
+    `;
+
+    // Direct tap handler (with drag/pan guard)
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.onTap(e);
+    });
+
+    layer.appendChild(el);
+    this.dom = el;
+    this.applyChonkyTransform();
+    this.scheduleNextAction();
+  }
+
+  getWeightLabel() {
+    if (this.weight >= 8.5) return "🏆 อ้วนมาก";
+    if (this.weight >= 6.5) return "อวบอั๋น";
+    if (this.weight >= 5.0) return "สมบูรณ์";
+    return "สมส่วน";
+  }
+
+  applyChonkyTransform() {
+    if (!this.dom) return;
+    const wrap = this.dom.querySelector(".cat-cutout-wrap");
+    const shadow = this.dom.querySelector(".cat-contact-shadow");
+    const badge = this.dom.querySelector(".chonky-badge");
+
+    // Belly squish deformation (REQ-04)
+    const scale = Math.min(1.35, 0.95 + (this.weight - 3.5) * 0.045);
+    const squishY = Math.max(0.88, 1.0 - (this.weight - 3.5) * 0.018);
+
+    if (wrap) {
+      wrap.style.transform = `scale(${this.facing * scale}, ${scale * squishY})`;
+    }
+    if (shadow) {
+      shadow.style.transform = `scale(${scale * 1.2}, 1)`;
+    }
+    if (badge) {
+      badge.innerText = this.getWeightLabel();
+    }
+  }
+
+  setState(newState) {
+    if (!this.dom) return;
+    this.state = newState;
+
+    // Reset all pose classes
+    this.dom.classList.remove(
+      'is-sitting', 'is-sleeping', 'is-grooming',
+      'is-walking', 'is-crouching', 'is-jumping',
+      'is-eating', 'is-drinking'
+    );
+    this.dom.classList.add(`is-${newState}`);
+
+    // Manage Zzz visibility
+    const zzz = this.dom.querySelector('.cat-sleep-zzz');
+    if (zzz) {
+      zzz.style.display = newState === 'sleeping' ? 'block' : 'none';
+    }
+
+    this.applyChonkyTransform();
+  }
+
+  scheduleNextAction() {
+    if (this.actionTimer) {
+      clearTimeout(this.actionTimer);
+      this.actionTimer = null;
+    }
+    if (this.isBusy) return;
+
+    // Calm decision pacing (REQ-03: 8 to 18 seconds, 12 to 25s for chonky cats)
+    const isChonky = this.weight >= 7.0;
+    const minDelay = isChonky ? 12000 : 8000;
+    const maxDelay = isChonky ? 25000 : 18000;
+    const delay = minDelay + Math.random() * (maxDelay - minDelay);
+
+    this.actionTimer = setTimeout(() => {
+      if (!this.dom || !document.contains(this.dom) || this.isBusy || this.isMoving) {
+        return;
+      }
+      this.decideNextAction();
+    }, delay);
+  }
+
+  decideNextAction() {
+    if (this.isBusy || this.isMoving) return;
+
+    // If sleeping, 45% chance to remain asleep for cozy continuity
+    if (this.state === 'sleeping' && Math.random() < 0.45) {
+      this.scheduleNextAction();
+      return;
+    }
+
+    const roll = Math.random();
+
+    if (roll < 0.32) {
+      // Action 1: Sleep (นอนหลับ Zzz)
+      this.setState('sleeping');
+      this.scheduleNextAction();
+    } else if (roll < 0.54) {
+      // Action 2: Grooming (เลียขน แต่งตัว)
+      this.setState('grooming');
+      showSpeechBubble(this.dom, "เลียขน วิ้งๆ ✨");
+      setTimeout(() => {
+        if (!this.dom || this.isBusy || this.isMoving) return;
+        this.setState('sitting');
+        this.scheduleNextAction();
+      }, 3500);
+    } else if (roll < 0.82) {
+      // Action 3: Wander to a valid verified waypoint (เดินเล่น)
+      this.wanderToWaypoint();
+    } else {
+      // Action 4: Sit & Gaze (นั่งมองรอบๆ)
+      this.setState('sitting');
+      this.scheduleNextAction();
+    }
+  }
+
+  wanderToWaypoint(isForced = false) {
+    if (this.isMoving || (this.isBusy && !isForced)) return;
+
+    const waypoints = (typeof THEME_WAYPOINTS !== 'undefined' && THEME_WAYPOINTS[currentTheme])
+      ? THEME_WAYPOINTS[currentTheme]
+      : [];
+    if (waypoints.length === 0) return;
+
+    // Filter out stations and current spot
+    const candidates = waypoints.filter(wp =>
+      wp.id !== this.currentWaypoint?.id &&
+      !wp.id.includes("dish") &&
+      !wp.id.includes("ceiling_pod")
+    );
+    if (candidates.length === 0) {
+      this.scheduleNextAction();
+      return;
+    }
+
+    const target = candidates[Math.floor(Math.random() * candidates.length)];
+    const isLevelChange = Math.abs(target.y - this.y) > 40;
+    const distance = Math.hypot(target.x - this.x, target.y - this.y);
+
+    // Natural walk duration proportional to distance (~75 px/s)
+    const walkDuration = Math.max(1.4, Math.min(4.8, distance / 75));
+
+    this.isMoving = true;
+    this.facing = target.x >= this.x ? 1 : -1;
+    this.applyChonkyTransform();
+
+    if (isLevelChange) {
+      // Multi-step leap: Crouch -> Jump Arc -> Touchdown Sitting
+      this.setState('crouching');
+      setTimeout(() => {
+        if (!this.dom) return;
+        this.setState('jumping');
+        if (typeof audio !== 'undefined' && audio.playPurr) audio.playPurr();
+
+        this.dom.style.transition = `left 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94), bottom 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275)`;
+        this.x = target.x;
+        this.y = target.y;
+        this.dom.style.left = `${this.x}px`;
+        this.dom.style.bottom = `${this.y}px`;
+        this.currentWaypoint = target;
+
+        setTimeout(() => {
+          if (!this.dom) return;
+          this.dom.style.transition = 'none';
+          this.setState('sitting');
+          this.isMoving = false;
+          this.scheduleNextAction();
+        }, 900);
+      }, 500);
+    } else {
+      // Natural horizontal ground walking step
+      this.setState('walking');
+      this.dom.style.transition = `left ${walkDuration.toFixed(2)}s ease-in-out, bottom ${walkDuration.toFixed(2)}s ease-in-out`;
+      this.x = target.x;
+      this.y = target.y;
+      this.dom.style.left = `${this.x}px`;
+      this.dom.style.bottom = `${this.y}px`;
+      this.currentWaypoint = target;
+
+      setTimeout(() => {
+        if (!this.dom) return;
+        this.dom.style.transition = 'none';
+        this.setState('sitting');
+        this.isMoving = false;
+        this.scheduleNextAction();
+      }, walkDuration * 1000 + 50);
+    }
+  }
+
+  retargetTheme(newTheme) {
+    if (!this.dom) return;
+    const waypoints = (typeof THEME_WAYPOINTS !== 'undefined' && THEME_WAYPOINTS[newTheme])
+      ? THEME_WAYPOINTS[newTheme]
+      : [];
+    if (waypoints.length === 0) return;
+
+    // Find nearest walkable waypoint in new theme
+    const walkable = waypoints.filter(wp => !wp.id.includes("dish") && !wp.id.includes("pod"));
+    const sorted = [...walkable].sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y));
+    const target = sorted[0] || waypoints[0];
+
+    // Smoothly walk to new theme coordinate without recreation
+    this.dom.style.transition = `left 1.5s ease-in-out, bottom 1.5s ease-in-out`;
+    this.x = target.x;
+    this.y = target.y;
+    this.dom.style.left = `${this.x}px`;
+    this.dom.style.bottom = `${this.y}px`;
+    this.currentWaypoint = target;
+    this.setState('sitting');
+
+    setTimeout(() => {
+      if (this.dom) this.dom.style.transition = 'none';
+    }, 1550);
+  }
+
+  feed(kgGained) {
+    this.weight = Math.min(14.0, this.weight + kgGained);
+    if (typeof catWeights !== 'undefined') {
+      catWeights[this.data.id] = this.weight;
+      try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
+    }
+    this.applyChonkyTransform();
+    showSpeechBubble(this.dom, `ง่ำๆ อร่อยจัง! (+${kgGained} kg) 💖`);
+    spawnHeart(this.x + 28, this.y + 70);
+    if (typeof audio !== 'undefined' && audio.playChomp) audio.playChomp();
+  }
+
+  onTap(e) {
+    // Prevent ghost taps during panning / pinching
+    if (typeof hasPanned !== 'undefined' && hasPanned) return;
+    if (typeof dragDist !== 'undefined' && dragDist > 8) return;
+
+    if (typeof audio !== 'undefined' && audio.playPurr) audio.playPurr();
+    showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
+    spawnHeart(this.x + 28, this.y + 70);
+
+    // Open interactive detail & petting modal
+    if (typeof openCatDetailModal === 'function') {
+      openCatDetailModal(this);
+    }
+  }
+
+  cleanup() {
+    if (this.actionTimer) {
+      clearTimeout(this.actionTimer);
+      this.actionTimer = null;
+    }
+    if (this.moveTimer) {
+      clearTimeout(this.moveTimer);
+      this.moveTimer = null;
+    }
+    if (this.dom && this.dom.parentNode) {
+      this.dom.parentNode.removeChild(this.dom);
+    }
+    this.dom = null;
+  }
 }
 
     function reloadActiveCats() {
       const layer = document.getElementById("cats-stage-layer");
-      if (layer) layer.innerHTML = "";
-      catInstances = [];
+      if (!layer) return;
+
+      // True differential management: remove only unselected cats
+      catInstances = catInstances.filter(cat => {
+        if (!activeCatIds.includes(cat.data.id)) {
+          cat.cleanup();
+          return false;
+        }
+        return true;
+      });
+
+      // Add newly selected cats without resetting existing ones
+      const existingIds = catInstances.map(c => c.data.id);
+      const toAdd = CAT_BREEDS.filter(b => activeCatIds.includes(b.id) && !existingIds.includes(b.id));
+      toAdd.forEach(b => {
+        const actor = new LiveCatActor(b);
+        catInstances.push(actor);
+      });
+
       const countEl = document.getElementById("active-cat-count");
-      if (countEl) countEl.innerText = "0";
+      if (countEl) countEl.innerText = catInstances.length;
+      const modalCountEl = document.getElementById("modal-cat-count-val");
+      if (modalCountEl) modalCountEl.innerText = catInstances.length + " / 5 ตัว";
     }
 
     /* ==========================================================================
@@ -4950,15 +5511,10 @@ class LiveCatActor {
         beam.style.background = 'linear-gradient(125deg, rgba(244, 114, 182, 0.45) 0%, rgba(168, 85, 247, 0.15) 55%, transparent 80%)';
       }
 
-      // Reposition roaming cats to theme waypoints
-      const waypoints = THEME_WAYPOINTS[theme];
-      catInstances.forEach((cat, idx) => {
-        const wp = waypoints[idx % waypoints.length];
-        cat.x = wp.x;
-        cat.y = wp.y;
-        if (cat.dom) {
-          cat.dom.style.left = cat.x + "px";
-          cat.dom.style.bottom = cat.y + "px";
+      // Smoothly retarget roaming cats to new theme architecture
+      catInstances.forEach(cat => {
+        if (typeof cat.retargetTheme === 'function') {
+          cat.retargetTheme(theme);
         }
       });
 
@@ -5055,12 +5611,147 @@ class LiveCatActor {
     }
 
     /* ==========================================================================
-       CAT SELECTOR & DETAIL MODAL
+       CAT SELECTOR & DETAIL MODAL CONTROLLERS (REQ-01 to REQ-10)
        ========================================================================== */
-    function openCatSelectorModal() {}
-    function toggleCatSelection(id) {}
-    function openCatDetailModal(catActor) {}
-    function triggerPetCurrentCat(event) {}
+    let currentDetailCat = null;
+
+    function openCatSelectorModal() {
+      const grid = document.getElementById("cat-selector-grid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      CAT_BREEDS.forEach(b => {
+        const isSelected = activeCatIds.includes(b.id);
+        const curWeight = (catWeights && catWeights[b.id]) ? catWeights[b.id] : b.baseWeight;
+        const card = document.createElement("div");
+        card.className = "cat-select-card" + (isSelected ? " selected" : "");
+        card.onclick = () => toggleCatSelection(b.id);
+        card.innerHTML = `
+          <div class="cat-select-badge">${isSelected ? '✅' : '➕'}</div>
+          <img src="${b.img}" alt="${b.name}" class="cat-select-thumb" draggable="false">
+          <div class="cat-select-name">${b.name}</div>
+          <div class="cat-select-info">${curWeight.toFixed(1)} kg • ${b.trait.slice(0, 16)}</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      const countEl = document.getElementById("modal-cat-count-val");
+      if (countEl) countEl.innerText = activeCatIds.length + " / 5 ตัว";
+
+      document.getElementById("cat-selector-modal").classList.add("open");
+    }
+
+    function toggleCatSelection(id) {
+      if (activeCatIds.includes(id)) {
+        activeCatIds = activeCatIds.filter(cid => cid !== id);
+      } else {
+        if (activeCatIds.length >= 5) {
+          showToast("⚠️", "เลือกแมวได้สูงสุด 5 ตัวในห้อง!");
+          return;
+        }
+        activeCatIds.push(id);
+      }
+
+      try {
+        localStorage.setItem('sleeperem_active_cats', JSON.stringify(activeCatIds));
+      } catch(e) {}
+
+      reloadActiveCats();
+      openCatSelectorModal(); // Refresh modal cards
+    }
+
+    function clearAllCats() {
+      activeCatIds = [];
+      try {
+        localStorage.setItem('sleeperem_active_cats', JSON.stringify([]));
+      } catch(e) {}
+      reloadActiveCats();
+      openCatSelectorModal();
+      showToast("🐾", "เอาแมวออกจากห้องทั้งหมดแล้ว (ห้องว่างสงบ 0 ตัว)");
+    }
+
+    function openCatDetailModal(catActor) {
+      if (!catActor || !catActor.data) return;
+      currentDetailCat = catActor;
+
+      document.getElementById("modal-cat-name").innerText = catActor.data.name;
+      document.getElementById("modal-cat-trait").innerText = catActor.data.trait;
+      document.getElementById("modal-cat-weight-display").innerText = `${catActor.weight.toFixed(1)} kg (${catActor.getWeightLabel()})`;
+
+      const pct = Math.min(100, Math.max(10, ((catActor.weight - 3) / 9) * 100));
+      document.getElementById("modal-cat-weight-bar").style.width = pct + "%";
+
+      const avatarBox = document.getElementById("modal-cat-interactive-avatar");
+      if (avatarBox) {
+        avatarBox.innerHTML = `
+          <img src="${catActor.data.img}" alt="${catActor.data.name}" style="height:80px; width:auto; max-width:130px; object-fit:contain; filter:drop-shadow(0 8px 16px rgba(0,0,0,0.6)); pointer-events:auto;" draggable="false">
+        `;
+      }
+
+      document.getElementById("cat-detail-modal").classList.add("open");
+    }
+
+    function triggerPetCurrentCat(e) {
+      if (!currentDetailCat) return;
+      if (e && e.stopPropagation) e.stopPropagation();
+
+      if (typeof audio !== 'undefined' && audio.playPurr) audio.playPurr();
+
+      const avatar = document.getElementById("modal-cat-interactive-avatar");
+      if (avatar) {
+        avatar.classList.add("is-petted");
+        setTimeout(() => avatar.classList.remove("is-petted"), 550);
+      }
+
+      const speech = document.getElementById("modal-pet-speech");
+      if (speech) {
+        const quotes = ["ฟินนน~ เหมียว 💖", "รักทาสที่สุดเลย ✨", "กร๊าววว~ (Purr)", "อารมณ์ดีจังเลย 🌸", "เกาตรงคางอีกสิ เหมียว~"];
+        speech.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        speech.classList.add("show");
+        setTimeout(() => speech.classList.remove("show"), 2000);
+      }
+
+      const fx = document.getElementById("modal-pet-fx-container");
+      if (fx) {
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const h = document.createElement("div");
+            h.className = "modal-burst-heart";
+            h.innerText = "💖";
+            h.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
+            h.style.left = `${65 + (Math.random() - 0.5) * 30}px`;
+            h.style.top = `${30 + (Math.random() - 0.5) * 20}px`;
+            fx.appendChild(h);
+            setTimeout(() => h.remove(), 1100);
+          }, i * 140);
+        }
+      }
+
+      if (currentDetailCat.dom) {
+        spawnHeart(currentDetailCat.x + 28, currentDetailCat.y + 70);
+      }
+    }
+
+    function feedCurrentDetailCat() {
+      if (!currentDetailCat) return;
+      const curCoins = (typeof fishCoins !== 'undefined') ? fishCoins : coins;
+      if (curCoins < 5) {
+        showToast("⚠️", "เหรียญปลาไม่พอ! ต้องการ 5 🐟");
+        return;
+      }
+      if (typeof fishCoins !== 'undefined') fishCoins -= 5;
+      coins -= 5;
+      updateCoinsDisplay();
+
+      currentDetailCat.feed(0.2);
+
+      // Refresh modal stats
+      document.getElementById("modal-cat-weight-display").innerText = `${currentDetailCat.weight.toFixed(1)} kg (${currentDetailCat.getWeightLabel()})`;
+      const pct = Math.min(100, Math.max(10, ((currentDetailCat.weight - 3) / 9) * 100));
+      document.getElementById("modal-cat-weight-bar").style.width = pct + "%";
+
+      showToast("🍽️", `ป้อนปลาแห้งให้ ${currentDetailCat.data.name} (+0.2 kg)`);
+    }
 
     /* ==========================================================================
        SHOP SECTION & 20 FURNITURE ITEMS
@@ -5395,60 +6086,67 @@ class LiveCatActor {
     function attractNearbyCatsToStation(stationType) {
       if (!catInstances || catInstances.length === 0) return;
       const isFeeder = stationType === 'feeder';
-      const targetX = isFeeder ? 640 : 720;
-      const targetY = 55;
+      const targetX = isFeeder ? 605 : 745;
+      const targetY = 125;
 
-      // Sort by proximity to station
-      const sorted = [...catInstances].sort((a, b) => Math.abs(a.x - targetX) - Math.abs(b.x - targetX));
-      const chosenCats = sorted.slice(0, 2);
+      // Single-cat mutex: only one cat visits at a time
+      if (catInstances.some(c => c.isBusy)) return;
+      const availableCats = catInstances.filter(c => !c.isBusy);
+      if (availableCats.length === 0) return;
 
-      chosenCats.forEach((cat, idx) => {
+      // Pick nearest available cat
+      const sorted = [...availableCats].sort((a, b) => Math.abs(a.x - targetX) - Math.abs(b.x - targetX));
+      const cat = sorted[0];
+
+      if (!cat.dom) return;
+      if (cat.actionTimer) { clearTimeout(cat.actionTimer); cat.actionTimer = null; }
+      if (cat.moveTimer) { clearTimeout(cat.moveTimer); cat.moveTimer = null; }
+      cat.isBusy = true;
+      cat.isMoving = true;
+      showSpeechBubble(cat.dom, isFeeder ? "หอมจัง! 🥣" : "สดชื่น! 💧");
+      cat.facing = targetX >= cat.x ? 1 : -1;
+      cat.setState('walking');
+
+      const dist = Math.hypot(targetX - cat.x, targetY - cat.y);
+      const duration = Math.max(1.2, Math.min(3.5, dist / 85));
+      cat.dom.style.transition = `left ${duration.toFixed(2)}s ease-in-out, bottom ${duration.toFixed(2)}s ease-in-out`;
+      cat.x = targetX;
+      cat.y = targetY;
+      cat.dom.style.left = cat.x + "px";
+      cat.dom.style.bottom = cat.y + "px";
+
+      setTimeout(() => {
+        if (!cat.dom) return;
+        cat.dom.style.transition = 'none';
+        cat.setState(isFeeder ? 'eating' : 'drinking');
+        if (typeof audio !== 'undefined' && audio.playPurr) audio.playPurr();
+        showSpeechBubble(cat.dom, isFeeder ? "ง่ำๆ 🥣" : "เลียน้ำ แผล็บๆ 💧");
+        spawnHeart(cat.x + 28, cat.y + 70);
+        cat.weight = Math.min(14.0, cat.weight + 0.05);
+        if (typeof catWeights !== 'undefined') {
+          catWeights[cat.data.id] = cat.weight;
+          try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
+        }
+        cat.applyChonkyTransform();
+
         setTimeout(() => {
           if (!cat.dom) return;
-          if (typeof cat.stopCurrentMovement === 'function') cat.stopCurrentMovement();
-          else {
-            if (cat.stepTimer) { clearTimeout(cat.stepTimer); cat.stepTimer = null; }
-            if (cat.actionTimer) { clearTimeout(cat.actionTimer); cat.actionTimer = null; }
+          cat.isBusy = false;
+          cat.isMoving = false;
+          cat.setState('sitting');
+          showSpeechBubble(cat.dom, isFeeder ? "อิ่มแปล้~ 💖" : "สดชื่นจัง ✨");
+          if (isFeeder) {
+            feederHasFood = false;
+            try { localStorage.setItem('sleeperem_feeder_filled', 'false'); } catch(e) {}
+            renderStationVisuals();
+          } else {
+            fountainHasWater = false;
+            try { localStorage.setItem('sleeperem_fountain_filled', 'false'); } catch(e) {}
+            renderStationVisuals();
           }
-          cat.isBusy = true;
-          showSpeechBubble(cat.dom, isFeeder ? "หอมจัง! 🥣" : "สดชื่น! 💧");
-          cat.facing = targetX > cat.x ? 1 : -1;
-          cat.setState('walking');
-
-          const dist = Math.abs(targetX - cat.x);
-          const duration = Math.max(1.2, dist / 85);
-          cat.dom.style.transition = `left ${duration}s ease-in-out, bottom ${duration}s ease-in-out`;
-          cat.x = Math.max(550, Math.min(810, targetX + (idx * 28 - 14)));
-          cat.y = targetY;
-          cat.dom.style.left = cat.x + "px";
-          cat.dom.style.bottom = cat.y + "px";
-
-          setTimeout(() => {
-            cat.setState(isFeeder ? 'eating' : 'drinking');
-            audio.playPurr();
-            showSpeechBubble(cat.dom, isFeeder ? "ง่ำๆ 🥣" : "เลียน้ำ แผล็บๆ 💧");
-            spawnHeart(cat.x + 25, cat.y + 60);
-            cat.weight += 0.05;
-            cat.applyChonkyTransform();
-
-            setTimeout(() => {
-              cat.isBusy = false;
-              cat.setState('sitting');
-              showSpeechBubble(cat.dom, isFeeder ? "อิ่มแปล้~ 💖" : "สดชื่นจัง ✨");
-              if (isFeeder) {
-                feederHasFood = false;
-                try { localStorage.setItem('sleeperem_feeder_filled', 'false'); } catch(e) {}
-                renderStationVisuals();
-              } else {
-                fountainHasWater = false;
-                try { localStorage.setItem('sleeperem_fountain_filled', 'false'); } catch(e) {}
-                renderStationVisuals();
-              }
-              cat.scheduleNextAction();
-            }, 4500);
-          }, duration * 1000);
-        }, idx * 350);
-      });
+          cat.scheduleNextAction();
+        }, 4500);
+      }, duration * 1000);
     }
 
     /* ==========================================================================
@@ -5553,7 +6251,8 @@ class LiveCatActor {
         updateCoinDisplay();
         renderStationVisuals();
 
-        // Roaming cats spawning disabled
+        // Refresh roaming cats based on active selections
+        if (typeof reloadActiveCats === 'function') reloadActiveCats();
 
         // Reflect purchased room decorations
         if (typeof updateRoomDecorations === 'function') {
@@ -5595,7 +6294,7 @@ class LiveCatActor {
       // Init stations & farm
       renderStationVisuals();
       if (typeof applyCameraTransform === 'function') applyCameraTransform();
-      // reloadActiveCats disabled
+      if (typeof reloadActiveCats === 'function') reloadActiveCats();
       if (typeof renderShop === 'function') renderShop();
       if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
       if (typeof updateRoomDecorations === 'function') updateRoomDecorations();
