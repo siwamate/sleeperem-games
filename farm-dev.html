@@ -800,31 +800,6 @@
       .btn-text { display: none; }
     }
 
-    .farm-btn-active.is-owner-vip {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(67, 56, 202, 0.45));
-      border: 1.5px solid #fbbf24;
-      color: #fbbf24;
-      box-shadow: 0 0 14px rgba(251, 191, 36, 0.4);
-      animation: vipPulse 2s infinite ease-in-out;
-    }
-    @keyframes vipPulse {
-      0%, 100% { box-shadow: 0 0 8px rgba(251, 191, 36, 0.3); border-color: #fbbf24; }
-      50% { box-shadow: 0 0 16px rgba(251, 191, 36, 0.7); border-color: #fde047; }
-    }
-
-    /* VIP Access Modal */
-    #vip-farm-modal {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: rgba(11, 15, 25, 0.88);
-      backdrop-filter: blur(8px);
-      z-index: 110;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
     /* Leaderboard Modal */
     #leaderboard-modal {
       display: none;
@@ -1045,9 +1020,9 @@
       border: 1.5px solid #fbbf24;
       color: #fbbf24;
       box-shadow: 0 0 14px rgba(251, 191, 36, 0.45);
-      animation: vipPulse 2s infinite ease-in-out;
+      animation: ownerGlow 2s infinite ease-in-out;
     }
-    @keyframes vipPulse {
+    @keyframes ownerGlow {
       0%, 100% { box-shadow: 0 0 8px rgba(251, 191, 36, 0.3); border-color: #fbbf24; }
       50% { box-shadow: 0 0 18px rgba(251, 191, 36, 0.8); border-color: #fde047; }
     }
@@ -2147,8 +2122,39 @@
       justify-content: center;
     }
 
-    /* Construction Gatekeeper Screen */
-    
+    .toast-alert {
+      position: fixed;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: rgba(11, 17, 32, 0.95);
+      border: 2px solid #38bdf8;
+      color: #f0fdf4;
+      border-radius: 18px;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 99;
+      white-space: nowrap;
+    }
+    .toast-alert.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .floating-heart {
+      position: absolute;
+      font-size: 20px;
+      animation: floatHeart 1.2s ease-out forwards;
+      pointer-events: none;
+      z-index: 45;
+    }
     @keyframes floatHeart {
       0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
       100% { transform: translate(12px, -50px) scale(1.5); opacity: 0; }
@@ -2786,9 +2792,9 @@
           <div id="modal-user-avatar-wrap" style="margin-bottom:8px;"></div>
           <h3 id="modal-user-name" style="font-size: 17px; font-weight: 700; color: #f8fafc; margin-bottom: 2px;">ทาสแมว</h3>
           
-          <!-- VIP Owner Badge in Profile -->
-          <div id="owner-vip-badge-tag" style="display:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; margin-bottom:10px; text-align:center; box-shadow:0 0 10px rgba(245,158,11,0.3);">
-            👑 เจ้าของฟาร์ม Sleeperem
+          <!-- Owner Badge in Profile -->
+          <div id="owner-badge-tag" style="display:none; background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:12px; margin-bottom:10px; text-align:center; box-shadow:0 0 10px rgba(245,158,11,0.3);">
+            👑 เจ้าของฟาร์ม (Farm Owner)
           </div>
 
           <p id="modal-user-status" style="font-size: 11px; color: #34d399; margin-bottom: 14px;">● เชื่อมต่อ Facebook แล้ว</p>
@@ -2798,11 +2804,6 @@
             <div id="modal-high-score" style="font-size:22px; font-weight:700; color:#fbbf24; font-family:monospace;">0</div>
           </div>
 
-          <!-- Direct Farm Button for Owner -->
-          <a id="owner-farm-direct-btn" href="/farm" style="display:none; text-decoration:none; width:100%; padding:10px; background:linear-gradient(135deg, #7c3aed, #4338ca); border:1.5px solid #fbbf24; border-radius:12px; color:#fbbf24; font-size:13px; font-weight:700; margin-bottom:8px; text-align:center; box-sizing:border-box; box-shadow:0 0 14px rgba(251,191,36,0.35);">
-            <span id="owner-farm-direct-text">🏡 เข้าสู่ฟาร์มแมวของคุณ →</span>
-          </a>
-
           <button onclick="closeLoginModal(); openLeaderboardModal();" style="width:100%; padding:10px; background:linear-gradient(135deg, #0284c7, #0369a1); border:none; border-radius:12px; color:#fff; font-size:13px; font-weight:700; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
             <span>🏆</span> เปิดดูตารางอันดับ (Leaderboard)
           </button>
@@ -2811,25 +2812,6 @@
             ออกจากระบบ (Logout)
           </button>
         </div>
-      </div>
-    </div>
-
-    <!-- Farm Admission Modal -->
-    <div id="vip-farm-modal">
-      <div class="modal-card">
-        <button class="modal-close-x" onclick="closeVipFarmModal()" title="ปิด">✕</button>
-        <div style="font-size: 44px; margin-bottom: 6px;">🚧🐱</div>
-        <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">ฟาร์มแมวอยู่ระหว่างก่อสร้าง</h3>
-        <span style="display:inline-block; background:#dc2626; color:#fee2e2; font-size:10px; font-weight:700; padding:2px 10px; border-radius:10px; margin-bottom:12px;">🚧 ยังไม่เปิดให้บุคคลทั่วไปเข้าชม</span>
-        <p style="font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 18px; text-align:center;">
-          ฟาร์มแมวกำลังอยู่ในช่วงปรับปรุงห้อง 2.5D และโมเดลแมวโพลีกอนคัตเอาท์ จึงยังไม่เปิดให้ผู้เล่นทั่วไปเข้าชม<br><br>
-          ขณะนี้เปิดสิทธิ์เฉพาะคุณ <b>Kanel Notarry (เจ้าของฟาร์ม)</b> เท่านั้น หากคุณคือเจ้าของฟาร์ม โปรดเข้าสู่ระบบด้วย Facebook
-        </p>
-
-        <button class="fb-login-btn" onclick="loginWithFacebook()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          เข้าสู่ระบบด้วย Facebook (เจ้าของฟาร์ม)
-        </button>
       </div>
     </div>
 
@@ -2879,6 +2861,9 @@
         <div style="display:flex; gap:8px; margin-top:14px;">
           <button class="restart-btn" onclick="restartGame()" style="flex:1; margin-top:0;">
             🔄 เล่นใหม่
+          </button>
+          <button class="farm-shortcut-btn" onclick="restartGame(); switchView('farm');" style="flex:1; margin-top:0; padding:12px; font-size:13px; font-weight:700; background:linear-gradient(135deg, #059669, #10b981); color:#fff; border:none; border-radius:14px; cursor:pointer;">
+            <span>🏡</span> ฟาร์มแมว
           </button>
           <button onclick="openLeaderboardModal()" style="padding:12px 16px; background:#0284c7; color:#fff; font-size:13px; font-weight:700; border:none; border-radius:14px; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:5px; box-shadow:0 4px 12px rgba(2, 132, 199, 0.3);">
             <span>🏆</span> อันดับ
@@ -3366,6 +3351,127 @@
   </div>
 
   <script>
+
+    
+    /* ==========================================================================
+       ISOLATED STORAGE & UNIFIED USER SESSION (Cat Ball & Cat Farm Synchronized)
+       ========================================================================== */
+    const IS_DEV_BUILD = window.location.pathname.includes("-dev");
+    const STORAGE_PREFIX = IS_DEV_BUILD ? "sleeperem_dev_" : "sleeperem_prod_";
+
+    function getStorageItem(key, defaultValue = null) {
+      try {
+        const val = localStorage.getItem(STORAGE_PREFIX + key);
+        if (val !== null) return val;
+        // Migration fallback from un-prefixed legacy key
+        const legacyVal = localStorage.getItem("sleeperem_" + key);
+        if (legacyVal !== null) {
+          localStorage.setItem(STORAGE_PREFIX + key, legacyVal);
+          return legacyVal;
+        }
+      } catch(e) {}
+      return defaultValue;
+    }
+
+    function setStorageItem(key, val) {
+      try {
+        localStorage.setItem(STORAGE_PREFIX + key, val);
+      } catch(e) {}
+    }
+
+    // Unified applyUserSession
+    function applyUserSession(session) {
+      if (session && session.user) {
+        const u = session.user;
+        const name = u.user_metadata?.full_name || u.user_metadata?.name || u.name || "ทาสแมว Facebook";
+        const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || u.avatar;
+        currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
+        updateUserUI(currentUser);
+
+        // Clean up OAuth hash params
+        if (window.location.hash && window.location.hash.includes("access_token")) {
+          history.replaceState(null, '', window.location.pathname);
+        }
+      } else {
+        currentUser = null;
+        updateUserUI(null);
+      }
+    }
+
+    function updateUserUI(user) {
+      const isOwner = user ? isKanelNotarry(user) : false;
+
+      // 1. Cat Ball View: Bottom Action Bar Profile Badge
+      const nameElem = document.getElementById("user-name");
+      const avatarElem = document.getElementById("user-avatar");
+      if (nameElem) {
+        if (user) {
+          nameElem.innerText = isOwner ? "👑 Kanel" : (user.name ? user.name.split(" ")[0] : "ผู้เล่น");
+          nameElem.style.color = isOwner ? "#fbbf24" : "#38bdf8";
+        } else {
+          nameElem.innerText = "Guest";
+          nameElem.style.color = "#cbd5e1";
+        }
+      }
+      if (avatarElem) {
+        if (user && user.avatar) {
+          avatarElem.innerHTML = `<img src="${user.avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'}; display:block;">`;
+        } else {
+          avatarElem.innerHTML = user ? (isOwner ? "👑" : "🐱") : "👤";
+        }
+      }
+
+      // 2. Farm View: Header User Pill
+      const farmPill = document.getElementById("farm-user-pill");
+      const farmName = document.getElementById("farm-user-name");
+      const farmIcon = document.getElementById("farm-user-icon");
+      if (farmPill) {
+        farmPill.className = isOwner ? "header-user-badge is-owner" : "header-user-badge";
+        farmPill.title = user ? (isOwner ? "คุณ Kanel Notarry (เจ้าของฟาร์ม)" : user.name) : "คลิกเพื่อจัดการบัญชีผู้ใช้";
+      }
+      if (farmName) {
+        if (user) {
+          farmName.innerText = isOwner ? "👑 Kanel (เจ้าของ)" : (user.name ? user.name.split(" ")[0] : "ผู้มาเยือน");
+          farmName.style.color = isOwner ? "#fbbf24" : "#38bdf8";
+        } else {
+          farmName.innerText = "เข้าสู่ระบบ";
+          farmName.style.color = "#cbd5e1";
+        }
+      }
+      if (farmIcon) {
+        if (user && user.avatar) {
+          farmIcon.innerHTML = `<img src="${user.avatar}" class="user-avatar-img" style="border:1.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'};">`;
+        } else {
+          farmIcon.innerHTML = user ? (isOwner ? "👑" : "🐱") : "👤";
+        }
+      }
+
+      // 3. Mini Leaderboard Plaque in Farm
+      const plaque = document.getElementById("plaque-owner-text");
+      if (plaque) {
+        plaque.innerText = isOwner ? "Kanel (เจ้าของฟาร์ม)" : "Sleeperem Farm";
+      }
+
+      // 4. Special Owner Privileges: Unlock Secret Space Theme automatically
+      if (isOwner && typeof unlockSpaceTheme === 'function') {
+        unlockSpaceTheme();
+      }
+    }
+
+    async function logoutFacebook() {
+      const client = getSupabase();
+      if (client) {
+        try {
+          await client.auth.signOut();
+        } catch(e) {
+          console.error("SignOut error:", e);
+        }
+      }
+      currentUser = null;
+      updateUserUI(null);
+      closeLoginModal();
+      alert("ออกจากระบบเรียบร้อยแล้ว");
+    }
 
     
     /* ==========================================================================
@@ -4104,13 +4210,11 @@
       // 100% production parity — zero dev ribbons or panels
     }
 
-    function handleFarmClick(e) { if(e) e.preventDefault(); switchView("farm"); }
-    function openVipFarmModal() {
-      document.getElementById("vip-farm-modal").style.display = "flex";
-    }
-
-    function closeVipFarmModal() {
-      document.getElementById("vip-farm-modal").style.display = "none";
+    function handleFarmClick(e) {
+      if (e) e.preventDefault();
+      if (typeof switchView === 'function') {
+        switchView("farm");
+      }
     }
 
     function openLoginModal() {
@@ -4123,10 +4227,8 @@
         document.getElementById("modal-user-name").innerText = isOwner ? `${currentUser.name} 👑` : currentUser.name;
         document.getElementById("modal-high-score").innerText = bestScore.toLocaleString();
         
-        const ownerTag = document.getElementById("owner-vip-badge-tag");
-        const ownerFarmBtn = document.getElementById("owner-farm-direct-btn");
+        const ownerTag = document.getElementById("owner-badge-tag");
         if (ownerTag) ownerTag.style.display = isOwner ? "block" : "none";
-        if (ownerFarmBtn) ownerFarmBtn.style.display = isOwner ? "block" : "none";
 
         if (currentUser.avatar) {
           document.getElementById("modal-user-avatar-wrap").innerHTML = `<img src="${currentUser.avatar}" style="width:64px;height:64px;border-radius:50%;border:2.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'};object-fit:cover;">`;
@@ -4180,86 +4282,12 @@
       }
     }
 
-    async function logoutFacebook() {
-      if (supabaseClient) {
-        await supabaseClient.auth.signOut();
-        currentUser = null;
-        document.getElementById("user-name").innerText = "Guest";
-        document.getElementById("user-avatar").innerHTML = "👤";
-        
-        // Reset farm button
-        const farmBtn = document.getElementById("farm-nav-btn");
-        const farmText = document.getElementById("farm-btn-text");
-        const farmIcon = document.getElementById("farm-btn-icon");
-        if (farmBtn) farmBtn.classList.remove("is-owner-vip");
-        if (farmText) farmText.innerText = "ฟาร์มแมว";
-        if (farmIcon) farmIcon.innerText = "🏡";
-
-        closeLoginModal();
-        alert("ออกจากระบบเรียบร้อยแล้ว");
-      }
-    }
+    // logoutFacebook unified in unifiedSessionScript
 
     // Handle user session state
-    function applyUserSession(session) {
-      if (session && session.user) {
-        const u = session.user;
-        const name = u.user_metadata.full_name || u.user_metadata.name || "ทาสแมว Facebook";
-        const avatar = u.user_metadata.avatar_url || u.user_metadata.picture;
-        currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
+    // applyUserSession unified in unifiedSessionScript
 
-        const isOwner = isKanelNotarry(u);
-        const nameElem = document.getElementById("user-name");
-        const avatarElem = document.getElementById("user-avatar");
-        const farmBtn = document.getElementById("farm-nav-btn");
-        const farmText = document.getElementById("farm-btn-text");
-        const farmIcon = document.getElementById("farm-btn-icon");
-
-        if (nameElem) {
-          nameElem.innerText = isOwner ? "👑 Kanel" : name.split(" ")[0];
-          if (isOwner) nameElem.style.color = "#fbbf24";
-        }
-
-        if (avatar && avatarElem) {
-          avatarElem.innerHTML = `<img src="${avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${isOwner ? '#fbbf24' : '#38bdf8'};">`;
-        }
-
-        // Special Owner badge for Kanel Notarry
-        if (isOwner) {
-          if (farmBtn) {
-            farmBtn.classList.add("is-owner-vip");
-            farmBtn.title = "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry! (คลิกเพื่อเข้าฟาร์ม)";
-          }
-          if (farmText) {
-            farmText.innerText = "ฟาร์มแมว";
-            farmText.style.color = "#fbbf24";
-          }
-          if (farmIcon) {
-            farmIcon.innerText = "👑";
-          }
-        }
-
-        // Clean up OAuth hash params in URL if present
-        if (window.location.hash && window.location.hash.includes("access_token")) {
-          history.replaceState(null, '', window.location.pathname);
-        }
-      }
-    }
-
-    if (supabaseClient) {
-      supabaseClient.auth.getSession().then(({ data: { session } }) => {
-        applyUserSession(session);
-        // Auto-prompt login popup if user is not logged in!
-        if (!session || !session.user) {
-          setTimeout(() => {
-            if (!currentUser) {
-              openLoginModal();
-            }
-          }, 650);
-        }
-      });
-      supabaseClient.auth.onAuthStateChange((event, session) => applyUserSession(session));
-    }
+    // supabase initial check unified
 
 
     /* ==========================================================================
@@ -5523,70 +5551,9 @@
 
     // handleUserPillClick unified
 
-    function updateUserUI(user) {
-      const gate = document.getElementById("farm-locked-gate");
-      const pill = document.getElementById("farm-user-pill");
-      const nameEl = document.getElementById("farm-user-name");
-      const iconEl = document.getElementById("farm-user-icon");
+    // updateUserUI unified in unifiedSessionScript
 
-      if (user && isKanelNotarry(user)) {
-        // Kanel Notarry verified: Unlock farm
-        if (gate) gate.style.display = "none";
-        if (pill) {
-          pill.className = "header-user-badge is-owner";
-          pill.title = "คุณ Kanel Notarry (เจ้าของฟาร์ม)";
-        }
-        if (nameEl) {
-          nameEl.innerText = "👑 Kanel (เจ้าของ)";
-          nameEl.style.color = "#fbbf24";
-        }
-        const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || user.avatar;
-        if (iconEl) {
-          iconEl.innerHTML = avatarUrl
-            ? `<img src="${avatarUrl}" class="user-avatar-img" style="border:1.5px solid #fbbf24;">`
-            : "👑";
-        }
-        const plaque = document.getElementById("plaque-owner-text");
-        if (plaque) plaque.innerText = "Kanel (VIP)";
-        unlockSpaceTheme();
-        showToast("👑", "ยินดีต้อนรับท่านเจ้าของฟาร์ม คุณ Kanel Notarry!");
-      } else {
-        // Not Kanel Notarry: Locked
-        if (gate) gate.style.display = "flex";
-        if (pill) {
-          pill.className = "header-user-badge";
-          pill.title = user ? "ผู้เล่นทั่วไป" : "คลิกเพื่อเข้าสู่ระบบด้วย Facebook";
-        }
-        if (nameEl) {
-          nameEl.innerText = user ? (user.name ? user.name.split(" ")[0] : "ผู้มาเยือน") : "เข้าสู่ระบบ";
-          nameEl.style.color = "#cbd5e1";
-        }
-        if (iconEl) {
-          const avatarUrl = user?.user_metadata?.avatar_url || user?.user_metadata?.picture || user?.avatar;
-          iconEl.innerHTML = avatarUrl
-            ? `<img src="${avatarUrl}" class="user-avatar-img">`
-            : "👤";
-        }
-      }
-    }
-
-    function applyUserSession(session) {
-      if (session && session.user) {
-        const u = session.user;
-        const name = u.user_metadata?.full_name || u.user_metadata?.name || u.name || "ทาสแมว Facebook";
-        const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || u.avatar;
-        currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
-        updateUserUI(currentUser);
-
-        // Clean up OAuth hash params
-        if (window.location.hash && window.location.hash.includes("access_token")) {
-          history.replaceState(null, '', window.location.pathname);
-        }
-      } else {
-        currentUser = null;
-        updateUserUI(null);
-      }
-    }
+    // applyUserSession unified in unifiedSessionScript
 
     /* ==========================================================================
        ENVIRONMENT DETECTION & ZERO-EDIT PROMOTION PARITY
@@ -5597,22 +5564,7 @@
     // initEnvironment unified
 
     // Init
-    window.addEventListener('DOMContentLoaded', () => {
-      initEnvironment();
-      applyCameraTransform();
-      reloadActiveCats();
-      renderShop();
-      updateCoinsDisplay();
-
-      if (supabaseClient) {
-        supabaseClient.auth.getSession().then(({ data: { session } }) => {
-          applyUserSession(session);
-        });
-        supabaseClient.auth.onAuthStateChange((event, session) => applyUserSession(session));
-      } else {
-        updateUserUI(null);
-      }
-    });
+    // farm DOMContentLoaded unified in spaRouterScript
   
     
     /* ==========================================================================
@@ -5636,8 +5588,8 @@
     let fountainLevel = 1;
 
     try {
-      feederLevel = parseInt(localStorage.getItem('sleeperem_feeder_level')) || 1;
-      fountainLevel = parseInt(localStorage.getItem('sleeperem_fountain_level')) || 1;
+      feederLevel = parseInt(getStorageItem('feeder_level', 1)) || 1;
+      fountainLevel = parseInt(getStorageItem('fountain_level', 1)) || 1;
     } catch(e) {}
 
     function renderStationVisuals() {
@@ -5708,9 +5660,9 @@
       coins = fishCoins;
       feederLevel++;
       try {
-        localStorage.setItem("sleeperem_fish_coins", fishCoins);
-        localStorage.setItem("sleeperem_farm_coins", fishCoins);
-        localStorage.setItem("sleeperem_feeder_level", feederLevel);
+        setStorageItem("fish_coins", fishCoins);
+        setStorageItem("farm_coins", fishCoins);
+        setStorageItem("feeder_level", feederLevel);
       } catch(e) {}
 
       updateCoinDisplay();
@@ -5758,16 +5710,16 @@
       coins = fishCoins;
       fountainLevel++;
       try {
-        localStorage.setItem("sleeperem_fish_coins", fishCoins);
-        localStorage.setItem("sleeperem_farm_coins", fishCoins);
-        localStorage.setItem("sleeperem_fountain_level", fountainLevel);
+        setStorageItem("fish_coins", fishCoins);
+        setStorageItem("farm_coins", fishCoins);
+        setStorageItem("fountain_level", fountainLevel);
       } catch(e) {}
 
       updateCoinDisplay();
       renderStationVisuals();
       closeModal('fountain-upgrade-modal');
-      audio.playPurr();
-      showToast("💧", "อัปเกรดน้ำพุแมวเป็น " + next.name + " สำเร็จ!");
+      audio.playWaterLap();
+      showToast("💧", "อัปเกรดน้ำพุเป็น " + next.name + " สำเร็จ!");
     }
 
     function spawnWaterBubble(x, y) {
@@ -5783,30 +5735,6 @@
         setTimeout(() => bubble.remove(), 1200);
       }
     }
-
-    // Dev Tools shortcuts
-    window.devMaxFeeder = function() {
-      feederLevel = 4;
-      try { localStorage.setItem("sleeperem_feeder_level", 4); } catch(e) {}
-      renderStationVisuals();
-      showToast("🥣", "Dev: ชามข้าวปรับเป็น Lv.4 MAX");
-    };
-    window.devMaxFountain = function() {
-      fountainLevel = 4;
-      try { localStorage.setItem("sleeperem_fountain_level", 4); } catch(e) {}
-      renderStationVisuals();
-      showToast("💧", "Dev: น้ำพุปรับเป็น Lv.4 MAX");
-    };
-    window.devResetStations = function() {
-      feederLevel = 1;
-      fountainLevel = 1;
-      try {
-        localStorage.setItem("sleeperem_feeder_level", 1);
-        localStorage.setItem("sleeperem_fountain_level", 1);
-      } catch(e) {}
-      renderStationVisuals();
-      showToast("🔄", "Dev: รีเซ็ตสถานีทั้งสองเป็น Lv.1");
-    };
 
     
     /* ==========================================================================
@@ -5838,7 +5766,7 @@
         renderStationVisuals();
 
         // Check if roaming cats need init
-        if (catInstances.length === 0) {
+        if (typeof catInstances !== 'undefined' && catInstances.length === 0 && typeof reloadActiveCats === 'function') {
           reloadActiveCats();
         }
       }
@@ -5861,9 +5789,27 @@
       }
     });
 
-    // Check direct access via hash on load
+    // Check direct access via hash on load & sync session
     window.addEventListener('DOMContentLoaded', () => {
+      // Sync initial user state
+      const client = getSupabase();
+      if (client) {
+        client.auth.getSession().then(({ data: { session } }) => {
+          applyUserSession(session);
+        });
+        client.auth.onAuthStateChange((event, session) => applyUserSession(session));
+      } else {
+        updateUserUI(null);
+      }
+
+      // Init stations & farm
       renderStationVisuals();
+      if (typeof applyCameraTransform === 'function') applyCameraTransform();
+      if (typeof reloadActiveCats === 'function') reloadActiveCats();
+      if (typeof renderShop === 'function') renderShop();
+      if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+
+      // Check hash routing
       if (window.location.hash === '#farm') {
         switchView('farm');
       }
