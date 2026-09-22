@@ -1350,7 +1350,7 @@
     /* Kotatsu / Chabudai Table */
     .jp-kotatsu-table {
       position: absolute;
-      left: 560px;
+      left: 595px;
       bottom: 75px;
       width: 170px;
       height: 65px;
@@ -1443,7 +1443,7 @@
     .jp-hanging-lantern {
       position: absolute;
       top: 0;
-      left: 620px;
+      left: 680px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1650,7 +1650,7 @@
     /* Low Marble Table */
     .modern-marble-table {
       position: absolute;
-      left: 420px;
+      left: 540px;
       bottom: 45px;
       width: 140px;
       height: 50px;
@@ -1740,8 +1740,12 @@
       justify-content: center;
     }
     .airlock-door-portal {
-      font-size: 38px;
-      filter: drop-shadow(0 0 15px #d946ef);
+      width: 48px;
+      height: 72px;
+      border: 3px solid #d946ef;
+      border-radius: 24px 24px 6px 6px;
+      background: radial-gradient(ellipse at center, rgba(217, 70, 239, 0.45) 0%, rgba(59, 7, 100, 0.8) 100%);
+      box-shadow: 0 0 20px #d946ef, inset 0 0 12px rgba(255, 255, 255, 0.5);
     }
 
     /* Hanging Inversion Ceiling Pod */
@@ -2344,7 +2348,7 @@
        ========================================================================== */
     .dining-hydration-hub {
       position: absolute;
-      left: 510px;
+      left: 614px;
       bottom: 45px;
       display: flex;
       flex-direction: row;
@@ -2515,7 +2519,7 @@
        ========================================================================== */
     .dining-hydration-hub {
       position: absolute;
-      left: 510px;
+      left: 614px;
       bottom: 45px;
       display: flex;
       flex-direction: row;
@@ -3460,10 +3464,7 @@
           <div class="jp-engawa-step"></div>
 
           <!-- Stone Tsukubai Basin -->
-          <div class="jp-tsukubai" title="อ่างหินล้างมือแบบเซน (Tsukubai)">
-            <span style="font-size:16px;">🎋</span>
-            <span style="font-size:14px;">💧</span>
-          </div>
+          <div class="jp-tsukubai" title="อ่างหินล้างมือแบบเซน (Tsukubai)"></div>
 
           <!-- Round Marumado Zen Window -->
           <div class="jp-marumado-window" onclick="tapWindowEasterEgg()" title="หน้าต่างกลมชมสวนซากุระ">
@@ -3524,10 +3525,7 @@
           <div class="modern-mezzanine">
             <div class="modern-mezzanine-railing"></div>
             <!-- Daybed on Mezzanine -->
-            <div class="modern-mezzanine-daybed" title="เดย์เบดพักผ่อนชั้นลอย">
-              <span style="font-size:20px;">🛌</span>
-              <span style="font-size:16px;">💤</span>
-            </div>
+            <div class="modern-mezzanine-daybed" title="เดย์เบดพักผ่อนชั้นลอย"></div>
           </div>
 
           <!-- 4-Step Floating Glass Staircase -->
@@ -3599,20 +3597,18 @@
 
           <!-- Elevated Airlock Platform Deck on Right -->
           <div class="space-airlock-deck">
-            <div class="airlock-door-portal">🛸</div>
+            <div class="airlock-door-portal"></div>
           </div>
 
           <!-- Hanging Inversion Ceiling Pod -->
           <div class="space-ceiling-pod" title="พ็อดพักผ่อนกลับหัว ไร้แรงโน้มถ่วง">
             <div class="pod-tether"></div>
-            <div class="pod-bubble">💤 🪐</div>
+            <div class="pod-bubble"></div>
           </div>
 
           <!-- Curved Nebula Viewport -->
           <div class="space-nebula-viewport" onclick="tapWindowEasterEgg()" title="โดมชมเนบิวลาและดวงดาว">
-            <div class="space-alien-planet">🪐</div>
             <span style="position:absolute; top:40px; left:60px; font-size:24px;">✨</span>
-            <span style="position:absolute; bottom:50px; right:90px; font-size:20px;">🌌</span>
           </div>
 
           <!-- Anti-Gravity Floating Crystal Platforms -->
@@ -5181,36 +5177,36 @@
        ========================================================================== */
     const THEME_WAYPOINTS = {
       japanese: [
-        { id: "feeder_dish", x: 515, y: 55, surface: "floor" },
-        { id: "fountain_dish", x: 575, y: 55, surface: "floor" },
-        { id: "tatami_left", x: 490, y: 70, surface: "floor" },
-        { id: "kotatsu_front", x: 630, y: 60, surface: "floor" },
-        { id: "kotatsu_top", x: 630, y: 140, surface: "table" },
-        { id: "tatami_right", x: 710, y: 70, surface: "floor" },
-        { id: "tea_step", x: 740, y: 105, surface: "floor" },
-        { id: "zen_center", x: 590, y: 75, surface: "floor" },
-        { id: "cozy_carpet", x: 670, y: 65, surface: "floor" }
+        { id: "feeder_dish", x: 640, y: 55, surface: "floor" },
+        { id: "fountain_dish", x: 720, y: 55, surface: "floor" },
+        { id: "kotatsu_front", x: 680, y: 60, surface: "floor" },
+        { id: "kotatsu_top", x: 680, y: 140, surface: "table" },
+        { id: "tatami_left", x: 580, y: 70, surface: "floor" },
+        { id: "tatami_right", x: 780, y: 70, surface: "floor" },
+        { id: "zen_center", x: 550, y: 65, surface: "floor" },
+        { id: "bonsai_step", x: 810, y: 105, surface: "floor" },
+        { id: "cozy_carpet", x: 730, y: 65, surface: "floor" }
       ],
       modern: [
-        { id: "feeder_dish", x: 515, y: 55, surface: "floor" },
-        { id: "fountain_dish", x: 575, y: 55, surface: "floor" },
-        { id: "parquet_center", x: 630, y: 65, surface: "floor" },
-        { id: "table_side", x: 530, y: 75, surface: "floor" },
-        { id: "marble_table", x: 530, y: 105, surface: "table" },
-        { id: "sofa_seat", x: 490, y: 95, surface: "sofa" },
-        { id: "sofa_front", x: 495, y: 60, surface: "floor" },
-        { id: "stair_step_1", x: 710, y: 110, surface: "stairs" },
-        { id: "lounge_rug", x: 660, y: 65, surface: "floor" }
+        { id: "feeder_dish", x: 640, y: 55, surface: "floor" },
+        { id: "fountain_dish", x: 720, y: 55, surface: "floor" },
+        { id: "parquet_center", x: 680, y: 65, surface: "floor" },
+        { id: "table_side", x: 560, y: 65, surface: "floor" },
+        { id: "marble_table", x: 610, y: 90, surface: "table" },
+        { id: "lounge_rug", x: 730, y: 65, surface: "floor" },
+        { id: "stair_step_1", x: 780, y: 95, surface: "stairs" },
+        { id: "stair_step_2", x: 820, y: 135, surface: "stairs" },
+        { id: "skyline_view", x: 670, y: 65, surface: "floor" }
       ],
       space: [
-        { id: "feeder_dish", x: 515, y: 55, surface: "floor" },
-        { id: "fountain_dish", x: 575, y: 55, surface: "floor" },
-        { id: "bridge_center", x: 620, y: 65, surface: "bridge" },
-        { id: "nebula_deck", x: 550, y: 95, surface: "bridge" },
-        { id: "float_pad_alpha", x: 510, y: 180, surface: "floating" },
-        { id: "float_pad_beta", x: 650, y: 220, surface: "floating" },
-        { id: "float_pad_gamma", x: 730, y: 260, surface: "floating" },
-        { id: "nav_floor", x: 690, y: 65, surface: "bridge" }
+        { id: "feeder_dish", x: 640, y: 55, surface: "floor" },
+        { id: "fountain_dish", x: 720, y: 55, surface: "floor" },
+        { id: "bridge_center", x: 680, y: 65, surface: "bridge" },
+        { id: "nebula_deck", x: 570, y: 75, surface: "bridge" },
+        { id: "float_pad_alpha", x: 580, y: 160, surface: "floating" },
+        { id: "float_pad_beta", x: 680, y: 200, surface: "floating" },
+        { id: "float_pad_gamma", x: 780, y: 170, surface: "floating" },
+        { id: "nav_floor", x: 790, y: 65, surface: "bridge" }
       ]
     };
 
@@ -5350,7 +5346,7 @@
     });
     window.addEventListener('mouseup', () => {
       isDragging = false;
-      setTimeout(() => { hasPanned = false; }, 80);
+      setTimeout(() => { hasPanned = false; }, 200);
     });
 
     // Touchscreen Pinch-to-Zoom & Drag Pan
@@ -5397,7 +5393,7 @@
     viewport.addEventListener('touchend', () => {
       isDragging = false;
       initialPinchDist = null;
-      setTimeout(() => { hasPanned = false; }, 80);
+      setTimeout(() => { hasPanned = false; }, 350);
     });
 
     // Auto-fade gesture hint
@@ -5413,7 +5409,7 @@
     /* ==========================================================================
        LIFELIKE 2.5D FELINE CUTOUT ACTOR ENGINE (MULTI-ACTION STATE MACHINE)
        Actions: Sit, Walk (smooth realistic speed), Crouch/Anticipate, Jump Arc, Groom, Sleep, Eat, Drink
-       - Fixed edge clustering: strictly contained within central living zone [480 - 750]
+       - Fixed edge clustering: strictly contained within central living zone [550 - 810]
        - Fixed jerking: no sudden transition killing mid-animation
        - Proper memory lifecycle: cleanup() and stopCurrentMovement()
        ========================================================================== */
@@ -5429,12 +5425,13 @@
         this.actionTimer = null;
         this.stepTimer = null;
 
-        // Position cat at a valid initial waypoint strictly within cozy central living zone (480 - 750)
-        const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
-        const initialWp = themeWps[index % themeWps.length];
-        this.x = Math.max(480, Math.min(750, initialWp.x));
-        this.y = initialWp.y;
-        this.currentWaypoint = initialWp;
+        // Position cat at a valid initial waypoint strictly within cozy central living zone (550 - 810)
+        // Stagger initial spawn positions symmetrically across the visible center:
+        const spawnXList = [610, 680, 750, 580, 780];
+        const spawnX = spawnXList[index % spawnXList.length];
+        this.x = spawnX;
+        this.y = 65;
+        this.currentWaypoint = { id: "initial_" + index, x: spawnX, y: 65, surface: "floor" };
 
         this.initDOM();
       }
@@ -5533,7 +5530,7 @@
       }
 
       onTap() {
-        if (typeof hasPanned !== 'undefined' && hasPanned) return;
+        if ((typeof hasPanned !== 'undefined' && hasPanned) || (typeof dragDist !== 'undefined' && dragDist > 8)) return;
         audio.playPurr();
         showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
         spawnHeart(this.x, this.y + 60);
@@ -5555,7 +5552,7 @@
           const rawLaunchX = (Math.abs(targetX - this.x) > 55)
             ? (targetX > this.x ? targetX - 45 : targetX + 45)
             : this.x;
-          const launchX = Math.max(480, Math.min(750, rawLaunchX));
+          const launchX = Math.max(550, Math.min(810, rawLaunchX));
           if (Math.abs(launchX - this.x) > 15) {
             const walkDist = Math.abs(launchX - this.x);
             const walkDuration = Math.max(0.7, walkDist / 80);
@@ -5714,7 +5711,7 @@
         const candidates = themeWps.filter(w => Math.abs(w.x - this.x) > 30 || Math.abs(w.y - this.y) > 20);
         const rawTarget = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
         const target = {
-          x: Math.max(480, Math.min(750, rawTarget.x)),
+          x: Math.max(550, Math.min(810, rawTarget.x)),
           y: Math.max(50, Math.min(380, rawTarget.y))
         };
 
@@ -5733,7 +5730,7 @@
           return;
         }
         this.isBusy = true;
-        const targetX = 515;
+        const targetX = 640;
         const targetY = 55;
 
         const steps = this.planPath(targetX, targetY);
@@ -5769,7 +5766,7 @@
           return;
         }
         this.isBusy = true;
-        const targetX = 575;
+        const targetX = 720;
         const targetY = 55;
 
         const steps = this.planPath(targetX, targetY);
@@ -6088,14 +6085,19 @@
 
     let ownedItems = [];
     try {
-      const resetDone = localStorage.getItem('sleeperem_decor_reset_v5_prod');
-      if (!resetDone) {
+      const resetDone = localStorage.getItem('sleeperem_decor_reset_v9_pure_empty');
+      if (resetDone !== 'true') {
         localStorage.removeItem('sleeperem_owned_items');
         localStorage.removeItem('sleeperem_dev_owned_items');
         localStorage.removeItem('sleeperem_prod_owned_items');
         localStorage.removeItem('sleeperem_farm_items');
-        if (typeof setStorageItem === 'function') setStorageItem('owned_items', JSON.stringify([]));
-        localStorage.setItem('sleeperem_decor_reset_v5_prod', 'true');
+        localStorage.setItem('sleeperem_owned_items', '[]');
+        localStorage.setItem('sleeperem_dev_owned_items', '[]');
+        localStorage.setItem('sleeperem_prod_owned_items', '[]');
+        if (typeof setStorageItem === 'function') {
+          setStorageItem('owned_items', '[]');
+        }
+        localStorage.setItem('sleeperem_decor_reset_v9_pure_empty', 'true');
         ownedItems = [];
         // Replenish 2,000 fish coins so user can easily test placing/buying all items
         if (typeof fishCoins !== 'undefined') fishCoins = 2000;
@@ -6109,7 +6111,9 @@
         } catch(e) {}
       } else {
         const saved = (typeof getStorageItem === 'function') ? getStorageItem('owned_items') : localStorage.getItem('sleeperem_owned_items');
-        if (saved) ownedItems = JSON.parse(saved);
+        if (saved) {
+          try { ownedItems = JSON.parse(saved); } catch(e) { ownedItems = []; }
+        }
       }
     } catch(e) {
       ownedItems = [];
@@ -6349,7 +6353,7 @@
     function attractNearbyCatsToStation(stationType) {
       if (!catInstances || catInstances.length === 0) return;
       const isFeeder = stationType === 'feeder';
-      const targetX = isFeeder ? 515 : 575;
+      const targetX = isFeeder ? 640 : 720;
       const targetY = 55;
 
       // Sort by proximity to station
@@ -6372,7 +6376,7 @@
           const dist = Math.abs(targetX - cat.x);
           const duration = Math.max(1.2, dist / 85);
           cat.dom.style.transition = `left ${duration}s ease-in-out, bottom ${duration}s ease-in-out`;
-          cat.x = Math.max(480, Math.min(750, targetX + (idx * 28 - 14)));
+          cat.x = Math.max(550, Math.min(810, targetX + (idx * 28 - 14)));
           cat.y = targetY;
           cat.dom.style.left = cat.x + "px";
           cat.dom.style.bottom = cat.y + "px";
