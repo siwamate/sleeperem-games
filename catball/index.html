@@ -1141,6 +1141,7 @@
       position: absolute;
       left: 50%;
       top: 50%;
+      transform: translate(-50%, -50%) scale(0.55);
       transform-origin: center center;
       will-change: transform;
       transition: transform 0.05s linear;
@@ -1631,6 +1632,147 @@
       border-radius: 20px 20px 8px 8px;
       box-shadow: 0 16px 35px rgba(0,0,0,0.7), inset 0 2px 6px rgba(165, 180, 252, 0.3);
       border: 2px solid #4338ca;
+      z-index: 15;
+    }
+
+    /* Round Marble Coffee Table */
+    .modern-marble-table {
+      position: absolute;
+      left: 770px;
+      bottom: 120px;
+      width: 110px;
+      height: 45px;
+      background: radial-gradient(ellipse at center, #f8fafc 0%, #cbd5e1 70%, #94a3b8 100%);
+      border-radius: 50%;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.65), 0 0 15px rgba(251, 191, 36, 0.2);
+      border: 2.5px solid #fbbf24;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 15;
+    }
+
+    /* ==========================================================================
+       THEME 3: COSMIC ALIEN STARLIGHT SANCTUARY (อวกาศมาการองต่างดาว)
+       ========================================================================== */
+    .theme-layout-space {
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+    .theme-layout-space.active-layout { display: block; }
+
+    .space-backwall {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, #3b0764 0%, #1e1b4b 55%, #05020c 100%);
+    }
+
+    /* Sunken Command Deck (0 -> 1050px) */
+    .space-command-deck {
+      position: absolute;
+      left: 0;
+      width: 1050px;
+      bottom: 0;
+      height: 100px;
+      background: repeating-linear-gradient(60deg, #0f0728 0px, #0f0728 25px, #2e1065 25px, #2e1065 28px);
+      box-shadow: inset 0 15px 40px rgba(0,0,0,0.9), 0 0 25px rgba(168, 85, 247, 0.35);
+      border-top: 3px solid #701a75;
+      z-index: 11;
+    }
+
+    /* Elevated Airlock Platform Deck on Right (1050px -> 1360px) */
+    .space-airlock-deck {
+      position: absolute;
+      left: 1050px;
+      right: 0;
+      bottom: 0;
+      height: 155px;
+      background: linear-gradient(180deg, #3b0764 0%, #1e1b4b 100%);
+      border-top: 4px solid #d946ef;
+      border-left: 3px solid #4a044e;
+      box-shadow: -6px 0 20px rgba(0,0,0,0.8), 0 -8px 25px rgba(217, 70, 239, 0.4);
+      z-index: 12;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .airlock-door-portal {
+      font-size: 38px;
+      filter: drop-shadow(0 0 15px #d946ef);
+    }
+
+    /* Hanging Inversion Ceiling Pod */
+    .space-ceiling-pod {
+      position: absolute;
+      left: 460px;
+      top: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 25;
+      animation: podSway 7s infinite alternate ease-in-out;
+      transform-origin: top center;
+    }
+    @keyframes podSway {
+      0% { transform: rotate(-4deg); }
+      100% { transform: rotate(4deg); }
+    }
+    .pod-tether {
+      width: 2px;
+      height: 40px;
+      background: linear-gradient(180deg, #ec4899, #a855f7);
+      box-shadow: 0 0 8px #ec4899;
+    }
+    .pod-bubble {
+      width: 72px;
+      height: 60px;
+      background: radial-gradient(circle at 40% 40%, rgba(244, 63, 94, 0.6) 0%, rgba(139, 92, 246, 0.4) 60%, rgba(3, 0, 20, 0.8) 100%);
+      border: 2px solid #f472b6;
+      border-radius: 50% 50% 30% 30%;
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.6), inset 0 0 15px rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    /* Giant Curved Nebula Viewport */
+    .space-nebula-viewport {
+      position: absolute;
+      left: 420px;
+      top: 30px;
+      width: 420px;
+      height: 300px;
+      border-radius: 40px;
+      border: 8px solid #a855f7;
+      background: radial-gradient(circle at 40% 40%, #f43f5e 0%, #8b5cf6 45%, #030014 90%);
+      box-shadow: 0 0 60px rgba(244, 63, 94, 0.45), inset 0 0 45px rgba(0,0,0,0.9);
+      overflow: hidden;
+      z-index: 10;
+    }
+    .space-alien-planet {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      font-size: 58px;
+      filter: drop-shadow(0 0 20px #e879f9);
+      animation: planetFloat 10s infinite alternate ease-in-out;
+    }
+    @keyframes planetFloat {
+      0% { transform: translateY(-8px) scale(0.95); }
+      100% { transform: translateY(8px) scale(1.05); }
+    }
+
+    /* Anti-Gravity Floating Crystal Platforms with Individual Sine Waves */
+    .space-float-platform {
+      position: absolute;
+      height: 22px;
+      background: linear-gradient(90deg, #ec4899, #a855f7, #3b82f6);
+      border-radius: 20px;
+      border: 1.5px solid #fbcfe8;
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.7), inset 0 2px 4px rgba(255,255,255,0.7);
       z-index: 15;
     }
     .anti-grav-beam {
@@ -3417,47 +3559,55 @@
 
           <!-- Elevated Airlock Platform Deck on Right -->
           <div class="space-airlock-deck">
-            <div class="airlock-door-portal"></div>
+            <div class="airlock-door-portal">🛸</div>
           </div>
 
           <!-- Hanging Inversion Ceiling Pod -->
           <div class="space-ceiling-pod" title="พ็อดพักผ่อนกลับหัว ไร้แรงโน้มถ่วง">
             <div class="pod-tether"></div>
-            <div class="pod-bubble"></div>
+            <div class="pod-bubble">💤 🪐</div>
           </div>
 
           <!-- Curved Nebula Viewport -->
           <div class="space-nebula-viewport" onclick="tapWindowEasterEgg()" title="โดมชมเนบิวลาและดวงดาว">
+            <div class="space-alien-planet">🪐</div>
             <span style="position:absolute; top:40px; left:60px; font-size:24px;">✨</span>
+            <span style="position:absolute; bottom:50px; right:90px; font-size:20px;">🌌</span>
           </div>
 
           <!-- Anti-Gravity Floating Crystal Platforms -->
           <div class="space-float-platform fp1" title="แท่นคริสตัลลอยไร้แรงโน้มถ่วง Alpha">
             <div class="anti-grav-beam"></div>
+            <span style="font-size:14px; position:absolute; top:-18px; left:15px;">💎</span>
             <div class="decor-slot" data-decor-id="sp_crystal" style="position:absolute; top:-22px; left:18px; font-size:22px; z-index:15; display:none !important;" title="คริสตัลพลังงานเนบิวลา">🔮</div>
           </div>
           <div class="space-float-platform fp2" title="แท่นคริสตัลลอยไร้แรงโน้มถ่วง Beta">
             <div class="anti-grav-beam"></div>
+            <span style="font-size:14px; position:absolute; top:-18px; left:20px;">🔮</span>
             <div class="decor-slot" data-decor-id="sp_feeder" style="position:absolute; top:-20px; left:20px; font-size:20px; z-index:15; display:none !important;" title="แบตเตอรี่ควอนตัมคอร์">⚡</div>
           </div>
           <div class="space-float-platform fp3" title="แท่นคริสตัลลอยไร้แรงโน้มถ่วง Gamma">
             <div class="anti-grav-beam"></div>
+            <span style="font-size:14px; position:absolute; top:-18px; left:18px;">⚡</span>
           </div>
 
           <!-- Bioluminescent Crystal Spire -->
-          <div class="space-crystal-spire"></div>
+          <div class="space-crystal-spire">
+            <span style="font-size:54px; filter:drop-shadow(0 0 25px #c084fc);">🛸</span>
+            <span style="font-size:42px; filter:drop-shadow(0 0 20px #e879f9); margin-top:20px;">🌺</span>
+          </div>
 
           <!-- Space Decor: Alien Flower -->
-          <div class="decor-slot" data-decor-id="sp_plant" style="position:absolute; left:380px; bottom:120px; font-size:32px; z-index:15; display:none !important;" title="ดอกไม้เรืองแสงต่างมิติ">🌺</div>
+          <div class="decor-slot" data-decor-id="sp_plant" style="position:absolute; left:260px; bottom:65px; font-size:32px; z-index:15; display:none !important;" title="ดอกไม้เรืองแสงต่างมิติ">🌺</div>
 
           <!-- Space Decor: 3D Galaxy Globe -->
-          <div class="decor-slot" data-decor-id="sp_globe" style="position:absolute; left:520px; bottom:120px; font-size:34px; z-index:15; display:none !important;" title="โฮโลแกรมจักรวาล 3D">🪐</div>
+          <div class="decor-slot" data-decor-id="sp_globe" style="position:absolute; left:520px; bottom:85px; font-size:34px; z-index:15; display:none !important;" title="โฮโลแกรมจักรวาล 3D">🪐</div>
 
           <!-- Space Decor: Levitation Pod -->
-          <div class="decor-slot" data-decor-id="sp_capsule" style="position:absolute; left:820px; bottom:160px; font-size:36px; z-index:15; display:none !important;" title="แคปซูลปรับแรงโน้มถ่วง">🛸</div>
+          <div class="decor-slot" data-decor-id="sp_capsule" style="position:absolute; left:1080px; bottom:175px; font-size:36px; z-index:15; display:none !important;" title="แคปซูลปรับแรงโน้มถ่วง">🛸</div>
 
           <!-- Space Decor: Meteor Star -->
-          <div class="decor-slot" data-decor-id="sp_star" style="position:absolute; left:750px; bottom:120px; font-size:28px; z-index:15; display:none !important;" title="เศษเสี้ยวอุกกาบาตดาวตก">☄️</div>
+          <div class="decor-slot" data-decor-id="sp_star" style="position:absolute; left:880px; bottom:120px; font-size:28px; z-index:15; display:none !important;" title="เศษเสี้ยวอุกกาบาตดาวตก">☄️</div>
 
         </div>
 
@@ -4997,32 +5147,39 @@
        ========================================================================== */
     const THEME_WAYPOINTS = {
       japanese: [
-        { id: "tatami_center", x: 675, y: 125, surface: "floor" },
+        { id: "tatami_center", x: 680, y: 125, surface: "floor" },
         { id: "feeder_dish", x: 605, y: 125, surface: "floor" },
         { id: "fountain_dish", x: 745, y: 125, surface: "floor" },
-        { id: "tatami_left", x: 550, y: 125, surface: "floor" },
-        { id: "tatami_right", x: 790, y: 125, surface: "floor" },
-        { id: "cushion_spot", x: 540, y: 135, surface: "cushion" },
-        { id: "kotatsu_top", x: 440, y: 185, surface: "table" },
-        { id: "bonsai_shelf", x: 810, y: 195, surface: "shelf" }
+        { id: "tatami_left", x: 520, y: 125, surface: "floor" },
+        { id: "tatami_right", x: 840, y: 125, surface: "floor" },
+        { id: "cushion_spot", x: 570, y: 135, surface: "cushion" },
+        { id: "kotatsu_top", x: 470, y: 185, surface: "table" },
+        { id: "marumado_sill", x: 380, y: 165, surface: "window" },
+        { id: "bonsai_shelf_mid", x: 830, y: 220, surface: "shelf" },
+        { id: "bonsai_shelf_top", x: 860, y: 280, surface: "shelf" }
       ],
       modern: [
-        { id: "parquet_center", x: 675, y: 125, surface: "floor" },
+        { id: "parquet_center", x: 680, y: 125, surface: "floor" },
         { id: "feeder_dish", x: 605, y: 125, surface: "floor" },
         { id: "fountain_dish", x: 745, y: 125, surface: "floor" },
-        { id: "sofa_perch", x: 500, y: 165, surface: "sofa" },
-        { id: "table_perch", x: 760, y: 175, surface: "table" },
-        { id: "stair_step", x: 790, y: 165, surface: "stairs" },
-        { id: "mezzanine_walk", x: 820, y: 225, surface: "mezzanine" }
+        { id: "sofa_perch", x: 490, y: 175, surface: "sofa" },
+        { id: "table_perch", x: 770, y: 165, surface: "table" },
+        { id: "stair_step", x: 830, y: 185, surface: "stairs" },
+        { id: "mezzanine_walk", x: 920, y: 245, surface: "mezzanine" },
+        { id: "apex_catwalk", x: 560, y: 310, surface: "catwalk" },
+        { id: "lounge_left", x: 390, y: 125, surface: "floor" }
       ],
       space: [
-        { id: "bridge_center", x: 675, y: 125, surface: "bridge" },
+        { id: "bridge_center", x: 680, y: 125, surface: "bridge" },
         { id: "feeder_dish", x: 605, y: 125, surface: "floor" },
         { id: "fountain_dish", x: 745, y: 125, surface: "floor" },
-        { id: "deck_left", x: 560, y: 125, surface: "bridge" },
-        { id: "deck_right", x: 790, y: 125, surface: "bridge" },
-        { id: "float_pad_alpha", x: 580, y: 195, surface: "floating" },
-        { id: "float_pad_beta", x: 680, y: 225, surface: "floating" }
+        { id: "deck_left", x: 460, y: 125, surface: "bridge" },
+        { id: "deck_right", x: 860, y: 125, surface: "bridge" },
+        { id: "float_pad_alpha", x: 320, y: 205, surface: "floating" },
+        { id: "float_pad_beta", x: 690, y: 265, surface: "floating" },
+        { id: "float_pad_gamma", x: 960, y: 315, surface: "floating" },
+        { id: "airlock_deck", x: 1100, y: 165, surface: "airlock" },
+        { id: "ceiling_pod", x: 495, y: 360, surface: "pod" }
       ]
     };
 
@@ -5221,400 +5378,395 @@
     /* ==========================================================================
        CAT ACTOR ENGINE: PROCEDURAL CUTOUT WALKING LOCOMOTION
        ========================================================================== */
-    
     /* ==========================================================================
-       LIFELIKE 2.5D FELINE CUTOUT ACTOR ENGINE (MULTI-ACTION STATE MACHINE)
-       Actions: Sit, Walk (smooth realistic speed), Crouch/Anticipate, Jump Arc, Groom, Sleep, Eat, Drink
-       - Fixed edge clustering: strictly contained within central living zone [550 - 810]
-       - Fixed jerking: no sudden transition killing mid-animation
-       - Proper memory lifecycle: cleanup() and stopCurrentMovement()
-       ========================================================================== */
-    class LiveCatActor {
-      constructor(breedData, index) {
-        this.data = breedData;
-        this.index = index;
-        this.weight = catWeights[this.data.id] || this.data.baseWeight;
-        this.state = 'sitting'; // 'sitting', 'sleeping', 'grooming', 'walking', 'crouching', 'jumping', 'eating', 'drinking'
-        this.isBusy = false;
-        this.facing = 1; // 1 = right, -1 = left
-        this.dom = null;
-        this.actionTimer = null;
-        this.stepTimer = null;
+   LIFELIKE 2.5D FELINE CUTOUT ACTOR ENGINE (MULTI-ACTION STATE MACHINE)
+   Actions: Sit, Walk (smooth realistic speed), Crouch/Anticipate, Jump Arc, Groom, Sleep, Eat, Drink
+   - Natural architecture-based spawning on active theme perches
+   - Stage bounds protection [260 - 1140] preventing edge drops
+   - Full 0-cat support (allows completely empty relaxing room)
+   ========================================================================== */
+class LiveCatActor {
+  constructor(breedData, index) {
+    this.data = breedData;
+    this.index = index;
+    this.weight = catWeights[this.data.id] || this.data.baseWeight;
+    this.state = 'sitting';
+    this.isBusy = false;
+    this.facing = (index % 2 === 0) ? 1 : -1;
+    this.dom = null;
+    this.actionTimer = null;
+    this.stepTimer = null;
 
-        // Position cat at a valid initial waypoint strictly within cozy central living zone (550 - 810)
-        // Stagger initial spawn positions symmetrically across the visible center:
-        const spawnXList = [630, 680, 720];
-        const spawnX = spawnXList[index % spawnXList.length];
-        this.x = spawnX;
-        this.y = 125;
-        this.currentWaypoint = { id: "initial_" + index, x: spawnX, y: 125, surface: "floor" };
+    // Spawn at a valid, natural waypoint of the CURRENT active theme
+    const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
+    const primarySpawnPoints = themeWps.filter(w => w.surface !== 'pod' && w.id !== 'feeder_dish' && w.id !== 'fountain_dish');
+    const spawnWp = primarySpawnPoints[index % primarySpawnPoints.length] || themeWps[0];
+    
+    const jitter = (index % 3 === 0 ? 0 : (index % 3 === 1 ? -18 : 18));
+    this.x = spawnWp.x + jitter;
+    this.y = spawnWp.y;
+    this.currentWaypoint = spawnWp;
 
-        this.initDOM();
-      }
+    this.initDOM();
+  }
 
-      initDOM() {
-        const layer = document.getElementById("cats-stage-layer");
-        if (!layer) return;
+  initDOM() {
+    const layer = document.getElementById("cats-stage-layer");
+    if (!layer) return;
 
-        const el = document.createElement("div");
-        el.className = "cat-actor-cutout is-sitting";
-        el.id = "actor-" + this.data.id;
+    const el = document.createElement("div");
+    el.className = "cat-actor-cutout is-sitting";
+    el.id = "actor-" + this.data.id;
 
-        el.innerHTML = `
-          <div class="cat-speech-bubble" id="bubble-${this.data.id}">เหมียวว~ 💖</div>
-          <div class="cat-sleep-zzz" id="zzz-${this.data.id}">Zzz</div>
-          <div class="cat-groom-sparkle" id="sparkle-${this.data.id}">✨</div>
-          <div class="cat-cutout-wrap" id="wrap-${this.data.id}">
-            ${renderFelineSvg(this.data.id, 'sitting')}
-          </div>
-          <div class="cat-contact-shadow" id="shadow-${this.data.id}"></div>
-          <div class="cat-stat-tag">
-            <span>${this.data.name}</span>
-            <span class="chonky-badge" id="badge-${this.data.id}">${this.getWeightLabel()}</span>
-          </div>
-        `;
+    el.innerHTML = `
+      <div class="cat-speech-bubble" id="bubble-${this.data.id}">เหมียวว~ 💖</div>
+      <div class="cat-sleep-zzz" id="zzz-${this.data.id}">Zzz</div>
+      <div class="cat-groom-sparkle" id="sparkle-${this.data.id}">✨</div>
+      <div class="cat-cutout-wrap" id="wrap-${this.data.id}">
+        ${renderFelineSvg(this.data.id, 'sitting')}
+      </div>
+      <div class="cat-contact-shadow" id="shadow-${this.data.id}"></div>
+      <div class="cat-stat-tag">
+        <span>${this.data.name}</span>
+        <span class="chonky-badge" id="badge-${this.data.id}">${this.getWeightLabel()}</span>
+      </div>
+    `;
 
-        el.style.left = this.x + "px";
-        el.style.bottom = this.y + "px";
-        el.style.setProperty('--facing', this.facing);
+    el.style.left = this.x + "px";
+    el.style.bottom = this.y + "px";
+    el.style.setProperty('--facing', this.facing);
 
-        const wrap = el.querySelector(".cat-cutout-wrap");
-        const tag = el.querySelector(".cat-stat-tag");
-        const clickHandler = (e) => {
-          e.stopPropagation();
-          this.onTap();
-        };
-        if (wrap) wrap.addEventListener('click', clickHandler);
-        if (tag) tag.addEventListener('click', clickHandler);
+    const wrap = el.querySelector(".cat-cutout-wrap");
+    const tag = el.querySelector(".cat-stat-tag");
+    const clickHandler = (e) => {
+      e.stopPropagation();
+      this.onTap();
+    };
+    if (wrap) wrap.addEventListener('click', clickHandler);
+    if (tag) tag.addEventListener('click', clickHandler);
 
-        layer.appendChild(el);
-        this.dom = el;
-        this.applyChonkyTransform();
-        this.scheduleNextAction();
-      }
+    layer.appendChild(el);
+    this.dom = el;
+    this.applyChonkyTransform();
+    this.scheduleNextAction();
+  }
 
-      cleanup() {
-        if (this.actionTimer) { clearTimeout(this.actionTimer); this.actionTimer = null; }
-        if (this.stepTimer) { clearTimeout(this.stepTimer); this.stepTimer = null; }
-        if (this.dom && this.dom.parentNode) {
-          this.dom.parentNode.removeChild(this.dom);
-        }
-        this.dom = null;
-      }
-
-      stopCurrentMovement() {
-        if (this.stepTimer) { clearTimeout(this.stepTimer); this.stepTimer = null; }
-        if (this.actionTimer) { clearTimeout(this.actionTimer); this.actionTimer = null; }
-        this.isBusy = false;
-        if (this.dom) {
-          this.setState('sitting');
-        }
-      }
-
-      getWeightLabel() {
-        if (this.weight >= 8.5) return "🏆 อ้วนมาก";
-        if (this.weight >= 6.0) return "อวบอั๋น";
-        return "สมส่วน";
-      }
-
-      applyChonkyTransform() {
-        if (!this.dom) return;
-        const wrap = this.dom.querySelector(".cat-cutout-wrap");
-        const shadow = this.dom.querySelector(".cat-contact-shadow");
-        const badge = this.dom.querySelector(".chonky-badge");
-
-        const scale = Math.min(1.4, 0.95 + (this.weight - 3.5) * 0.055);
-        const squishY = Math.max(0.85, 1.0 - (this.weight - 3.5) * 0.02);
-
-        this.dom.style.setProperty('--facing', this.facing);
-        if (wrap) wrap.style.transform = `scale(${this.facing * scale}, ${scale * squishY})`;
-        if (shadow) shadow.style.transform = `scale(${scale * 1.25}, 1)`;
-        if (badge) badge.innerText = this.getWeightLabel();
-      }
-
-      setState(newState) {
-        if (!this.dom) return;
-        this.state = newState;
-        this.dom.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping', 'is-eating', 'is-drinking');
-        this.dom.classList.add('is-' + newState);
-        const svg = this.dom.querySelector('.feline-rig');
-        if (svg) {
-          svg.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping', 'is-eating', 'is-drinking');
-          const svgState = (newState === 'eating' || newState === 'drinking') ? 'sitting' : newState;
-          svg.classList.add('is-' + svgState);
-        }
-      }
-
-      onTap() {
-        if ((typeof hasPanned !== 'undefined' && hasPanned) || (typeof dragDist !== 'undefined' && dragDist > 8)) return;
-        audio.playPurr();
-        showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
-        spawnHeart(this.x, this.y + 60);
-        openCatDetailModal(this);
-      }
-
-      // Smooth step-by-step navigation path generator with diagonal leaps
-      planPath(targetX, targetY) {
-        const steps = [];
-        const yDiff = targetY - this.y;
-
-        if (Math.abs(yDiff) <= 25) {
-          // Same elevation: direct stroll along the surface
-          const dist = Math.abs(targetX - this.x);
-          const duration = Math.max(1.2, dist / 80);
-          steps.push({ type: 'walk', toX: targetX, toY: targetY, duration });
-        } else if (yDiff > 25) {
-          // Target is elevated: 1) approach launch spot within 45px, 2) crouch, 3) diagonal arc leap up to perch
-          const rawLaunchX = (Math.abs(targetX - this.x) > 55)
-            ? (targetX > this.x ? targetX - 45 : targetX + 45)
-            : this.x;
-          const launchX = Math.max(540, Math.min(820, rawLaunchX));
-          if (Math.abs(launchX - this.x) > 15) {
-            const walkDist = Math.abs(launchX - this.x);
-            const walkDuration = Math.max(0.7, walkDist / 80);
-            steps.push({ type: 'walk', toX: launchX, toY: this.y, duration: walkDuration });
-          }
-          steps.push({ type: 'crouch', duration: 0.5 });
-          const leapDist = Math.hypot(targetX - launchX, yDiff);
-          const jumpDuration = Math.min(1.0, Math.max(0.65, leapDist / 170));
-          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
-          steps.push({ type: 'land', duration: 0.25 });
-        } else {
-          // Target is lower: 1) crouch at edge, 2) leap down arc, 3) land
-          steps.push({ type: 'crouch', duration: 0.4 });
-          const dropDist = Math.hypot(targetX - this.x, yDiff);
-          const jumpDuration = Math.min(0.9, Math.max(0.55, dropDist / 190));
-          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
-          steps.push({ type: 'land', duration: 0.25 });
-        }
-        return steps;
-      }
-
-      // Execute sequence of path actions smoothly without transition killing (fixes jerking)
-      executePath(steps, onDone) {
-        if (!steps || steps.length === 0) {
-          if (onDone) onDone();
-          return;
-        }
-
-        const step = steps.shift();
-        if (!this.dom || !document.contains(this.dom)) return;
-
-        if (step.type === 'walk') {
-          this.setState('walking');
-          this.facing = step.toX >= this.x ? 1 : -1;
-          this.applyChonkyTransform();
-          void this.dom.offsetWidth;
-          
-          this.dom.style.transition = `left ${step.duration}s ease-in-out, bottom ${step.duration}s ease-in-out`;
-          this.x = step.toX;
-          this.y = step.toY;
-          this.dom.style.left = this.x + "px";
-          this.dom.style.bottom = this.y + "px";
-
-          this.stepTimer = setTimeout(() => {
-            this.executePath(steps, onDone);
-          }, step.duration * 1000);
-
-        } else if (step.type === 'crouch') {
-          this.setState('crouching');
-          this.stepTimer = setTimeout(() => {
-            this.executePath(steps, onDone);
-          }, step.duration * 1000);
-
-        } else if (step.type === 'jump') {
-          this.setState('jumping');
-          this.facing = step.toX >= this.x ? 1 : -1;
-          this.applyChonkyTransform();
-          audio.playPurr();
-          void this.dom.offsetWidth;
-
-          this.dom.style.transition = `left ${step.duration}s cubic-bezier(0.25, 0.8, 0.35, 1), bottom ${step.duration}s cubic-bezier(0.2, 0.9, 0.3, 1)`;
-          this.x = step.toX;
-          this.y = step.toY;
-          this.dom.style.left = this.x + "px";
-          this.dom.style.bottom = this.y + "px";
-
-          this.stepTimer = setTimeout(() => {
-            this.executePath(steps, onDone);
-          }, step.duration * 1000);
-
-        } else if (step.type === 'land') {
-          this.setState('sitting');
-          this.stepTimer = setTimeout(() => {
-            this.executePath(steps, onDone);
-          }, step.duration * 1000);
-        }
-      }
-
-      // Calm Autonomous Decision Cycle (Happens every 8 to 22 seconds)
-      scheduleNextAction() {
-        if (this.actionTimer) clearTimeout(this.actionTimer);
-
-        // Chonky cats rest longer
-        const baseDelay = this.weight >= 7.0 ? (12000 + Math.random() * 10000) : (8000 + Math.random() * 8000);
-
-        this.actionTimer = setTimeout(() => {
-          if (!this.dom || !document.contains(this.dom)) return;
-          if (this.isBusy) {
-            this.scheduleNextAction();
-            return;
-          }
-
-          // If currently sleeping, 45% chance to remain sleeping peacefully
-          if (this.state === 'sleeping' && Math.random() < 0.45) {
-            this.scheduleNextAction();
-            return;
-          }
-
-          // Only eat/drink if player has actually filled the bowl!
-          if (feederHasFood && Math.random() < 0.45) {
-            this.eatAtFeeder();
-            return;
-          }
-          if (fountainHasWater && Math.random() < 0.45) {
-            this.drinkAtFountain();
-            return;
-          }
-
-          const roll = Math.random();
-          if (roll < 0.28) {
-            // Action 1: Sleep / Nap
-            this.doNap();
-          } else if (roll < 0.52) {
-            // Action 2: Sit & Look Around
-            this.doSit();
-          } else if (roll < 0.72) {
-            // Action 3: Groom & Lick Fur
-            this.doGroom();
-          } else {
-            // Action 4: Walk / Jump to explore a new waypoint
-            this.wanderToWaypoint();
-          }
-        }, baseDelay);
-      }
-
-      doSit() {
-        this.setState('sitting');
-        this.scheduleNextAction();
-      }
-
-      doNap() {
-        this.setState('sleeping');
-        this.scheduleNextAction();
-      }
-
-      doGroom() {
-        this.setState('grooming');
-        const sparkle = this.dom.querySelector(".cat-groom-sparkle");
-        if (sparkle) sparkle.style.opacity = "1";
-
-        setTimeout(() => {
-          if (!this.dom) return;
-          if (sparkle) sparkle.style.opacity = "0";
-          this.setState('sitting');
-          this.scheduleNextAction();
-        }, 5500 + Math.random() * 3000);
-      }
-
-      wanderToWaypoint() {
-        this.isBusy = true;
-        const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
-        const candidates = themeWps.filter(w => Math.abs(w.x - this.x) > 30 || Math.abs(w.y - this.y) > 20);
-        const rawTarget = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
-        const target = {
-          x: Math.max(540, Math.min(820, rawTarget.x)),
-          y: Math.max(125, Math.min(235, rawTarget.y))
-        };
-
-        const steps = this.planPath(target.x, target.y);
-        this.executePath(steps, () => {
-          this.isBusy = false;
-          this.setState('sitting');
-          this.currentWaypoint = rawTarget;
-          this.scheduleNextAction();
-        });
-      }
-
-      eatAtFeeder() {
-        if (!feederHasFood || window.__stationActiveUser) {
-          this.scheduleNextAction();
-          return;
-        }
-        window.__stationActiveUser = this.data.id;
-        this.isBusy = true;
-        const targetX = 605;
-        const targetY = 125;
-
-        const steps = this.planPath(targetX, targetY);
-        this.executePath(steps, () => {
-          this.facing = 1;
-          this.setState('sitting');
-          this.applyChonkyTransform();
-          showSpeechBubble(this.dom, "ง่ำๆ 🥣 อร่อยจัง!");
-          spawnHeart(this.x + 25, this.y + 65);
-          audio.playPurr();
-
-          this.weight = Math.min(14.0, this.weight + 0.05);
-          catWeights[this.data.id] = this.weight;
-          try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
-          this.applyChonkyTransform();
-
-          setTimeout(() => {
-            feederHasFood = false;
-            try { localStorage.setItem('sleeperem_feeder_filled', 'false'); } catch(e) {}
-            renderStationVisuals();
-            showSpeechBubble(this.dom, "อิ่มแปล้~ 💖 ขอบคุณนะ!");
-
-            window.__stationActiveUser = null;
-            this.isBusy = false;
-            this.scheduleNextAction();
-          }, 4500);
-        });
-      }
-
-      drinkAtFountain() {
-        if (!fountainHasWater || window.__stationActiveUser) {
-          this.scheduleNextAction();
-          return;
-        }
-        window.__stationActiveUser = this.data.id;
-        this.isBusy = true;
-        const targetX = 745;
-        const targetY = 125;
-
-        const steps = this.planPath(targetX, targetY);
-        this.executePath(steps, () => {
-          this.facing = -1;
-          this.setState('sitting');
-          this.applyChonkyTransform();
-          showSpeechBubble(this.dom, "แผล็บๆ 💧 สดชื่น!");
-          spawnWaterBubble(this.x + 20, this.y + 60);
-          audio.playPurr();
-
-          setTimeout(() => {
-            fountainHasWater = false;
-            try { localStorage.setItem('sleeperem_fountain_filled', 'false'); } catch(e) {}
-            renderStationVisuals();
-            showSpeechBubble(this.dom, "สดชื่นจัง ✨ ขอบคุณนะ!");
-
-            window.__stationActiveUser = null;
-            this.isBusy = false;
-            this.scheduleNextAction();
-          }, 4500);
-        });
-      }
-
-      feed(kgGained) {
-        this.weight = Math.min(14.0, this.weight + kgGained);
-        catWeights[this.data.id] = this.weight;
-        try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
-        this.applyChonkyTransform();
-        showSpeechBubble(this.dom, `ง่ำๆ อร่อยมาก! (+ ${kgGained} kg) 💖`);
-        spawnHeart(this.x + 30, this.y + 70);
-        audio.playChomp();
-      }
+  cleanup() {
+    if (this.actionTimer) { clearTimeout(this.actionTimer); this.actionTimer = null; }
+    if (this.stepTimer) { clearTimeout(this.stepTimer); this.stepTimer = null; }
+    if (this.dom && this.dom.parentNode) {
+      this.dom.parentNode.removeChild(this.dom);
     }
+    this.dom = null;
+  }
+
+  stopCurrentMovement() {
+    if (this.stepTimer) { clearTimeout(this.stepTimer); this.stepTimer = null; }
+    if (this.actionTimer) { clearTimeout(this.actionTimer); this.actionTimer = null; }
+    this.isBusy = false;
+    if (this.dom) {
+      this.setState('sitting');
+    }
+  }
+
+  getWeightLabel() {
+    if (this.weight >= 8.5) return "🏆 อ้วนมาก";
+    if (this.weight >= 6.0) return "อวบอั๋น";
+    return "สมส่วน";
+  }
+
+  applyChonkyTransform() {
+    if (!this.dom) return;
+    const wrap = this.dom.querySelector(".cat-cutout-wrap");
+    const shadow = this.dom.querySelector(".cat-contact-shadow");
+    const badge = this.dom.querySelector(".chonky-badge");
+
+    const scale = Math.min(1.4, 0.95 + (this.weight - 3.5) * 0.055);
+    const squishY = Math.max(0.85, 1.0 - (this.weight - 3.5) * 0.02);
+
+    this.dom.style.setProperty('--facing', this.facing);
+    if (wrap) wrap.style.transform = `scale(${this.facing * scale}, ${scale * squishY})`;
+    if (shadow) shadow.style.transform = `scale(${scale * 1.25}, 1)`;
+    if (badge) badge.innerText = this.getWeightLabel();
+  }
+
+  setState(newState) {
+    if (!this.dom) return;
+    this.state = newState;
+    this.dom.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping', 'is-eating', 'is-drinking');
+    this.dom.classList.add('is-' + newState);
+    const svg = this.dom.querySelector('.feline-rig');
+    if (svg) {
+      svg.classList.remove('is-sitting', 'is-walking', 'is-crouching', 'is-jumping', 'is-grooming', 'is-sleeping', 'is-eating', 'is-drinking');
+      const svgState = (newState === 'eating' || newState === 'drinking') ? 'sitting' : newState;
+      svg.classList.add('is-' + svgState);
+    }
+  }
+
+  onTap() {
+    if ((typeof hasPanned !== 'undefined' && hasPanned) || (typeof dragDist !== 'undefined' && dragDist > 8)) return;
+    audio.playPurr();
+    showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
+    spawnHeart(this.x, this.y + 60);
+    openCatDetailModal(this);
+  }
+
+  // Smooth step-by-step navigation path generator with diagonal leaps
+  planPath(targetX, targetY) {
+    const steps = [];
+    const yDiff = targetY - this.y;
+
+    if (Math.abs(yDiff) <= 25) {
+      // Same elevation: direct stroll along the surface
+      const dist = Math.abs(targetX - this.x);
+      const duration = Math.max(1.2, dist / 80);
+      steps.push({ type: 'walk', toX: targetX, toY: targetY, duration });
+    } else if (yDiff > 25) {
+      // Target is elevated: 1) approach launch spot within 45px, 2) crouch, 3) diagonal arc leap up to perch
+      const rawLaunchX = (Math.abs(targetX - this.x) > 55)
+        ? (targetX > this.x ? targetX - 45 : targetX + 45)
+        : this.x;
+      const launchX = Math.max(260, Math.min(1140, rawLaunchX));
+      if (Math.abs(launchX - this.x) > 15) {
+        const walkDist = Math.abs(launchX - this.x);
+        const walkDuration = Math.max(0.7, walkDist / 80);
+        steps.push({ type: 'walk', toX: launchX, toY: this.y, duration: walkDuration });
+      }
+      steps.push({ type: 'crouch', duration: 0.5 });
+      const leapDist = Math.hypot(targetX - launchX, yDiff);
+      const jumpDuration = Math.min(1.0, Math.max(0.65, leapDist / 170));
+      steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
+      steps.push({ type: 'land', duration: 0.25 });
+    } else {
+      // Target is lower: 1) crouch at edge, 2) leap down arc, 3) land
+      steps.push({ type: 'crouch', duration: 0.4 });
+      const dropDist = Math.hypot(targetX - this.x, yDiff);
+      const jumpDuration = Math.min(0.9, Math.max(0.55, dropDist / 190));
+      steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
+      steps.push({ type: 'land', duration: 0.25 });
+    }
+    return steps;
+  }
+
+  // Execute sequence of path actions smoothly without transition killing
+  executePath(steps, onDone) {
+    if (!steps || steps.length === 0) {
+      if (onDone) onDone();
+      return;
+    }
+
+    const step = steps.shift();
+    if (!this.dom || !document.contains(this.dom)) return;
+
+    if (step.type === 'walk') {
+      this.setState('walking');
+      this.facing = step.toX >= this.x ? 1 : -1;
+      this.applyChonkyTransform();
+      void this.dom.offsetWidth;
+      
+      this.dom.style.transition = `left ${step.duration}s ease-in-out, bottom ${step.duration}s ease-in-out`;
+      this.x = step.toX;
+      this.y = step.toY;
+      this.dom.style.left = this.x + "px";
+      this.dom.style.bottom = this.y + "px";
+
+      this.stepTimer = setTimeout(() => {
+        this.executePath(steps, onDone);
+      }, step.duration * 1000);
+
+    } else if (step.type === 'crouch') {
+      this.setState('crouching');
+      this.stepTimer = setTimeout(() => {
+        this.executePath(steps, onDone);
+      }, step.duration * 1000);
+
+    } else if (step.type === 'jump') {
+      this.setState('jumping');
+      this.facing = step.toX >= this.x ? 1 : -1;
+      this.applyChonkyTransform();
+      audio.playPurr();
+      void this.dom.offsetWidth;
+
+      this.dom.style.transition = `left ${step.duration}s cubic-bezier(0.25, 0.8, 0.35, 1), bottom ${step.duration}s cubic-bezier(0.2, 0.9, 0.3, 1)`;
+      this.x = step.toX;
+      this.y = step.toY;
+      this.dom.style.left = this.x + "px";
+      this.dom.style.bottom = this.y + "px";
+
+      this.stepTimer = setTimeout(() => {
+        this.executePath(steps, onDone);
+      }, step.duration * 1000);
+
+    } else if (step.type === 'land') {
+      this.setState('sitting');
+      this.stepTimer = setTimeout(() => {
+        this.executePath(steps, onDone);
+      }, step.duration * 1000);
+    }
+  }
+
+  // Calm Autonomous Decision Cycle (Happens every 8 to 22 seconds)
+  scheduleNextAction() {
+    if (this.actionTimer) clearTimeout(this.actionTimer);
+
+    const baseDelay = this.weight >= 7.0 ? (12000 + Math.random() * 10000) : (8000 + Math.random() * 8000);
+
+    this.actionTimer = setTimeout(() => {
+      if (!this.dom || !document.contains(this.dom)) return;
+      if (this.isBusy) {
+        this.scheduleNextAction();
+        return;
+      }
+
+      if (this.state === 'sleeping' && Math.random() < 0.45) {
+        this.scheduleNextAction();
+        return;
+      }
+
+      // Only eat/drink if player has actually filled the bowl!
+      if (feederHasFood && !window.__stationActiveUser && Math.random() < 0.35) {
+        this.eatAtFeeder();
+        return;
+      }
+      if (fountainHasWater && !window.__stationActiveUser && Math.random() < 0.35) {
+        this.drinkAtFountain();
+        return;
+      }
+
+      const roll = Math.random();
+      if (roll < 0.30) {
+        this.doSit();
+      } else if (roll < 0.50) {
+        this.doNap();
+      } else if (roll < 0.65) {
+        this.doGroom();
+      } else {
+        this.wanderToWaypoint();
+      }
+    }, baseDelay);
+  }
+
+  doSit() {
+    this.setState('sitting');
+    this.scheduleNextAction();
+  }
+
+  doNap() {
+    this.setState('sleeping');
+    this.scheduleNextAction();
+  }
+
+  doGroom() {
+    this.setState('grooming');
+    const sparkle = this.dom.querySelector(".cat-groom-sparkle");
+    if (sparkle) sparkle.style.opacity = "1";
+
+    setTimeout(() => {
+      if (!this.dom) return;
+      if (sparkle) sparkle.style.opacity = "0";
+      this.setState('sitting');
+      this.scheduleNextAction();
+    }, 5500 + Math.random() * 3000);
+  }
+
+  wanderToWaypoint() {
+    this.isBusy = true;
+    const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
+    const candidates = themeWps.filter(w => Math.abs(w.x - this.x) > 35 || Math.abs(w.y - this.y) > 25);
+    const rawTarget = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
+    const target = {
+      x: Math.max(260, Math.min(1140, rawTarget.x)),
+      y: Math.max(120, Math.min(380, rawTarget.y))
+    };
+
+    const steps = this.planPath(target.x, target.y);
+    this.executePath(steps, () => {
+      this.isBusy = false;
+      this.setState('sitting');
+      this.currentWaypoint = rawTarget;
+      this.scheduleNextAction();
+    });
+  }
+
+  eatAtFeeder() {
+    if (!feederHasFood || window.__stationActiveUser) {
+      this.scheduleNextAction();
+      return;
+    }
+    window.__stationActiveUser = this.data.id;
+    this.isBusy = true;
+    const targetX = 605;
+    const targetY = 125;
+
+    const steps = this.planPath(targetX, targetY);
+    this.executePath(steps, () => {
+      this.facing = 1;
+      this.setState('sitting');
+      this.applyChonkyTransform();
+      showSpeechBubble(this.dom, "ง่ำๆ 🥣 อร่อยจัง!");
+      spawnHeart(this.x + 25, this.y + 65);
+      audio.playPurr();
+
+      this.weight = Math.min(14.0, this.weight + 0.05);
+      catWeights[this.data.id] = this.weight;
+      try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
+      this.applyChonkyTransform();
+
+      setTimeout(() => {
+        feederHasFood = false;
+        try { localStorage.setItem('sleeperem_feeder_filled', 'false'); } catch(e) {}
+        renderStationVisuals();
+        showSpeechBubble(this.dom, "อิ่มแปล้~ 💖 ขอบคุณนะ!");
+
+        window.__stationActiveUser = null;
+        this.isBusy = false;
+        this.scheduleNextAction();
+      }, 4500);
+    });
+  }
+
+  drinkAtFountain() {
+    if (!fountainHasWater || window.__stationActiveUser) {
+      this.scheduleNextAction();
+      return;
+    }
+    window.__stationActiveUser = this.data.id;
+    this.isBusy = true;
+    const targetX = 745;
+    const targetY = 125;
+
+    const steps = this.planPath(targetX, targetY);
+    this.executePath(steps, () => {
+      this.facing = -1;
+      this.setState('sitting');
+      this.applyChonkyTransform();
+      showSpeechBubble(this.dom, "แผล็บๆ 💧 สดชื่น!");
+      spawnWaterBubble(this.x + 20, this.y + 60);
+      audio.playPurr();
+
+      setTimeout(() => {
+        fountainHasWater = false;
+        try { localStorage.setItem('sleeperem_fountain_filled', 'false'); } catch(e) {}
+        renderStationVisuals();
+        showSpeechBubble(this.dom, "สดชื่นจัง ✨ ขอบคุณนะ!");
+
+        window.__stationActiveUser = null;
+        this.isBusy = false;
+        this.scheduleNextAction();
+      }, 4500);
+    });
+  }
+
+  feed(kgGained) {
+    this.weight = Math.min(14.0, this.weight + kgGained);
+    catWeights[this.data.id] = this.weight;
+    try { localStorage.setItem('sleeperem_cat_weights', JSON.stringify(catWeights)); } catch(e) {}
+    this.applyChonkyTransform();
+    showSpeechBubble(this.dom, `ง่ำๆ อร่อยมาก! (+ ${kgGained} kg) 💖`);
+    spawnHeart(this.x + 30, this.y + 70);
+    audio.playChomp();
+  }
+}
 
     function reloadActiveCats() {
       const layer = document.getElementById("cats-stage-layer");
@@ -5630,6 +5782,8 @@
         const actor = new LiveCatActor(b, i);
         catInstances.push(actor);
       });
+      const countEl = document.getElementById("active-cat-count");
+      if (countEl) countEl.innerText = activeCatIds.length;
     }
 
     /* ==========================================================================
@@ -5768,7 +5922,7 @@
       CAT_BREEDS.forEach(b => {
         const isSelected = activeCatIds.includes(b.id);
         const row = document.createElement("div");
-        row.style.cssText = `display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#111a2e; border:1px solid ${isSelected ? '#38bdf8' : '#1e293b'}; border-radius:12px;`;
+        row.style.cssText = `display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#111a2e; border:1px solid ${isSelected ? '✓ อยู่ในห้อง' : '+ เชิญเข้าห้อง'}; border-radius:12px;`;
         row.innerHTML = `
           <div style="display:flex; align-items:center; gap:8px;">
             <img src="${b.img}" style="width:36px; height:36px; object-fit:contain;">
@@ -5788,14 +5942,10 @@
 
     function toggleCatSelection(id) {
       if (activeCatIds.includes(id)) {
-        if (activeCatIds.length <= 1) {
-          showToast("⚠️", "ต้องมีแมวในห้องอย่างน้อย 1 ตัว");
-          return;
-        }
         activeCatIds = activeCatIds.filter(x => x !== id);
       } else {
-        if (activeCatIds.length >= 5) {
-          showToast("⚠️", "สามารถเลือกแมวในห้องได้สูงสุด 5 ตัว");
+        if (activeCatIds.length >= 20) {
+          showToast("⚠️", "ห้องแมวรองรับได้สูงสุด 20 ตัวเท่านั้น");
           return;
         }
         activeCatIds.push(id);
@@ -6351,6 +6501,10 @@
         viewGame.classList.remove("active");
         isGameLoopRunning = false;
         history.replaceState(null, "", window.location.pathname + "#farm");
+
+        // Calibrate stage camera
+        if (typeof clampPan === 'function') clampPan();
+        if (typeof applyCameraTransform === 'function') applyCameraTransform();
 
         // Sync coins and user info
         updateCoinDisplay();
