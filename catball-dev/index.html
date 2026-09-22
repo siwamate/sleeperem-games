@@ -5189,7 +5189,7 @@
     let currentTheme = 'japanese';
     // coins unified with catball fishCoins
     // currentUser unified with catball currentUser
-    let activeCatIds = ['siamese', 'bengal', 'munchkin'];
+    let activeCatIds = [];
     let catWeights = {};
     let catInstances = [];
     let windowTapCount = 0;
@@ -5201,8 +5201,16 @@
       if (savedCoins) coins = parseInt(savedCoins, 10);
       const savedWeights = localStorage.getItem('sleeperem_cat_weights');
       if (savedWeights) catWeights = JSON.parse(savedWeights);
-      const savedCats = localStorage.getItem('sleeperem_active_cats');
-      if (savedCats) activeCatIds = JSON.parse(savedCats);
+      const v11Clean = localStorage.getItem('sleeperem_clean_zero_cats_v11');
+      if (!v11Clean) {
+        // Default to 0 cats on first load of v11
+        activeCatIds = [];
+        localStorage.setItem('sleeperem_active_cats', JSON.stringify([]));
+        localStorage.setItem('sleeperem_clean_zero_cats_v11', 'true');
+      } else {
+        const savedCats = localStorage.getItem('sleeperem_active_cats');
+        if (savedCats) activeCatIds = JSON.parse(savedCats);
+      }
     } catch (e) {}
 
     CAT_BREEDS.forEach(b => {
@@ -5770,18 +5778,31 @@ class LiveCatActor {
 
     function reloadActiveCats() {
       const layer = document.getElementById("cats-stage-layer");
-      if (layer) layer.innerHTML = "";
+      if (!layer) return;
+
+      // 1. Remove cat actors that are no longer active
       if (typeof catInstances !== 'undefined' && catInstances) {
-        catInstances.forEach(c => {
-          if (c && typeof c.cleanup === 'function') c.cleanup();
+        catInstances = catInstances.filter(c => {
+          if (!c) return false;
+          if (!activeCatIds.includes(c.data.id)) {
+            if (typeof c.cleanup === 'function') c.cleanup();
+            return false;
+          }
+          return true;
         });
+      } else {
+        catInstances = [];
       }
-      catInstances = [];
-      const selected = CAT_BREEDS.filter(b => activeCatIds.includes(b.id));
-      selected.forEach((b, i) => {
-        const actor = new LiveCatActor(b, i);
+
+      // 2. Add only newly activated cats (do NOT touch existing cats so they don't respawn or jump!)
+      const existingIds = catInstances.map(c => c.data.id);
+      const toAdd = CAT_BREEDS.filter(b => activeCatIds.includes(b.id) && !existingIds.includes(b.id));
+      toAdd.forEach((b, i) => {
+        const actor = new LiveCatActor(b, existingIds.length + i);
         catInstances.push(actor);
       });
+
+      // 3. Update count display
       const countEl = document.getElementById("active-cat-count");
       if (countEl) countEl.innerText = activeCatIds.length;
     }
@@ -5922,7 +5943,7 @@ class LiveCatActor {
       CAT_BREEDS.forEach(b => {
         const isSelected = activeCatIds.includes(b.id);
         const row = document.createElement("div");
-        row.style.cssText = `display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#111a2e; border:1px solid ${isSelected ? '✓ อยู่ในห้อง' : '+ เชิญเข้าห้อง'}; border-radius:12px;`;
+        row.style.cssText = `display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#111a2e; border:1px solid ${isSelected ? '#10b981' : '#334155'}; border-radius:12px;`;
         row.innerHTML = `
           <div style="display:flex; align-items:center; gap:8px;">
             <img src="${b.img}" style="width:36px; height:36px; object-fit:contain;">
@@ -5932,7 +5953,7 @@ class LiveCatActor {
             </div>
           </div>
           <button style="padding:4px 10px; font-size:11px; font-weight:600; border-radius:8px; border:none; cursor:pointer; background:${isSelected ? '#10b981' : '#1e293b'}; color:${isSelected ? '#fff' : '#94a3b8'};" onclick="toggleCatSelection('${b.id}')">
-            ${isSelected ? 'กำลังเดิน' : 'เลือกเข้าห้อง'}
+            ${isSelected ? '✓ อยู่ในห้อง' : '+ เชิญเข้าห้อง'}
           </button>
         `;
         list.appendChild(row);
