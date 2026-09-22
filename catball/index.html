@@ -1350,8 +1350,8 @@
     /* Kotatsu / Chabudai Table */
     .jp-kotatsu-table {
       position: absolute;
-      left: 595px;
-      bottom: 75px;
+      left: 420px;
+      bottom: 120px;
       width: 170px;
       height: 65px;
       background: #582f0e;
@@ -1377,10 +1377,10 @@
     /* Bonsai 3-Tier Bamboo Shelf */
     .jp-bonsai-shelf {
       position: absolute;
-      left: 920px;
-      bottom: 60px;
+      left: 780px;
+      bottom: 120px;
       width: 160px;
-      height: 280px;
+      height: 240px;
       z-index: 14;
     }
     .jp-shelf-tier {
@@ -1407,10 +1407,10 @@
     /* Tatami Cuddle Cushion */
     .jp-cushion-seat {
       position: absolute;
-      left: 100px;
-      bottom: 55px;
-      width: 110px;
-      height: 48px;
+      left: 540px;
+      bottom: 120px;
+      width: 80px;
+      height: 36px;
       background: radial-gradient(ellipse at center, #84cc16 0%, #4d7c0f 70%, #1a2e05 100%);
       border-radius: 50%;
       box-shadow: 0 10px 25px rgba(0,0,0,0.65), 0 0 16px rgba(132, 204, 22, 0.4);
@@ -1424,10 +1424,10 @@
     /* Stone Tsukubai Basin */
     .jp-tsukubai {
       position: absolute;
-      left: 175px;
-      bottom: 55px;
-      width: 75px;
-      height: 52px;
+      left: 360px;
+      bottom: 120px;
+      width: 65px;
+      height: 45px;
       background: radial-gradient(ellipse at center, #64748b 0%, #334155 70%, #1e293b 100%);
       border-radius: 50%;
       border: 3px solid #94a3b8;
@@ -1623,201 +1623,14 @@
     /* Curved Royal Velvet Sofa */
     .modern-velvet-sofa {
       position: absolute;
-      left: 100px;
-      bottom: 50px;
-      width: 220px;
-      height: 105px;
-      background: linear-gradient(135deg, #1d4ed8, #1e40af);
-      border-radius: 28px 28px 12px 12px;
-      box-shadow: 0 20px 45px rgba(0,0,0,0.75), 0 0 20px rgba(29, 78, 216, 0.4);
-      z-index: 14;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0 20px;
-    }
-    .sofa-cushion-seat {
-      position: absolute;
-      bottom: 10px;
-      left: 15px;
-      right: 15px;
-      height: 45px;
-      background: #2563eb;
-      border-radius: 16px;
-      box-shadow: inset 0 2px 8px rgba(255,255,255,0.4);
-    }
-
-    /* Low Marble Table */
-    .modern-marble-table {
-      position: absolute;
-      left: 540px;
-      bottom: 45px;
-      width: 140px;
-      height: 50px;
-      background: radial-gradient(ellipse at center, #f8fafc 0%, #cbd5e1 70%, #64748b 100%);
-      border-radius: 50%;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.8);
-      border: 3px solid #fbbf24;
-      z-index: 15;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Modern Cat Tower on Mezzanine */
-    .modern-cat-tower {
-      position: absolute;
-      left: 1180px;
-      bottom: 40px;
-      width: 130px;
-      height: 380px;
-      z-index: 16;
-    }
-    .tower-disc-platform {
-      position: absolute;
-      height: 14px;
-      background: linear-gradient(90deg, #38bdf8, #0284c7);
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 15px rgba(56, 189, 248, 0.4);
-    }
-    .tower-disc-platform.p1 { top: 20px; left: 15px; width: 100px; }
-    .tower-disc-platform.p2 { top: 120px; left: 0px; width: 110px; }
-    .tower-disc-platform.p3 { top: 210px; left: 25px; width: 100px; }
-    .tower-disc-platform.p4 { bottom: 0px; left: 5px; width: 120px; }
-    .tower-center-chrome {
-      position: absolute;
-      left: 58px;
-      width: 16px;
-      height: 100%;
-      background: linear-gradient(90deg, #94a3b8, #f8fafc, #475569);
-      border-radius: 6px;
-    }
-
-    /* ==========================================================================
-       THEME 3: COSMIC ALIEN STARLIGHT SANCTUARY (อวกาศมาการองต่างดาว)
-       ========================================================================== */
-    .theme-layout-space {
-      position: absolute;
-      inset: 0;
-      display: none;
-    }
-    .theme-layout-space.active-layout { display: block; }
-
-    .space-backwall {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 30%, #3b0764 0%, #1e1b4b 55%, #05020c 100%);
-    }
-
-    /* Sunken Command Deck (0 -> 1050px) */
-    .space-command-deck {
-      position: absolute;
-      left: 0;
-      width: 1050px;
-      bottom: 0;
-      height: 100px;
-      background: repeating-linear-gradient(60deg, #0f0728 0px, #0f0728 25px, #2e1065 25px, #2e1065 28px);
-      box-shadow: inset 0 15px 40px rgba(0,0,0,0.9), 0 0 25px rgba(168, 85, 247, 0.35);
-      border-top: 3px solid #701a75;
-      z-index: 11;
-    }
-
-    /* Elevated Airlock Platform Deck on Right (1050px -> 1360px) */
-    .space-airlock-deck {
-      position: absolute;
-      left: 1050px;
-      right: 0;
-      bottom: 0;
-      height: 155px;
-      background: linear-gradient(180deg, #3b0764 0%, #1e1b4b 100%);
-      border-top: 4px solid #d946ef;
-      border-left: 3px solid #4a044e;
-      box-shadow: -6px 0 20px rgba(0,0,0,0.8), 0 -8px 25px rgba(217, 70, 239, 0.4);
-      z-index: 12;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .airlock-door-portal {
-      width: 48px;
-      height: 72px;
-      border: 3px solid #d946ef;
-      border-radius: 24px 24px 6px 6px;
-      background: radial-gradient(ellipse at center, rgba(217, 70, 239, 0.45) 0%, rgba(59, 7, 100, 0.8) 100%);
-      box-shadow: 0 0 20px #d946ef, inset 0 0 12px rgba(255, 255, 255, 0.5);
-    }
-
-    /* Hanging Inversion Ceiling Pod */
-    .space-ceiling-pod {
-      position: absolute;
-      left: 460px;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      z-index: 25;
-      animation: podSway 7s infinite alternate ease-in-out;
-      transform-origin: top center;
-    }
-    @keyframes podSway {
-      0% { transform: rotate(-4deg); }
-      100% { transform: rotate(4deg); }
-    }
-    .pod-tether {
-      width: 2px;
-      height: 40px;
-      background: linear-gradient(180deg, #ec4899, #a855f7);
-      box-shadow: 0 0 8px #ec4899;
-    }
-    .pod-bubble {
-      width: 72px;
+      left: 450px;
+      bottom: 120px;
+      width: 170px;
       height: 60px;
-      background: radial-gradient(circle at 40% 40%, rgba(244, 63, 94, 0.6) 0%, rgba(139, 92, 246, 0.4) 60%, rgba(3, 0, 20, 0.8) 100%);
-      border: 2px solid #f472b6;
-      border-radius: 50% 50% 30% 30%;
-      box-shadow: 0 0 30px rgba(236, 72, 153, 0.6), inset 0 0 15px rgba(255,255,255,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-    }
-
-    /* Giant Curved Nebula Viewport */
-    .space-nebula-viewport {
-      position: absolute;
-      left: 420px;
-      top: 30px;
-      width: 420px;
-      height: 300px;
-      border-radius: 40px;
-      border: 8px solid #a855f7;
-      background: radial-gradient(circle at 40% 40%, #f43f5e 0%, #8b5cf6 45%, #030014 90%);
-      box-shadow: 0 0 60px rgba(244, 63, 94, 0.45), inset 0 0 45px rgba(0,0,0,0.9);
-      overflow: hidden;
-      z-index: 10;
-    }
-    .space-alien-planet {
-      position: absolute;
-      top: 30px;
-      right: 50px;
-      font-size: 58px;
-      filter: drop-shadow(0 0 20px #e879f9);
-      animation: planetFloat 10s infinite alternate ease-in-out;
-    }
-    @keyframes planetFloat {
-      0% { transform: translateY(-8px) scale(0.95); }
-      100% { transform: translateY(8px) scale(1.05); }
-    }
-
-    /* Anti-Gravity Floating Crystal Platforms with Individual Sine Waves */
-    .space-float-platform {
-      position: absolute;
-      height: 22px;
-      background: linear-gradient(90deg, #ec4899, #a855f7, #3b82f6);
-      border-radius: 20px;
-      border: 1.5px solid #fbcfe8;
-      box-shadow: 0 0 25px rgba(236, 72, 153, 0.7), inset 0 2px 4px rgba(255,255,255,0.7);
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 60%, #1e1b4b 100%);
+      border-radius: 20px 20px 8px 8px;
+      box-shadow: 0 16px 35px rgba(0,0,0,0.7), inset 0 2px 6px rgba(165, 180, 252, 0.3);
+      border: 2px solid #4338ca;
       z-index: 15;
     }
     .anti-grav-beam {
@@ -2349,7 +2162,7 @@
     .dining-hydration-hub {
       position: absolute;
       left: 614px;
-      bottom: 45px;
+      bottom: 110px;
       display: flex;
       flex-direction: row;
       align-items: flex-end;
@@ -2520,12 +2333,20 @@
     .dining-hydration-hub {
       position: absolute;
       left: 614px;
-      bottom: 45px;
+      bottom: 110px;
       display: flex;
       flex-direction: row;
       align-items: flex-end;
       gap: 28px;
       z-index: 20;
+    }
+    #cats-stage-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 22;
     }
     .station-interactive-wrap {
       display: flex;
@@ -3473,41 +3294,40 @@
             <div class="sakura-petal" style="left: 120px; animation-delay: 2.5s;">🌸</div>
           </div>
 
-          <!-- Chabudai / Kotatsu Center Table -->
-          <div class="jp-kotatsu-table">
+          <!-- Chabudai / Kotatsu Table (Hidden until tea or dango bought) -->
+          <div class="jp-kotatsu-table decor-slot" data-decor-id="jp_tea" style="display:none !important;" title="โต๊ะน้ำชาโคทัตสึ">
             <div class="jp-table-top">
-              <span class="decor-slot" data-decor-id="jp_tea" style="font-size:20px;" title="กาน้ำชาเซรามิก & ถ้วยมัทฉะ">🫖 🍵</span>
-              <span class="decor-slot" data-decor-id="jp_dango" style="font-size:18px;" title="ขนมดังโงะ 3 สี">🍡</span>
+              <span class="decor-slot" data-decor-id="jp_tea" style="font-size:20px; display:none !important;" title="กาน้ำชาเซรามิก & ถ้วยมัทฉะ">🫖 🍵</span>
+              <span class="decor-slot" data-decor-id="jp_dango" style="font-size:18px; display:none !important;" title="ขนมดังโงะ 3 สี">🍡</span>
             </div>
           </div>
 
-          <!-- Bonsai 3-Tier Bamboo Shelf -->
-          <div class="jp-bonsai-shelf">
+          <!-- Bonsai 3-Tier Bamboo Shelf (Hidden until bonsai or scroll bought) -->
+          <div class="jp-bonsai-shelf decor-slot" data-decor-id="jp_bonsai" style="display:none !important;" title="ชั้นวางบอนไซ">
             <div class="jp-shelf-pole" style="left: 15px;"></div>
             <div class="jp-shelf-pole" style="right: 15px;"></div>
             <div class="jp-shelf-tier top">
-              <div class="decor-slot" data-decor-id="jp_bonsai" title="บอนไซไม้ดัดมัทฉะ"><span style="font-size:22px;">🪴</span></div>
+              <div class="decor-slot" data-decor-id="jp_bonsai" style="display:none !important;" title="บอนไซไม้ดัดมัทฉะ"><span style="font-size:22px;">🪴</span></div>
             </div>
             <div class="jp-shelf-tier mid">
-              <div class="decor-slot" data-decor-id="jp_scroll" title="ภาพแขวนภูเขาไฟฟูจิ"><span style="font-size:20px;">📜</span></div>
+              <div class="decor-slot" data-decor-id="jp_scroll" style="display:none !important;" title="ภาพแขวนภูเขาไฟฟูจิ"><span style="font-size:20px;">📜</span></div>
             </div>
-            <div class="jp-shelf-tier low">
-            </div>
+            <div class="jp-shelf-tier low"></div>
           </div>
 
-          <!-- Tatami Cushion -->
-          <div class="jp-cushion-seat decor-slot" data-decor-id="jp_cushion" title="เบาะนั่งมัทฉะ">
+          <!-- Tatami Cushion (Hidden until bought) -->
+          <div class="jp-cushion-seat decor-slot" data-decor-id="jp_cushion" style="display:none !important;" title="เบาะนั่งมัทฉะ">
             <span style="font-size:18px;">🍃</span>
           </div>
 
-          <!-- Hanging Lantern -->
-          <div class="jp-hanging-lantern decor-slot" data-decor-id="jp_lantern" title="โคมไฟกระดาษแดง">
+          <!-- Hanging Lantern (Hidden until bought) -->
+          <div class="jp-hanging-lantern decor-slot" data-decor-id="jp_lantern" style="display:none !important;" title="โคมไฟกระดาษแดง">
             <div class="lantern-cord"></div>
             <div class="lantern-globe">🏮</div>
           </div>
 
-          <!-- Furin Wind Chime -->
-          <div class="decor-slot" data-decor-id="jp_bell" style="position:absolute; left:210px; top:40px; font-size:22px; z-index:12;" title="กระดิ่งลมฟูริน">🎐</div>
+          <!-- Furin Wind Chime (Hidden until bought) -->
+          <div class="decor-slot" data-decor-id="jp_bell" style="position:absolute; left:480px; top:40px; font-size:22px; z-index:12; display:none !important;" title="กระดิ่งลมฟูริน">🎐</div>
 
 
         </div>
@@ -3549,30 +3369,30 @@
             <div class="city-skyline-silhouette"></div>
           </div>
 
-          <!-- Royal Velvet Curved Sofa (Permanent Architecture) -->
-          <div class="modern-velvet-sofa" title="โซฟากำมะหยี่บลูเบอร์รี่">
+          <!-- Royal Velvet Curved Sofa (Hidden until sofa bought) -->
+          <div class="modern-velvet-sofa decor-slot" data-decor-id="mod_sofa" style="display:none !important;" title="โซฟากำมะหยี่บลูเบอร์รี่">
             <div class="sofa-cushion-seat"></div>
-            <div class="decor-slot" data-decor-id="mod_sofa" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:6px; z-index:2;" title="หมอนอิงกำมะหยี่รอยัลบลู">
+            <div class="decor-slot" data-decor-id="mod_sofa" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:6px; z-index:2; display:none !important;" title="หมอนอิงกำมะหยี่รอยัลบลู">
               <span style="font-size:22px;">🛋️</span>
               <span style="font-size:18px;">🫐</span>
             </div>
           </div>
 
-          <!-- Round Marble Coffee Table (Permanent Architecture) -->
-          <div class="modern-marble-table" title="โต๊ะหินอ่อนขอบทอง">
-            <div class="decor-slot" data-decor-id="mod_table" style="font-size:18px; margin-right:4px;" title="ชุดถ้วยเอสเปรสโซ่สีทอง">☕</div>
-            <span class="decor-slot" data-decor-id="mod_books" style="font-size:20px; margin-right:4px;" title="กองนิตยสารศิลปะ">📚</span>
-            <span class="decor-slot" data-decor-id="mod_diffuser" style="font-size:18px;" title="ก้านไม้หอมอโรม่า">🕯️</span>
+          <!-- Round Marble Coffee Table (Hidden until coffee table bought) -->
+          <div class="modern-marble-table decor-slot" data-decor-id="mod_table" style="display:none !important;" title="โต๊ะหินอ่อนขอบทอง">
+            <div class="decor-slot" data-decor-id="mod_table" style="font-size:18px; margin-right:4px; display:none !important;" title="ชุดถ้วยเอสเปรสโซ่สีทอง">☕</div>
+            <span class="decor-slot" data-decor-id="mod_books" style="font-size:20px; margin-right:4px; display:none !important;" title="กองนิตยสารศิลปะ">📚</span>
+            <span class="decor-slot" data-decor-id="mod_diffuser" style="font-size:18px; display:none !important;" title="ก้านไม้หอมอโรม่า">🕯️</span>
           </div>
 
-          <!-- Modern Monstera Plant -->
-          <div class="decor-slot" data-decor-id="mod_plant" style="position:absolute; left:60px; bottom:25px; font-size:38px; z-index:14;" title="ต้นมอนสเตอร่าด่าง">🌿</div>
+          <!-- Modern Monstera Plant (Hidden until bought) -->
+          <div class="decor-slot" data-decor-id="mod_plant" style="position:absolute; left:380px; bottom:120px; font-size:38px; z-index:14; display:none !important;" title="ต้นมอนสเตอร่าด่าง">🌿</div>
 
-          <!-- Modern Floor Arc Lamp -->
-          <div class="decor-slot" data-decor-id="mod_lamp" style="position:absolute; left:220px; bottom:30px; font-size:34px; z-index:14;" title="โคมไฟตั้งพื้นเรขาคณิต">💡</div>
+          <!-- Modern Floor Arc Lamp (Hidden until bought) -->
+          <div class="decor-slot" data-decor-id="mod_lamp" style="position:absolute; left:430px; bottom:120px; font-size:34px; z-index:14; display:none !important;" title="โคมไฟตั้งพื้นเรขาคณิต">💡</div>
 
-          <!-- Acrylic Capsule Bed on Mezzanine -->
-          <div class="decor-slot" data-decor-id="mod_cat_bed" style="position:absolute; left:1120px; bottom:235px; font-size:30px; z-index:15;" title="ที่นอนแคปซูลอะคริลิก">🥣 ✨</div>
+          <!-- Acrylic Capsule Bed on Mezzanine (Hidden until bought) -->
+          <div class="decor-slot" data-decor-id="mod_cat_bed" style="position:absolute; left:820px; bottom:220px; font-size:30px; z-index:15; display:none !important;" title="ที่นอนแคปซูลอะคริลิก">🥣 ✨</div>
 
           <!-- Modern Cat Tower on Mezzanine -->
           <div class="modern-cat-tower">
@@ -3614,11 +3434,11 @@
           <!-- Anti-Gravity Floating Crystal Platforms -->
           <div class="space-float-platform fp1" title="แท่นคริสตัลลอยไร้แรงโน้มถ่วง Alpha">
             <div class="anti-grav-beam"></div>
-            <div class="decor-slot" data-decor-id="sp_crystal" style="position:absolute; top:-22px; left:18px; font-size:22px; z-index:15;" title="คริสตัลพลังงานเนบิวลา">🔮</div>
+            <div class="decor-slot" data-decor-id="sp_crystal" style="position:absolute; top:-22px; left:18px; font-size:22px; z-index:15; display:none !important;" title="คริสตัลพลังงานเนบิวลา">🔮</div>
           </div>
           <div class="space-float-platform fp2" title="แท่นคริสตัลลอยไร้แรงโน้มถ่วง Beta">
             <div class="anti-grav-beam"></div>
-            <div class="decor-slot" data-decor-id="sp_feeder" style="position:absolute; top:-20px; left:20px; font-size:20px; z-index:15;" title="แบตเตอรี่ควอนตัมคอร์">⚡</div>
+            <div class="decor-slot" data-decor-id="sp_feeder" style="position:absolute; top:-20px; left:20px; font-size:20px; z-index:15; display:none !important;" title="แบตเตอรี่ควอนตัมคอร์">⚡</div>
           </div>
           <div class="space-float-platform fp3" title="แท่นคริสตัลลอยไร้แรงโน้มถ่วง Gamma">
             <div class="anti-grav-beam"></div>
@@ -3628,16 +3448,16 @@
           <div class="space-crystal-spire"></div>
 
           <!-- Space Decor: Alien Flower -->
-          <div class="decor-slot" data-decor-id="sp_plant" style="position:absolute; left:260px; bottom:55px; font-size:32px; z-index:15;" title="ดอกไม้เรืองแสงต่างมิติ">🌺</div>
+          <div class="decor-slot" data-decor-id="sp_plant" style="position:absolute; left:380px; bottom:120px; font-size:32px; z-index:15; display:none !important;" title="ดอกไม้เรืองแสงต่างมิติ">🌺</div>
 
           <!-- Space Decor: 3D Galaxy Globe -->
-          <div class="decor-slot" data-decor-id="sp_globe" style="position:absolute; left:520px; bottom:70px; font-size:34px; z-index:15;" title="โฮโลแกรมจักรวาล 3D">🪐</div>
+          <div class="decor-slot" data-decor-id="sp_globe" style="position:absolute; left:520px; bottom:120px; font-size:34px; z-index:15; display:none !important;" title="โฮโลแกรมจักรวาล 3D">🪐</div>
 
           <!-- Space Decor: Levitation Pod -->
-          <div class="decor-slot" data-decor-id="sp_capsule" style="position:absolute; right:120px; bottom:150px; font-size:36px; z-index:15;" title="แคปซูลปรับแรงโน้มถ่วง">🛸</div>
+          <div class="decor-slot" data-decor-id="sp_capsule" style="position:absolute; left:820px; bottom:160px; font-size:36px; z-index:15; display:none !important;" title="แคปซูลปรับแรงโน้มถ่วง">🛸</div>
 
           <!-- Space Decor: Meteor Star -->
-          <div class="decor-slot" data-decor-id="sp_star" style="position:absolute; right:280px; bottom:95px; font-size:28px; z-index:15;" title="เศษเสี้ยวอุกกาบาตดาวตก">☄️</div>
+          <div class="decor-slot" data-decor-id="sp_star" style="position:absolute; left:750px; bottom:120px; font-size:28px; z-index:15; display:none !important;" title="เศษเสี้ยวอุกกาบาตดาวตก">☄️</div>
 
         </div>
 
@@ -5177,36 +4997,32 @@
        ========================================================================== */
     const THEME_WAYPOINTS = {
       japanese: [
-        { id: "feeder_dish", x: 640, y: 55, surface: "floor" },
-        { id: "fountain_dish", x: 720, y: 55, surface: "floor" },
-        { id: "kotatsu_front", x: 680, y: 60, surface: "floor" },
-        { id: "kotatsu_top", x: 680, y: 140, surface: "table" },
-        { id: "tatami_left", x: 580, y: 70, surface: "floor" },
-        { id: "tatami_right", x: 780, y: 70, surface: "floor" },
-        { id: "zen_center", x: 550, y: 65, surface: "floor" },
-        { id: "bonsai_step", x: 810, y: 105, surface: "floor" },
-        { id: "cozy_carpet", x: 730, y: 65, surface: "floor" }
+        { id: "tatami_center", x: 675, y: 125, surface: "floor" },
+        { id: "feeder_dish", x: 605, y: 125, surface: "floor" },
+        { id: "fountain_dish", x: 745, y: 125, surface: "floor" },
+        { id: "tatami_left", x: 550, y: 125, surface: "floor" },
+        { id: "tatami_right", x: 790, y: 125, surface: "floor" },
+        { id: "cushion_spot", x: 540, y: 135, surface: "cushion" },
+        { id: "kotatsu_top", x: 440, y: 185, surface: "table" },
+        { id: "bonsai_shelf", x: 810, y: 195, surface: "shelf" }
       ],
       modern: [
-        { id: "feeder_dish", x: 640, y: 55, surface: "floor" },
-        { id: "fountain_dish", x: 720, y: 55, surface: "floor" },
-        { id: "parquet_center", x: 680, y: 65, surface: "floor" },
-        { id: "table_side", x: 560, y: 65, surface: "floor" },
-        { id: "marble_table", x: 610, y: 90, surface: "table" },
-        { id: "lounge_rug", x: 730, y: 65, surface: "floor" },
-        { id: "stair_step_1", x: 780, y: 95, surface: "stairs" },
-        { id: "stair_step_2", x: 820, y: 135, surface: "stairs" },
-        { id: "skyline_view", x: 670, y: 65, surface: "floor" }
+        { id: "parquet_center", x: 675, y: 125, surface: "floor" },
+        { id: "feeder_dish", x: 605, y: 125, surface: "floor" },
+        { id: "fountain_dish", x: 745, y: 125, surface: "floor" },
+        { id: "sofa_perch", x: 500, y: 165, surface: "sofa" },
+        { id: "table_perch", x: 760, y: 175, surface: "table" },
+        { id: "stair_step", x: 790, y: 165, surface: "stairs" },
+        { id: "mezzanine_walk", x: 820, y: 225, surface: "mezzanine" }
       ],
       space: [
-        { id: "feeder_dish", x: 640, y: 55, surface: "floor" },
-        { id: "fountain_dish", x: 720, y: 55, surface: "floor" },
-        { id: "bridge_center", x: 680, y: 65, surface: "bridge" },
-        { id: "nebula_deck", x: 570, y: 75, surface: "bridge" },
-        { id: "float_pad_alpha", x: 580, y: 160, surface: "floating" },
-        { id: "float_pad_beta", x: 680, y: 200, surface: "floating" },
-        { id: "float_pad_gamma", x: 780, y: 170, surface: "floating" },
-        { id: "nav_floor", x: 790, y: 65, surface: "bridge" }
+        { id: "bridge_center", x: 675, y: 125, surface: "bridge" },
+        { id: "feeder_dish", x: 605, y: 125, surface: "floor" },
+        { id: "fountain_dish", x: 745, y: 125, surface: "floor" },
+        { id: "deck_left", x: 560, y: 125, surface: "bridge" },
+        { id: "deck_right", x: 790, y: 125, surface: "bridge" },
+        { id: "float_pad_alpha", x: 580, y: 195, surface: "floating" },
+        { id: "float_pad_beta", x: 680, y: 225, surface: "floating" }
       ]
     };
 
@@ -5427,11 +5243,11 @@
 
         // Position cat at a valid initial waypoint strictly within cozy central living zone (550 - 810)
         // Stagger initial spawn positions symmetrically across the visible center:
-        const spawnXList = [610, 680, 750, 580, 780];
+        const spawnXList = [630, 680, 720];
         const spawnX = spawnXList[index % spawnXList.length];
         this.x = spawnX;
-        this.y = 65;
-        this.currentWaypoint = { id: "initial_" + index, x: spawnX, y: 65, surface: "floor" };
+        this.y = 125;
+        this.currentWaypoint = { id: "initial_" + index, x: spawnX, y: 125, surface: "floor" };
 
         this.initDOM();
       }
@@ -5552,7 +5368,7 @@
           const rawLaunchX = (Math.abs(targetX - this.x) > 55)
             ? (targetX > this.x ? targetX - 45 : targetX + 45)
             : this.x;
-          const launchX = Math.max(550, Math.min(810, rawLaunchX));
+          const launchX = Math.max(540, Math.min(820, rawLaunchX));
           if (Math.abs(launchX - this.x) > 15) {
             const walkDist = Math.abs(launchX - this.x);
             const walkDuration = Math.max(0.7, walkDist / 80);
@@ -5680,10 +5496,6 @@
 
       doSit() {
         this.setState('sitting');
-        if (Math.random() < 0.5) {
-          this.facing = this.facing * -1;
-          this.applyChonkyTransform();
-        }
         this.scheduleNextAction();
       }
 
@@ -5711,8 +5523,8 @@
         const candidates = themeWps.filter(w => Math.abs(w.x - this.x) > 30 || Math.abs(w.y - this.y) > 20);
         const rawTarget = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
         const target = {
-          x: Math.max(550, Math.min(810, rawTarget.x)),
-          y: Math.max(50, Math.min(380, rawTarget.y))
+          x: Math.max(540, Math.min(820, rawTarget.x)),
+          y: Math.max(125, Math.min(235, rawTarget.y))
         };
 
         const steps = this.planPath(target.x, target.y);
@@ -5725,13 +5537,14 @@
       }
 
       eatAtFeeder() {
-        if (!feederHasFood) {
+        if (!feederHasFood || window.__stationActiveUser) {
           this.scheduleNextAction();
           return;
         }
+        window.__stationActiveUser = this.data.id;
         this.isBusy = true;
-        const targetX = 640;
-        const targetY = 55;
+        const targetX = 605;
+        const targetY = 125;
 
         const steps = this.planPath(targetX, targetY);
         this.executePath(steps, () => {
@@ -5748,12 +5561,12 @@
           this.applyChonkyTransform();
 
           setTimeout(() => {
-            // Once cat finishes eating, bowl returns to empty state!
             feederHasFood = false;
             try { localStorage.setItem('sleeperem_feeder_filled', 'false'); } catch(e) {}
             renderStationVisuals();
             showSpeechBubble(this.dom, "อิ่มแปล้~ 💖 ขอบคุณนะ!");
 
+            window.__stationActiveUser = null;
             this.isBusy = false;
             this.scheduleNextAction();
           }, 4500);
@@ -5761,13 +5574,14 @@
       }
 
       drinkAtFountain() {
-        if (!fountainHasWater) {
+        if (!fountainHasWater || window.__stationActiveUser) {
           this.scheduleNextAction();
           return;
         }
+        window.__stationActiveUser = this.data.id;
         this.isBusy = true;
-        const targetX = 720;
-        const targetY = 55;
+        const targetX = 745;
+        const targetY = 125;
 
         const steps = this.planPath(targetX, targetY);
         this.executePath(steps, () => {
@@ -5779,12 +5593,12 @@
           audio.playPurr();
 
           setTimeout(() => {
-            // Once cat finishes drinking, water bowl returns to empty state!
             fountainHasWater = false;
             try { localStorage.setItem('sleeperem_fountain_filled', 'false'); } catch(e) {}
             renderStationVisuals();
             showSpeechBubble(this.dom, "สดชื่นจัง ✨ ขอบคุณนะ!");
 
+            window.__stationActiveUser = null;
             this.isBusy = false;
             this.scheduleNextAction();
           }, 4500);
@@ -6085,7 +5899,7 @@
 
     let ownedItems = [];
     try {
-      const resetDone = localStorage.getItem('sleeperem_decor_reset_v9_pure_empty');
+      const resetDone = localStorage.getItem('sleeperem_decor_pure_clean_v10');
       if (resetDone !== 'true') {
         localStorage.removeItem('sleeperem_owned_items');
         localStorage.removeItem('sleeperem_dev_owned_items');
@@ -6097,7 +5911,7 @@
         if (typeof setStorageItem === 'function') {
           setStorageItem('owned_items', '[]');
         }
-        localStorage.setItem('sleeperem_decor_reset_v9_pure_empty', 'true');
+        localStorage.setItem('sleeperem_decor_pure_clean_v10', 'true');
         ownedItems = [];
         // Replenish 2,000 fish coins so user can easily test placing/buying all items
         if (typeof fishCoins !== 'undefined') fishCoins = 2000;
@@ -6164,6 +5978,41 @@
           el.classList.remove('is-owned', 'just-bought');
         }
       });
+
+      // Compound furniture: Kotatsu Table (owned if jp_tea or jp_dango owned)
+      const kotatsu = document.querySelector('.jp-kotatsu-table');
+      if (kotatsu) {
+        if (ownedItems.includes('jp_tea') || ownedItems.includes('jp_dango')) {
+          kotatsu.classList.add('is-owned');
+        } else {
+          kotatsu.classList.remove('is-owned');
+        }
+      }
+
+      // Compound furniture: Bonsai Shelf (owned if jp_bonsai or jp_scroll owned)
+      const shelf = document.querySelector('.jp-bonsai-shelf');
+      if (shelf) {
+        if (ownedItems.includes('jp_bonsai') || ownedItems.includes('jp_scroll')) {
+          shelf.classList.add('is-owned');
+        } else {
+          shelf.classList.remove('is-owned');
+        }
+      }
+
+      // Compound furniture: Modern Sofa & Table
+      const sofa = document.querySelector('.modern-velvet-sofa');
+      if (sofa) {
+        if (ownedItems.includes('mod_sofa')) sofa.classList.add('is-owned');
+        else sofa.classList.remove('is-owned');
+      }
+      const modTable = document.querySelector('.modern-marble-table');
+      if (modTable) {
+        if (ownedItems.includes('mod_table') || ownedItems.includes('mod_books') || ownedItems.includes('mod_diffuser')) {
+          modTable.classList.add('is-owned');
+        } else {
+          modTable.classList.remove('is-owned');
+        }
+      }
     }
 
     function renderShop(filter = 'all') {
