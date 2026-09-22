@@ -2763,41 +2763,57 @@
        ========================================================================== */
     .cat-actor-cutout {
       position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
+      width: 80px;
+      height: 65px;
+      margin-left: -40px;
+      pointer-events: none;
       z-index: 22;
       will-change: left, bottom, transform;
       user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
     }
 
-    /* Pure Character Image Container (Zero Frame / Zero Border) */
+    /* Pure Character Container (Zero Frame / Zero Border) */
     .cat-cutout-wrap {
+      width: 72px;
+      height: 48px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       transform-origin: center bottom;
       transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: auto;
+      cursor: pointer;
+    }
+    .cat-cutout-wrap .feline-rig {
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: auto;
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.65));
     }
     .cat-cutout-img {
       display: block;
-      height: 64px;
+      height: 48px;
       width: auto;
-      max-width: 90px;
+      max-width: 72px;
       object-fit: contain;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.65));
+      filter: drop-shadow(0 6px 14px rgba(0,0,0,0.65));
       pointer-events: auto;
     }
 
     /* Contact Drop Shadow on Ground / Surface */
     .cat-contact-shadow {
-      width: 52px;
-      height: 12px;
-      background: radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 65%, transparent 100%);
+      width: 54px;
+      height: 10px;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 65%, transparent 100%);
       border-radius: 50%;
-      margin-top: -4px;
+      margin-top: -3px;
+      pointer-events: none;
       transition: transform 0.3s, opacity 0.3s;
     }
 
@@ -2899,6 +2915,56 @@
       0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
       45% { opacity: 0.95; }
       100% { transform: translate(16px, -28px) scale(1.2); opacity: 0; }
+    }
+
+    /* Cat Name & Weight Tag (Pinned centered directly underneath cat feet) */
+    .cat-stat-tag {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 700;
+      background: rgba(9, 14, 26, 0.92);
+      color: #fef08a;
+      padding: 2px 7px;
+      border-radius: 8px;
+      border: 1px solid #ca8a04;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      backdrop-filter: blur(4px);
+      pointer-events: auto;
+      cursor: pointer;
+      z-index: 25;
+    }
+    .chonky-badge {
+      background: #dc2626;
+      color: #fff;
+      font-size: 8px;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    /* Floating Speech Bubble */
+    .cat-speech-bubble {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      color: #090e1a;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      display: none;
+      pointer-events: none;
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 35;
     }
 
 
@@ -4974,40 +5040,40 @@
     ];
 
     /* ==========================================================================
-       WAYPOINTS SYSTEM FOR 3 DISTINCT ARCHITECTURAL LAYOUTS
+       WAYPOINTS SYSTEM FOR 3 DISTINCT ARCHITECTURAL LAYOUTS (ACTIVE LIVING ZONE X: 220 - 980)
        ========================================================================== */
     const THEME_WAYPOINTS = {
       japanese: [
-        { id: "cushion", x: 130, y: 80, surface: "cushion" },
-        { id: "tsukubai", x: 190, y: 105, surface: "stone" },
-        { id: "engawa_step", x: 300, y: 60, surface: "floor" },
-        { id: "marumado_sill", x: 380, y: 160, surface: "window" },
-        { id: "kotatsu_top", x: 640, y: 140, surface: "table" },
-        { id: "tatami_center", x: 500, y: 75, surface: "floor" },
-        { id: "shelf_tier_1", x: 960, y: 190, surface: "shelf" },
-        { id: "shelf_tier_2", x: 1020, y: 265, surface: "shelf" },
-        { id: "shelf_tier_3", x: 970, y: 335, surface: "shelf" }
+        { id: "cushion", x: 260, y: 70, surface: "cushion" },
+        { id: "tsukubai", x: 330, y: 95, surface: "stone" },
+        { id: "marumado_sill", x: 390, y: 160, surface: "window" },
+        { id: "tatami_center", x: 520, y: 75, surface: "floor" },
+        { id: "kotatsu_top", x: 645, y: 140, surface: "table" },
+        { id: "tatami_right", x: 780, y: 75, surface: "floor" },
+        { id: "shelf_tier_1", x: 960, y: 110, surface: "shelf" },
+        { id: "shelf_tier_2", x: 970, y: 210, surface: "shelf" },
+        { id: "shelf_tier_3", x: 960, y: 310, surface: "shelf" }
       ],
       modern: [
-        { id: "sofa_seat", x: 160, y: 110, surface: "sofa" },
-        { id: "sofa_crest", x: 120, y: 165, surface: "sofa" },
-        { id: "marble_table", x: 480, y: 98, surface: "table" },
-        { id: "stair_step_2", x: 680, y: 135, surface: "stairs" },
-        { id: "stair_step_4", x: 740, y: 210, surface: "stairs" },
-        { id: "mezzanine_deck", x: 880, y: 240, surface: "mezzanine" },
-        { id: "mezzanine_daybed", x: 1020, y: 280, surface: "bed" },
-        { id: "apex_catwalk", x: 450, y: 355, surface: "catwalk" },
-        { id: "tower_apex", x: 1240, y: 380, surface: "tower" }
+        { id: "sofa_seat", x: 220, y: 105, surface: "sofa" },
+        { id: "sofa_crest", x: 300, y: 135, surface: "sofa" },
+        { id: "parquet_lounge", x: 420, y: 65, surface: "floor" },
+        { id: "marble_table", x: 490, y: 95, surface: "table" },
+        { id: "apex_catwalk", x: 500, y: 355, surface: "catwalk" },
+        { id: "stair_step_2", x: 660, y: 135, surface: "stairs" },
+        { id: "stair_step_4", x: 710, y: 195, surface: "stairs" },
+        { id: "mezzanine_deck", x: 860, y: 240, surface: "mezzanine" },
+        { id: "mezzanine_daybed", x: 980, y: 280, surface: "bed" }
       ],
       space: [
-        { id: "command_bridge", x: 420, y: 60, surface: "bridge" },
-        { id: "airlock_deck", x: 1150, y: 95, surface: "airlock" },
-        { id: "float_pad_alpha", x: 310, y: 185, surface: "floating" },
-        { id: "float_pad_beta", x: 680, y: 265, surface: "floating" },
-        { id: "float_pad_gamma", x: 960, y: 340, surface: "floating" },
-        { id: "alien_spire", x: 160, y: 315, surface: "crystal" },
-        { id: "ceiling_pod", x: 500, y: 375, surface: "pod" },
-        { id: "quantum_feeder", x: 800, y: 60, surface: "bridge" }
+        { id: "command_bridge", x: 440, y: 65, surface: "bridge" },
+        { id: "float_pad_alpha", x: 340, y: 180, surface: "floating" },
+        { id: "star_observatory", x: 540, y: 120, surface: "bridge" },
+        { id: "float_pad_beta", x: 620, y: 255, surface: "floating" },
+        { id: "quantum_feeder", x: 760, y: 65, surface: "bridge" },
+        { id: "float_pad_gamma", x: 880, y: 310, surface: "floating" },
+        { id: "ceiling_pod", x: 520, y: 375, surface: "pod" },
+        { id: "airlock_deck", x: 980, y: 105, surface: "airlock" }
       ]
     };
 
@@ -5124,25 +5190,37 @@
       applyCameraTransform();
     }, { passive: false });
 
+    let hasPanned = false;
+    let dragDist = 0;
+
     // Mouse Drag Pan
     viewport.addEventListener('mousedown', (e) => {
       isDragging = true;
+      hasPanned = false;
+      dragDist = 0;
       dragStartX = e.clientX - panX;
       dragStartY = e.clientY - panY;
     });
     window.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
+      const moveDist = Math.hypot(e.clientX - (dragStartX + panX), e.clientY - (dragStartY + panY));
+      dragDist += moveDist;
+      if (dragDist > 6) hasPanned = true;
       panX = e.clientX - dragStartX;
       panY = e.clientY - dragStartY;
       clampPan();
       applyCameraTransform();
     });
-    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      setTimeout(() => { hasPanned = false; }, 80);
+    });
 
     // Touchscreen Pinch-to-Zoom & Drag Pan
     viewport.addEventListener('touchstart', (e) => {
       if (e.touches.length === 2) {
         isDragging = false;
+        hasPanned = true;
         initialPinchDist = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
           e.touches[0].clientY - e.touches[1].clientY
@@ -5150,6 +5228,8 @@
         initialZoom = zoomLevel;
       } else if (e.touches.length === 1) {
         isDragging = true;
+        hasPanned = false;
+        dragDist = 0;
         dragStartX = e.touches[0].clientX - panX;
         dragStartY = e.touches[0].clientY - panY;
       }
@@ -5157,6 +5237,7 @@
 
     viewport.addEventListener('touchmove', (e) => {
       if (e.touches.length === 2 && initialPinchDist) {
+        hasPanned = true;
         const currentDist = Math.hypot(
           e.touches[0].clientX - e.touches[1].clientX,
           e.touches[0].clientY - e.touches[1].clientY
@@ -5166,6 +5247,9 @@
         clampPan();
         applyCameraTransform();
       } else if (e.touches.length === 1 && isDragging) {
+        const moveDist = Math.hypot(e.touches[0].clientX - (dragStartX + panX), e.touches[0].clientY - (dragStartY + panY));
+        dragDist += moveDist;
+        if (dragDist > 6) hasPanned = true;
         panX = e.touches[0].clientX - dragStartX;
         panY = e.touches[0].clientY - dragStartY;
         clampPan();
@@ -5176,6 +5260,7 @@
     viewport.addEventListener('touchend', () => {
       isDragging = false;
       initialPinchDist = null;
+      setTimeout(() => { hasPanned = false; }, 80);
     });
 
     // Auto-fade gesture hint
@@ -5240,10 +5325,14 @@
         el.style.bottom = this.y + "px";
         el.style.setProperty('--facing', this.facing);
 
-        el.addEventListener('click', (e) => {
+        const wrap = el.querySelector(".cat-cutout-wrap");
+        const tag = el.querySelector(".cat-stat-tag");
+        const clickHandler = (e) => {
           e.stopPropagation();
           this.onTap();
-        });
+        };
+        if (wrap) wrap.addEventListener('click', clickHandler);
+        if (tag) tag.addEventListener('click', clickHandler);
 
         layer.appendChild(el);
         this.dom = el;
@@ -5267,8 +5356,8 @@
         const squishY = Math.max(0.85, 1.0 - (this.weight - 3.5) * 0.02);
 
         this.dom.style.setProperty('--facing', this.facing);
-        wrap.style.transform = `scale(${this.facing * scale}, ${scale * squishY})`;
-        shadow.style.transform = `scale(${scale * 1.25}, 1)`;
+        if (wrap) wrap.style.transform = `scale(${this.facing * scale}, ${scale * squishY})`;
+        if (shadow) shadow.style.transform = `scale(${scale * 1.25}, 1)`;
         if (badge) badge.innerText = this.getWeightLabel();
       }
 
@@ -5285,13 +5374,14 @@
       }
 
       onTap() {
+        if (typeof hasPanned !== 'undefined' && hasPanned) return;
         audio.playPurr();
         showSpeechBubble(this.dom, `เหมียว! นน. ${this.weight.toFixed(1)} kg 💖`);
-        spawnHeart(this.x + 30, this.y + 70);
+        spawnHeart(this.x, this.y + 60);
         openCatDetailModal(this);
       }
 
-      // Smooth step-by-step navigation path generator
+      // Smooth step-by-step navigation path generator with diagonal leaps
       planPath(targetX, targetY) {
         const steps = [];
         const yDiff = targetY - this.y;
@@ -5302,19 +5392,26 @@
           const duration = Math.max(1.2, dist / 80);
           steps.push({ type: 'walk', toX: targetX, toY: targetY, duration });
         } else if (yDiff > 25) {
-          // Target is elevated: 1) walk horizontally to approach under target, 2) crouch, 3) leap up arc
-          const walkDist = Math.abs(targetX - this.x);
-          if (walkDist > 30) {
-            const walkDuration = Math.max(1.0, walkDist / 80);
-            steps.push({ type: 'walk', toX: targetX, toY: this.y, duration: walkDuration });
+          // Target is elevated: 1) approach launch spot within 45px, 2) crouch, 3) diagonal arc leap up to perch
+          const launchX = (Math.abs(targetX - this.x) > 55)
+            ? (targetX > this.x ? targetX - 45 : targetX + 45)
+            : this.x;
+          if (Math.abs(launchX - this.x) > 15) {
+            const walkDist = Math.abs(launchX - this.x);
+            const walkDuration = Math.max(0.7, walkDist / 80);
+            steps.push({ type: 'walk', toX: launchX, toY: this.y, duration: walkDuration });
           }
-          steps.push({ type: 'crouch', duration: 0.55 });
-          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: 0.72 });
+          steps.push({ type: 'crouch', duration: 0.5 });
+          const leapDist = Math.hypot(targetX - launchX, yDiff);
+          const jumpDuration = Math.min(1.0, Math.max(0.65, leapDist / 170));
+          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
           steps.push({ type: 'land', duration: 0.25 });
         } else {
-          // Target is lower: 1) crouch at edge, 2) leap down arc, 3) land & walk to final X
+          // Target is lower: 1) crouch at edge, 2) leap down arc, 3) land
           steps.push({ type: 'crouch', duration: 0.4 });
-          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: 0.58 });
+          const dropDist = Math.hypot(targetX - this.x, yDiff);
+          const jumpDuration = Math.min(0.9, Math.max(0.55, dropDist / 190));
+          steps.push({ type: 'jump', toX: targetX, toY: targetY, duration: jumpDuration });
           steps.push({ type: 'land', duration: 0.25 });
         }
         return steps;
@@ -5454,13 +5551,17 @@
         const themeWps = THEME_WAYPOINTS[currentTheme] || THEME_WAYPOINTS.japanese;
         // Filter out current waypoint to ensure actual relocation
         const candidates = themeWps.filter(w => Math.abs(w.x - this.x) > 40 || Math.abs(w.y - this.y) > 30);
-        const target = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
+        const rawTarget = candidates.length > 0 ? candidates[Math.floor(Math.random() * candidates.length)] : themeWps[0];
+        const target = {
+          x: Math.max(220, Math.min(1000, rawTarget.x)),
+          y: Math.max(50, Math.min(380, rawTarget.y))
+        };
 
         const steps = this.planPath(target.x, target.y);
         this.executePath(steps, () => {
           this.isBusy = false;
           this.setState('sitting');
-          this.currentWaypoint = target;
+          this.currentWaypoint = rawTarget;
           this.scheduleNextAction();
         });
       }
