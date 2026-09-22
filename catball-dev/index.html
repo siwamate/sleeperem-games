@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Sleeperem Games - Cat Ball & ฟาร์มแมว 2.5D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
 
     /* UNIFIED APP CONTAINER (CAT BALL + CAT FARM SPA) */
@@ -3943,13 +3947,21 @@
     // Supabase Live Client Initialization
     const SUPABASE_URL = "https://hcwryoufmklgefajfhzq.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_OHGsfx4tr9sTRrXUVp3PHA_ucrWKN4A";
-    const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+    let supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
       ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
       : null;
 
+    function getSupabase() {
+      if (!supabaseClient && window.supabase && typeof window.supabase.createClient === 'function') {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+      return supabaseClient;
+    }
+
     // Facebook Login via Supabase Function
     async function loginWithFacebook() {
-      if (!supabaseClient) {
+      const client = getSupabase();
+      if (!client) {
         alert("กำลังโหลดระบบ Supabase กรุณาลองใหม่อีกครั้ง");
         return;
       }
