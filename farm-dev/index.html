@@ -217,6 +217,152 @@
       animation: boxShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
 
+    /* ==========================================================================
+       CAT BALL — MODERN SKIN (2026-09-25): glass HUD, theme synced with the farm room,
+       combo HUD, fever frame, lucky preview, daily chest
+       ========================================================================== */
+    #view-game { --g-top: #1e293b; --g-accent: #38bdf8; --g-accent2: #fbbf24; --g-glow: rgba(56, 189, 248, 0.25); }
+    #view-game[data-theme="japanese"] { --g-top: #3b2616; --g-accent: #f9a8d4; --g-accent2: #fcd34d; --g-glow: rgba(251, 191, 36, 0.22); background: #1c130c; }
+    #view-game[data-theme="modern"] { --g-top: #1e1b4b; --g-accent: #7dd3fc; --g-accent2: #c4b5fd; --g-glow: rgba(99, 102, 241, 0.3); background: #0b0a24; }
+    #view-game[data-theme="space"] { --g-top: #2e1065; --g-accent: #22d3ee; --g-accent2: #f472b6; --g-glow: rgba(236, 72, 153, 0.3); background: #0a0418; }
+    #view-game { box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 40px var(--g-glow); }
+    #view-game .header {
+      background: linear-gradient(180deg, var(--g-top) 0%, rgba(15, 23, 42, 0.55) 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+    #view-game .brand-title { color: var(--g-accent2); text-shadow: 0 0 12px var(--g-glow); }
+    #view-game .stat-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    #view-game .stat-value {
+      font-family: 'Prompt', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      background: linear-gradient(180deg, #ffffff, var(--g-accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    #view-game .preview-bar {
+      background: rgba(15, 23, 42, 0.55);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+    }
+    #view-game .next-bubble { box-shadow: 0 0 0 2px rgba(255,255,255,0.15), 0 4px 10px rgba(0,0,0,0.4); border: none; }
+    .next-bubble.is-lucky { box-shadow: 0 0 0 2px #fde047, 0 0 14px #fde047; animation: luckyPulse 1s ease-in-out infinite alternate; }
+    @keyframes luckyPulse { from { transform: scale(1); } to { transform: scale(1.12); } }
+    #view-game .bottom-action-bar {
+      background: linear-gradient(0deg, var(--g-top) 0%, rgba(15, 23, 42, 0.6) 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    #canvas-wrap { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), inset 0 10px 30px rgba(0,0,0,0.45); transition: box-shadow 0.3s; }
+    #canvas-wrap.fever { animation: feverFrame 0.6s ease-in-out infinite alternate; }
+    @keyframes feverFrame {
+      from { box-shadow: inset 0 0 0 3px rgba(244, 114, 182, 0.7), inset 0 0 40px rgba(244, 114, 182, 0.35); }
+      to { box-shadow: inset 0 0 0 3px rgba(250, 204, 21, 0.8), inset 0 0 60px rgba(250, 204, 21, 0.4); }
+    }
+    .combo-hud {
+      position: absolute;
+      top: 122px; left: 12px;
+      --combo-color: #38bdf8;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .combo-hud.show { opacity: 1; transform: none; }
+    .combo-hud.bump .combo-mult { animation: comboBump 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.6); }
+    .combo-label { font-size: 11px; font-weight: 800; letter-spacing: 3px; color: var(--combo-color); text-shadow: 0 0 8px var(--combo-color); }
+    .combo-mult {
+      font-family: 'Prompt', sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1;
+      color: #fff;
+      -webkit-text-stroke: 1.5px var(--combo-color);
+      text-shadow: 0 0 14px var(--combo-color), 0 3px 0 rgba(0,0,0,0.5);
+    }
+    @keyframes comboBump { 0% { transform: scale(0.6); } 60% { transform: scale(1.35); } 100% { transform: scale(1); } }
+    .combo-bar { width: 72px; height: 5px; border-radius: 3px; background: rgba(255,255,255,0.15); overflow: hidden; margin-top: 4px; }
+    .combo-bar span { display: block; height: 100%; background: var(--combo-color); transform-origin: left center; box-shadow: 0 0 8px var(--combo-color); }
+    .combo-summary {
+      position: absolute;
+      left: 50%; top: 38%;
+      --combo-color: #facc15;
+      transform: translate(-50%, -50%) scale(0.6);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      white-space: nowrap;
+    }
+    .combo-summary.show { animation: comboSummary 1.8s ease-out forwards; }
+    @keyframes comboSummary {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      15% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+      25% { transform: translate(-50%, -50%) scale(1); }
+      80% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -80%) scale(1); }
+    }
+    .cs-title {
+      font-family: 'Prompt', sans-serif;
+      font-size: 34px; font-weight: 800;
+      color: #fff;
+      -webkit-text-stroke: 2px var(--combo-color);
+      text-shadow: 0 0 18px var(--combo-color), 0 4px 0 rgba(0,0,0,0.5);
+    }
+    .cs-points { font-size: 18px; font-weight: 800; color: #fde047; text-shadow: 0 2px 6px #000; }
+    .cs-bonus { font-size: 13px; font-weight: 700; color: #a7f3d0; text-shadow: 0 2px 6px #000; }
+    .daily-chest-btn { position: relative; }
+    .daily-chest-btn.ready { animation: chestWiggle 1.6s ease-in-out infinite; border-color: #fbbf24; }
+    .daily-chest-btn.ready::after {
+      content: '';
+      position: absolute;
+      top: -3px; right: -3px;
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 6px #ef4444;
+    }
+    @keyframes chestWiggle { 0%, 70%, 100% { transform: rotate(0); } 75% { transform: rotate(-12deg); } 85% { transform: rotate(12deg); } 95% { transform: rotate(-6deg); } }
+    .daily-chest-modal {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 110;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .daily-chest-modal.open { display: flex; }
+    .chest-card { text-align: center; max-width: 340px; width: 100%; }
+    .chest-icon { font-size: 54px; animation: chestWiggle 1.6s ease-in-out infinite; }
+    .chest-title { font-size: 18px; font-weight: 800; color: #fbbf24; margin: 4px 0; }
+    .chest-streak { font-size: 12px; color: #f9a8d4; font-weight: 700; }
+    .chest-days { display: flex; justify-content: center; gap: 6px; margin: 12px 0; }
+    .chest-days span {
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      background: #1e293b;
+      border: 1px solid #334155;
+      font-size: 12px; font-weight: 800; color: #94a3b8;
+    }
+    .chest-days span.done { background: #065f46; border-color: #10b981; color: #d1fae5; }
+    .chest-days span.today { background: #b45309; border-color: #fbbf24; color: #fff; animation: luckyPulse 0.8s ease-in-out infinite alternate; }
+    .chest-amount { font-family: 'Prompt', sans-serif; font-size: 34px; font-weight: 800; color: #fde047; text-shadow: 0 0 16px rgba(253, 224, 71, 0.5); margin: 6px 0 4px; }
+    .chest-amount.reveal { animation: comboBump 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.6); }
+    .chest-note { font-size: 10px; color: #94a3b8; margin-top: 8px; }
+    #chest-claim-btn:disabled { opacity: 0.6; cursor: default; }
+
     
     
     .farm-btn-disabled {
@@ -4096,6 +4242,7 @@
           <div class="stat-label">สูงสุด</div>
           <div id="best-val" class="stat-value">0</div>
         </div>
+        <button id="daily-chest-btn" class="mute-icon-btn daily-chest-btn" onclick="openDailyChest()" title="กล่องของขวัญรายวัน">🎁</button>
         <button id="mute-btn" class="mute-icon-btn" onclick="toggleMute()" title="เปิด/ปิดเสียง">🔊</button>
       </div>
     </div>
@@ -4122,6 +4269,17 @@
     <!-- Interactive Canvas (100% Unobstructed Playing Area) -->
     <div id="canvas-wrap">
       <canvas id="gameCanvas"></canvas>
+      <!-- Combo HUD: multiplier + 1-second window bar (REQ-01 combo) -->
+      <div id="combo-hud" class="combo-hud">
+        <div class="combo-label">COMBO</div>
+        <div class="combo-mult" id="combo-mult">×2</div>
+        <div class="combo-bar"><span id="combo-bar-fill"></span></div>
+      </div>
+      <div id="combo-summary" class="combo-summary">
+        <div class="cs-title">COMBO ×3!</div>
+        <div class="cs-points">+0 คะแนน</div>
+        <div class="cs-bonus">โบนัส +0 🐟</div>
+      </div>
     </div>
 
     <!-- Bottom Action Bar (Farm, Leaderboard, Player Profile, Moon Shake) -->
@@ -4175,6 +4333,7 @@
         <div style="background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #334155;">
           <div style="font-size: 11px; color: #94a3b8;">คะแนนรอบนี้</div>
           <div id="final-score" style="font-size: 28px; font-weight: 700; color: #38bdf8; font-family: monospace;">0</div>
+          <div id="final-combo" style="font-size: 12px; font-weight: 700; color: #f472b6;"></div>
         </div>
 
         <div style="display:flex; gap:8px; margin-top:14px;">
@@ -4190,6 +4349,20 @@
         </div>
       </div>
     </div>
+    </div>
+
+    <!-- Daily chest (signed-in players, once a day, streak grows the prize) -->
+    <div id="daily-chest-modal" class="daily-chest-modal">
+      <div class="modal-card chest-card">
+        <button class="modal-close-x" onclick="closeDailyChest()" title="ปิด">✕</button>
+        <div class="chest-icon">🎁</div>
+        <h3 class="chest-title">กล่องของขวัญรายวัน</h3>
+        <div class="chest-streak" id="chest-streak">ต่อเนื่อง 1 วัน</div>
+        <div class="chest-days" id="chest-days"></div>
+        <div class="chest-amount" id="chest-amount">? 🐟</div>
+        <button class="restart-btn" id="chest-claim-btn">🎁 เปิดกล่อง</button>
+        <p class="chest-note">เข้ามาทุกวันกล่องจะใหญ่ขึ้น • วันที่ 7 มีโบนัส 👑 +100</p>
+      </div>
     </div>
 
     <!-- Shared modals (app-layout level: usable from both Cat Ball and Farm views) -->
@@ -4818,6 +4991,7 @@
         if (syncFarmWithAccount(u)) return; // reloading with this account's saved farm
         updateUserUI(currentUser);
         refreshGuestMode();
+        refreshDailyChestButton();
         if (typeof grantCatReward === 'function') grantCatReward('login');
         if (pendingFarmEntry) {
           pendingFarmEntry = false;
@@ -4963,11 +5137,45 @@
         osc.stop(this.ctx.currentTime + 0.12);
       }
 
-      playMerge(tier) {
+      // Short arpeggio helper for combo / lucky / chest jingles
+      playNotes(freqs, { type = "triangle", gap = 0.07, dur = 0.22, vol = 0.18 } = {}) {
+        if (this.muted) return;
+        this.init();
+        const t0 = this.ctx.currentTime;
+        freqs.forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(f, t0 + i * gap);
+          gain.gain.setValueAtTime(0.0001, t0 + i * gap);
+          gain.gain.exponentialRampToValueAtTime(vol, t0 + i * gap + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t0 + i * gap + dur);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t0 + i * gap);
+          osc.stop(t0 + i * gap + dur + 0.02);
+        });
+      }
+
+      // Each combo step climbs the scale so a chain "rises" like a jackpot run
+      playCombo(n) {
+        const base = 523.25 * Math.pow(2, Math.min(n - 2, 10) / 12 * 2);
+        this.playNotes([base, base * 1.25, base * 1.5], { type: "square", gap: 0.05, dur: 0.16, vol: 0.07 });
+      }
+
+      playLucky() {
+        this.playNotes([1318.5, 1568, 2093, 2637, 3136], { type: "sine", gap: 0.06, dur: 0.35, vol: 0.12 });
+      }
+
+      playChest() {
+        this.playNotes([392, 523.25, 659.25, 783.99, 1046.5, 1318.5], { type: "triangle", gap: 0.09, dur: 0.5, vol: 0.16 });
+      }
+
+      playMerge(tier, combo = 1) {
         if (this.muted) return;
         this.init();
         const noteIndex = Math.min(tier, this.notes.length - 1);
-        const freq = this.notes[noteIndex];
+        const freq = this.notes[noteIndex] * (1 + Math.min(combo - 1, 8) * 0.06);
 
         // Bubble Pop / Chime oscillator
         const osc = this.ctx.createOscillator();
@@ -5124,9 +5332,13 @@
         this.scale = 0.1; // Spawn pop animation
         this.targetScale = 1.0;
         this.rotation = (Math.random() - 0.5) * 0.4;
+        this.lucky = false;   // golden lucky ball: merging it pays random fish coins
+        this.wobbleAmp = 0;   // squash & stretch after a merge
+        this.wobbleT = 0;
       }
 
       update(dt) {
+        this.wobbleT += dt;
         // Pop-in animation
         if (this.scale < this.targetScale) {
           this.scale += (this.targetScale - this.scale) * 0.25;
@@ -5171,25 +5383,66 @@
       draw() {
         ctx.save();
         ctx.translate(this.x, this.y);
-        ctx.scale(this.scale, this.scale);
-        ctx.rotate(this.rotation);
-
         const r = this.r;
         const color = this.config.color;
 
-        // Cat Body Shadow
+        // Soft contact shadow (not rotated, so the light stays top-left)
+        ctx.save();
+        ctx.scale(this.scale, this.scale);
         ctx.beginPath();
-        ctx.arc(2, 4, r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+        ctx.ellipse(r * 0.12, r * 0.9, r * 0.82, r * 0.2, 0, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
         ctx.fill();
+        ctx.restore();
 
-        // Cat Body
+        // Squash & stretch wobble right after a merge
+        const w = this.wobbleAmp * Math.exp(-5 * this.wobbleT) * Math.cos(22 * this.wobbleT);
+        ctx.scale(this.scale * (1 + w * 0.22), this.scale * (1 - w * 0.22));
+
+        // Lucky ball: golden halo with orbiting sparkles
+        if (this.lucky) {
+          const t = performance.now() / 1000;
+          ctx.save();
+          ctx.shadowColor = "#fde047";
+          ctx.shadowBlur = 22;
+          ctx.strokeStyle = "rgba(253, 224, 71, 0.9)";
+          ctx.lineWidth = 3;
+          ctx.setLineDash([6, 8]);
+          ctx.lineDashOffset = -t * 30;
+          ctx.beginPath();
+          ctx.arc(0, 0, r + 6, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          for (let k = 0; k < 3; k++) {
+            const a = t * 2.4 + k * (Math.PI * 2 / 3);
+            ctx.fillStyle = "#fff7c2";
+            ctx.beginPath();
+            ctx.arc(Math.cos(a) * (r + 6), Math.sin(a) * (r + 6), 2.6, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+
+        ctx.rotate(this.rotation);
+
+        // Cat Body: shaded sphere (light from top-left) instead of a flat disc
+        const body = ctx.createRadialGradient(-r * 0.38, -r * 0.42, r * 0.08, 0, 0, r * 1.05);
+        body.addColorStop(0, shadeColor(this.lucky ? "#fde047" : color, 0.5));
+        body.addColorStop(0.55, this.lucky ? "#fbbf24" : color);
+        body.addColorStop(1, shadeColor(this.lucky ? "#b45309" : color, -0.38));
         ctx.beginPath();
         ctx.arc(0, 0, r, 0, Math.PI * 2);
-        ctx.fillStyle = color;
+        ctx.fillStyle = body;
         ctx.fill();
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "#1e293b";
+        ctx.lineWidth = Math.max(2, r * 0.05);
+        ctx.strokeStyle = "rgba(15, 23, 42, 0.85)";
+        ctx.stroke();
+
+        // Rim light on the lower-right edge
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 0.9, Math.PI * 0.05, Math.PI * 0.55);
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.22)";
+        ctx.lineWidth = Math.max(1.5, r * 0.06);
         ctx.stroke();
 
         // Cat Ears
@@ -5304,8 +5557,28 @@
           ctx.stroke();
         }
 
+        // Glossy specular highlight on top of everything
+        ctx.save();
+        ctx.rotate(-this.rotation);
+        const spec = ctx.createRadialGradient(-r * 0.4, -r * 0.5, 0, -r * 0.4, -r * 0.5, r * 0.42);
+        spec.addColorStop(0, "rgba(255, 255, 255, 0.55)");
+        spec.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = spec;
+        ctx.beginPath();
+        ctx.ellipse(-r * 0.4, -r * 0.5, r * 0.42, r * 0.28, -0.6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
         ctx.restore();
       }
+    }
+
+    // Lighten (amount > 0) or darken (amount < 0) a #rrggbb color
+    function shadeColor(hex, amount) {
+      const n = parseInt(hex.slice(1), 16);
+      const mix = (c) => Math.round(amount >= 0 ? c + (255 - c) * amount : c * (1 + amount));
+      const r = mix((n >> 16) & 255), g = mix((n >> 8) & 255), b = mix(n & 255);
+      return `rgb(${r}, ${g}, ${b})`;
     }
 
     /* ==========================================================================
@@ -5348,6 +5621,397 @@
     }
 
     /* ==========================================================================
+       JUICE & HOOK (REQ-01 §Combo/FX, 2026-09-25)
+       - Merge FX: flash, shockwave ring, sparkles, floating +score, squash & stretch, screen shake, hit-stop
+       - Combo: a merge within 1 s of the previous one continues the chain; each merge extends the window by 1 s.
+         Score of the n-th merge in a chain = tier score × n  (1st ×1, 2nd ×2, 3rd ×3 …)
+       - Lucky ball (7% of drops): merging it pays a random 10–60 🐟 (variable reward, fish coins only)
+       - Daily chest: once a day for signed-in players, bigger with a login streak
+       Deliberately NOT used (gambling dark patterns): fake near-misses, losses shown as wins, real money, pay-to-continue.
+       ========================================================================== */
+    const COMBO_WINDOW = 1.0;
+    let combo = 0;
+    let comboTimer = 0;
+    let comboPoints = 0;
+    let comboBestThisGame = 0;
+    let screenShake = 0;
+    let hitStop = 0;
+    let displayScore = 0;
+    let currentLucky = false;
+    let nextLucky = false;
+    const LUCKY_CHANCE = 0.07;
+    const fxRings = [];
+    const fxTexts = [];
+
+    class FxRing {
+      constructor(x, y, r, color, width = 5) {
+        this.x = x; this.y = y; this.r0 = r; this.color = color; this.width = width;
+        this.life = 1;
+      }
+      update(dt) { this.life -= dt * 2.2; }
+      draw() {
+        if (this.life <= 0) return;
+        const t = 1 - this.life;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.life) * 0.9;
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.width * this.life + 1;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r0 * (1 + t * 1.6), 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+
+    class FxText {
+      constructor(x, y, text, color, size = 20) {
+        this.x = x; this.y = y; this.text = text; this.color = color; this.size = size;
+        this.life = 1.15; this.age = 0;
+      }
+      update(dt) { this.age += dt; this.life -= dt; this.y -= 48 * dt; }
+      draw() {
+        if (this.life <= 0) return;
+        const pop = this.age < 0.15 ? 0.6 + this.age / 0.15 * 0.6 : Math.max(1, 1.2 - (this.age - 0.15));
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, this.life * 1.6);
+        ctx.translate(this.x, this.y);
+        ctx.scale(pop, pop);
+        ctx.font = `800 ${this.size}px Prompt, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "rgba(15, 23, 42, 0.9)";
+        ctx.strokeText(this.text, 0, 0);
+        ctx.fillStyle = this.color;
+        ctx.fillText(this.text, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    // Sparkle particles shaped like 4-point stars (mixed in with the round ones)
+    class StarParticle extends Particle {
+      draw() {
+        if (this.life <= 0) return;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, this.life);
+        ctx.fillStyle = this.color;
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.life * 4);
+        const s = this.size * 1.4;
+        ctx.beginPath();
+        ctx.moveTo(0, -s); ctx.lineTo(s * 0.25, -s * 0.25); ctx.lineTo(s, 0); ctx.lineTo(s * 0.25, s * 0.25);
+        ctx.lineTo(0, s); ctx.lineTo(-s * 0.25, s * 0.25); ctx.lineTo(-s, 0); ctx.lineTo(-s * 0.25, -s * 0.25);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    const COMBO_COLORS = ["#38bdf8", "#38bdf8", "#34d399", "#facc15", "#fb923c", "#f472b6", "#c084fc"];
+    const comboColor = n => COMBO_COLORS[Math.min(n, COMBO_COLORS.length - 1)];
+
+    // Called for every merge: scores it with the combo multiplier and plays all merge FX
+    function registerMerge(nextTier, x, y, wasLucky) {
+      combo = comboTimer > 0 ? combo + 1 : 1;
+      comboTimer = COMBO_WINDOW;
+      comboBestThisGame = Math.max(comboBestThisGame, combo);
+      const gained = CAT_TIERS[nextTier].score * combo;
+      score += gained;
+      comboPoints = combo === 1 ? gained : comboPoints + gained;
+
+      const color = CAT_TIERS[nextTier].color;
+      const big = nextTier >= 6;
+      sound.playMerge(nextTier, combo);
+      if (combo >= 2) sound.playCombo(combo);
+
+      // Flash + shockwave + sparkles, bigger for higher tiers and longer chains
+      fxRings.push(new FxRing(x, y, CAT_TIERS[nextTier].radius * 0.7, "#ffffff", 8));
+      fxRings.push(new FxRing(x, y, CAT_TIERS[nextTier].radius * 0.9, color, 6));
+      if (combo >= 3) fxRings.push(new FxRing(x, y, CAT_TIERS[nextTier].radius * 1.1, comboColor(combo), 4));
+      const count = 18 + nextTier * 3 + combo * 4;
+      for (let i = 0; i < count; i++) {
+        particles.push(i % 3 === 0 ? new StarParticle(x, y, i % 2 ? "#fff7c2" : color) : new Particle(x, y, color));
+      }
+      fxTexts.push(new FxText(x, y - 10, combo >= 2 ? `+${gained.toLocaleString()} ×${combo}` : `+${gained.toLocaleString()}`,
+        combo >= 2 ? comboColor(combo) : "#ffffff", 18 + Math.min(combo, 6) * 2 + (big ? 6 : 0)));
+      screenShake = Math.min(18, screenShake + 2 + nextTier * 0.9 + combo * 1.2);
+      if (big) hitStop = 0.06;
+
+      if (wasLucky) payLuckyBall(x, y);
+      updateComboHUD(true);
+      updateScoreUI();
+    }
+
+    function endCombo() {
+      if (combo >= 3) {
+        // Chain finished: celebrate the total and pay a small fish bonus (combo²)
+        const bonus = combo * combo;
+        fishCoins += bonus;
+        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+        showComboSummary(combo, comboPoints, bonus);
+      }
+      combo = 0;
+      comboPoints = 0;
+      updateComboHUD(false);
+    }
+
+    function updateComboHUD(bump) {
+      const hud = document.getElementById("combo-hud");
+      const wrap = document.getElementById("canvas-wrap");
+      if (!hud) return;
+      const active = combo >= 2;
+      hud.classList.toggle("show", active);
+      wrap.classList.toggle("fever", combo >= 5);
+      if (!active) return;
+      document.getElementById("combo-mult").innerText = `×${combo}`;
+      hud.style.setProperty("--combo-color", comboColor(combo));
+      if (bump) {
+        hud.classList.remove("bump");
+        void hud.offsetWidth;
+        hud.classList.add("bump");
+      }
+    }
+
+    function showComboSummary(n, points, bonus) {
+      const el = document.getElementById("combo-summary");
+      if (!el) return;
+      el.querySelector(".cs-title").innerText = n >= 6 ? `🔥 FEVER COMBO ×${n}!` : `COMBO ×${n}!`;
+      el.querySelector(".cs-points").innerText = `+${points.toLocaleString()} คะแนน`;
+      el.querySelector(".cs-bonus").innerText = `โบนัส +${bonus} 🐟`;
+      el.style.setProperty("--combo-color", comboColor(n));
+      el.classList.remove("show");
+      void el.offsetWidth;
+      el.classList.add("show");
+      sound.playNotes([659.25, 783.99, 1046.5, 1318.5], { type: "triangle", gap: 0.08, dur: 0.3, vol: 0.14 });
+    }
+
+    // Variable reward: mostly small, sometimes big — in-game fish coins only
+    function payLuckyBall(x, y) {
+      const roll = Math.random();
+      const reward = roll < 0.6 ? 10 + Math.floor(Math.random() * 11) : roll < 0.9 ? 21 + Math.floor(Math.random() * 20) : 41 + Math.floor(Math.random() * 20);
+      fishCoins += reward;
+      if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+      sound.playLucky();
+      fxTexts.push(new FxText(x, y - 44, `🍀 LUCKY +${reward} 🐟`, "#fde047", 22));
+      for (let i = 0; i < 26; i++) particles.push(new StarParticle(x, y, i % 2 ? "#fde047" : "#fff7c2"));
+      fxRings.push(new FxRing(x, y, 30, "#fde047", 7));
+    }
+
+    function rollLucky() {
+      return Math.random() < LUCKY_CHANCE;
+    }
+
+    function updateFx(dt) {
+      if (comboTimer > 0) {
+        comboTimer -= dt;
+        if (comboTimer <= 0) endCombo();
+      }
+      const fill = document.getElementById("combo-bar-fill");
+      if (fill) fill.style.transform = `scaleX(${Math.max(0, comboTimer / COMBO_WINDOW)})`;
+      for (let i = fxRings.length - 1; i >= 0; i--) { fxRings[i].update(dt); if (fxRings[i].life <= 0) fxRings.splice(i, 1); }
+      for (let i = fxTexts.length - 1; i >= 0; i--) { fxTexts[i].update(dt); if (fxTexts[i].life <= 0) fxTexts.splice(i, 1); }
+      screenShake *= Math.pow(0.02, dt); // fast exponential decay
+      if (screenShake < 0.2) screenShake = 0;
+
+      // Rolling score counter (big-win count-up feel)
+      if (displayScore !== score) {
+        const diff = score - displayScore;
+        displayScore = Math.abs(diff) < 2 ? score : displayScore + diff * Math.min(1, dt * 9);
+        const el = document.getElementById("score-val");
+        if (el) el.innerText = Math.round(displayScore).toLocaleString();
+      }
+    }
+
+    /* --- Daily chest: signed-in players, once per calendar day, streak grows the prize --- */
+    function dailyChestState() {
+      let s = {};
+      try { s = JSON.parse(getStorageItem('daily_chest') || '{}') || {}; } catch (e) { s = {}; }
+      return s;
+    }
+    const todayKey = () => new Date().toLocaleDateString('en-CA');
+    function dailyChestReady() {
+      return dailyChestState().last !== todayKey();
+    }
+    function refreshDailyChestButton() {
+      const btn = document.getElementById("daily-chest-btn");
+      if (btn) btn.classList.toggle("ready", dailyChestReady());
+    }
+    function openDailyChest() {
+      if (!currentUser) {
+        requireLogin();
+        return;
+      }
+      const modal = document.getElementById("daily-chest-modal");
+      const s = dailyChestState();
+      const yesterday = new Date(Date.now() - 86400000).toLocaleDateString('en-CA');
+      const streak = s.last === todayKey() ? s.streak : (s.last === yesterday ? (s.streak || 0) + 1 : 1);
+      document.getElementById("chest-streak").innerText = `ต่อเนื่อง ${streak} วัน`;
+      document.getElementById("chest-days").innerHTML = [1, 2, 3, 4, 5, 6, 7].map(d =>
+        `<span class="${d < Math.min(streak, 7) || (d === Math.min(streak, 7) && s.last === todayKey()) ? 'done' : d === Math.min(streak, 7) ? 'today' : ''}">${d === 7 ? '👑' : d}</span>`).join('');
+      const claimBtn = document.getElementById("chest-claim-btn");
+      const amount = document.getElementById("chest-amount");
+      if (s.last === todayKey()) {
+        amount.innerText = `วันนี้รับแล้ว +${s.amount || 0} 🐟`;
+        claimBtn.disabled = true;
+        claimBtn.innerText = "พรุ่งนี้มาใหม่นะ 🐾";
+      } else {
+        amount.innerText = "? 🐟";
+        claimBtn.disabled = false;
+        claimBtn.innerText = "🎁 เปิดกล่อง";
+        claimBtn.onclick = () => claimDailyChest(streak);
+      }
+      modal.classList.add("open");
+    }
+    function claimDailyChest(streak) {
+      const claimBtn = document.getElementById("chest-claim-btn");
+      claimBtn.disabled = true;
+      const day = Math.min(streak, 7);
+      const base = 20 + day * 10;
+      const reward = base + Math.floor(Math.random() * (base + 1)) + (day === 7 ? 100 : 0);
+      const amount = document.getElementById("chest-amount");
+      // Slot-style number roll before the reveal (anticipation), then the real amount
+      const t0 = performance.now();
+      const roll = () => {
+        const t = performance.now() - t0;
+        if (t < 1100) {
+          amount.innerText = `${Math.floor(Math.random() * base * 2 + base)} 🐟`;
+          sound.playNotes([800 + Math.random() * 400], { type: "square", dur: 0.03, vol: 0.03 });
+          setTimeout(roll, 70 + t / 20);
+          return;
+        }
+        amount.innerText = `+${reward} 🐟`;
+        amount.classList.remove("reveal");
+        void amount.offsetWidth;
+        amount.classList.add("reveal");
+        sound.playChest();
+        fishCoins += reward;
+        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+        setStorageItem('daily_chest', JSON.stringify({ last: todayKey(), streak, amount: reward }));
+        claimBtn.innerText = "พรุ่งนี้มาใหม่นะ 🐾";
+        refreshDailyChestButton();
+      };
+      roll();
+    }
+    function closeDailyChest() {
+      document.getElementById("daily-chest-modal").classList.remove("open");
+    }
+
+    /* --- Themed backdrop (synced with the farm room) + glass-box depth --- */
+    let gameTheme = 'japanese';
+    let backdropCache = null;
+    let backdropKey = '';
+    const THEME_PETALS = [];
+
+    function applyGameTheme(theme) {
+      gameTheme = theme;
+      const view = document.getElementById("view-game");
+      if (view) view.dataset.theme = theme;
+      backdropKey = '';
+    }
+
+    function buildBackdrop() {
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(width));
+      c.height = Math.max(1, Math.round(height));
+      const g = c.getContext("2d");
+      const W = c.width, H = c.height;
+      if (gameTheme === 'modern') {
+        let sky = g.createLinearGradient(0, 0, 0, H);
+        sky.addColorStop(0, "#070b1f"); sky.addColorStop(0.6, "#1e1b4b"); sky.addColorStop(1, "#312e81");
+        g.fillStyle = sky; g.fillRect(0, 0, W, H);
+        for (let i = 0; i < 40; i++) { g.fillStyle = `rgba(255,255,255,${0.2 + Math.random() * 0.5})`; g.fillRect(Math.random() * W, Math.random() * H * 0.5, 1.5, 1.5); }
+        // two skyline layers for depth
+        [[0.55, "#15123a", 0.5], [0.72, "#0b0a24", 0.9]].forEach(([top, col, lit]) => {
+          let x = 0;
+          while (x < W) {
+            const bw = 26 + Math.random() * 40, bh = H * (1 - top) * (0.45 + Math.random() * 0.55);
+            g.fillStyle = col; g.fillRect(x, H - bh, bw, bh);
+            for (let wy = H - bh + 8; wy < H - 6; wy += 11) for (let wx = x + 5; wx < x + bw - 5; wx += 8) {
+              if (Math.random() < 0.35 * lit) { g.fillStyle = `rgba(253, 224, 71, ${0.25 + Math.random() * 0.4})`; g.fillRect(wx, wy, 3, 4); }
+            }
+            x += bw + 2;
+          }
+        });
+      } else if (gameTheme === 'space') {
+        let sky = g.createLinearGradient(0, 0, 0, H);
+        sky.addColorStop(0, "#05030d"); sky.addColorStop(0.55, "#1e0b3d"); sky.addColorStop(1, "#3b0764");
+        g.fillStyle = sky; g.fillRect(0, 0, W, H);
+        for (let i = 0; i < 70; i++) { g.fillStyle = Math.random() < 0.3 ? "#a5f3fc" : "#ffffff"; g.globalAlpha = 0.3 + Math.random() * 0.6; g.fillRect(Math.random() * W, Math.random() * H * 0.7, 1.5, 1.5); }
+        g.globalAlpha = 1;
+        const planet = g.createRadialGradient(W * 0.78, H * 0.22, 4, W * 0.8, H * 0.24, 46);
+        planet.addColorStop(0, "#67e8f9"); planet.addColorStop(0.5, "#0e7490"); planet.addColorStop(1, "rgba(8,47,73,0)");
+        g.fillStyle = planet; g.beginPath(); g.arc(W * 0.8, H * 0.24, 46, 0, Math.PI * 2); g.fill();
+        // neon perspective floor grid
+        const horizon = H * 0.62;
+        g.strokeStyle = "rgba(236, 72, 153, 0.45)"; g.lineWidth = 1;
+        for (let i = -12; i <= 12; i++) { g.beginPath(); g.moveTo(W / 2 + i * 8, horizon); g.lineTo(W / 2 + i * 70, H); g.stroke(); }
+        for (let k = 0; k < 12; k++) { const y = horizon + Math.pow(k / 12, 1.8) * (H - horizon); g.strokeStyle = `rgba(34, 211, 238, ${0.12 + k * 0.03})`; g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+      } else {
+        // Japanese: warm wood wall, shoji grid glow, tatami floor
+        let wall = g.createLinearGradient(0, 0, 0, H);
+        wall.addColorStop(0, "#2a1c12"); wall.addColorStop(0.55, "#3b2616"); wall.addColorStop(1, "#4a3018");
+        g.fillStyle = wall; g.fillRect(0, 0, W, H);
+        const glow = g.createRadialGradient(W * 0.5, H * 0.35, 10, W * 0.5, H * 0.35, W * 0.8);
+        glow.addColorStop(0, "rgba(255, 214, 150, 0.22)"); glow.addColorStop(1, "rgba(255, 214, 150, 0)");
+        g.fillStyle = glow; g.fillRect(0, 0, W, H);
+        g.strokeStyle = "rgba(255, 228, 180, 0.06)"; g.lineWidth = 2;
+        for (let x = 0; x < W; x += 44) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H * 0.78); g.stroke(); }
+        for (let y = 0; y < H * 0.78; y += 54) { g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
+        const floorTop = H * 0.8;
+        let floor = g.createLinearGradient(0, floorTop, 0, H);
+        floor.addColorStop(0, "#8a7a3a"); floor.addColorStop(1, "#5c4f22");
+        g.fillStyle = floor; g.fillRect(0, floorTop, W, H - floorTop);
+        g.strokeStyle = "rgba(40, 30, 10, 0.35)";
+        for (let i = -8; i <= 8; i++) { g.beginPath(); g.moveTo(W / 2 + i * 30, floorTop); g.lineTo(W / 2 + i * 60, H); g.stroke(); }
+      }
+      // Glass box: inner vignette + side reflections give the play area depth
+      const vig = g.createRadialGradient(W / 2, H * 0.55, Math.min(W, H) * 0.3, W / 2, H * 0.55, Math.max(W, H) * 0.75);
+      vig.addColorStop(0, "rgba(0,0,0,0)"); vig.addColorStop(1, "rgba(0,0,0,0.55)");
+      g.fillStyle = vig; g.fillRect(0, 0, W, H);
+      return c;
+    }
+
+    function drawBackdrop(dt) {
+      const key = `${gameTheme}:${Math.round(width)}x${Math.round(height)}`;
+      if (key !== backdropKey) {
+        backdropCache = buildBackdrop();
+        backdropKey = key;
+        THEME_PETALS.length = 0;
+      }
+      if (backdropCache) ctx.drawImage(backdropCache, 0, 0);
+      // A little ambient motion: sakura petals / window glints / data motes
+      if (THEME_PETALS.length < 10 && Math.random() < dt * 3) {
+        THEME_PETALS.push({ x: Math.random() * width, y: -10, vx: 10 + Math.random() * 20, vy: 20 + Math.random() * 25, a: Math.random() * 6 });
+      }
+      ctx.save();
+      for (let i = THEME_PETALS.length - 1; i >= 0; i--) {
+        const p = THEME_PETALS[i];
+        p.x += p.vx * dt; p.y += p.vy * dt; p.a += dt * 2;
+        if (p.y > height + 10 || p.x > width + 10) { THEME_PETALS.splice(i, 1); continue; }
+        ctx.globalAlpha = 0.55;
+        if (gameTheme === 'japanese') {
+          ctx.fillStyle = "#fbcfe8";
+          ctx.beginPath(); ctx.ellipse(p.x, p.y, 4, 2.4, p.a, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.fillStyle = gameTheme === 'space' ? "#67e8f9" : "#e0e7ff";
+          ctx.fillRect(p.x, p.y, 1.8, gameTheme === 'space' ? 7 : 1.8);
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawGlassOverlay() {
+      ctx.save();
+      const edge = ctx.createLinearGradient(0, 0, width, 0);
+      edge.addColorStop(0, "rgba(255,255,255,0.10)");
+      edge.addColorStop(0.03, "rgba(255,255,255,0.02)");
+      edge.addColorStop(0.97, "rgba(255,255,255,0.02)");
+      edge.addColorStop(1, "rgba(255,255,255,0.10)");
+      ctx.fillStyle = edge;
+      ctx.fillRect(0, 0, width, height);
+      ctx.restore();
+    }
+
+    /* ==========================================================================
        COLLISION RESOLUTION (Substepped Impulse Physics)
        ========================================================================== */
     function resolveCollisions() {
@@ -5375,13 +6039,8 @@
               const midY = (c1.y + c2.y) * 0.5;
               const nextTier = c1.tier + 1;
 
-              // Sound & FX
-              sound.playMerge(nextTier);
-              createBurst(midX, midY, CAT_TIERS[nextTier].color, 24);
-
-              // Add Score
-              score += CAT_TIERS[nextTier].score;
-              updateScoreUI();
+              // Score with the combo multiplier + merge FX (see JUICE & HOOK)
+              registerMerge(nextTier, midX, midY, c1.lucky || c2.lucky);
 
               // Trigger Top Celebration Cat Runway Animation
               triggerTierUpgradeCelebration(nextTier);
@@ -5404,6 +6063,8 @@
               setTimeout(() => {
                 const newCat = new Cat(midX, midY, nextTier);
                 newCat.vy = -80; // little joyous bounce
+                newCat.scale = 0.55;
+                newCat.wobbleAmp = 1;
                 cats.push(newCat);
               }, 10);
 
@@ -5571,11 +6232,11 @@
        so it follows the account to any device and survives clearing the browser — no table needed.
        localStorage is the working copy; each farm write is pushed to the account 2 s later.
        ========================================================================== */
-    const FARM_SYNC_KEYS = ['fish_coins', 'owned_items', 'hidden_items', 'owned_cats', 'cat_rewards', 'room_cats', 'cat_weights', 'owned_themes', 'station_state', 'visitor_log'];
+    const FARM_SYNC_KEYS = ['fish_coins', 'owned_items', 'hidden_items', 'owned_cats', 'cat_rewards', 'room_cats', 'cat_weights', 'owned_themes', 'station_state', 'visitor_log', 'current_room', 'daily_chest'];
     var FARM_SYNC_KEYS_SET = new Set(FARM_SYNC_KEYS); // var: setStorageItem runs before this line during start-up
     const FARM_CLOUD_FIELD = IS_DEV_BUILD ? 'farm_dev' : 'farm_prod';
     // Explicit empty farm so the legacy un-prefixed fallback in getStorageItem never resurrects old data
-    const FARM_FRESH = { fish_coins: '2000', owned_items: '[]', hidden_items: '[]', owned_cats: '[]', cat_rewards: '{}', room_cats: '{}', cat_weights: '{}', owned_themes: '["japanese"]', station_state: '{}', visitor_log: '{}' };
+    const FARM_FRESH = { fish_coins: '2000', owned_items: '[]', hidden_items: '[]', owned_cats: '[]', cat_rewards: '{}', room_cats: '{}', cat_weights: '{}', owned_themes: '["japanese"]', station_state: '{}', visitor_log: '{}', current_room: 'japanese', daily_chest: '{}' };
     let farmCloudTimer = null;
     let farmCloudReady = false; // true once this device's farm belongs to the signed-in account
     let farmReloading = false;
@@ -5790,21 +6451,26 @@
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
+    // Score already turned into fish coins this game (1 🐟 per 100 points)
+    let coinedScore = 0;
+
     function updateScoreUI() {
-      document.getElementById("score-val").innerText = score;
+      // score-val is animated by the rolling counter in updateFx()
       if (score > bestScore) {
         bestScore = score;
         localStorage.setItem("sleeperem_best", bestScore);
       }
-      document.getElementById("best-val").innerText = bestScore;
+      document.getElementById("best-val").innerText = bestScore.toLocaleString();
       updateHighestCatHUD();
-      
-      // 1% of earned score is automatically saved as Fish Coins for Cat Farm (discarding fractions)
-      
-      const earnedCoins = Math.floor(score * 0.01);
-      fishCoins += earnedCoins;
-      if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
 
+      // 1% of the score becomes fish coins. Pay only the new part — the old code re-paid 1% of the
+      // whole score on every merge, so long games minted far too many coins.
+      const earnedCoins = Math.floor(score / 100) - Math.floor(coinedScore / 100);
+      coinedScore = score;
+      if (earnedCoins > 0) {
+        fishCoins += earnedCoins;
+        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+      }
     }
 
     function updateNextCatUI() {
@@ -5812,7 +6478,8 @@
       const view = document.getElementById("next-cat-view");
       view.innerText = config.tier === 0 ? "🧶" : "🐱";
       view.style.backgroundColor = config.color;
-      document.getElementById("next-cat-name").innerText = config.name;
+      view.classList.toggle("is-lucky", nextLucky);
+      document.getElementById("next-cat-name").innerText = nextLucky ? `🍀 ${config.name} (นำโชค!)` : config.name;
     }
 
     function dropCat() {
@@ -5824,12 +6491,15 @@
 
       sound.playDrop();
       const newCat = new Cat(clampedX, 70, currentCatTier);
+      newCat.lucky = currentLucky;
       cats.push(newCat);
 
       // Trigger Cooldown
       dropCooldown = true;
       currentCatTier = nextCatTier;
+      currentLucky = nextLucky;
       nextCatTier = getRandomInitialTier();
+      nextLucky = rollLucky();
       updateNextCatUI();
 
       setTimeout(() => {
@@ -5927,7 +6597,10 @@
 
     function triggerGameOver() {
       isGameOver = true;
-      document.getElementById("final-score").innerText = score;
+      if (comboTimer > 0) endCombo();
+      document.getElementById("final-score").innerText = score.toLocaleString();
+      const finalCombo = document.getElementById("final-combo");
+      if (finalCombo) finalCombo.innerText = comboBestThisGame >= 2 ? `คอมโบสูงสุด ×${comboBestThisGame}` : '';
       document.getElementById("game-over-modal").style.display = "flex";
 
       // Secure Score Submission to Supabase RPC
@@ -5951,7 +6624,16 @@
     function restartGame() {
       cats.length = 0;
       particles.length = 0;
+      fxRings.length = 0;
+      fxTexts.length = 0;
       score = 0;
+      coinedScore = 0;
+      displayScore = 0;
+      combo = 0;
+      comboTimer = 0;
+      comboBestThisGame = 0;
+      updateComboHUD(false);
+      document.getElementById("score-val").innerText = "0";
       moonShakesLeft = 1;
       isGameOver = false;
       dropCooldown = false;
@@ -5971,8 +6653,10 @@
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
-      // Physics Substepping (8 substeps per frame prevents tunneling)
-      if (!isGameOver) {
+      // Physics Substepping (8 substeps per frame prevents tunneling); hit-stop freezes big merges for a beat
+      if (hitStop > 0) {
+        hitStop -= dt;
+      } else if (!isGameOver) {
         const subSteps = 8;
         const subDt = dt / subSteps;
         for (let s = 0; s < subSteps; s++) {
@@ -5988,8 +6672,13 @@
         if (particles[i].life <= 0) particles.splice(i, 1);
       }
 
+      updateFx(dt);
+
       // RENDER FRAME
       ctx.clearRect(0, 0, width, height);
+      drawBackdrop(dt);
+      ctx.save();
+      if (screenShake > 0) ctx.translate((Math.random() - 0.5) * screenShake, (Math.random() - 0.5) * screenShake);
 
       // Draw Danger Line
       ctx.save();
@@ -6018,14 +6707,19 @@
         // Dropper Cat Preview
         const previewCat = new Cat(clampedX, 55, currentCatTier);
         previewCat.scale = 1.0;
+        previewCat.lucky = currentLucky;
         previewCat.draw();
       }
 
       // Draw All Cats
       cats.forEach(c => c.draw());
 
-      // Draw Particles
+      // Draw Particles & merge FX
+      fxRings.forEach(r => r.draw());
       particles.forEach(p => p.draw());
+      fxTexts.forEach(t => t.draw());
+      ctx.restore();
+      drawGlassOverlay();
 
       requestAnimationFrame(gameLoop);
     }
@@ -7003,6 +7697,9 @@ class LiveCatActor {
     function switchTheme(theme, silent = false) {
       if (!ROOM_IDS.includes(theme) || !ownsTheme(theme)) return;
       currentTheme = theme;
+      // Cat Ball wears the same theme as the last farm room (synced look)
+      if (getStorageItem('current_room') !== theme) setStorageItem('current_room', theme);
+      applyGameTheme(theme);
       if (typeof removeVisitor === 'function') removeVisitor();
       document.querySelectorAll('.theme-tab-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('tab-' + theme).classList.add('active');
@@ -8449,7 +9146,11 @@ class LiveCatActor {
         if (wantFarm) switchView('farm');
       }
 
-      // Init stations & farm
+      // Init stations & farm (restore the last room; Cat Ball follows its theme)
+      const savedRoom = getStorageItem('current_room');
+      if (savedRoom && savedRoom !== currentTheme && ROOM_IDS.includes(savedRoom) && ownsTheme(savedRoom)) switchTheme(savedRoom, true);
+      applyGameTheme(currentTheme);
+      refreshDailyChestButton();
       applyThemeTabs();
       renderThemeShop();
       initSceneToys();
