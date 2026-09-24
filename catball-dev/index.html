@@ -1906,6 +1906,154 @@
     /* ==========================================================================
        UNIVERSAL DECOR (usable in every room)
        ========================================================================== */
+    /* ==========================================================================
+       CAT SHOP, GIFT MODAL & LOGIN GATE (REQ-10 / REQ-08)
+       ========================================================================== */
+    .cat-shop-hint { font-size: 11px; color: #94a3b8; margin: -4px 0 10px; line-height: 1.5; }
+    .cat-shop-thumb { width: 46px; height: 46px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); }
+    .item-card.cat-shop-card.owned .cat-shop-thumb { filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.6)); }
+    .cat-select-card.is-locked { opacity: 0.4; filter: grayscale(1); }
+    .login-gate-msg {
+      display: none;
+      background: rgba(251, 191, 36, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.45);
+      color: #fde68a;
+      font-size: 12px;
+      line-height: 1.5;
+      border-radius: 12px;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+    }
+    .cat-gift-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 120;
+      background: rgba(6, 9, 20, 0.86);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .cat-gift-overlay.open { display: flex; }
+    .cat-gift-card {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+      border: 2px solid #fbbf24;
+      border-radius: 24px;
+      padding: 22px 20px 18px;
+      text-align: center;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(251, 191, 36, 0.35);
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .cat-gift-rays {
+      position: absolute;
+      left: 50%; top: 110px;
+      width: 420px; height: 420px;
+      margin: -210px 0 0 -210px;
+      background: repeating-conic-gradient(rgba(251, 191, 36, 0.16) 0deg 12deg, transparent 12deg 30deg);
+      border-radius: 50%;
+      animation: giftRays 12s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes giftRays { to { transform: rotate(360deg); } }
+    .cat-gift-sub { position: relative; font-size: 12px; font-weight: 700; color: #fbbf24; }
+    .cat-gift-img {
+      position: relative;
+      height: 120px; width: auto; max-width: 180px;
+      object-fit: contain;
+      margin: 10px auto 6px;
+      display: block;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.6));
+      animation: giftBounce 1.6s ease-in-out infinite alternate;
+    }
+    @keyframes giftBounce { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+    .cat-gift-card h3 { position: relative; font-size: 20px; font-weight: 800; color: #f8fafc; }
+    .cat-gift-grade { position: relative; font-size: 11px; color: #94a3b8; margin: 2px 0 14px; }
+    .cat-gift-actions { position: relative; display: flex; gap: 8px; }
+    .cat-gift-btn {
+      flex: 1;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #e2e8f0;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .cat-gift-btn.primary { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: #fbbf24; color: #fff; }
+
+    /* ==========================================================================
+       CAT ARRIVAL EFFECTS (REQ-03 §2.7): heaven descent / spaceship warp
+       ========================================================================== */
+    .arrival-fx { position: absolute; inset: 0; pointer-events: none; z-index: 30; }
+    .arrival-beam {
+      position: absolute;
+      top: 0;
+      width: 140px;
+      margin-left: -70px;
+      background: linear-gradient(180deg, rgba(255, 251, 235, 0.95) 0%, rgba(253, 224, 71, 0.55) 45%, rgba(253, 224, 71, 0.08) 100%);
+      filter: blur(3px);
+      border-radius: 0 0 70px 70px;
+      transform-origin: top center;
+    }
+    .arrival-cloud { position: absolute; top: 6px; font-size: 54px; margin-left: -60px; filter: drop-shadow(0 0 20px #fff7d6); }
+    .arrival-particle { position: absolute; font-size: 18px; }
+    .arrival-ring {
+      position: absolute;
+      width: 150px; height: 34px;
+      margin-left: -75px;
+      border-radius: 50%;
+      border: 4px solid rgba(253, 224, 71, 0.9);
+      box-shadow: 0 0 24px rgba(253, 224, 71, 0.8);
+    }
+    .cat-halo {
+      position: absolute;
+      top: -14px; left: 50%;
+      width: 40px; height: 11px;
+      margin-left: -20px;
+      border-radius: 50%;
+      border: 3px solid #fde047;
+      box-shadow: 0 0 12px #fde047;
+    }
+    .arrival-ship { position: absolute; width: 170px; height: 70px; margin-left: -85px; }
+    .arrival-ship .dome {
+      position: absolute; left: 50px; top: 0;
+      width: 70px; height: 38px;
+      border-radius: 35px 35px 8px 8px;
+      background: radial-gradient(circle at 40% 35%, rgba(207, 250, 254, 0.95), rgba(34, 211, 238, 0.45) 60%, rgba(14, 116, 144, 0.6));
+      border: 2px solid #a5f3fc;
+    }
+    .arrival-ship .hull {
+      position: absolute; left: 0; top: 26px;
+      width: 170px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #e2e8f0 0%, #64748b 55%, #1e1b4b 100%);
+      box-shadow: 0 0 26px rgba(236, 72, 153, 0.7), inset 0 -6px 10px rgba(0,0,0,0.5);
+    }
+    .arrival-ship .lights {
+      position: absolute; left: 18px; top: 42px;
+      width: 134px; height: 8px;
+      background: repeating-linear-gradient(90deg, #f472b6 0 8px, transparent 8px 22px);
+      filter: drop-shadow(0 0 6px #f472b6);
+      animation: shipLights 0.4s steps(2) infinite;
+    }
+    @keyframes shipLights { 50% { filter: drop-shadow(0 0 6px #22d3ee) hue-rotate(160deg); } }
+    .tractor-beam {
+      position: absolute;
+      width: 150px;
+      margin-left: -75px;
+      background:
+        repeating-linear-gradient(180deg, rgba(165, 243, 252, 0.35) 0 3px, transparent 3px 9px),
+        linear-gradient(180deg, rgba(34, 211, 238, 0.75), rgba(34, 211, 238, 0.12));
+      clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+      transform-origin: top center;
+    }
     .universal-decor-layer {
       position: absolute;
       inset: 0;
@@ -3503,6 +3651,7 @@
       <div class="modal-card">
         <button class="modal-close-x" onclick="closeLoginModal()" title="ปิด">✕</button>
         <div id="modal-guest-view">
+          <div class="login-gate-msg" id="login-gate-msg">🔒 ห้องแมวต้องเข้าสู่ระบบก่อน — ล็อกอินครั้งแรกรับน้องแมวฟรี 1 ตัว!</div>
           <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
           <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
           <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;">
@@ -3572,6 +3721,21 @@
       </div>
     </div>
 
+    <!-- Cat gift / adoption modal (REQ-10) -->
+    <div id="cat-gift-modal" class="cat-gift-overlay">
+      <div class="cat-gift-card">
+        <div class="cat-gift-rays"></div>
+        <p id="cat-gift-subtitle" class="cat-gift-sub">🎁</p>
+        <img id="cat-gift-img" class="cat-gift-img" alt="" draggable="false">
+        <h3 id="cat-gift-name">ชื่อแมว</h3>
+        <p id="cat-gift-grade" class="cat-gift-grade"></p>
+        <div class="cat-gift-actions">
+          <button id="cat-gift-place" class="cat-gift-btn primary">🐾 พาน้องเข้าห้อง</button>
+          <button class="cat-gift-btn" onclick="closeCatGiftModal()">ไว้ทีหลัง</button>
+        </div>
+      </div>
+    </div>
+
     <!-- VIEW 2: 2.5D CAT FARM -->
     <div id="view-farm" class="app-view">
       <div class="app-wrap">
@@ -3621,6 +3785,9 @@
         <!-- Manage this room's cats (max 12 per room) -->
         <button class="cat-selector-pill" onclick="openCatSelectorModal()" title="เลือกแมวเข้าห้องนี้ (สูงสุด 12 ตัว)">
           <span>🐾 แมวในห้อง (<span id="active-cat-count">0/12</span>)</span>
+        </button>
+        <button class="cat-selector-pill" onclick="scrollToCatShop()" title="ห้องขายแมว">
+          <span>🏪 ห้องขายแมว</span>
         </button>
       </div>
 
@@ -3890,7 +4057,19 @@
 
       </div>
 
-      <!-- 20 Items Shop Section -->
+      <!-- Cat Shop (REQ-10): cats must be adopted before entering a room -->
+      <div class="shop-section" id="cat-shop-section">
+        <div class="shop-header-row">
+          <div class="section-title">
+            <span>🏪</span>
+            <span>ห้องขายแมว (มีแล้ว <span id="owned-cat-count">0</span>/20)</span>
+          </div>
+        </div>
+        <p class="cat-shop-hint">รับเลี้ยงด้วยเหรียญปลา 🐟 • ฟรี 3 ตัว: ล็อกอินครั้งแรก · Cat Ball ถึง Tier 5 · ถึง Tier 10</p>
+        <div class="items-grid" id="cat-shop-grid"></div>
+      </div>
+
+      <!-- Decor Shop Section -->
       <div class="shop-section">
         <div class="shop-header-row">
           <div class="section-title">
@@ -3920,7 +4099,7 @@
       <button class="close-modal-btn" onclick="closeModal('cat-selector-modal')">✕</button>
       <div style="font-size: 32px; text-align: center; margin-bottom: 4px;">🐾</div>
       <h3 id="cat-selector-title" style="font-size: 16px; font-weight: 700; color: #fbbf24; text-align: center; margin-bottom: 2px;">จัดการแมวในห้อง</h3>
-      <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 8px;">ห้องละไม่เกิน 12 ตัว • แมว 1 ตัวอยู่ได้ห้องเดียว</p>
+      <p style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 8px;">ห้องละไม่เกิน 12 ตัว • แมว 1 ตัวอยู่ได้ห้องเดียว • 🔒 = ยังไม่ได้รับเลี้ยง</p>
       
       <div style="background: #090e1a; border: 1px solid #1e293b; border-radius: 12px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <span style="font-size: 12px; color: #cbd5e1;">จำนวนแมวในห้อง:</span>
@@ -4035,6 +4214,11 @@
         const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || u.avatar;
         currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
         updateUserUI(currentUser);
+        if (typeof grantCatReward === 'function') grantCatReward('login');
+        if (pendingFarmEntry) {
+          closeLoginModal();
+          switchView('farm');
+        }
 
         // Clean up OAuth hash params
         if (window.location.hash && window.location.hash.includes("access_token")) {
@@ -4043,6 +4227,7 @@
       } else {
         currentUser = null;
         updateUserUI(null);
+        if (typeof currentView !== 'undefined' && currentView === 'farm') switchView('game');
       }
     }
 
@@ -4118,6 +4303,7 @@
       currentUser = null;
       updateUserUI(null);
       closeLoginModal();
+      if (currentView === 'farm') switchView('game');
       alert("ออกจากระบบเรียบร้อยแล้ว");
     }
 
@@ -4595,6 +4781,10 @@
               // Trigger Top Celebration Cat Runway Animation
               triggerTierUpgradeCelebration(nextTier);
 
+              // Cat rewards every 5 tiers of base 1 (REQ-10): Tier 5 and Tier 10, one-time each
+              if (nextTier === 4) grantCatReward('tier5');
+              if (nextTier === 9) grantCatReward('tier10');
+
               // Special Reward: Unlocking King Cat Level 10 grants +1 Shake!
               if (nextTier === CAT_TIERS.length - 1) {
                 moonShakesLeft++;
@@ -4751,6 +4941,9 @@
 
     function closeLoginModal() {
       document.getElementById("login-modal").style.display = "none";
+      const msg = document.getElementById('login-gate-msg');
+      if (msg) msg.style.display = 'none';
+      pendingFarmEntry = false;
     }
 
     // Supabase Live Client Initialization
@@ -4775,7 +4968,7 @@
         return;
       }
       try {
-        try { sessionStorage.setItem('sleeperem_return_view', currentView); } catch (e) {}
+        try { sessionStorage.setItem('sleeperem_return_view', pendingFarmEntry ? 'farm' : currentView); } catch (e) {}
         const { data, error } = await client.auth.signInWithOAuth({
           provider: 'facebook',
           options: {
@@ -5211,7 +5404,7 @@
     function availableSpots(room, exceptCat = null) {
       const taken = new Set(catInstances.filter(c => c !== exceptCat && c.spotKey).map(c => c.spotKey));
       return (ROOM_SPOTS[room] || []).filter(s =>
-        !taken.has(spotKey(s)) && (!s.requires || s.requires.some(id => ownedItems.includes(id))));
+        !taken.has(spotKey(s)) && (!s.requires || s.requires.some(isItemShown)));
     }
 
     // Spawn near the middle of what the camera currently shows, never at the edge
@@ -5281,6 +5474,288 @@
     CAT_BREEDS.forEach(b => {
       if (!catWeights[b.id]) catWeights[b.id] = b.baseWeight;
     });
+
+    /* ==========================================================================
+       CAT OWNERSHIP, CAT SHOP & FREE-CAT REWARDS (REQ-10)
+       - A cat must be owned before it can enter a room.
+       - Prices follow the REQ-04 breed grades; the 3 cheapest cats are one-time rewards:
+         first login -> #1, Cat Ball Tier 5 -> #2, Cat Ball Tier 10 -> #3.
+       ========================================================================== */
+    const CAT_PRICES = {
+      siamese: 150, americanshorthair: 200, british: 250, scottish: 300,
+      munchkin: 350, russianblue: 380, birman: 400, exotic: 420, persian: 450,
+      abyssinian: 600, turkish: 650, sphynx: 700, ragdoll: 750, bengal: 800,
+      norwegian: 1000, savannah: 1200, mainecoon: 1400,
+      korat: 1800, khaomanee: 2000, suphalak: 2500
+    };
+    const CAT_GRADE = {
+      siamese: 1, americanshorthair: 1, british: 1, scottish: 1,
+      munchkin: 2, russianblue: 2, birman: 2, exotic: 2, persian: 2,
+      abyssinian: 3, turkish: 3, sphynx: 3, ragdoll: 3, bengal: 3,
+      norwegian: 4, savannah: 4, mainecoon: 4,
+      korat: 5, khaomanee: 5, suphalak: 5
+    };
+    const CAT_GRADE_NAMES = { 1: 'แมวบ้านแสนอบอุ่น', 2: 'แมวขุนนางขนนุ่ม', 3: 'นักผจญภัยสายลุย', 4: 'ยักษ์ใหญ่ผู้พิทักษ์', 5: 'แมวมงคลในตำนาน' };
+    const CATS_BY_PRICE = [...CAT_BREEDS].sort((a, b) => CAT_PRICES[a.id] - CAT_PRICES[b.id]);
+    const CAT_REWARDS = {
+      login: { rank: 0, label: 'เข้าสู่ระบบครั้งแรก' },
+      tier5: { rank: 1, label: 'Cat Ball ถึง Tier 5' },
+      tier10: { rank: 2, label: 'Cat Ball ถึง Tier 10' }
+    };
+    const rewardBreed = key => CATS_BY_PRICE[CAT_REWARDS[key].rank];
+    const rewardKeyOfCat = id => Object.keys(CAT_REWARDS).find(k => rewardBreed(k).id === id) || null;
+
+    let ownedCats = null;
+    let claimedRewards = {};
+    try { ownedCats = JSON.parse(getStorageItem('owned_cats') || 'null'); } catch (e) { ownedCats = null; }
+    if (!Array.isArray(ownedCats)) {
+      // First run with ownership: cats already living in a room are kept (grandfathered)
+      ownedCats = ROOM_IDS.flatMap(room => roomCats[room]);
+    }
+    ownedCats = ownedCats.filter((id, i, all) => CAT_PRICES[id] && all.indexOf(id) === i);
+    try { claimedRewards = JSON.parse(getStorageItem('cat_rewards') || '{}') || {}; } catch (e) { claimedRewards = {}; }
+
+    function saveOwnedCats() {
+      setStorageItem('owned_cats', JSON.stringify(ownedCats));
+      setStorageItem('cat_rewards', JSON.stringify(claimedRewards));
+    }
+    saveOwnedCats();
+    // Rooms may only hold owned cats
+    ROOM_IDS.forEach(room => { roomCats[room] = roomCats[room].filter(id => ownedCats.includes(id)); });
+
+    // Toast in whichever view is visible (the farm toast lives inside the farm view)
+    function notify(icon, msg) {
+      if (typeof currentView !== 'undefined' && currentView === 'farm') showToast(icon, msg);
+      else showSkillToast(icon, msg);
+    }
+
+    function grantCatReward(key) {
+      if (!CAT_REWARDS[key] || claimedRewards[key]) return;
+      claimedRewards[key] = true;
+      const breed = rewardBreed(key);
+      if (ownedCats.includes(breed.id)) {
+        fishCoins += CAT_PRICES[breed.id];
+        saveOwnedCats();
+        updateCoinsDisplay();
+        notify("🎁", `${CAT_REWARDS[key].label}! มี${breed.name}อยู่แล้ว รับ ${CAT_PRICES[breed.id]} 🐟 แทน`);
+        return;
+      }
+      ownedCats.push(breed.id);
+      saveOwnedCats();
+      renderCatShop();
+      openCatGiftModal(breed, `🎁 รางวัล: ${CAT_REWARDS[key].label}`);
+    }
+
+    function buyCat(id) {
+      const breed = CAT_BREEDS.find(b => b.id === id);
+      if (!breed || ownedCats.includes(id)) return;
+      if (!spendCoins(CAT_PRICES[id])) return;
+      ownedCats.push(id);
+      saveOwnedCats();
+      audio.playCoin();
+      renderCatShop();
+      openCatGiftModal(breed, '🎉 รับเลี้ยงสำเร็จ!');
+    }
+
+    function renderCatShop() {
+      const grid = document.getElementById("cat-shop-grid");
+      if (!grid) return;
+      const countEl = document.getElementById("owned-cat-count");
+      if (countEl) countEl.innerText = ownedCats.length;
+      grid.innerHTML = "";
+      CATS_BY_PRICE.forEach(b => {
+        const owned = ownedCats.includes(b.id);
+        const room = roomOfCat(b.id);
+        const rewardKey = rewardKeyOfCat(b.id);
+        let btn;
+        if (owned && room) {
+          btn = `<button class="item-buy-btn equipped" onclick="switchTheme('${room}')">🏠 อยู่ห้อง${ROOM_NAMES[room]}</button>`;
+        } else if (owned) {
+          btn = `<button class="item-buy-btn equipped" onclick="placeCatInCurrentRoom('${b.id}')">✓ มีแล้ว • พาเข้าห้องนี้</button>`;
+        } else {
+          btn = `<button class="item-buy-btn" onclick="buyCat('${b.id}')">รับเลี้ยง (${CAT_PRICES[b.id].toLocaleString()} 🐟)</button>`;
+        }
+        const card = document.createElement("div");
+        card.className = "item-card cat-shop-card" + (owned ? " owned" : "");
+        card.innerHTML = `
+          <div class="card-top">
+            <img class="cat-shop-thumb" src="${b.img}" alt="${b.name}" draggable="false">
+            <div>
+              <div class="item-name">${b.name}</div>
+              <div class="item-desc">${b.trait}</div>
+              <div class="item-scope">⭐ ${CAT_GRADE[b.id]} ${CAT_GRADE_NAMES[CAT_GRADE[b.id]]}</div>
+              ${rewardKey && !owned ? `<div class="item-scope is-universal">🎁 ฟรีเมื่อ${CAT_REWARDS[rewardKey].label}</div>` : ''}
+            </div>
+          </div>
+          ${btn}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function scrollToCatShop() {
+      closeModal('cat-selector-modal');
+      const section = document.getElementById('cat-shop-section');
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function openCatGiftModal(breed, subtitle) {
+      document.getElementById('cat-gift-subtitle').innerText = subtitle;
+      document.getElementById('cat-gift-img').src = breed.img;
+      document.getElementById('cat-gift-img').alt = breed.name;
+      document.getElementById('cat-gift-name').innerText = breed.name;
+      document.getElementById('cat-gift-grade').innerText = `⭐ ${CAT_GRADE[breed.id]} ${CAT_GRADE_NAMES[CAT_GRADE[breed.id]]} • ${breed.trait}`;
+      document.getElementById('cat-gift-place').onclick = () => placeCatInCurrentRoom(breed.id);
+      document.getElementById('cat-gift-modal').classList.add('open');
+    }
+
+    function closeCatGiftModal() {
+      document.getElementById('cat-gift-modal').classList.remove('open');
+    }
+
+    // Put an owned cat into the room on screen, with its arrival effect
+    function placeCatInCurrentRoom(id) {
+      closeCatGiftModal();
+      if (currentView !== 'farm') {
+        switchView('farm');
+        if (currentView !== 'farm') return; // login gate is showing
+      }
+      const ids = roomCats[currentTheme];
+      if (ids.includes(id)) return;
+      const breed = CAT_BREEDS.find(b => b.id === id);
+      const otherRoom = roomOfCat(id);
+      if (otherRoom) {
+        showToast("🏠", `${breed.name} อยู่ห้อง${ROOM_NAMES[otherRoom]}แล้ว — เอาออกจากห้องนั้นก่อนนะ`);
+        return;
+      }
+      if (ids.length >= MAX_CATS_PER_ROOM) {
+        showToast("⚠️", `ห้องหนึ่งมีแมวได้สูงสุด ${MAX_CATS_PER_ROOM} ตัว`);
+        return;
+      }
+      ids.push(id);
+      saveRoomCats();
+      arrivalQueue.add(id);
+      reloadActiveCats();
+      flushArrivals();
+    }
+
+    /* ==========================================================================
+       CAT ARRIVAL EFFECTS (REQ-03 §2.7)
+       Newly placed cats wait hidden until the selector closes, then arrive one by one:
+       Japanese/Modern = descend from heaven in a light beam; Cyber = spaceship warps them in.
+       ========================================================================== */
+    const arrivalQueue = new Set();
+
+    function flushArrivals() {
+      const waiting = catInstances.filter(c => c.pendingArrival && c.dom);
+      waiting.forEach((cat, i) => setTimeout(() => playArrival(cat), i * 900));
+    }
+
+    function playArrival(cat) {
+      if (!cat.dom || !cat.pendingArrival) return;
+      cat.pendingArrival = false;
+      arrivalQueue.delete(cat.data.id);
+      const stageEl = document.getElementById('room-stage');
+      const fx = document.createElement('div');
+      fx.className = 'arrival-fx';
+      stageEl.appendChild(fx);
+      const finish = () => {
+        if (!cat.dom) return;
+        cat.dom.style.opacity = '';
+        cat.isBusy = false;
+        cat.setState('sitting');
+        showSpeechBubble(cat.dom, 'สวัสดีทาส~ 💖');
+        spawnHeart(cat.x + 28, cat.y + 70);
+        cat.scheduleNextAction();
+      };
+      if (currentTheme === 'space') warpArrival(cat, fx, finish);
+      else heavenArrival(cat, fx, finish);
+    }
+
+    function fxEl(parent, cls, style, html = '') {
+      const el = document.createElement('div');
+      el.className = cls;
+      Object.assign(el.style, style);
+      el.innerHTML = html;
+      parent.appendChild(el);
+      return el;
+    }
+
+    function heavenArrival(cat, fx, finish) {
+      const { x, y } = cat;
+      playArrivalSound('heaven');
+      const beam = fxEl(fx, 'arrival-beam', { left: `${x}px`, height: `${520 - y + 10}px` });
+      beam.animate([{ opacity: 0, transform: 'scaleX(0.2)' }, { opacity: 1, transform: 'scaleX(1)', offset: 0.2 }, { opacity: 1, transform: 'scaleX(1)', offset: 0.8 }, { opacity: 0, transform: 'scaleX(0.6)' }], { duration: 3000, easing: 'ease-in-out', fill: 'forwards' });
+      const cloud = fxEl(fx, 'arrival-cloud', { left: `${x}px` }, '☁️☁️');
+      cloud.animate([{ opacity: 0, transform: 'translateY(-20px)' }, { opacity: 1, transform: 'none', offset: 0.2 }, { opacity: 1, offset: 0.75 }, { opacity: 0 }], { duration: 3000, fill: 'forwards' });
+      for (let i = 0; i < 12; i++) {
+        const p = fxEl(fx, 'arrival-particle', { left: `${x + (Math.random() - 0.5) * 150}px`, top: '40px' }, i % 3 === 0 ? '🪶' : '✨');
+        p.animate([{ opacity: 0, transform: 'translateY(0) rotate(0deg)' }, { opacity: 1, offset: 0.2 }, { opacity: 0, transform: `translateY(${440 - y + Math.random() * 60}px) rotate(${Math.random() * 360}deg)` }], { duration: 1800 + Math.random() * 900, delay: Math.random() * 700, easing: 'ease-in', fill: 'forwards' });
+      }
+      // The cat floats down with a halo
+      const halo = fxEl(cat.dom, 'cat-halo', {});
+      cat.dom.style.opacity = '1';
+      cat.dom.animate([{ bottom: '500px', opacity: 0, filter: 'brightness(2.2)' }, { opacity: 1, offset: 0.25 }, { bottom: `${y}px`, opacity: 1, filter: 'brightness(1)' }], { duration: 1900, delay: 350, easing: 'cubic-bezier(0.2, 0.8, 0.3, 1)', fill: 'backwards' });
+      setTimeout(() => {
+        const ring = fxEl(fx, 'arrival-ring', { left: `${x}px`, bottom: `${y - 14}px` });
+        ring.animate([{ opacity: 1, transform: 'scale(0.3)' }, { opacity: 0, transform: 'scale(1.6)' }], { duration: 900, easing: 'ease-out', fill: 'forwards' });
+      }, 2250);
+      setTimeout(() => halo.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 800, fill: 'forwards' }).onfinish = () => halo.remove(), 2600);
+      setTimeout(finish, 2400);
+      setTimeout(() => fx.remove(), 3600);
+    }
+
+    function warpArrival(cat, fx, finish) {
+      const { x, y } = cat;
+      const shipBottom = Math.min(440, y + 250);
+      playArrivalSound('warp');
+      const ship = fxEl(fx, 'arrival-ship', { left: `${x}px`, bottom: `${shipBottom}px` }, '<div class="dome"></div><div class="hull"></div><div class="lights"></div>');
+      ship.animate([
+        { transform: 'translateX(-950px) rotate(-8deg)' },
+        { transform: 'translateX(0) rotate(0deg)', offset: 0.3 },
+        { transform: 'translateY(-6px)', offset: 0.45 },
+        { transform: 'translateY(4px)', offset: 0.6 },
+        { transform: 'translateY(0)', offset: 0.72 },
+        { transform: 'translateX(950px) rotate(8deg)' }
+      ], { duration: 3800, easing: 'ease-in-out', fill: 'forwards' });
+      const beam = fxEl(fx, 'tractor-beam', { left: `${x}px`, bottom: `${y - 6}px`, height: `${shipBottom - y + 14}px` });
+      beam.animate([{ opacity: 0, transform: 'scaleY(0)' }, { opacity: 0, transform: 'scaleY(0)', offset: 0.3 }, { opacity: 1, transform: 'scaleY(1)', offset: 0.4 }, { opacity: 1, transform: 'scaleY(1)', offset: 0.66 }, { opacity: 0, transform: 'scaleY(0)', offset: 0.74 }, { opacity: 0 }], { duration: 3800, fill: 'forwards' });
+      // Materialize: flicker in with a glitchy scale-up
+      setTimeout(() => {
+        cat.dom.style.opacity = '1';
+        cat.dom.animate([
+          { opacity: 0, transform: 'scale(0.2, 1.6)', filter: 'brightness(3) hue-rotate(160deg)' },
+          { opacity: 0.6, offset: 0.3 },
+          { opacity: 0.2, offset: 0.45 },
+          { opacity: 1, transform: 'scale(1)', filter: 'brightness(1)' }
+        ], { duration: 900, easing: 'ease-out' });
+      }, 1550);
+      setTimeout(finish, 2550);
+      setTimeout(() => fx.remove(), 3900);
+    }
+
+    function playArrivalSound(kind) {
+      if (!audioEnabled || !audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const t0 = audioCtx.currentTime;
+        const notes = kind === 'heaven' ? [523.25, 659.25, 783.99, 1046.5, 1318.5] : [220, 330, 495, 742, 1113];
+        notes.forEach((f, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = kind === 'heaven' ? 'sine' : 'sawtooth';
+          osc.frequency.setValueAtTime(f, t0 + i * 0.16);
+          if (kind === 'warp') osc.frequency.exponentialRampToValueAtTime(f * 2, t0 + i * 0.16 + 0.3);
+          gain.gain.setValueAtTime(0.0001, t0 + i * 0.16);
+          gain.gain.exponentialRampToValueAtTime(kind === 'heaven' ? 0.09 : 0.035, t0 + i * 0.16 + 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t0 + i * 0.16 + 0.9);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(t0 + i * 0.16);
+          osc.stop(t0 + i * 0.16 + 0.95);
+        });
+      } catch (e) {}
+    }
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const audio = {
@@ -5482,6 +5957,7 @@ class LiveCatActor {
 
     // Spawn on a free spot near the visible center of the current room (REQ-03)
     const spot = preferredWaypoint || pickSpawnSpot(this);
+    this.pendingArrival = arrivalQueue.has(breedData.id);
     this.spotKey = spotKey(spot);
     this.x = spot.x;
     this.y = spot.y;
@@ -5489,7 +5965,7 @@ class LiveCatActor {
     // State machine
     this.state = 'sitting'; // sitting, sleeping, grooming, walking, crouching, jumping, eating, drinking
     this.isMoving = false;
-    this.isBusy = false; // Locked when feeding or custom action
+    this.isBusy = this.pendingArrival; // Locked when feeding, arriving or custom action
     this.facing = Math.random() < 0.5 ? 1 : -1; // 1 = right, -1 = left
 
     // Timers
@@ -5533,10 +6009,11 @@ class LiveCatActor {
       this.onTap(e);
     });
 
+    if (this.pendingArrival) el.style.opacity = '0';
     layer.appendChild(el);
     this.dom = el;
     this.applyChonkyTransform();
-    this.scheduleNextAction();
+    if (!this.pendingArrival) this.scheduleNextAction();
   }
 
   getWeightLabel() {
@@ -5727,6 +6204,7 @@ class LiveCatActor {
   }
 
   cleanup() {
+    if (typeof arrivalQueue !== 'undefined') arrivalQueue.delete(this.data.id);
     if (this.actionTimer) {
       clearTimeout(this.actionTimer);
       this.actionTimer = null;
@@ -5772,6 +6250,7 @@ class LiveCatActor {
       if (countEl) countEl.innerText = `${n}/${MAX_CATS_PER_ROOM}`;
       const modalCountEl = document.getElementById("modal-cat-count-val");
       if (modalCountEl) modalCountEl.innerText = `${n} / ${MAX_CATS_PER_ROOM} ตัว`;
+      renderCatShop();
     }
 
     /* ==========================================================================
@@ -5898,6 +6377,7 @@ class LiveCatActor {
     // Farm plaque uses the real Supabase leaderboard (openLeaderboardModal in the Cat Ball section).
     function closeModal(id) {
       document.getElementById(id).classList.remove("open");
+      if (id === 'cat-selector-modal') flushArrivals();
     }
 
     /* ==========================================================================
@@ -5914,19 +6394,21 @@ class LiveCatActor {
       const title = document.getElementById("cat-selector-title");
       if (title) title.innerText = `แมวในห้อง${ROOM_NAMES[currentTheme]}`;
 
-      CAT_BREEDS.forEach(b => {
+      const sorted = [...CAT_BREEDS].sort((a, b) => (ownedCats.includes(b.id) - ownedCats.includes(a.id)) || (CAT_PRICES[a.id] - CAT_PRICES[b.id]));
+      sorted.forEach(b => {
+        const isOwned = ownedCats.includes(b.id);
         const room = roomOfCat(b.id);
         const isHere = room === currentTheme;
         const isElsewhere = room && !isHere;
         const curWeight = (catWeights && catWeights[b.id]) ? catWeights[b.id] : b.baseWeight;
         const card = document.createElement("div");
-        card.className = "cat-select-card" + (isHere ? " selected" : "") + (isElsewhere ? " is-elsewhere" : "");
+        card.className = "cat-select-card" + (isHere ? " selected" : "") + (isElsewhere ? " is-elsewhere" : "") + (isOwned ? "" : " is-locked");
         card.onclick = () => toggleCatSelection(b.id);
         card.innerHTML = `
-          <div class="cat-select-badge">${isHere ? '✅' : isElsewhere ? '🏠' : '➕'}</div>
+          <div class="cat-select-badge">${!isOwned ? '🔒' : isHere ? '✅' : isElsewhere ? '🏠' : '➕'}</div>
           <img src="${b.img}" alt="${b.name}" class="cat-select-thumb" draggable="false">
           <div class="cat-select-name">${b.name}</div>
-          <div class="cat-select-info">${isElsewhere ? `อยู่ห้อง${ROOM_NAMES[room]}` : `${curWeight.toFixed(1)} kg • ${b.trait.slice(0, 16)}`}</div>
+          <div class="cat-select-info">${!isOwned ? `${CAT_PRICES[b.id]} 🐟 • ห้องขายแมว` : isElsewhere ? `อยู่ห้อง${ROOM_NAMES[room]}` : `${curWeight.toFixed(1)} kg • ${b.trait.slice(0, 16)}`}</div>
         `;
         grid.appendChild(card);
       });
@@ -5940,6 +6422,11 @@ class LiveCatActor {
       if (ids.includes(id)) {
         roomCats[currentTheme] = ids.filter(cid => cid !== id);
       } else {
+        if (!ownedCats.includes(id)) {
+          showToast("🔒", "ยังไม่ได้รับเลี้ยงน้องตัวนี้ — ไปที่ห้องขายแมวก่อนนะ");
+          scrollToCatShop();
+          return;
+        }
         const otherRoom = roomOfCat(id);
         if (otherRoom) {
           const breed = CAT_BREEDS.find(b => b.id === id);
@@ -5951,6 +6438,7 @@ class LiveCatActor {
           return;
         }
         ids.push(id);
+        arrivalQueue.add(id); // arrives with its effect once the selector closes
       }
 
       saveRoomCats();
@@ -6098,14 +6586,42 @@ class LiveCatActor {
       ownedItems = [];
     }
     ownedItems = Array.isArray(ownedItems) ? ownedItems.filter(id => SHOP_ITEMS.some(i => i.id === id)) : [];
+    // Owned items the player has put away (click the item again to toggle)
+    let hiddenItems = [];
+    try { hiddenItems = JSON.parse(getStorageItem('hidden_items') || '[]') || []; } catch (e) { hiddenItems = []; }
+    const isItemShown = id => ownedItems.includes(id) && !hiddenItems.includes(id);
 
     function saveOwnedItems() {
       setStorageItem('owned_items', JSON.stringify(ownedItems));
+      setStorageItem('hidden_items', JSON.stringify(hiddenItems));
+    }
+
+    function toggleShopItem(id) {
+      const item = SHOP_ITEMS.find(i => i.id === id);
+      if (!item || !ownedItems.includes(id)) return;
+      if (hiddenItems.includes(id)) {
+        hiddenItems = hiddenItems.filter(h => h !== id);
+        saveOwnedItems();
+        viewShopItem(id);
+        showToast("✨", `วาง${item.name}กลับเข้าห้องแล้ว`);
+      } else {
+        hiddenItems.push(id);
+        saveOwnedItems();
+        updateRoomDecorations();
+        // Cats sitting on furniture that was put away jump down to a free spot
+        catInstances.forEach(cat => {
+          const spot = (ROOM_SPOTS[currentTheme] || []).find(sp => spotKey(sp) === cat.spotKey);
+          if (spot && spot.requires && !spot.requires.some(isItemShown) && !cat.isMoving && !cat.isBusy) cat.wanderToWaypoint(true);
+        });
+        showToast("📦", `เก็บ${item.name}ออกจากห้องแล้ว (กดอีกครั้งเพื่อวาง)`);
+      }
+      renderShop(currentShopFilter);
     }
 
     // Test helper (console): empties the purchased-item list for this environment
     function resetAllPurchasedItems() {
       ownedItems = [];
+      hiddenItems = [];
       saveOwnedItems();
       updateRoomDecorations();
       renderShop(currentShopFilter);
@@ -6116,7 +6632,7 @@ class LiveCatActor {
     function updateRoomDecorations(justBoughtId = null) {
       document.querySelectorAll('[data-decor-id]').forEach(el => {
         const ids = el.getAttribute('data-decor-id').split(/\s+/);
-        const owned = ids.some(id => ownedItems.includes(id));
+        const owned = ids.some(isItemShown);
         el.classList.toggle('is-owned', owned);
         if (owned && justBoughtId && ids.includes(justBoughtId)) {
           el.classList.remove('just-bought');
@@ -6140,7 +6656,9 @@ class LiveCatActor {
         const scope = item.room === 'all' ? '🌐 ใช้ได้ทุกห้อง' : `🏠 เฉพาะห้อง${ROOM_NAMES[item.room]}`;
         let btn;
         if (isOwned) {
-          btn = `<button class="item-buy-btn equipped" onclick="viewShopItem('${item.id}')">✓ มีแล้ว • ดูในห้อง</button>`;
+          btn = hiddenItems.includes(item.id)
+            ? `<button class="item-buy-btn" style="background:#334155;" onclick="toggleShopItem('${item.id}')">📦 เก็บไว้ • กดเพื่อวาง</button>`
+            : `<button class="item-buy-btn equipped" onclick="toggleShopItem('${item.id}')">✓ ตั้งอยู่ • กดเพื่อเก็บ</button>`;
         } else if (isLocked) {
           btn = `<button class="item-buy-btn" disabled style="opacity:0.55; cursor:not-allowed;">🔒 ปลดล็อกห้องไซเบอร์ก่อน</button>`;
         } else {
@@ -6181,7 +6699,7 @@ class LiveCatActor {
       const item = SHOP_ITEMS.find(i => i.id === id);
       if (!item) return;
       if (ownedItems.includes(id)) {
-        viewShopItem(id);
+        toggleShopItem(id);
         return;
       }
       if (item.room === 'space' && !secretSpaceUnlocked) {
@@ -6470,8 +6988,22 @@ class LiveCatActor {
     let currentView = 'game';
     let isGameLoopRunning = true;
 
+    // The cat farm needs a signed-in player; Cat Ball stays open to guests (REQ-08)
+    let pendingFarmEntry = false;
+    function showFarmLoginGate() {
+      if (currentView === 'farm') switchView('game');
+      pendingFarmEntry = true;
+      openLoginModal();
+      const msg = document.getElementById('login-gate-msg');
+      if (msg) msg.style.display = 'block';
+    }
+
     function switchView(viewName) {
       if (viewName !== 'game' && viewName !== 'farm') return;
+      if (viewName === 'farm' && !currentUser) {
+        showFarmLoginGate();
+        return;
+      }
       currentView = viewName;
 
       const viewGame = document.getElementById("view-game");
@@ -6523,18 +7055,20 @@ class LiveCatActor {
       // Returning from a Facebook login redirect? (read before anything rewrites the URL)
       let returnView = null;
       try { returnView = sessionStorage.getItem('sleeperem_return_view'); sessionStorage.removeItem('sleeperem_return_view'); } catch (e) {}
+      const wantFarm = window.location.hash === '#farm' || returnView === 'farm';
 
       // Sync initial user state
       const client = getSupabase();
       if (client) {
         client.auth.getSession().then(({ data: { session } }) => {
           applyUserSession(session);
-          // Switch only after Supabase consumed the #access_token so the login isn't lost
-          if (returnView === 'farm' && currentView !== 'farm') switchView('farm');
+          // Route only after Supabase consumed the #access_token so the login isn't lost
+          if (wantFarm && currentView !== 'farm') switchView('farm');
         });
         client.auth.onAuthStateChange((event, session) => applyUserSession(session));
       } else {
         updateUserUI(null);
+        if (wantFarm) switchView('farm');
       }
 
       // Init stations & farm
@@ -6545,13 +7079,10 @@ class LiveCatActor {
       if (typeof applyCameraTransform === 'function') applyCameraTransform();
       if (typeof reloadActiveCats === 'function') reloadActiveCats();
       if (typeof renderShop === 'function') renderShop();
+      renderCatShop();
       if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
       if (typeof updateRoomDecorations === 'function') updateRoomDecorations();
 
-      // Check hash routing
-      if (window.location.hash === '#farm') {
-        switchView('farm');
-      }
     });
 
 
