@@ -1913,6 +1913,553 @@
     .cat-shop-thumb { width: 46px; height: 46px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5)); }
     .item-card.cat-shop-card.owned .cat-shop-thumb { filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.6)); }
     .cat-select-card.is-locked { opacity: 0.4; filter: grayscale(1); }
+
+    /* ==========================================================================
+       SHOP HUB (REQ-12): choose a category first — cats / decor / themes
+       ========================================================================== */
+    .shop-home-btn {
+      display: none;
+      background: #111a2e;
+      border: 1px solid #1e293b;
+      color: #cbd5e1;
+      border-radius: 10px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .shop-section.has-category .shop-home-btn { display: inline-flex; }
+    .shop-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .shop-cat-card {
+      background: linear-gradient(160deg, #16213a, #0d1426);
+      border: 1px solid #243049;
+      border-radius: 18px;
+      padding: 16px 6px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: #f8fafc;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+      transition: transform 0.15s, border-color 0.2s;
+    }
+    .shop-cat-card:hover { border-color: #fbbf24; transform: translateY(-2px); }
+    .shop-cat-icon { font-size: 34px; line-height: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+    .shop-cat-name { font-size: 13px; font-weight: 700; }
+    .shop-cat-meta { font-size: 10px; color: #94a3b8; }
+    /* Inside a category the three cards shrink into tabs */
+    .shop-section.has-category .shop-cat-card {
+      flex-direction: row;
+      justify-content: center;
+      padding: 7px 4px;
+      border-radius: 12px;
+      gap: 5px;
+      box-shadow: none;
+    }
+    .shop-section.has-category .shop-cat-icon { font-size: 16px; }
+    .shop-section.has-category .shop-cat-name { font-size: 11px; }
+    .shop-section.has-category .shop-cat-meta { display: none; }
+    .shop-cat-card.active {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-color: #38bdf8;
+    }
+    .shop-panel { display: none; }
+    .shop-panel.active { display: block; animation: shopPanelIn 0.22s ease; }
+    @keyframes shopPanelIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: none; }
+    }
+    .shop-sub-filters { justify-content: flex-start; margin-bottom: 10px; }
+    .theme-card-preview {
+      width: 58px; height: 46px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.14);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .theme-card-preview.japanese { background: linear-gradient(180deg, #ffe3b3, #b9d98c 55%, #5f8f47); }
+    .theme-card-preview.modern { background: linear-gradient(180deg, #020617, #1e1b4b 60%, #312e81); }
+    .theme-card-preview.space { background: linear-gradient(180deg, #0b0520, #3b0764 55%, #be185d 88%, #f472b6); }
+    .theme-card-preview.is-mystery { background: repeating-linear-gradient(45deg, #111424 0 8px, #181c33 8px 16px); }
+    .theme-tab-btn.theme-locked { opacity: 0.6; }
+
+    /* ==========================================================================
+       SCENE TOYS (REQ-12): tappable architecture, visitors, laser, time of day, parallax
+       ========================================================================== */
+    .overlay-right { display: flex; gap: 6px; }
+    .laser-pill.is-on {
+      background: rgba(76, 5, 25, 0.9);
+      border-color: #f43f5e;
+      color: #fecdd3;
+      box-shadow: 0 0 14px rgba(244, 63, 94, 0.65);
+    }
+    .room-viewport.laser-mode, .room-viewport.laser-mode:active { cursor: crosshair; }
+
+    /* Window views move slower than the room when panning (depth) */
+    .parallax-far { translate: calc(var(--pan, 0) * -0.14px) 0; }
+    .parallax-mid { translate: calc(var(--pan, 0) * -0.08px) 0; }
+    .parallax-near { translate: calc(var(--pan, 0) * -0.04px) 0; }
+    .jp-bamboo { inset: -10px -70px 0 -70px; }
+    .city-skyline-silhouette { left: -60px; right: -60px; }
+    .cy-city { left: -60px; right: -60px; }
+
+    /* Japanese: every shoji slides open to the bamboo garden */
+    .jp-garden-view { left: 566px; width: 468px; top: 70px; height: 278px; }
+    .jp-shoji-panel {
+      cursor: pointer;
+      transform-origin: left center;
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .jp-shoji-panel.is-open {
+      background:
+        repeating-linear-gradient(90deg, transparent 0 38px, rgba(74, 40, 16, 0.85) 38px 41px),
+        repeating-linear-gradient(180deg, transparent 0 46px, rgba(74, 40, 16, 0.85) 46px 49px),
+        linear-gradient(180deg, #fbf1d9 0%, #f3dfb4 100%);
+      transform: scaleX(0.07);
+    }
+    [data-decor-id="jp_bell"] { cursor: pointer; transform-origin: top center; }
+    .is-ringing { animation: bellSwing 1.4s ease-out; }
+    @keyframes bellSwing {
+      0% { rotate: 0deg; } 15% { rotate: 22deg; } 35% { rotate: -16deg; }
+      55% { rotate: 10deg; } 75% { rotate: -5deg; } 100% { rotate: 0deg; }
+    }
+    [data-decor-id="uni_yarn"], [data-decor-id="uni_mouse"], [data-decor-id="uni_box"] { cursor: pointer; }
+
+    /* Modern: light switch — the loft goes dark and the city takes over */
+    .mod-ceiling-lights span { cursor: pointer; transition: background 0.4s, box-shadow 0.4s; }
+    .mod-light-switch {
+      position: absolute;
+      left: 692px; bottom: 196px;
+      width: 18px; height: 28px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      cursor: pointer;
+      z-index: 14;
+    }
+    .mod-light-switch span {
+      position: absolute;
+      left: 5px; top: 4px;
+      width: 8px; height: 10px;
+      border-radius: 2px;
+      background: #64748b;
+      transition: top 0.2s;
+    }
+    .mod-lights-off-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 38% 35%, rgba(30, 27, 75, 0.25) 0%, rgba(2, 6, 23, 0.68) 70%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease;
+      z-index: 30;
+    }
+    .theme-layout-modern.lights-off .mod-lights-off-overlay { opacity: 1; }
+    .theme-layout-modern.lights-off .modern-skyline-window { z-index: 31; }
+    .theme-layout-modern.lights-off .mod-city-lights { opacity: 1; animation: none; }
+    .theme-layout-modern.lights-off .mod-ceiling-lights span { background: #475569; box-shadow: none; }
+    .theme-layout-modern.lights-off .mod-light-switch span { top: 14px; }
+    .theme-layout-modern.lights-off .mod-light-switch { z-index: 31; background: #94a3b8; }
+
+    /* Cyber: neon signs and the hologram react to taps */
+    .cy-neon-sign, .cy-holo-panel { cursor: pointer; }
+    .cy-neon-sign { transition: filter 0.3s; }
+    .is-glitching { animation: holoGlitch 0.45s steps(2) 1; }
+    @keyframes holoGlitch {
+      0% { translate: 0 0; opacity: 1; }
+      25% { translate: -4px 1px; opacity: 0.4; }
+      50% { translate: 3px -2px; opacity: 1; }
+      75% { translate: -2px 0; opacity: 0.6; }
+      100% { translate: 0 0; opacity: 1; }
+    }
+
+    /* Time of day (player's clock): windows show day / dusk / night */
+    .room-stage.tod-day .jp-garden-view { background: linear-gradient(180deg, #bfe6ff 0%, #e4f4cf 55%, #6fa352 100%); }
+    .room-stage.tod-dusk .jp-garden-view { background: linear-gradient(180deg, #ffb37a 0%, #e58f6a 42%, #5f6e38 100%); }
+    .room-stage.tod-night .jp-garden-view { background: linear-gradient(180deg, #0b1633 0%, #1a2f3a 55%, #10261a 100%); }
+    .room-stage.tod-night .jp-bamboo { filter: brightness(0.45); }
+    .room-stage.tod-day .jp-marumado-window { background: radial-gradient(circle at 60% 40%, #fff1f4 0%, #ffcad4 45%, #9ad0ec 100%); }
+    .room-stage.tod-night .jp-marumado-window { background: radial-gradient(circle at 60% 40%, #6d3a5f 0%, #33204d 45%, #0b1030 100%); }
+    .room-stage.tod-night .jp-backwall { filter: brightness(0.8); }
+    .jp-window-moon {
+      position: absolute;
+      top: 24px; right: 44px;
+      font-size: 26px;
+      opacity: 0;
+      transition: opacity 1s;
+      filter: drop-shadow(0 0 10px #fef3c7);
+    }
+    .room-stage.tod-night .jp-window-moon { opacity: 1; }
+    .room-stage.tod-day .modern-skyline-window { background: linear-gradient(180deg, #38bdf8 0%, #7dd3fc 55%, #e0f2fe 100%); }
+    .room-stage.tod-dusk .modern-skyline-window { background: linear-gradient(180deg, #312e81 0%, #c026d3 55%, #fb923c 100%); }
+    .room-stage.tod-day .mod-window-stars { opacity: 0; animation: none; }
+    .room-stage.tod-day .mod-city-lights { opacity: 0.12; animation: none; }
+    .night-fireflies {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.5s;
+      pointer-events: none;
+    }
+    .room-stage.tod-dusk .night-fireflies { opacity: 0.5; }
+    .room-stage.tod-night .night-fireflies { opacity: 1; }
+    .night-fireflies span {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #fef08a;
+      box-shadow: 0 0 8px 2px rgba(254, 240, 138, 0.8);
+      animation: firefly 5s ease-in-out infinite alternate;
+    }
+    .night-fireflies span:nth-child(1) { left: 12%; top: 62%; }
+    .night-fireflies span:nth-child(2) { left: 34%; top: 40%; animation-delay: -1.2s; animation-duration: 6s; }
+    .night-fireflies span:nth-child(3) { left: 58%; top: 70%; animation-delay: -2.5s; }
+    .night-fireflies span:nth-child(4) { left: 76%; top: 48%; animation-delay: -3.1s; animation-duration: 7s; }
+    .night-fireflies span:nth-child(5) { left: 90%; top: 78%; animation-delay: -0.6s; }
+    @keyframes firefly {
+      0% { transform: translate(0, 0); opacity: 0.2; }
+      50% { opacity: 1; }
+      100% { transform: translate(16px, -24px); opacity: 0.3; }
+    }
+
+    /* Visitors: butterfly / balloon / delivery drone — tap for fish coins */
+    .scene-visitor {
+      position: absolute;
+      z-index: 565;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.45));
+      transform: translate(-50%, 50%);
+    }
+    .scene-visitor .bob { display: inline-flex; flex-direction: column; align-items: center; animation: visitorBob 0.6s ease-in-out infinite alternate; }
+    .scene-visitor.butterfly .bob { animation: flutter 0.16s ease-in-out infinite alternate; }
+    .scene-visitor.drone small { font-size: 18px; margin-top: -4px; }
+    .scene-visitor::after {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+    }
+    @keyframes visitorBob { from { transform: translateY(-4px); } to { transform: translateY(4px); } }
+    @keyframes flutter { from { transform: scaleX(1); } to { transform: scaleX(0.45); } }
+    .coin-pop {
+      position: absolute;
+      z-index: 600;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fde047;
+      text-shadow: 0 2px 4px #000, 0 0 10px rgba(253, 224, 71, 0.6);
+      pointer-events: none;
+      white-space: nowrap;
+      transform: translate(-50%, 50%);
+      animation: coinPop 1.3s ease-out forwards;
+    }
+    @keyframes coinPop {
+      0% { translate: 0 0; opacity: 0; scale: 0.6; }
+      20% { opacity: 1; scale: 1.2; }
+      100% { translate: 0 -60px; opacity: 0; scale: 1; }
+    }
+
+    /* Laser pointer toy */
+    .laser-dot {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #fff 0 18%, #ff1744 45%, rgba(255, 23, 68, 0) 72%);
+      box-shadow: 0 0 14px 5px rgba(255, 23, 68, 0.65);
+      transform: translate(-50%, 50%);
+      z-index: 595;
+      pointer-events: none;
+      transition: left 0.25s ease-out, bottom 0.25s ease-out, opacity 0.4s;
+      animation: laserJitter 0.12s infinite alternate;
+    }
+    @keyframes laserJitter { from { translate: -1px 1px; } to { translate: 1px -1px; } }
+
+    .guest-banner {
+      position: absolute;
+      left: 50%; bottom: 12px;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: none;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid #38bdf8;
+      color: #e0f2fe;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 10px rgba(56, 189, 248, 0.35);
+    }
+    .is-guest .guest-banner { display: block; }
+    .is-guest .gesture-hint-pill { display: none; }
+
+    /* ==========================================================================
+       STATIONS (REQ-12): food bowl / water bowl / litter box
+       Level 1 cheap plastic -> 2 ceramic / hooded -> 3 automatic. Skins recolor any level.
+       ========================================================================== */
+    .station-interactive-wrap { position: relative; }
+    .station-upgrade-btn {
+      position: absolute;
+      top: -14px; right: -12px;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1px solid #fbbf24;
+      background: #0f172a;
+      color: #fde047;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+    .litter-station-anchor {
+      position: absolute;
+      left: 868px;
+      bottom: 108px;
+      z-index: 20;
+    }
+    .station-body {
+      --st-main: linear-gradient(180deg, #fbcfe8 0%, #f472b6 100%);
+      --st-rim: #fbcfe8;
+      --st-glow: none;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      filter: drop-shadow(0 6px 6px rgba(0,0,0,0.45));
+    }
+    .station-body.st-fountain { --st-main: linear-gradient(180deg, #bfdbfe 0%, #60a5fa 100%); --st-rim: #dbeafe; }
+    .station-body.st-litter { --st-main: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%); --st-rim: #e2e8f0; }
+    /* Bowl (feeder / fountain levels 1-2) */
+    .st-bowl {
+      position: relative;
+      width: 42px; height: 17px;
+      background: var(--st-main);
+      border-top: 3px solid var(--st-rim);
+      border-radius: 4px 4px 22px 22px / 4px 4px 16px 16px;
+      box-shadow: var(--st-glow), inset 0 -3px 5px rgba(0,0,0,0.18);
+    }
+    .st-lv-2 .st-bowl { width: 52px; height: 22px; border-top-width: 4px; }
+    .st-lv-2 .st-bowl::after {
+      content: '';
+      position: absolute;
+      left: 12px; right: 12px; bottom: -5px;
+      height: 5px;
+      border-radius: 0 0 6px 6px;
+      background: var(--st-rim);
+    }
+    /* Level 1 is plain plastic: flat, a little dull */
+    .st-lv-1 .st-bowl { filter: saturate(0.75); }
+    .st-fill {
+      position: absolute;
+      left: 5px; right: 5px; top: -5px;
+      height: 8px;
+      border-radius: 50%;
+      display: none;
+    }
+    .st-fill.kibble {
+      background:
+        radial-gradient(circle at 20% 50%, #92400e 0 2px, transparent 3px),
+        radial-gradient(circle at 45% 40%, #b45309 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 55%, #78350f 0 2px, transparent 3px),
+        radial-gradient(circle at 85% 40%, #a16207 0 2px, transparent 3px),
+        #d97706;
+    }
+    .st-fill.water { background: linear-gradient(180deg, #e0f2fe, #38bdf8); box-shadow: 0 0 6px rgba(56, 189, 248, 0.8); }
+    .has-supply .st-fill { display: block; }
+    /* Level 3: automatic feeder hopper / water fountain tower */
+    .st-tower {
+      position: relative;
+      width: 30px; height: 40px;
+      margin-bottom: -3px;
+      border-radius: 10px 10px 4px 4px;
+      background: var(--st-main);
+      border: 2px solid var(--st-rim);
+      box-shadow: var(--st-glow);
+      overflow: hidden;
+    }
+    .st-tower::before {
+      content: '';
+      position: absolute;
+      left: 5px; right: 5px; top: 6px; bottom: 8px;
+      border-radius: 4px;
+      background: rgba(15, 23, 42, 0.35);
+    }
+    .st-tower .st-level {
+      position: absolute;
+      left: 5px; right: 5px; bottom: 8px;
+      border-radius: 0 0 4px 4px;
+      transition: height 0.4s ease;
+    }
+    .st-feeder .st-tower .st-level { background: #b45309; }
+    .st-fountain .st-tower .st-level { background: #38bdf8; }
+    .st-tower .st-led {
+      position: absolute;
+      left: 50%; bottom: 2px;
+      width: 4px; height: 4px;
+      margin-left: -2px;
+      border-radius: 50%;
+      background: #f87171;
+    }
+    .has-supply .st-tower .st-led { background: #4ade80; box-shadow: 0 0 5px #4ade80; }
+    .st-fountain.has-supply .st-tower::after {
+      content: '';
+      position: absolute;
+      left: 50%; top: -2px;
+      width: 6px; height: 6px;
+      margin-left: -3px;
+      border-radius: 50%;
+      background: #bae6fd;
+      animation: fountainBubble 1.2s ease-in-out infinite;
+    }
+    @keyframes fountainBubble {
+      0% { transform: translateY(6px) scale(0.6); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-4px) scale(1.2); opacity: 0; }
+    }
+    /* Litter box */
+    .st-tray {
+      position: relative;
+      width: 64px; height: 16px;
+      background: var(--st-main);
+      border-top: 3px solid var(--st-rim);
+      border-radius: 3px 3px 7px 7px;
+      box-shadow: var(--st-glow), inset 0 -3px 5px rgba(0,0,0,0.2);
+    }
+    .st-tray::before {
+      content: '';
+      position: absolute;
+      left: 4px; right: 4px; top: -6px;
+      height: 6px;
+      border-radius: 50% 50% 0 0;
+      background: repeating-linear-gradient(90deg, #e7d7a8 0 3px, #d6c28c 3px 5px);
+    }
+    .st-lv-1 .st-tray { filter: saturate(0.6); }
+    .st-hood {
+      width: 66px; height: 34px;
+      margin-bottom: -4px;
+      border-radius: 34px 34px 4px 4px;
+      background: var(--st-main);
+      border: 2px solid var(--st-rim);
+      box-shadow: var(--st-glow);
+      position: relative;
+    }
+    .st-hood::after {
+      content: '';
+      position: absolute;
+      left: 50%; bottom: 0;
+      width: 26px; height: 22px;
+      margin-left: -13px;
+      border-radius: 13px 13px 0 0;
+      background: #1e1b2e;
+    }
+    .st-globe {
+      width: 56px; height: 52px;
+      border-radius: 50% 50% 10px 10px;
+      background: var(--st-main);
+      border: 2px solid var(--st-rim);
+      box-shadow: var(--st-glow), inset -6px -6px 12px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    .st-globe::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 12px;
+      width: 32px; height: 22px;
+      border-radius: 50%;
+      background: #1e1b2e;
+    }
+    .st-globe::after {
+      content: '';
+      position: absolute;
+      right: 7px; bottom: 6px;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 6px #4ade80;
+    }
+    .st-dirt {
+      position: absolute;
+      top: -16px; left: 0; right: 0;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: -2px;
+      pointer-events: none;
+    }
+    .st-stink {
+      position: absolute;
+      top: -30px; left: 50%;
+      margin-left: -8px;
+      font-size: 14px;
+      color: #a3e635;
+      animation: stinkRise 1.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes stinkRise {
+      0% { transform: translateY(6px); opacity: 0; }
+      50% { opacity: 0.9; }
+      100% { transform: translateY(-8px); opacity: 0; }
+    }
+    /* Theme skins (bought per station, worn over any level) */
+    .station-body.skin-japanese {
+      --st-main: linear-gradient(180deg, #f5ecd9 0%, #d9c6a1 100%);
+      --st-rim: #7c3f16;
+    }
+    .station-body.skin-japanese::after {
+      content: '🌸';
+      position: absolute;
+      bottom: 2px; right: -4px;
+      font-size: 11px;
+    }
+    .station-body.skin-modern {
+      --st-main: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 40%, #f8fafc 55%, #cbd5e1 100%);
+      --st-rim: #d4af37;
+    }
+    .station-body.skin-space {
+      --st-main: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%);
+      --st-rim: #22d3ee;
+      --st-glow: 0 0 10px rgba(34, 211, 238, 0.75), 0 0 18px rgba(236, 72, 153, 0.35);
+    }
+    .station-modal-preview {
+      height: 96px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .station-modal-preview .station-body { transform: scale(1.7); transform-origin: bottom center; }
+    .station-modal-heading { font-size: 12px; font-weight: 700; color: #e2e8f0; margin: 10px 0 6px; }
+    .station-option-list { display: flex; flex-direction: column; gap: 6px; }
+    .station-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 7px 10px;
+    }
+    .station-option.is-current { border-color: #10b981; background: #0c1f28; }
+    .station-option .opt-text { flex: 1; min-width: 0; }
+    .station-option .opt-name { font-size: 12px; font-weight: 700; color: #f8fafc; }
+    .station-option .opt-desc { font-size: 10px; color: #94a3b8; }
+    .station-option .item-buy-btn { width: auto; min-width: 92px; padding: 5px 8px; }
     .login-gate-msg {
       display: none;
       background: rgba(251, 191, 36, 0.12);
@@ -3651,7 +4198,7 @@
       <div class="modal-card">
         <button class="modal-close-x" onclick="closeLoginModal()" title="ปิด">✕</button>
         <div id="modal-guest-view">
-          <div class="login-gate-msg" id="login-gate-msg">🔒 ห้องแมวต้องเข้าสู่ระบบก่อน — ล็อกอินครั้งแรกรับน้องแมวฟรี 1 ตัว!</div>
+          <div class="login-gate-msg" id="login-gate-msg">🔒 ตอนนี้ดูห้องแมวได้อย่างเดียว — เข้าสู่ระบบเพื่อเลี้ยง ซื้อ และบันทึกข้อมูลกับบัญชี • ล็อกอินครั้งแรกรับน้องแมวฟรี 1 ตัว!</div>
           <div style="font-size: 44px; margin-bottom: 6px;">🐱✨</div>
           <h3 style="font-size: 18px; font-weight: 700; color: #fbbf24; margin-bottom: 4px;">บันทึกสถิติคะแนน</h3>
           <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 14px;">
@@ -3762,17 +4309,17 @@
     </header>
         <!-- Theme Tabs -->
     <div class="theme-selector-bar">
-      <button id="tab-japanese" class="theme-tab-btn active" onclick="switchTheme('japanese')">
-        <span>🍵</span>
-        <span>มัทฉะญี่ปุ่น</span>
+      <button id="tab-japanese" class="theme-tab-btn active" onclick="clickThemeTab('japanese')">
+        <span id="japanese-tab-icon">🍵</span>
+        <span id="japanese-tab-label">มัทฉะญี่ปุ่น</span>
       </button>
-      <button id="tab-modern" class="theme-tab-btn" onclick="switchTheme('modern')">
-        <span>🫐</span>
-        <span>โมเดิร์นลอฟต์</span>
+      <button id="tab-modern" class="theme-tab-btn" onclick="clickThemeTab('modern')">
+        <span id="modern-tab-icon">🫐</span>
+        <span id="modern-tab-label">โมเดิร์นลอฟต์</span>
       </button>
-      <button id="tab-space" class="theme-tab-btn secret-locked" onclick="clickSpaceTab()">
+      <button id="tab-space" class="theme-tab-btn secret-locked" onclick="clickThemeTab('space')">
         <span id="space-tab-icon">🔒</span>
-        <span id="space-tab-label">??? ไซเบอร์อวกาศ</span>
+        <span id="space-tab-label">??? ห้องลับ</span>
       </button>
     </div>
 
@@ -3786,10 +4333,18 @@
         <button class="cat-selector-pill" onclick="openCatSelectorModal()" title="เลือกแมวเข้าห้องนี้ (สูงสุด 12 ตัว)">
           <span>🐾 แมวในห้อง (<span id="active-cat-count">0/12</span>)</span>
         </button>
-        <button class="cat-selector-pill" onclick="scrollToCatShop()" title="ห้องขายแมว">
-          <span>🏪 ห้องขายแมว</span>
-        </button>
+        <div class="overlay-right">
+          <button id="laser-btn" class="cat-selector-pill laser-pill" onclick="toggleLaser()" title="ของเล่นเลเซอร์: แตะในห้องแล้วแมวจะวิ่งไล่">
+            <span>🔴 เลเซอร์</span>
+          </button>
+          <button class="cat-selector-pill" onclick="openShop()" title="ร้านค้า: แมว · ของประดับ · ธีม">
+            <span>🏪 ร้านค้า</span>
+          </button>
+        </div>
       </div>
+
+      <!-- Guests can look around; every action asks them to sign in (REQ-08) -->
+      <button class="guest-banner" id="guest-banner" onclick="openLoginModal()">👀 โหมดชมอย่างเดียว • แตะเพื่อเข้าสู่ระบบ</button>
 
       <!-- Gesture Hint (Fades out) -->
       <div class="gesture-hint-pill" id="gesture-hint">
@@ -3826,7 +4381,10 @@
              ================================================================ -->
         <div class="theme-layout-japanese active-layout" id="layout-japanese">
           <div class="jp-backwall"></div>
-          <div class="jp-garden-view"><div class="jp-bamboo"></div></div>
+          <div class="jp-garden-view">
+            <div class="jp-bamboo parallax-far"></div>
+            <div class="night-fireflies"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
           <div class="jp-shoji-wall">
             <div class="jp-shoji-panel"></div>
             <div class="jp-shoji-panel is-open"></div>
@@ -3843,7 +4401,9 @@
 
           <!-- Round Marumado Zen Window -->
           <div class="jp-marumado-window" onclick="tapWindowEasterEgg()" title="หน้าต่างกลมชมสวนซากุระ">
-            <div class="jp-window-scenery">🌸</div>
+            <div class="jp-window-scenery parallax-far">🌸</div>
+            <div class="jp-window-moon">🌕</div>
+            <div class="night-fireflies"><span></span><span></span><span></span><span></span></div>
             <div class="sakura-petal" style="left: 30px; animation-delay: 0.5s;">🌸</div>
             <div class="sakura-petal" style="left: 120px; animation-delay: 2.5s;">🌸</div>
           </div>
@@ -3919,8 +4479,8 @@
           <!-- Panoramic Skyline Window -->
           <div class="modern-skyline-window" onclick="tapWindowEasterEgg()" title="หน้าต่างกระจกชมวิวตึกระฟ้า">
             <div class="mod-window-stars"></div>
-            <div class="modern-moon">🌙</div>
-            <div class="city-skyline-silhouette"></div>
+            <div class="modern-moon parallax-far">🌙</div>
+            <div class="city-skyline-silhouette parallax-mid"></div>
             <div class="mod-city-lights"></div>
           </div>
 
@@ -3940,6 +4500,9 @@
           <div data-decor-id="mod_lamp" style="position:absolute; left:396px; bottom:120px; font-size:34px; z-index:14;" title="โคมไฟตั้งพื้นเรขาคณิต">💡</div>
           <div data-decor-id="mod_plant" style="position:absolute; left:772px; bottom:228px; font-size:38px; z-index:14;" title="ต้นมอนสเตอร่าด่าง">🌿</div>
           <div data-decor-id="mod_cat_bed" style="position:absolute; left:500px; bottom:78px; font-size:30px; z-index:23;" title="ที่นอนแคปซูลอะคริลิก">🥣</div>
+          <!-- Light switch (scene toy): dims the loft, city lights take over -->
+          <div class="mod-light-switch" title="สวิตช์ไฟ: เปิด/ปิดไฟห้อง"><span></span></div>
+          <div class="mod-lights-off-overlay"></div>
         </div>
 
         <!-- ================================================================
@@ -3956,9 +4519,9 @@
           <!-- Megacity window (tap 5x easter egg lives on the window in every room) -->
           <div class="cy-window" onclick="tapWindowEasterEgg()" title="หน้าต่างมองเมืองไซเบอร์ในวงโคจร">
             <div class="cy-sky"></div>
-            <div class="cy-planet"><div class="cy-planet-ring"></div></div>
-            <div class="cy-city back"></div>
-            <div class="cy-city front"></div>
+            <div class="cy-planet parallax-far"><div class="cy-planet-ring"></div></div>
+            <div class="cy-city back parallax-mid"></div>
+            <div class="cy-city front parallax-near"></div>
             <div class="cy-traffic"><span></span><span></span><span></span></div>
             <div class="cy-rain"></div>
             <div class="cy-window-frame"></div>
@@ -4008,23 +4571,25 @@
         </div>
 
         <!-- Dual Dining & Hydration Hub (Side-by-Side: Food Bowl + Water Bowl) -->
+        <!-- Stations (REQ-12): start as plain plastic, upgrade 3 levels, theme skins go on top.
+             Tap the station = refill / scoop · tap ⬆ = upgrade & skins. Visuals are built by renderStationVisuals(). -->
         <div class="dining-hydration-hub">
-          <!-- Food Feeder Station (ชามข้าว: แตะเพื่อใส่ข้าว) -->
-          <div class="station-interactive-wrap is-empty" id="feeder-station-wrap" onclick="executeFeederRefill(event)" title="แตะเพื่อใส่อาหารเม็ดสดใหม่ 🥣">
-            <div id="feeder-visual" class="feeder-lv1-visual">
-              <div class="bowl-empty-prompt">🥣</div>
-              <div class="bowl-food-content">🐟 🟤</div>
-            </div>
-            <div class="station-label-tag">ชามข้าว</div>
+          <div class="station-interactive-wrap is-empty" id="feeder-station-wrap" onclick="useStation('feeder', event)">
+            <button class="station-upgrade-btn" onclick="openStationModal('feeder', event)" title="อัปเกรด / ใส่ธีม">⬆</button>
+            <div class="station-body" id="feeder-visual"></div>
+            <div class="station-label-tag" id="feeder-label">ชามข้าว</div>
           </div>
-
-          <!-- Water Fountain Station (ชามน้ำ: แตะเพื่อเติมน้ำ) -->
-          <div class="station-interactive-wrap is-empty" id="fountain-station-wrap" onclick="executeFountainRefill(event)" title="แตะเพื่อเติมน้ำสะอาดบริสุทธิ์ 💧">
-            <div id="fountain-visual" class="fountain-lv1-visual">
-              <div class="bowl-empty-prompt">💧</div>
-              <div class="bowl-water-content">🫧 💧</div>
-            </div>
-            <div class="station-label-tag">ชามน้ำ</div>
+          <div class="station-interactive-wrap is-empty" id="fountain-station-wrap" onclick="useStation('fountain', event)">
+            <button class="station-upgrade-btn" onclick="openStationModal('fountain', event)" title="อัปเกรด / ใส่ธีม">⬆</button>
+            <div class="station-body" id="fountain-visual"></div>
+            <div class="station-label-tag" id="fountain-label">ชามน้ำ</div>
+          </div>
+        </div>
+        <div class="litter-station-anchor">
+          <div class="station-interactive-wrap" id="litter-station-wrap" onclick="useStation('litter', event)">
+            <button class="station-upgrade-btn" onclick="openStationModal('litter', event)" title="อัปเกรด / ใส่ธีม">⬆</button>
+            <div class="station-body" id="litter-visual"></div>
+            <div class="station-label-tag" id="litter-label">กระบะทราย</div>
           </div>
         </div>
 
@@ -4057,42 +4622,78 @@
 
       </div>
 
-      <!-- Cat Shop (REQ-10): cats must be adopted before entering a room -->
-      <div class="shop-section" id="cat-shop-section">
+      <!-- Shop (REQ-12): pick a category first — cats / decor / themes — so the list never runs long -->
+      <div class="shop-section" id="shop-section">
         <div class="shop-header-row">
           <div class="section-title">
             <span>🏪</span>
-            <span>ห้องขายแมว (มีแล้ว <span id="owned-cat-count">0</span>/20)</span>
+            <span>ร้านค้า</span>
           </div>
+          <button class="shop-home-btn" id="shop-home-btn" onclick="openShopCategory(null)">← ทุกหมวด</button>
         </div>
-        <p class="cat-shop-hint">รับเลี้ยงด้วยเหรียญปลา 🐟 • ฟรี 3 ตัว: ล็อกอินครั้งแรก · Cat Ball ถึง Tier 5 · ถึง Tier 10</p>
-        <div class="items-grid" id="cat-shop-grid"></div>
-      </div>
+        <div class="shop-cat-grid" id="shop-cat-grid">
+          <button class="shop-cat-card" data-shop-cat="cats" onclick="openShopCategory('cats')">
+            <span class="shop-cat-icon">🐱</span>
+            <span class="shop-cat-name">ขายแมว</span>
+            <span class="shop-cat-meta">มีแล้ว <span id="owned-cat-count">0</span>/20</span>
+          </button>
+          <button class="shop-cat-card" data-shop-cat="decor" onclick="openShopCategory('decor')">
+            <span class="shop-cat-icon">🛋️</span>
+            <span class="shop-cat-name">ของประดับ</span>
+            <span class="shop-cat-meta">มีแล้ว <span id="owned-item-count">0</span>/<span id="shop-item-count">28</span></span>
+          </button>
+          <button class="shop-cat-card" data-shop-cat="themes" onclick="openShopCategory('themes')">
+            <span class="shop-cat-icon">🎨</span>
+            <span class="shop-cat-name">ธีมห้อง</span>
+            <span class="shop-cat-meta">มีแล้ว <span id="owned-theme-count">1</span>/3</span>
+          </button>
+        </div>
 
-      <!-- Decor Shop Section -->
-      <div class="shop-section">
-        <div class="shop-header-row">
-          <div class="section-title">
-            <span>🛍️</span>
-            <span>ร้านของแต่งห้อง (<span id="shop-item-count">28</span> ชนิด)</span>
-          </div>
-          <div class="filter-pills">
+        <!-- Cats (REQ-10): cats must be adopted before entering a room -->
+        <div class="shop-panel" id="cat-shop-section" data-shop-panel="cats">
+          <p class="cat-shop-hint">รับเลี้ยงด้วยเหรียญปลา 🐟 • ฟรี 3 ตัว: ล็อกอินครั้งแรก · Cat Ball ถึง Tier 5 · ถึง Tier 10</p>
+          <div class="items-grid" id="cat-shop-grid"></div>
+        </div>
+
+        <!-- Decor (REQ-06) -->
+        <div class="shop-panel" data-shop-panel="decor">
+          <div class="filter-pills shop-sub-filters">
             <button class="filter-btn active" onclick="filterShop('all', this)">ทั้งหมด</button>
             <button class="filter-btn" onclick="filterShop('universal', this)">🌐 ทุกห้อง</button>
             <button class="filter-btn" onclick="filterShop('japanese', this)">ญี่ปุ่น</button>
             <button class="filter-btn" onclick="filterShop('modern', this)">โมเดิร์น</button>
             <button class="filter-btn" onclick="filterShop('space', this)">ไซเบอร์</button>
+            <button class="filter-btn" onclick="filterShop('stations', this)">🍽️ ชาม & กระบะทราย</button>
+          </div>
+          <div class="items-grid" id="items-grid">
+            <!-- Injected via JS -->
           </div>
         </div>
 
-        <div class="items-grid" id="items-grid">
-          <!-- Injected via JS -->
+        <!-- Room themes (REQ-12) -->
+        <div class="shop-panel" data-shop-panel="themes">
+          <p class="cat-shop-hint">ซื้อธีมแล้วได้ห้องใหม่อีก 1 ห้อง (ห้องละ 12 ตัว) • ห้องลับต้องค้นหาในฉากก่อนถึงจะซื้อได้</p>
+          <div class="items-grid" id="theme-shop-grid"></div>
         </div>
       </div>
     </div>
   </div>
 
   
+      <!-- Station Modal (REQ-12): upgrade level + theme skins for bowls and the litter box -->
+  <div class="farm-modal-overlay" id="station-modal">
+    <div class="farm-modal-card">
+      <button class="close-modal-btn" onclick="closeModal('station-modal')">✕</button>
+      <div class="station-modal-preview" id="station-modal-preview"></div>
+      <h3 id="station-modal-title" style="font-size: 16px; font-weight: 700; color: #fbbf24; text-align: center; margin-bottom: 2px;">ชามข้าว</h3>
+      <p id="station-modal-sub" style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 10px;"></p>
+      <div class="station-modal-heading">⬆️ อัปเกรด</div>
+      <div class="station-option-list" id="station-level-list"></div>
+      <div class="station-modal-heading">🎨 ธีม (ใส่ทับได้ทุกระดับ)</div>
+      <div class="station-option-list" id="station-skin-list"></div>
+    </div>
+  </div>
+
       <!-- Cat Selector Modal (per room, max 12, one room per cat) -->
   <div class="farm-modal-overlay" id="cat-selector-modal">
     <div class="farm-modal-card">
@@ -4204,6 +4805,7 @@
       try {
         localStorage.setItem(STORAGE_PREFIX + key, val);
       } catch(e) {}
+      if (typeof FARM_SYNC_KEYS_SET !== 'undefined' && FARM_SYNC_KEYS_SET.has(key)) queueFarmCloudSave();
     }
 
     // Unified applyUserSession
@@ -4213,9 +4815,12 @@
         const name = u.user_metadata?.full_name || u.user_metadata?.name || u.name || "ทาสแมว Facebook";
         const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || u.avatar;
         currentUser = { id: u.id, name, avatar, user_metadata: u.user_metadata, email: u.email };
+        if (syncFarmWithAccount(u)) return; // reloading with this account's saved farm
         updateUserUI(currentUser);
+        refreshGuestMode();
         if (typeof grantCatReward === 'function') grantCatReward('login');
         if (pendingFarmEntry) {
+          pendingFarmEntry = false;
           closeLoginModal();
           switchView('farm');
         }
@@ -4226,8 +4831,9 @@
         }
       } else {
         currentUser = null;
+        farmCloudReady = false;
         updateUserUI(null);
-        if (typeof currentView !== 'undefined' && currentView === 'farm') switchView('game');
+        refreshGuestMode(); // the farm stays open in view-only mode
       }
     }
 
@@ -4284,15 +4890,12 @@
       if (plaque) {
         plaque.innerText = isOwner ? "Kanel (เจ้าของฟาร์ม)" : "Sleeperem Farm";
       }
-
-      // 4. Special Owner Privileges: Unlock Secret Space Theme automatically
-      if (isOwner && typeof unlockSpaceTheme === 'function') {
-        unlockSpaceTheme();
-      }
     }
 
     async function logoutFacebook() {
       const client = getSupabase();
+      // The farm belongs to the account: save it there, then clear this device's copy
+      if (farmCloudReady) await pushFarmToCloud();
       if (client) {
         try {
           await client.auth.signOut();
@@ -4301,10 +4904,12 @@
         }
       }
       currentUser = null;
-      updateUserUI(null);
+      farmCloudReady = false;
+      writeLocalFarm(FARM_FRESH, null, 0);
       closeLoginModal();
-      if (currentView === 'farm') switchView('game');
-      alert("ออกจากระบบเรียบร้อยแล้ว");
+      alert("ออกจากระบบเรียบร้อยแล้ว — ข้อมูลฟาร์มบันทึกไว้กับบัญชีแล้ว");
+      farmReloading = true;
+      window.location.replace(window.location.pathname + (currentView === 'farm' ? '#farm' : ''));
     }
 
     
@@ -4960,6 +5565,108 @@
       return supabaseClient;
     }
 
+    /* ==========================================================================
+       FARM SAVED ON THE ACCOUNT (REQ-08)
+       The farm lives in the signed-in user's Supabase auth metadata (user_metadata.farm_dev / farm_prod),
+       so it follows the account to any device and survives clearing the browser — no table needed.
+       localStorage is the working copy; each farm write is pushed to the account 2 s later.
+       ========================================================================== */
+    const FARM_SYNC_KEYS = ['fish_coins', 'owned_items', 'hidden_items', 'owned_cats', 'cat_rewards', 'room_cats', 'cat_weights', 'owned_themes', 'station_state', 'visitor_log'];
+    var FARM_SYNC_KEYS_SET = new Set(FARM_SYNC_KEYS); // var: setStorageItem runs before this line during start-up
+    const FARM_CLOUD_FIELD = IS_DEV_BUILD ? 'farm_dev' : 'farm_prod';
+    // Explicit empty farm so the legacy un-prefixed fallback in getStorageItem never resurrects old data
+    const FARM_FRESH = { fish_coins: '2000', owned_items: '[]', hidden_items: '[]', owned_cats: '[]', cat_rewards: '{}', room_cats: '{}', cat_weights: '{}', owned_themes: '["japanese"]', station_state: '{}', visitor_log: '{}' };
+    let farmCloudTimer = null;
+    let farmCloudReady = false; // true once this device's farm belongs to the signed-in account
+    let farmReloading = false;
+
+    function farmSnapshot() {
+      const d = {};
+      FARM_SYNC_KEYS.forEach(k => { const v = getStorageItem(k); if (v !== null) d[k] = v; });
+      return d;
+    }
+
+    function queueFarmCloudSave() {
+      try {
+        if (!farmCloudReady || !currentUser) return;
+        clearTimeout(farmCloudTimer);
+        farmCloudTimer = setTimeout(pushFarmToCloud, 2000);
+      } catch (e) {} // called during start-up before the session code is ready
+    }
+
+    async function pushFarmToCloud() {
+      clearTimeout(farmCloudTimer);
+      farmCloudTimer = null;
+      const client = getSupabase();
+      if (!client || !currentUser || !farmCloudReady) return false;
+      const t = Date.now();
+      // Stamp first: updateUser fires USER_UPDATED before it resolves and must see this copy as current
+      setStorageItem('farm_sync_t', String(t));
+      try {
+        const { error } = await client.auth.updateUser({ data: { [FARM_CLOUD_FIELD]: { v: 1, t, d: farmSnapshot() } } });
+        if (error) throw error;
+        return true;
+      } catch (e) {
+        console.warn('Farm save to account failed', e);
+        return false;
+      }
+    }
+
+    function writeLocalFarm(data, ownerId, t) {
+      FARM_SYNC_KEYS.forEach(k => setStorageItem(k, data[k] !== undefined ? data[k] : FARM_FRESH[k]));
+      if (ownerId) setStorageItem('farm_owner', ownerId); else { try { localStorage.removeItem(STORAGE_PREFIX + 'farm_owner'); } catch (e) {} }
+      setStorageItem('farm_sync_t', String(t || 0));
+    }
+
+    // Line this device's farm up with the account. Returns true when the page reloads with the account's farm.
+    function syncFarmWithAccount(u) {
+      if (farmReloading) return true;
+      const cloud = u.user_metadata && u.user_metadata[FARM_CLOUD_FIELD];
+      const hasCloud = !!(cloud && cloud.d && typeof cloud.t === 'number');
+      const owner = getStorageItem('farm_owner');
+      const localT = parseInt(getStorageItem('farm_sync_t') || '0', 10) || 0;
+      let load = null;
+      if (hasCloud && (owner !== u.id || cloud.t > localT)) load = cloud;                 // account is newer / other account's farm here
+      else if (!hasCloud && owner && owner !== u.id) load = { t: Date.now(), d: FARM_FRESH }; // new account on a used device
+      if (load) {
+        const guard = `farm_loaded_${u.id}_${load.t}`;
+        let seen = false;
+        try { seen = sessionStorage.getItem(guard) === '1'; sessionStorage.setItem(guard, '1'); } catch (e) {}
+        if (!seen) {
+          farmReloading = true;
+          writeLocalFarm(load.d, u.id, load === cloud ? cloud.t : 0);
+          const toFarm = (typeof currentView !== 'undefined' && currentView === 'farm') || pendingFarmEntry || window.__wantFarm;
+          window.location.replace(window.location.pathname + (toFarm ? '#farm' : ''));
+          return true;
+        }
+      }
+      setStorageItem('farm_owner', u.id);
+      farmCloudReady = true;
+      if (!hasCloud || localT > cloud.t) queueFarmCloudSave(); // first save / this device has newer changes
+      return false;
+    }
+
+    // Guests can look at the farm but every action asks them to sign in first
+    function requireLogin() {
+      if (currentUser) return false;
+      pendingFarmEntry = currentView === 'farm';
+      openLoginModal();
+      const msg = document.getElementById('login-gate-msg');
+      if (msg) msg.style.display = 'block';
+      return true;
+    }
+
+    function refreshGuestMode() {
+      const farm = document.getElementById('view-farm');
+      if (farm) farm.classList.toggle('is-guest', !currentUser);
+      if (typeof reloadActiveCats === 'function') reloadActiveCats();
+    }
+
+    // Save pending farm changes when the tab is hidden or closed
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' && farmCloudTimer) pushFarmToCloud();
+    });
+
     // Facebook Login via Supabase Function
     async function loginWithFacebook() {
       const client = getSupabase();
@@ -5523,6 +6230,28 @@
     // Rooms may only hold owned cats
     ROOM_IDS.forEach(room => { roomCats[room] = roomCats[room].filter(id => ownedCats.includes(id)); });
 
+    /* ==========================================================================
+       ROOM THEMES FOR SALE (REQ-12)
+       Only มัทฉะญี่ปุ่น is standard. Other rooms stay locked until bought in ร้านค้า › ธีมห้อง
+       (no grandfathering, no free unlocks). Cats left in a locked room go back to "no room".
+       ========================================================================== */
+    const THEME_PRICES = { japanese: 0, modern: 800, space: 1500 };
+    const THEME_ICONS = { japanese: '🍵', modern: '🫐', space: '🌃' };
+    const THEME_DESC = {
+      japanese: 'ห้องมาตรฐาน ระเบียงไม้ ประตูโชจิเลื่อนได้ สวนไผ่ หิ่งห้อยตอนกลางคืน',
+      modern: 'ลอฟต์สองชั้น บันไดกระจก ทางเดินลอยฟ้า สวิตช์ไฟเปิดปิดได้',
+      space: 'สถานีวงโคจรนีออน ป้ายไฟแตะเปลี่ยนสี โดรนส่งของ แท่นโฮเวอร์'
+    };
+    let ownedThemes = null;
+    try { ownedThemes = JSON.parse(getStorageItem('owned_themes') || 'null'); } catch (e) { ownedThemes = null; }
+    ownedThemes = (Array.isArray(ownedThemes) ? ownedThemes : []).filter((t, i, all) => ROOM_IDS.includes(t) && all.indexOf(t) === i);
+    if (!ownedThemes.includes('japanese')) ownedThemes.unshift('japanese');
+    const ownsTheme = t => ownedThemes.includes(t);
+    function saveOwnedThemes() { setStorageItem('owned_themes', JSON.stringify(ownedThemes)); }
+    saveOwnedThemes();
+    ROOM_IDS.forEach(room => { if (!ownsTheme(room)) roomCats[room] = []; });
+    saveRoomCats();
+
     // Toast in whichever view is visible (the farm toast lives inside the farm view)
     function notify(icon, msg) {
       if (typeof currentView !== 'undefined' && currentView === 'farm') showToast(icon, msg);
@@ -5549,6 +6278,7 @@
     function buyCat(id) {
       const breed = CAT_BREEDS.find(b => b.id === id);
       if (!breed || ownedCats.includes(id)) return;
+      if (requireLogin()) return;
       if (!spendCoins(CAT_PRICES[id])) return;
       ownedCats.push(id);
       saveOwnedCats();
@@ -5616,6 +6346,7 @@
     // Put an owned cat into the room on screen, with its arrival effect
     function placeCatInCurrentRoom(id) {
       closeCatGiftModal();
+      if (requireLogin()) return;
       if (currentView !== 'farm') {
         switchView('farm');
         if (currentView !== 'farm') return; // login gate is showing
@@ -5826,6 +6557,7 @@
 
     function applyCameraTransform() {
       stage.style.transform = `translate(-50%, -50%) translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+      stage.style.setProperty('--pan', (panX / zoomLevel).toFixed(1)); // window views parallax (REQ-12)
     }
 
     function clampPan() {
@@ -6095,6 +6827,9 @@ class LiveCatActor {
       return;
     }
 
+    // Now and then a cat visits the litter box (REQ-12)
+    if (Math.random() < 0.07 && typeof maybeUseLitter === 'function' && maybeUseLitter(this)) return;
+
     const roll = Math.random();
 
     if (roll < 0.32) {
@@ -6120,17 +6855,19 @@ class LiveCatActor {
     }
   }
 
-  wanderToWaypoint(isForced = false) {
+  wanderToWaypoint(isForced = false, forcedTarget = null) {
     if (this.isMoving || (this.isBusy && !isForced)) return;
 
     // Only free spots of this room (one cat per spot, perches only when their furniture is owned)
     const candidates = availableSpots(currentTheme, this).filter(s => spotKey(s) !== this.spotKey);
-    if (candidates.length === 0) {
+    if (!forcedTarget && candidates.length === 0) {
       this.scheduleNextAction();
       return;
     }
 
-    const target = candidates[Math.floor(Math.random() * candidates.length)];
+    // forcedTarget: a free spot chosen by a scene toy (laser, visitor, yarn) — see catsChase()
+    const target = forcedTarget || candidates[Math.floor(Math.random() * candidates.length)];
+    if (this.actionTimer) { clearTimeout(this.actionTimer); this.actionTimer = null; }
     const isLevelChange = Math.abs(target.y - this.y) > 40;
     const distance = Math.hypot(target.x - this.x, target.y - this.y);
 
@@ -6220,11 +6957,18 @@ class LiveCatActor {
   }
 }
 
+    // Guests who own nothing see the 3 free starter cats as a demo (view only, REQ-08)
+    function displayedCatIds() {
+      const ids = roomCats[currentTheme] || [];
+      if (currentUser || ids.length || currentTheme !== 'japanese') return ids;
+      return CATS_BY_PRICE.slice(0, 3).map(b => b.id);
+    }
+
     // Show exactly the cats assigned to the current room; cats already on stage keep their state.
     function reloadActiveCats() {
       const layer = document.getElementById("cats-stage-layer");
       if (!layer) return;
-      const ids = roomCats[currentTheme] || [];
+      const ids = displayedCatIds();
 
       catInstances = catInstances.filter(cat => {
         if (!ids.includes(cat.data.id)) {
@@ -6257,8 +7001,9 @@ class LiveCatActor {
        ROOM (THEME) SWITCHING
        ========================================================================== */
     function switchTheme(theme, silent = false) {
-      if (!ROOM_IDS.includes(theme)) return;
+      if (!ROOM_IDS.includes(theme) || !ownsTheme(theme)) return;
       currentTheme = theme;
+      if (typeof removeVisitor === 'function') removeVisitor();
       document.querySelectorAll('.theme-tab-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('tab-' + theme).classList.add('active');
 
@@ -6283,52 +7028,443 @@ class LiveCatActor {
       if (!silent) showToast("🏡", `ย้ายไปห้อง${ROOM_NAMES[theme]}`);
     }
 
-    // Secret cyber room unlock is remembered per environment (dev/prod prefix)
-    let secretSpaceUnlocked = getStorageItem('space_unlocked') === '1';
-    function clickSpaceTab() {
-      if (secretSpaceUnlocked) {
-        switchTheme('space');
+    // Theme tabs (REQ-12): locked rooms show 🔒 and send the player to the theme shop
+    function applyThemeTabs() {
+      ROOM_IDS.forEach(t => {
+        const tab = document.getElementById('tab-' + t);
+        if (!tab) return;
+        const owned = ownsTheme(t);
+        tab.classList.toggle('theme-locked', !owned);
+        tab.classList.remove('secret-locked', 'secret-unlocked');
+        if (t === 'space') tab.classList.add(owned ? 'secret-unlocked' : 'secret-locked');
+        document.getElementById(t + '-tab-icon').innerText = owned ? THEME_ICONS[t] : '🔒';
+        document.getElementById(t + '-tab-label').innerText = ROOM_NAMES[t];
+      });
+      const count = document.getElementById('owned-theme-count');
+      if (count) count.innerText = ownedThemes.length;
+    }
+
+    function clickThemeTab(theme) {
+      if (ownsTheme(theme)) {
+        switchTheme(theme);
         return;
       }
-      // Kanel Notarry or 5 window taps unlocks the secret room
-      if (currentUser && isKanelNotarry(currentUser)) {
-        unlockSpaceTheme();
-        switchTheme('space');
-      } else {
-        showToast("🔒", "ห้องลับไซเบอร์อวกาศ: เคาะหน้าต่าง 5 ครั้ง หรือเข้าสู่ระบบด้วยสิทธิ์เจ้าของฟาร์ม");
+      showToast("🔒", `ห้อง${ROOM_NAMES[theme]}ยังล็อกอยู่ — ซื้อได้ที่ร้านค้า › ธีมห้อง (${THEME_PRICES[theme].toLocaleString()} 🐟)`);
+      openShop('themes');
+    }
+
+    function buyTheme(theme) {
+      if (ownsTheme(theme)) {
+        switchTheme(theme);
+        return;
       }
+      if (requireLogin()) return;
+      if (!spendCoins(THEME_PRICES[theme])) return;
+      ownedThemes.push(theme);
+      saveOwnedThemes();
+      audio.playCoin();
+      applyThemeTabs();
+      renderThemeShop();
+      renderShop(currentShopFilter);
+      switchTheme(theme, true);
+      showToast("🎉", `ได้ห้อง${ROOM_NAMES[theme]}แล้ว! กด 🐾 แมวในห้อง เพื่อพาน้องเข้าห้องใหม่`);
     }
 
-    function applySpaceTabUnlocked() {
-      const tab = document.getElementById("tab-space");
-      if (!tab) return;
-      tab.classList.remove("secret-locked");
-      tab.classList.add("secret-unlocked");
-      document.getElementById("space-tab-icon").innerText = "🌃";
-      document.getElementById("space-tab-label").innerText = "ไซเบอร์อวกาศ";
-    }
-
-    function unlockSpaceTheme() {
-      const wasLocked = !secretSpaceUnlocked;
-      secretSpaceUnlocked = true;
-      setStorageItem('space_unlocked', '1');
-      applySpaceTabUnlocked();
-      if (wasLocked) {
-        showToast("🌃", "ปลดล็อกห้องลับ: ไซเบอร์อวกาศสำเร็จ!");
-        renderShop(currentShopFilter);
-      }
-    }
-
+    // Windows are a scene toy now: the nearest cat comes over to look outside
+    const WINDOW_X = { japanese: 470, modern: 520, space: 630 };
     function tapWindowEasterEgg() {
+      if (!sceneTap()) return;
       windowTapCount++;
       audio.playPurr();
-      if (windowTapCount === 5 && !secretSpaceUnlocked) {
-        unlockSpaceTheme();
-        switchTheme('space');
-      } else if (!secretSpaceUnlocked) {
-        showToast("🌸", `เคาะหน้าต่างชมวิว (${windowTapCount}/5)`);
+      catsChase(WINDOW_X[currentTheme], 300, 1, ['ข้างนอกมีอะไรน่ะ? 👀', 'นกบินผ่าน! 🐦', 'วิวสวยจัง ✨'][windowTapCount % 3]);
+    }
+
+    /* ==========================================================================
+       SHOP HUB (REQ-12): the shop opens on 3 categories — cats / decor / themes
+       ========================================================================== */
+    let shopCategory = null;
+    function openShopCategory(cat) {
+      shopCategory = cat;
+      const section = document.getElementById('shop-section');
+      if (!section) return;
+      section.classList.toggle('has-category', !!cat);
+      document.querySelectorAll('.shop-cat-card').forEach(c => c.classList.toggle('active', c.dataset.shopCat === cat));
+      document.querySelectorAll('.shop-panel').forEach(p => p.classList.toggle('active', p.dataset.shopPanel === cat));
+    }
+
+    function openShop(cat = null) {
+      closeModal('cat-selector-modal');
+      openShopCategory(cat);
+      const section = document.getElementById('shop-section');
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function scrollToCatShop() { openShop('cats'); }
+
+    function renderThemeShop() {
+      const grid = document.getElementById('theme-shop-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      ROOM_IDS.forEach(t => {
+        const owned = ownsTheme(t);
+        let btn;
+        if (owned && currentTheme === t) btn = `<button class="item-buy-btn equipped" disabled>✓ อยู่ในห้องนี้</button>`;
+        else if (owned) btn = `<button class="item-buy-btn equipped" onclick="switchTheme('${t}')">✓ มีแล้ว • ไปที่ห้องนี้</button>`;
+        else btn = `<button class="item-buy-btn" onclick="buyTheme('${t}')">ซื้อห้อง (${THEME_PRICES[t].toLocaleString()} 🐟)</button>`;
+        const card = document.createElement('div');
+        card.className = 'item-card' + (owned ? ' owned' : '');
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="theme-card-preview ${t}">${THEME_ICONS[t]}</div>
+            <div>
+              <div class="item-name">ห้อง${ROOM_NAMES[t]}</div>
+              <div class="item-desc">${THEME_DESC[t]}</div>
+              <div class="item-scope ${t === 'japanese' ? 'is-universal' : ''}">${t === 'japanese' ? '⭐ ห้องมาตรฐาน (ฟรี)' : '🏠 ห้องใหม่ ห้องละ 12 ตัว'}</div>
+            </div>
+          </div>
+          ${btn}
+        `;
+        grid.appendChild(card);
+      });
+      // Station skins live in the same category: themes you wear over bowls and the litter box
+      STATION_IDS.forEach(id => {
+        const st = stations[id];
+        const def = STATION_DEFS[id];
+        const card = document.createElement('div');
+        card.className = 'item-card' + (st.skins.length ? ' owned' : '');
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="theme-card-preview" style="background:#070c18;">${def.icon}</div>
+            <div>
+              <div class="item-name">ธีม${def.name}</div>
+              <div class="item-desc">ใส่ทับ${def.name}ได้ทุกระดับ: ญี่ปุ่น · โมเดิร์น · ไซเบอร์</div>
+              <div class="item-scope is-universal">🎨 มีแล้ว ${st.skins.length}/${Object.keys(STATION_SKINS).length}${st.skin ? ' • ใส่ ' + STATION_SKINS[st.skin].name : ''}</div>
+            </div>
+          </div>
+          <button class="item-buy-btn" onclick="openStationModal('${id}')">🎨 เลือกธีม${def.name}</button>
+        `;
+        grid.appendChild(card);
+      });
+      applyThemeTabs();
+    }
+
+    function updateShopCounts() {
+      const items = document.getElementById('owned-item-count');
+      if (items) items.innerText = ownedItems.length;
+      const themes = document.getElementById('owned-theme-count');
+      if (themes) themes.innerText = ownedThemes.length;
+    }
+
+    /* ==========================================================================
+       SCENE TOYS (REQ-12): the room reacts to taps, cats react to the room
+       ========================================================================== */
+    // true when the pointer really tapped (not the end of a pan / pinch)
+    function sceneTap() {
+      return !(hasPanned || dragDist > 8);
+    }
+
+    function playTone(notes, { type = 'sine', gap = 0.09, dur = 0.5, vol = 0.06 } = {}) {
+      if (!audioEnabled || !audioCtx) return;
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const t0 = audioCtx.currentTime;
+        notes.forEach((f, i) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(f, t0 + i * gap);
+          gain.gain.setValueAtTime(0.0001, t0 + i * gap);
+          gain.gain.exponentialRampToValueAtTime(vol, t0 + i * gap + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, t0 + i * gap + dur);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(t0 + i * gap);
+          osc.stop(t0 + i * gap + dur + 0.05);
+        });
+      } catch (e) {}
+    }
+
+    // Up to maxCats idle cats run to the free spots closest to (x, y) in stage units
+    function catsChase(x, y, maxCats = 2, bubble = 'อะไรน่ะ!? 👀') {
+      const idle = catInstances.filter(c => c.dom && !c.isBusy && !c.isMoving);
+      idle.sort((a, b) => Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y));
+      idle.slice(0, maxCats).forEach(cat => {
+        const spots = availableSpots(currentTheme, cat).filter(s => spotKey(s) !== cat.spotKey);
+        const dist = s => Math.hypot(s.x - x, (s.y - y) * 1.4);
+        const target = spots.sort((a, b) => dist(a) - dist(b))[0];
+        showSpeechBubble(cat.dom, bubble);
+        if (!target || dist(target) >= Math.hypot(cat.x - x, (cat.y - y) * 1.4)) {
+          // Already the closest it can get: just turn to look
+          cat.facing = x >= cat.x ? 1 : -1;
+          cat.setState('sitting');
+          return;
+        }
+        cat.wanderToWaypoint(false, target);
+      });
+    }
+
+    function stagePointFromEvent(e) {
+      const r = stage.getBoundingClientRect();
+      return { x: (e.clientX - r.left) / zoomLevel, y: (r.bottom - e.clientY) / zoomLevel };
+    }
+
+    function spawnCoinPop(x, y, text) {
+      const el = document.createElement('div');
+      el.className = 'coin-pop';
+      el.innerText = text;
+      el.style.left = x + 'px';
+      el.style.bottom = y + 'px';
+      stage.appendChild(el);
+      setTimeout(() => el.remove(), 1300);
+    }
+
+    /* --- Laser pointer: tap anywhere in the room, cats chase the red dot --- */
+    let laserOn = false;
+    let laserDot = null;
+    let laserHideTimer = null;
+    function toggleLaser() {
+      laserOn = !laserOn;
+      document.getElementById('laser-btn').classList.toggle('is-on', laserOn);
+      viewport.classList.toggle('laser-mode', laserOn);
+      if (laserOn) {
+        showToast("🔴", "เลเซอร์เปิดแล้ว: แตะตรงไหนก็ได้ในห้อง น้องแมวจะวิ่งไล่จุดแดง");
+      } else if (laserDot) {
+        laserDot.remove();
+        laserDot = null;
       }
     }
+    function showLaserAt(x, y) {
+      if (!laserDot) {
+        laserDot = document.createElement('div');
+        laserDot.className = 'laser-dot';
+        stage.appendChild(laserDot);
+      }
+      laserDot.style.opacity = '1';
+      laserDot.style.left = x + 'px';
+      laserDot.style.bottom = y + 'px';
+      clearTimeout(laserHideTimer);
+      laserHideTimer = setTimeout(() => { if (laserDot) laserDot.style.opacity = '0'; }, 2600);
+    }
+    // Capture phase: in laser mode a tap on the room goes to the laser, not to whatever is under it
+    viewport.addEventListener('click', (e) => {
+      if (!laserOn) return;
+      if (e.target.closest('.viewport-controls-overlay, .guest-banner, .cat-actor-cutout, .scene-visitor')) return;
+      e.stopPropagation();
+      e.preventDefault();
+      if (!sceneTap()) return;
+      const p = stagePointFromEvent(e);
+      showLaserAt(p.x, p.y);
+      playTone([1760], { type: 'square', dur: 0.05, vol: 0.02 });
+      catsChase(p.x, p.y, 3, ['จุดแดง!! 🔴', 'ตะปบ!! 🐾', 'อยู่นั่นไง!', 'จับให้ได้!'][Math.floor(Math.random() * 4)]);
+    }, true);
+
+    /* --- Visitors: one at a time, every 35-70 s; tap for fish coins (20 per day) --- */
+    const VISITORS = {
+      japanese: { cls: 'butterfly', html: '<span class="bob">🦋</span>', name: 'ผีเสื้อ' },
+      modern: { cls: 'balloon', html: '<span class="bob">🎈</span>', name: 'ลูกโป่ง' },
+      space: { cls: 'drone', html: '<span class="bob">🛸<small>📦</small></span>', name: 'โดรนส่งของ' }
+    };
+    const VISITOR_DAILY_CAP = 20;
+    let visitorTimer = null;
+    let activeVisitor = null;
+
+    function scheduleVisitor(soon = false) {
+      clearTimeout(visitorTimer);
+      visitorTimer = setTimeout(spawnVisitor, soon ? 9000 : 35000 + Math.random() * 35000);
+    }
+
+    function removeVisitor() {
+      if (!activeVisitor) return;
+      activeVisitor.anim.cancel();
+      activeVisitor.el.remove();
+      clearTimeout(activeVisitor.chaseTimer);
+      activeVisitor = null;
+    }
+
+    function visitorPath(kind) {
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const from = dir > 0 ? 380 : 1000;
+      const to = dir > 0 ? 1000 : 380;
+      const frames = [];
+      for (let i = 0; i <= 8; i++) {
+        const t = i / 8;
+        let x = from + (to - from) * t;
+        let y;
+        if (kind === 'modern') {
+          // balloon drifts up from the floor with a gentle sway
+          x = 520 + dir * 60 * Math.sin(t * Math.PI * 2) + t * dir * 180;
+          y = 90 + t * 440;
+        } else if (kind === 'space') {
+          y = 330 + 18 * Math.sin(t * Math.PI * 4) - (t > 0.35 && t < 0.65 ? 70 : 0); // dips over the room
+        } else {
+          y = 250 + 70 * Math.sin(t * Math.PI * 3) + 25 * Math.sin(t * Math.PI * 7);
+        }
+        frames.push({ left: x.toFixed(0) + 'px', bottom: y.toFixed(0) + 'px' });
+      }
+      return frames;
+    }
+
+    function spawnVisitor() {
+      if (currentView !== 'farm' || document.hidden || activeVisitor) {
+        scheduleVisitor();
+        return;
+      }
+      const v = VISITORS[currentTheme];
+      const el = document.createElement('div');
+      el.className = 'scene-visitor ' + v.cls;
+      el.innerHTML = v.html;
+      el.title = `แตะ${v.name}เพื่อรับเหรียญปลา`;
+      stage.appendChild(el);
+      const frames = visitorPath(currentTheme);
+      const duration = currentTheme === 'modern' ? 11000 : 13000;
+      const anim = el.animate(frames, { duration, easing: 'linear', fill: 'forwards' });
+      const mid = frames[4];
+      activeVisitor = { el, anim };
+      // Cats notice it halfway through
+      activeVisitor.chaseTimer = setTimeout(() => catsChase(parseInt(mid.left, 10), 120, 2, `${v.name}!! 👀`), duration * 0.4);
+      anim.onfinish = () => {
+        if (activeVisitor && activeVisitor.el === el) {
+          el.remove();
+          activeVisitor = null;
+        }
+        scheduleVisitor();
+      };
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!sceneTap()) return;
+        catchVisitor(el, v);
+      });
+    }
+
+    function catchVisitor(el, v) {
+      const x = parseFloat(getComputedStyle(el).left) || 680;
+      const y = parseFloat(getComputedStyle(el).bottom) || 250;
+      removeVisitor();
+      scheduleVisitor();
+      playTone([1318.5, 1760, 2093], { gap: 0.07, dur: 0.35, vol: 0.05 });
+      if (!currentUser) {
+        spawnCoinPop(x, y, '✨');
+        requireLogin();
+        return;
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      let log = {};
+      try { log = JSON.parse(getStorageItem('visitor_log') || '{}') || {}; } catch (e) { log = {}; }
+      if (log.day !== today) log = { day: today, n: 0 };
+      if (log.n >= VISITOR_DAILY_CAP) {
+        spawnCoinPop(x, y, '💖');
+        showToast(v.cls === 'butterfly' ? '🦋' : '✨', `วันนี้รับเหรียญจาก${v.name}ครบ ${VISITOR_DAILY_CAP} ครั้งแล้ว พรุ่งนี้มาใหม่นะ`);
+        return;
+      }
+      const reward = 5 + Math.floor(Math.random() * 11);
+      log.n++;
+      setStorageItem('visitor_log', JSON.stringify(log));
+      fishCoins += reward;
+      updateCoinsDisplay();
+      audio.playCoin();
+      spawnCoinPop(x, y, `+${reward} 🐟`);
+    }
+
+    /* --- Tappable architecture & toys --- */
+    function toggleModernLights() {
+      const layout = document.getElementById('layout-modern');
+      const off = !layout.classList.contains('lights-off');
+      layout.classList.toggle('lights-off', off);
+      playTone(off ? [520, 260] : [260, 520], { type: 'square', gap: 0.05, dur: 0.07, vol: 0.03 });
+      catInstances.forEach(cat => {
+        if (!cat.dom || cat.isBusy || cat.isMoving || Math.random() < 0.4) return;
+        if (off) {
+          cat.setState('sleeping');
+          showSpeechBubble(cat.dom, 'ง่วงแล้ว… 😴');
+        } else if (cat.state === 'sleeping') {
+          cat.setState('sitting');
+          showSpeechBubble(cat.dom, 'แสบตา! 😼');
+        }
+      });
+    }
+
+    function initSceneToys() {
+      const onTap = (el, fn) => el && el.addEventListener('click', (e) => {
+        if (laserOn || !sceneTap()) return;
+        e.stopPropagation();
+        fn(el, e);
+      });
+
+      // Japanese: shoji slide open/closed, the wind bell rings
+      document.querySelectorAll('.jp-shoji-panel').forEach(p => onTap(p, () => {
+        p.classList.toggle('is-open');
+        playTone([196, 147], { type: 'triangle', gap: 0.12, dur: 0.22, vol: 0.05 });
+      }));
+      onTap(document.querySelector('[data-decor-id="jp_bell"]'), (el) => {
+        el.classList.remove('is-ringing');
+        void el.offsetWidth;
+        el.classList.add('is-ringing');
+        playTone([1568, 2093, 2637, 2093], { gap: 0.13, dur: 1.3, vol: 0.04 });
+        catsChase(500, 200, 1, 'เสียงอะไรน่ะ 🎐');
+      });
+
+      // Modern: ceiling lights / wall switch
+      document.querySelectorAll('.mod-ceiling-lights span, .mod-light-switch').forEach(el => onTap(el, toggleModernLights));
+
+      // Cyber: neon signs change color, the hologram cycles
+      document.querySelectorAll('.cy-neon-sign').forEach(sign => {
+        let hue = 0;
+        onTap(sign, () => {
+          hue = (hue + 72) % 360;
+          sign.style.filter = `hue-rotate(${hue}deg)`;
+          playTone([110, 116], { type: 'sawtooth', gap: 0.03, dur: 0.18, vol: 0.025 });
+        });
+      });
+      const holo = document.querySelector('.cy-holo-panel');
+      const holoIcons = ['🐈‍⬛', '🐟', '🍣', '😺', '🌙', '💖'];
+      let holoIndex = 0;
+      onTap(holo, () => {
+        holoIndex = (holoIndex + 1) % holoIcons.length;
+        holo.querySelector('span').innerText = holoIcons[holoIndex];
+        holo.classList.remove('is-glitching');
+        void holo.offsetWidth;
+        holo.classList.add('is-glitching');
+        playTone([880, 1320, 660], { type: 'square', gap: 0.04, dur: 0.06, vol: 0.02 });
+      });
+
+      // Universal toys: yarn rolls away, the mouse squeaks — cats chase both
+      onTap(document.querySelector('[data-decor-id="uni_yarn"]'), (el) => {
+        const dx = el.offsetLeft > 700 ? -140 : 140;
+        el.animate([
+          { transform: 'translateX(0) rotate(0deg)' },
+          { transform: `translateX(${dx}px) rotate(${dx * 4}deg)`, offset: 0.55 },
+          { transform: 'translateX(0) rotate(0deg)' }
+        ], { duration: 2600, easing: 'ease-in-out' });
+        catsChase(el.offsetLeft + dx, 90, 2, 'ไหมพรม!! 🧶');
+      });
+      onTap(document.querySelector('[data-decor-id="uni_mouse"]'), (el) => {
+        el.animate([
+          { transform: 'translate(0, 0)' },
+          { transform: 'translate(40px, -12px)', offset: 0.3 },
+          { transform: 'translate(90px, 0)', offset: 0.6 },
+          { transform: 'translate(0, 0)' }
+        ], { duration: 1600, easing: 'ease-in-out' });
+        playTone([2400, 2900, 2400], { type: 'square', gap: 0.08, dur: 0.06, vol: 0.02 });
+        catsChase(el.offsetLeft + 90, 90, 2, 'หนู!! 🐭');
+      });
+      onTap(document.querySelector('[data-decor-id="uni_box"]'), (el) => {
+        el.animate([{ rotate: '0deg' }, { rotate: '-8deg' }, { rotate: '8deg' }, { rotate: '0deg' }], { duration: 500 });
+        playTone([330, 247], { type: 'triangle', gap: 0.1, dur: 0.15, vol: 0.05 });
+        catsChase(el.offsetLeft, 90, 1, 'กล่อง!! 📦');
+      });
+    }
+
+    /* --- Time of day follows the player's clock --- */
+    function applyTimeOfDay() {
+      const h = new Date().getHours();
+      const tod = window.__todOverride || (h >= 6 && h < 17 ? 'day' : ((h >= 17 && h < 19) || h === 5) ? 'dusk' : 'night');
+      stage.classList.remove('tod-day', 'tod-dusk', 'tod-night');
+      stage.classList.add('tod-' + tod);
+      const moon = document.querySelector('.modern-moon');
+      if (moon) moon.innerText = tod === 'day' ? '☀️' : '🌙';
+    }
+    applyTimeOfDay();
+    setInterval(applyTimeOfDay, 60000);
 
     /* ==========================================================================
        FEEDING & CHONKY SYSTEM
@@ -6339,6 +7475,7 @@ class LiveCatActor {
       let name = "ปลาแห้ง";
       if (type === 'tuna') { cost = 15; kg = 0.5; name = "ทูน่ากระป๋อง"; }
       if (type === 'macaron') { cost = 35; kg = 1.0; name = "มาการองแมว"; }
+      if (requireLogin()) return;
 
       // Don't charge when there is nobody to feed
       if (catInstances.length === 0) {
@@ -6387,6 +7524,7 @@ class LiveCatActor {
 
     // Room cat manager (REQ-03): max 12 per room, a cat can only live in one room
     function openCatSelectorModal() {
+      if (requireLogin()) return;
       const grid = document.getElementById("cat-selector-grid");
       if (!grid) return;
       grid.innerHTML = "";
@@ -6418,6 +7556,7 @@ class LiveCatActor {
     }
 
     function toggleCatSelection(id) {
+      if (requireLogin()) return;
       const ids = roomCats[currentTheme];
       if (ids.includes(id)) {
         roomCats[currentTheme] = ids.filter(cid => cid !== id);
@@ -6447,6 +7586,7 @@ class LiveCatActor {
     }
 
     function clearAllCats() {
+      if (requireLogin()) return;
       roomCats[currentTheme] = [];
       saveRoomCats();
       reloadActiveCats();
@@ -6599,6 +7739,7 @@ class LiveCatActor {
     function toggleShopItem(id) {
       const item = SHOP_ITEMS.find(i => i.id === id);
       if (!item || !ownedItems.includes(id)) return;
+      if (requireLogin()) return;
       if (hiddenItems.includes(id)) {
         hiddenItems = hiddenItems.filter(h => h !== id);
         saveOwnedItems();
@@ -6648,11 +7789,35 @@ class LiveCatActor {
       const grid = document.getElementById("items-grid");
       if (!grid) return;
       grid.innerHTML = "";
+      updateShopCounts();
+      // Bowls & litter box upgrades share the decor category (sub-filter "ชาม & กระบะ")
+      if (filter === 'all' || filter === 'stations') {
+        STATION_IDS.forEach(id => {
+          const st = stations[id];
+          const def = STATION_DEFS[id];
+          const next = def.levels[st.lv];
+          const card = document.createElement("div");
+          card.className = "item-card" + (st.lv > 1 ? " owned" : "");
+          card.innerHTML = `
+            <div class="card-top">
+              <div class="item-emoji">${def.icon}</div>
+              <div>
+                <div class="item-name">${def.name}: ${def.levels[st.lv - 1].name}</div>
+                <div class="item-desc">${next ? `ถัดไป: ${next.name} (${next.price} 🐟)` : 'ระดับสูงสุดแล้ว'}</div>
+                <div class="item-scope is-universal">⬆️ ระดับ ${st.lv}/3 • 🌐 ใช้ได้ทุกห้อง</div>
+              </div>
+            </div>
+            <button class="item-buy-btn${next ? '' : ' equipped'}" onclick="openStationModal('${id}')">${next ? '⬆ อัปเกรด / ใส่ธีม' : '🎨 ใส่ธีม'}</button>
+          `;
+          grid.appendChild(card);
+        });
+        if (filter === 'stations') return;
+      }
       const filtered = SHOP_ITEMS.filter(item =>
         filter === 'all' || (filter === 'universal' ? item.room === 'all' : item.room === filter));
       filtered.forEach(item => {
         const isOwned = ownedItems.includes(item.id);
-        const isLocked = item.room === 'space' && !secretSpaceUnlocked;
+        const isLocked = item.room !== 'all' && !ownsTheme(item.room);
         const scope = item.room === 'all' ? '🌐 ใช้ได้ทุกห้อง' : `🏠 เฉพาะห้อง${ROOM_NAMES[item.room]}`;
         let btn;
         if (isOwned) {
@@ -6660,7 +7825,7 @@ class LiveCatActor {
             ? `<button class="item-buy-btn" style="background:#334155;" onclick="toggleShopItem('${item.id}')">📦 เก็บไว้ • กดเพื่อวาง</button>`
             : `<button class="item-buy-btn equipped" onclick="toggleShopItem('${item.id}')">✓ ตั้งอยู่ • กดเพื่อเก็บ</button>`;
         } else if (isLocked) {
-          btn = `<button class="item-buy-btn" disabled style="opacity:0.55; cursor:not-allowed;">🔒 ปลดล็อกห้องไซเบอร์ก่อน</button>`;
+          btn = `<button class="item-buy-btn" style="background:#334155;" onclick="openShopCategory('themes')">🔒 ซื้อห้อง${ROOM_NAMES[item.room]}ก่อน</button>`;
         } else {
           btn = `<button class="item-buy-btn" onclick="buyShopItem('${item.id}')">ซื้อ (${item.cost} 🐟)</button>`;
         }
@@ -6702,8 +7867,10 @@ class LiveCatActor {
         toggleShopItem(id);
         return;
       }
-      if (item.room === 'space' && !secretSpaceUnlocked) {
-        showToast("🔒", "ปลดล็อกห้องไซเบอร์อวกาศก่อน (เคาะหน้าต่าง 5 ครั้ง)");
+      if (requireLogin()) return;
+      if (item.room !== 'all' && !ownsTheme(item.room)) {
+        showToast("🔒", `ซื้อห้อง${ROOM_NAMES[item.room]}ก่อน แล้วค่อยแต่งห้องนี้`);
+        openShopCategory('themes');
         return;
       }
       if (!spendCoins(item.cost)) return;
@@ -6767,11 +7934,9 @@ class LiveCatActor {
     }
 
     function spawnRefillParticles(stationType) {
-      const isFeeder = stationType === 'feeder';
-      const hub = document.querySelector('.dining-hydration-hub');
-      if (!hub) return;
-      const targetWrap = document.getElementById(isFeeder ? 'feeder-station-wrap' : 'fountain-station-wrap') || hub;
-      const icons = isFeeder ? ['🟤', '🌾', '🥣', '✨'] : ['💧', '💦', '🫧', '✨'];
+      const targetWrap = document.getElementById(stationType + '-station-wrap');
+      if (!targetWrap) return;
+      const icons = { feeder: ['🟤', '🌾', '🥣', '✨'], fountain: ['💧', '💦', '🫧', '✨'], litter: ['✨', '🧹', '🫧', '🌼'] }[stationType];
       for (let i = 0; i < 5; i++) {
         const p = document.createElement('div');
         p.className = 'refill-grain-particle';
@@ -6783,112 +7948,200 @@ class LiveCatActor {
       }
     }
 
-    let feederHasFood = false;
-    let fountainHasWater = false;
-    try {
-      feederHasFood = getStorageItem('feeder_filled') === 'true';
-      fountainHasWater = getStorageItem('fountain_filled') === 'true';
-    } catch(e) {}
+    /* ==========================================================================
+       STATIONS (REQ-12): food bowl, water bowl, litter box
+       - Everyone starts with plain plastic (level 1) and can upgrade to level 2 and 3.
+       - Bowls: level = servings per refill. Litter box: level x 2 = uses before it is full.
+       - Theme skins are bought per station and worn over any level.
+       ========================================================================== */
+    const STATION_DEFS = {
+      feeder: {
+        name: 'ชามข้าว', icon: '🥣', x: 605,
+        levels: [
+          { name: 'ชามพลาสติก', desc: 'ชามพลาสติกธรรมดา ใส่ได้ 1 มื้อ', price: 0 },
+          { name: 'ชามเซรามิก', desc: 'ชามเซรามิกมีฐาน ใส่ได้ 2 มื้อ', price: 150 },
+          { name: 'เครื่องให้อาหารอัตโนมัติ', desc: 'มีถังเก็บอาหาร ใส่ได้ 3 มื้อ แมวมากินต่อกันเอง', price: 400 }
+        ]
+      },
+      fountain: {
+        name: 'ชามน้ำ', icon: '💧', x: 745,
+        levels: [
+          { name: 'ชามน้ำพลาสติก', desc: 'ชามพลาสติกธรรมดา ดื่มได้ 1 รอบ', price: 0 },
+          { name: 'ชามน้ำเซรามิก', desc: 'ชามเซรามิกมีฐาน ดื่มได้ 2 รอบ', price: 150 },
+          { name: 'น้ำพุแมวหมุนเวียน', desc: 'น้ำไหลเวียนตลอด ดื่มได้ 3 รอบ', price: 400 }
+        ]
+      },
+      litter: {
+        name: 'กระบะทราย', icon: '🪣', x: 900,
+        levels: [
+          { name: 'ถาดทรายพลาสติก', desc: 'ถาดพลาสติกธรรมดา ใช้ได้ 2 ครั้งก็ต้องตัก', price: 0 },
+          { name: 'กระบะทรายมีฝาครอบ', desc: 'มีฝาครอบกันกลิ่น ใช้ได้ 4 ครั้ง', price: 200 },
+          { name: 'กระบะทรายอัตโนมัติ', desc: 'ใช้ได้ 6 ครั้ง และตักทรายเองทุก 2 นาที', price: 500 }
+        ]
+      }
+    };
+    const STATION_SKINS = {
+      japanese: { name: 'ธีมญี่ปุ่น', desc: 'ไม้ฮิโนกิ ลายซากุระ', price: 120 },
+      modern: { name: 'ธีมโมเดิร์น', desc: 'หินอ่อนขอบทอง', price: 120 },
+      space: { name: 'ธีมไซเบอร์', desc: 'นีออนเรืองแสง', price: 150 }
+    };
+    const STATION_IDS = ['feeder', 'fountain', 'litter'];
+
+    let stations = null;
+    try { stations = JSON.parse(getStorageItem('station_state') || 'null'); } catch (e) { stations = null; }
+    const stationsWereSaved = !!stations;
+    if (!stations || typeof stations !== 'object') stations = {};
+    STATION_IDS.forEach(id => {
+      const s = stations[id] || {};
+      const skins = Array.isArray(s.skins) ? s.skins.filter(k => STATION_SKINS[k]) : [];
+      stations[id] = {
+        lv: Math.min(3, Math.max(1, parseInt(s.lv, 10) || 1)),
+        skin: skins.includes(s.skin) ? s.skin : null,
+        skins,
+        amount: Math.max(0, parseInt(s.amount, 10) || 0)
+      };
+    });
+    const stationCapacity = id => id === 'litter' ? stations.litter.lv * 2 : stations[id].lv;
+    if (!stationsWereSaved) {
+      // Legacy bowls were plain booleans (feeder_filled / fountain_filled)
+      if (getStorageItem('feeder_filled') === 'true') stations.feeder.amount = 1;
+      if (getStorageItem('fountain_filled') === 'true') stations.fountain.amount = 1;
+    }
+    STATION_IDS.forEach(id => { stations[id].amount = Math.min(stations[id].amount, stationCapacity(id)); });
+
+    function saveStations() {
+      setStorageItem('station_state', JSON.stringify(stations));
+    }
+
+    function stationClass(id, st) {
+      return `station-body st-${id} st-lv-${st.lv}` + (st.skin ? ` skin-${st.skin}` : '') + (st.amount > 0 ? ' has-supply' : '');
+    }
+
+    function stationBodyHTML(id, st) {
+      const cap = id === 'litter' ? st.lv * 2 : st.lv;
+      if (id === 'litter') {
+        const dirt = st.amount > 0 ? `<div class="st-dirt">${'💩'.repeat(Math.min(st.amount, 3))}</div>` : '';
+        const stink = st.amount >= cap ? '<div class="st-stink">〰</div>' : '';
+        if (st.lv === 3) return `<div class="st-globe"></div><div class="st-tray"></div>${dirt}${stink}`;
+        if (st.lv === 2) return `<div class="st-hood"></div><div class="st-tray"></div>${dirt}${stink}`;
+        return `<div class="st-tray">${dirt}</div>${stink}`;
+      }
+      const fill = `<div class="st-fill ${id === 'feeder' ? 'kibble' : 'water'}"></div>`;
+      if (st.lv === 3) {
+        const level = Math.round(26 * st.amount / cap);
+        return `<div class="st-tower"><div class="st-level" style="height:${level}px"></div><div class="st-led"></div></div><div class="st-bowl">${fill}</div>`;
+      }
+      return `<div class="st-bowl">${fill}</div>`;
+    }
 
     function renderStationVisuals() {
-      const feederStation = document.getElementById("feeder-station-wrap");
-      const fountainStation = document.getElementById("fountain-station-wrap");
-
-      if (feederStation) {
-        if (feederHasFood) {
-          feederStation.classList.add('has-food');
-          feederStation.classList.remove('is-empty');
-          feederStation.title = "ชามข้าวมีอาหารเม็ดสดใหม่ 🥣 (แตะเพื่อเติมเพิ่ม)";
-        } else {
-          feederStation.classList.remove('has-food');
-          feederStation.classList.add('is-empty');
-          feederStation.title = "ชามข้าวว่างเปล่า 🥣 (แตะเพื่อใส่อาหาร)";
-        }
-      }
-
-      if (fountainStation) {
-        if (fountainHasWater) {
-          fountainStation.classList.add('has-water');
-          fountainStation.classList.remove('is-empty');
-          fountainStation.title = "ชามน้ำมีน้ำใสสะอาด 💧 (แตะเพื่อเติมเพิ่ม)";
-        } else {
-          fountainStation.classList.remove('has-water');
-          fountainStation.classList.add('is-empty');
-          fountainStation.title = "ชามน้ำว่างเปล่า 💧 (แตะเพื่อเติมน้ำ)";
-        }
-      }
+      STATION_IDS.forEach(id => {
+        const st = stations[id];
+        const def = STATION_DEFS[id];
+        const cap = stationCapacity(id);
+        const body = document.getElementById(`${id}-visual`);
+        const wrap = document.getElementById(`${id}-station-wrap`);
+        const label = document.getElementById(`${id}-label`);
+        if (!body || !wrap) return;
+        body.className = stationClass(id, st);
+        body.innerHTML = stationBodyHTML(id, st);
+        wrap.classList.toggle('is-empty', id === 'litter' ? st.amount >= cap : st.amount === 0);
+        if (label) label.innerText = `${def.name} ${st.amount}/${cap}`;
+        const levelName = def.levels[st.lv - 1].name;
+        wrap.title = id === 'litter'
+          ? (st.amount > 0 ? `${levelName} — แตะเพื่อตักทราย` : `${levelName} สะอาดอยู่`)
+          : (st.amount < cap ? `${levelName} — แตะเพื่อเติม` : `${levelName} เต็มแล้ว`);
+      });
     }
 
-    function executeFeederRefill(e) {
+    function playScoopSound() {
+      playTone([300, 240, 360], { type: 'triangle', gap: 0.09, dur: 0.12, vol: 0.05 });
+    }
+
+    // Tap a station: refill a bowl to full / scoop the litter box
+    function useStation(id, e) {
       if (e && e.stopPropagation) e.stopPropagation();
+      if (typeof hasPanned !== 'undefined' && hasPanned) return;
+      if (requireLogin()) return;
+      const st = stations[id];
+      const def = STATION_DEFS[id];
+      const cap = stationCapacity(id);
+      if (id === 'litter') {
+        if (st.amount === 0) {
+          showToast("✨", "กระบะทรายยังสะอาดอยู่");
+          return;
+        }
+        st.amount = 0;
+        saveStations();
+        renderStationVisuals();
+        playScoopSound();
+        spawnRefillParticles('litter');
+        showToast("🧹", "ตักทรายเรียบร้อย กระบะสะอาดแล้ว!");
+        catInstances.filter(c => c.dom && !c.isBusy).slice(0, 2).forEach(c => showSpeechBubble(c.dom, 'หอมสะอาด ✨'));
+        return;
+      }
+      if (st.amount >= cap) {
+        showToast(def.icon, `${def.name}เต็มแล้ว (${cap}/${cap}) — กด ⬆ เพื่ออัปเกรดให้ใส่ได้มากขึ้น`);
+        return;
+      }
+      st.amount = cap;
+      saveStations();
       audio.playPurr();
-      playPourFoodSound();
-      spawnRefillParticles('feeder');
-      feederHasFood = true;
-      setStorageItem('feeder_filled', 'true');
+      if (id === 'feeder') playPourFoodSound(); else playWaterLapSound();
+      spawnRefillParticles(id);
       renderStationVisuals();
-      showToast("🥣", "ใส่อาหารเม็ดสดใหม่เรียบร้อยแล้ว! น้องแมวเริ่มได้กลิ่นหอม");
-      attractNearbyCatsToStation('feeder');
+      showToast(def.icon, id === 'feeder' ? `ใส่อาหารเต็มชามแล้ว (${cap} มื้อ)` : `เติมน้ำเต็มแล้ว (${cap} รอบ)`);
+      attractNearbyCatsToStation(id);
     }
+    function executeFeederRefill(e) { useStation('feeder', e); }
+    function executeFountainRefill(e) { useStation('fountain', e); }
 
-    function executeFountainRefill(e) {
-      if (e && e.stopPropagation) e.stopPropagation();
-      audio.playPurr();
-      playWaterLapSound();
-      spawnRefillParticles('fountain');
-      fountainHasWater = true;
-      setStorageItem('fountain_filled', 'true');
-      renderStationVisuals();
-      showToast("💧", "เติมน้ำใสสะอาดบริสุทธิ์เต็มชามแล้ว! น้องแมวรู้สึกสดชื่น");
-      attractNearbyCatsToStation('fountain');
-    }
-
-    function attractNearbyCatsToStation(stationType) {
-      if (!catInstances || catInstances.length === 0) return;
-      const isFeeder = stationType === 'feeder';
-      const targetX = isFeeder ? 605 : 745;
-      const targetY = BOWL_Y[currentTheme] || 125;
-
-      // Single-cat mutex: only one cat visits at a time
-      if (catInstances.some(c => c.isBusy)) return;
-      const availableCats = catInstances.filter(c => !c.isBusy);
-      if (availableCats.length === 0) return;
-
-      // Pick nearest available cat
-      const sorted = [...availableCats].sort((a, b) => Math.abs(a.x - targetX) - Math.abs(b.x - targetX));
-      const cat = sorted[0];
-
-      if (!cat.dom) return;
+    // Walk one cat off its spot to (x, y), then run onArrive
+    function walkCatToStation(cat, x, y, bubble, onArrive) {
       if (cat.actionTimer) { clearTimeout(cat.actionTimer); cat.actionTimer = null; }
       if (cat.moveTimer) { clearTimeout(cat.moveTimer); cat.moveTimer = null; }
       cat.isBusy = true;
       cat.isMoving = true;
-      cat.spotKey = null; // leaves its spot while at the bowl
-      showSpeechBubble(cat.dom, isFeeder ? "หอมจัง! 🥣" : "สดชื่น! 💧");
-      cat.facing = targetX >= cat.x ? 1 : -1;
+      cat.spotKey = null; // leaves its spot while at the station
+      showSpeechBubble(cat.dom, bubble);
+      cat.facing = x >= cat.x ? 1 : -1;
       cat.setState('walking');
-
-      const dist = Math.hypot(targetX - cat.x, targetY - cat.y);
-      const duration = Math.max(1.2, Math.min(3.5, dist / 85));
+      const duration = Math.max(1.2, Math.min(3.5, Math.hypot(x - cat.x, y - cat.y) / 85));
       cat.dom.style.transition = `left ${duration.toFixed(2)}s ease-in-out, bottom ${duration.toFixed(2)}s ease-in-out`;
-      cat.x = targetX;
-      cat.y = targetY;
-      cat.dom.style.left = cat.x + "px";
-      cat.dom.style.bottom = cat.y + "px";
-      cat.dom.style.zIndex = String(600 - Math.round(cat.y));
-
+      cat.x = x;
+      cat.y = y;
+      cat.dom.style.left = x + "px";
+      cat.dom.style.bottom = y + "px";
+      cat.dom.style.zIndex = String(600 - Math.round(y));
       setTimeout(() => {
         if (!cat.dom) return;
         cat.dom.style.transition = 'none';
+        onArrive();
+      }, duration * 1000);
+    }
+
+    function attractNearbyCatsToStation(stationType) {
+      if (!catInstances || catInstances.length === 0) return;
+      const st = stations[stationType];
+      if (!st || st.amount <= 0) return;
+      const isFeeder = stationType === 'feeder';
+      const targetX = STATION_DEFS[stationType].x;
+      const targetY = BOWL_Y[currentTheme] || 125;
+
+      // One cat at a station at a time
+      if (catInstances.some(c => c.isBusy)) return;
+      const available = catInstances.filter(c => !c.isBusy && c.dom);
+      if (available.length === 0) return;
+      const cat = [...available].sort((a, b) => Math.abs(a.x - targetX) - Math.abs(b.x - targetX))[0];
+
+      walkCatToStation(cat, targetX, targetY, isFeeder ? "หอมจัง! 🥣" : "สดชื่น! 💧", () => {
         cat.setState(isFeeder ? 'eating' : 'drinking');
         if (typeof audio !== 'undefined' && audio.playPurr) audio.playPurr();
         showSpeechBubble(cat.dom, isFeeder ? "ง่ำๆ 🥣" : "เลียน้ำ แผล็บๆ 💧");
         spawnHeart(cat.x + 28, cat.y + 70);
         cat.weight = Math.min(14.0, cat.weight + 0.05);
-        if (typeof catWeights !== 'undefined') {
-          catWeights[cat.data.id] = cat.weight;
-          saveCatWeights();
-        }
+        catWeights[cat.data.id] = cat.weight;
+        saveCatWeights();
         cat.applyChonkyTransform();
 
         setTimeout(() => {
@@ -6897,19 +8150,153 @@ class LiveCatActor {
           cat.isMoving = false;
           cat.setState('sitting');
           showSpeechBubble(cat.dom, isFeeder ? "อิ่มแปล้~ 💖" : "สดชื่นจัง ✨");
-          if (isFeeder) {
-            feederHasFood = false;
-            setStorageItem('feeder_filled', 'false');
-            renderStationVisuals();
-          } else {
-            fountainHasWater = false;
-            setStorageItem('fountain_filled', 'false');
-            renderStationVisuals();
-          }
+          st.amount = Math.max(0, st.amount - 1);
+          saveStations();
+          renderStationVisuals();
           cat.wanderToWaypoint(); // walk back to a free spot
-
+          // Bigger bowls feed the next cat by themselves
+          if (st.amount > 0) setTimeout(() => attractNearbyCatsToStation(stationType), 3000);
         }, 4500);
-      }, duration * 1000);
+      });
+    }
+
+    // Called from the cat AI now and then; returns true when the cat went to the litter box
+    let litterBusy = false;
+    let litterAutoCleanTimer = null;
+    function maybeUseLitter(cat) {
+      if (!currentUser || litterBusy || !cat.dom || catInstances.some(c => c.isBusy)) return false;
+      const st = stations.litter;
+      const cap = stationCapacity('litter');
+      if (st.amount >= cap) {
+        showSpeechBubble(cat.dom, 'กระบะเต็มแล้ว ตักหน่อยสิ 😾');
+        return false;
+      }
+      litterBusy = true;
+      walkCatToStation(cat, STATION_DEFS.litter.x, BOWL_Y[currentTheme] || 125, 'ขอตัวเข้าห้องน้ำ 🚽', () => {
+        cat.setState('crouching');
+        showSpeechBubble(cat.dom, 'ขอความเป็นส่วนตัวหน่อย 🙈');
+        setTimeout(() => {
+          litterBusy = false;
+          st.amount = Math.min(cap, st.amount + 1);
+          saveStations();
+          renderStationVisuals();
+          scheduleLitterAutoClean();
+          if (!cat.dom) return;
+          cat.isBusy = false;
+          cat.isMoving = false;
+          cat.setState('sitting');
+          showSpeechBubble(cat.dom, 'โล่งจัง ✨');
+          cat.wanderToWaypoint();
+        }, 3000);
+      });
+      return true;
+    }
+
+    // Level 3 litter box scoops itself 2 minutes after it gets used
+    function scheduleLitterAutoClean() {
+      if (stations.litter.lv < 3 || stations.litter.amount === 0 || litterAutoCleanTimer) return;
+      litterAutoCleanTimer = setTimeout(() => {
+        litterAutoCleanTimer = null;
+        if (stations.litter.lv < 3 || stations.litter.amount === 0) return;
+        stations.litter.amount = 0;
+        saveStations();
+        renderStationVisuals();
+        if (currentView === 'farm') showToast("🤖", "กระบะทรายอัตโนมัติตักทรายให้แล้ว");
+      }, 120000);
+    }
+    scheduleLitterAutoClean();
+
+    /* --- Station modal: upgrade level + theme skins --- */
+    let stationModalId = null;
+    function openStationModal(id, e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      stationModalId = id;
+      renderStationModal();
+      document.getElementById('station-modal').classList.add('open');
+    }
+
+    function renderStationModal() {
+      const id = stationModalId;
+      if (!id) return;
+      const st = stations[id];
+      const def = STATION_DEFS[id];
+      document.getElementById('station-modal-title').innerText = `${def.icon} ${def.name}`;
+      document.getElementById('station-modal-sub').innerText =
+        `ตอนนี้: ${def.levels[st.lv - 1].name} (ระดับ ${st.lv}/3)${st.skin ? ' • ' + STATION_SKINS[st.skin].name : ''}`;
+      document.getElementById('station-modal-preview').innerHTML =
+        `<div class="${stationClass(id, st)}">${stationBodyHTML(id, st)}</div>`;
+
+      document.getElementById('station-level-list').innerHTML = def.levels.map((level, i) => {
+        const lv = i + 1;
+        let btn;
+        if (lv === st.lv) btn = `<button class="item-buy-btn equipped" disabled>✓ ใช้อยู่</button>`;
+        else if (lv < st.lv) btn = `<button class="item-buy-btn equipped" disabled>✓ ผ่านแล้ว</button>`;
+        else if (lv === st.lv + 1) btn = `<button class="item-buy-btn" onclick="upgradeStation('${id}')">อัปเกรด (${level.price} 🐟)</button>`;
+        else btn = `<button class="item-buy-btn" disabled style="opacity:0.5;">🔒 ระดับ ${lv - 1} ก่อน</button>`;
+        return `<div class="station-option${lv === st.lv ? ' is-current' : ''}">
+            <div class="opt-text"><div class="opt-name">ระดับ ${lv}: ${level.name}</div><div class="opt-desc">${level.desc}</div></div>
+            ${btn}
+          </div>`;
+      }).join('');
+
+      const skinRows = [null, ...Object.keys(STATION_SKINS)].map(skin => {
+        const info = skin ? STATION_SKINS[skin] : { name: 'แบบเดิม', desc: 'ไม่ใส่ธีม ใช้สีตามระดับ' };
+        const isCurrent = st.skin === skin;
+        let btn;
+        if (isCurrent) btn = `<button class="item-buy-btn equipped" disabled>✓ ใส่อยู่</button>`;
+        else if (!skin || st.skins.includes(skin)) btn = `<button class="item-buy-btn" style="background:#334155;" onclick="applyStationSkin('${id}', ${skin ? `'${skin}'` : 'null'})">ใส่ธีมนี้</button>`;
+        else btn = `<button class="item-buy-btn" onclick="buyStationSkin('${id}', '${skin}')">ซื้อ (${info.price} 🐟)</button>`;
+        return `<div class="station-option${isCurrent ? ' is-current' : ''}">
+            <div class="${skin ? 'station-body st-' + id + ' st-lv-1 skin-' + skin : 'station-body st-' + id + ' st-lv-1'}" style="transform:scale(0.7);">${stationBodyHTML(id, { lv: 1, amount: 0 })}</div>
+            <div class="opt-text"><div class="opt-name">${info.name}</div><div class="opt-desc">${info.desc}</div></div>
+            ${btn}
+          </div>`;
+      });
+      document.getElementById('station-skin-list').innerHTML = skinRows.join('');
+    }
+
+    function afterStationChange(id) {
+      saveStations();
+      renderStationVisuals();
+      renderStationModal();
+      renderThemeShop();
+      renderShop(currentShopFilter);
+      const wrap = document.getElementById(`${id}-station-wrap`);
+      if (wrap) wrap.animate([{ scale: '0.6' }, { scale: '1.25' }, { scale: '1' }], { duration: 600, easing: 'ease-out' });
+    }
+
+    function upgradeStation(id) {
+      if (requireLogin()) return;
+      const st = stations[id];
+      if (st.lv >= 3) return;
+      const next = STATION_DEFS[id].levels[st.lv];
+      if (!spendCoins(next.price)) return;
+      st.lv++;
+      if (id !== 'litter') st.amount = stationCapacity(id); // upgrades come filled
+      audio.playCoin();
+      afterStationChange(id);
+      scheduleLitterAutoClean();
+      showToast("⬆️", `อัปเกรดเป็น${next.name}แล้ว!`);
+    }
+
+    function buyStationSkin(id, skin) {
+      if (requireLogin()) return;
+      const st = stations[id];
+      if (!STATION_SKINS[skin] || st.skins.includes(skin)) return;
+      if (!spendCoins(STATION_SKINS[skin].price)) return;
+      st.skins.push(skin);
+      st.skin = skin;
+      audio.playCoin();
+      afterStationChange(id);
+      showToast("🎨", `ใส่${STATION_SKINS[skin].name}ให้${STATION_DEFS[id].name}แล้ว!`);
+    }
+
+    function applyStationSkin(id, skin) {
+      if (requireLogin()) return;
+      const st = stations[id];
+      if (skin && !st.skins.includes(skin)) return;
+      st.skin = skin;
+      afterStationChange(id);
     }
 
     /* ==========================================================================
@@ -6988,23 +8375,12 @@ class LiveCatActor {
     let currentView = 'game';
     let isGameLoopRunning = true;
 
-    // The cat farm needs a signed-in player; Cat Ball stays open to guests (REQ-08)
+    // Guests may look at the farm; actions need a signed-in player (REQ-08, see requireLogin)
     let pendingFarmEntry = false;
-    function showFarmLoginGate() {
-      if (currentView === 'farm') switchView('game');
-      pendingFarmEntry = true;
-      openLoginModal();
-      const msg = document.getElementById('login-gate-msg');
-      if (msg) msg.style.display = 'block';
-    }
 
     function switchView(viewName) {
       if (viewName !== 'game' && viewName !== 'farm') return;
-      if (viewName === 'farm' && !currentUser) {
-        showFarmLoginGate();
-        return;
-      }
-      currentView = viewName;
+      currentView = viewName; // guests may enter the farm in view-only mode (requireLogin guards actions)
 
       const viewGame = document.getElementById("view-game");
       const viewFarm = document.getElementById("view-farm");
@@ -7034,6 +8410,7 @@ class LiveCatActor {
         if (typeof updateRoomDecorations === 'function') {
           updateRoomDecorations();
         }
+        scheduleVisitor(true);
       }
     }
 
@@ -7056,6 +8433,7 @@ class LiveCatActor {
       let returnView = null;
       try { returnView = sessionStorage.getItem('sleeperem_return_view'); sessionStorage.removeItem('sleeperem_return_view'); } catch (e) {}
       const wantFarm = window.location.hash === '#farm' || returnView === 'farm';
+      window.__wantFarm = wantFarm;
 
       // Sync initial user state
       const client = getSupabase();
@@ -7072,7 +8450,10 @@ class LiveCatActor {
       }
 
       // Init stations & farm
-      if (secretSpaceUnlocked) applySpaceTabUnlocked();
+      applyThemeTabs();
+      renderThemeShop();
+      initSceneToys();
+      refreshGuestMode();
       const shopCount = document.getElementById('shop-item-count');
       if (shopCount) shopCount.innerText = SHOP_ITEMS.length;
       renderStationVisuals();
