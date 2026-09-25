@@ -5701,9 +5701,11 @@
     const sound = new SoundEngine();
 
     /* ==========================================================================
-       BACKGROUND MUSIC (2026-09-25) — one soft loop per theme, composed live with WebAudio, so there are
-       no audio files to load or license. Japanese: koto plucks + bamboo flute on the yo scale · Modern:
-       lo-fi electric piano with a soft beat · Space: synth arpeggio and pad with echo.
+       BACKGROUND MUSIC (2026-09-25, round 12: upbeat) — one loop per theme, composed live with WebAudio,
+       so there are no audio files to load or license. The user found the first calm version sleepy, so
+       every theme drives: a kick on every beat, a drum fill into each 8-bar phrase, chords that "pump"
+       with the beat. Japanese: matsuri festival (taiko, shamisen, flute) · Modern: electro-pop (bass
+       8ths, claps, chord stabs) · Space: synthwave (16th arpeggio, saw lead, pad).
        Plays the game theme on the game screen (locked while a game runs, like the backdrop) and the room
        theme in the cat room; each screen's 🔊 button mutes it too. Starts on the first tap (browsers
        block sound before that).
@@ -5712,22 +5714,22 @@
       enabled: true,
       volume: 0.5,           // overall music loudness (sound effects are not affected)
       fadeSec: 1.2,          // fade in / out when the theme changes or the sound is muted
-      bpm: { japanese: 76, modern: 78, space: 96 }
+      bpm: { japanese: 132, modern: 124, space: 140 }
     });
     const midiHz = m => 440 * Math.pow(2, (m - 69) / 12);
 
-    // Instruments: waves = [type, frequency ratio, level, detune cents]; pluck = decay seconds (no hold)
+    // Instruments: waves = [type, frequency ratio, level, detune cents]; pluck = decay seconds (no hold);
+    // pump = ducks on every beat (the dance-music "breathing" that makes a loop feel like it moves)
     const MUSIC_INSTR = {
-      koto:  { waves: [['triangle', 1, 1], ['sine', 2, 0.35], ['square', 3, 0.025]], pluck: 1.1, attack: 0.004, vol: 0.06, lp: 3200, verb: 0.35 },
-      flute: { waves: [['sine', 1, 1], ['triangle', 2, 0.1]], attack: 0.07, release: 0.35, vol: 0.06, lp: 2600, vib: [5, 14], verb: 0.45, echo: 0.12 },
-      drone: { waves: [['sine', 1, 1], ['triangle', 2, 0.18]], attack: 0.5, release: 1.2, vol: 0.05, lp: 500, verb: 0.3 },
-      ep:    { waves: [['sine', 1, 1], ['triangle', 1, 0.22, 7], ['sine', 2, 0.07]], attack: 0.015, release: 0.7, vol: 0.03, lp: 1500, verb: 0.25 },
-      lead:  { waves: [['triangle', 1, 1], ['sine', 2, 0.18]], attack: 0.02, release: 0.4, vol: 0.045, lp: 2200, vib: [4.5, 6], verb: 0.2, echo: 0.22 },
-      bass:  { waves: [['sine', 1, 1], ['triangle', 1, 0.3]], attack: 0.02, release: 0.25, vol: 0.09, lp: 380 },
-      pad:   { waves: [['sawtooth', 1, 0.5, -9], ['sawtooth', 1, 0.5, 9]], attack: 1.2, release: 1.8, vol: 0.018, lp: 750, verb: 0.55 },
-      arp:   { waves: [['sawtooth', 1, 1]], pluck: 0.22, attack: 0.005, vol: 0.022, lp: 1500, echo: 0.45, verb: 0.2 },
-      bell:  { waves: [['sine', 1, 1], ['sine', 2.01, 0.25], ['sine', 3.02, 0.08]], pluck: 1.6, attack: 0.006, vol: 0.05, echo: 0.35, verb: 0.5 },
-      sub:   { waves: [['sine', 1, 1]], attack: 0.3, release: 0.8, vol: 0.08, lp: 300 }
+      shami: { waves: [['triangle', 1, 1], ['sawtooth', 1, 0.35], ['sine', 2, 0.3]], pluck: 0.3, attack: 0.003, vol: 0.05, lp: 2600, verb: 0.2 },
+      flute: { waves: [['sine', 1, 1], ['triangle', 2, 0.12]], attack: 0.03, release: 0.18, vol: 0.065, lp: 3000, vib: [6, 12], verb: 0.3, echo: 0.15 },
+      pluckBass: { waves: [['triangle', 1, 1], ['sine', 1, 0.6]], pluck: 0.32, attack: 0.004, vol: 0.075, lp: 700 },
+      synthBass: { waves: [['sawtooth', 1, 1], ['square', 0.5, 0.35]], pluck: 0.2, attack: 0.004, vol: 0.09, lp: 650 },
+      stab:  { waves: [['sawtooth', 1, 0.4, -7], ['sawtooth', 1, 0.4, 7], ['square', 1, 0.15]], attack: 0.004, release: 0.1, vol: 0.03, lp: 2200, verb: 0.15 },
+      pad:   { waves: [['sawtooth', 1, 0.5, -9], ['sawtooth', 1, 0.5, 9]], attack: 0.4, release: 0.8, vol: 0.024, lp: 1100, verb: 0.35, pump: true },
+      arp:   { waves: [['sawtooth', 1, 1]], pluck: 0.16, attack: 0.004, vol: 0.03, lp: 1900, echo: 0.35, verb: 0.15 },
+      lead:  { waves: [['square', 1, 0.6], ['sawtooth', 1, 0.3, 6]], attack: 0.01, release: 0.15, vol: 0.042, lp: 2600, vib: [5.5, 8], echo: 0.25, verb: 0.15 },
+      synLead: { waves: [['sawtooth', 1, 0.5, -8], ['sawtooth', 1, 0.5, 8]], attack: 0.01, release: 0.2, vol: 0.042, lp: 2600, vib: [6, 10], echo: 0.35, verb: 0.3 }
     };
 
     // Each theme: melody scale (pitch classes) and range, 8 bars of [bass note, chord notes] (MIDI numbers),
@@ -5737,47 +5739,45 @@
         scale: [2, 4, 7, 9, 11], range: [69, 86], lead: 'flute', echoBeats: 0.75, swing: 0,   // D yo pentatonic
         chords: [[38, [62, 69, 74]], [43, [67, 71, 74]], [45, [64, 69, 76]], [38, [62, 67, 69]],
                  [43, [67, 71, 74]], [40, [64, 67, 71]], [45, [64, 69, 76]], [38, [62, 69, 74]]],
-        rhythms: [[2, 1, 1, 2, -2], [1.5, 0.5, 2, 3, -1], [1, 1, 2, 1, 1, -2], [3, 1, 2, -2]],
+        rhythms: [[1, 0.5, 0.5, 1, 1, 1, 1, -2], [0.5, 0.5, 1, 0.5, 0.5, 1, 2, -2], [1.5, 0.5, 1, 1, 0.5, 0.5, 1, -2], [1, 1, 0.5, 0.5, 1, 3, -1]],
         bar(e, s, t, i, B, [bass, ch]) {
-          e.play(s, 'drone', t, midiHz(bass), 4 * B);
-          const pat = i % 2 ? [[0, 0], [1, 1], [1.5, 2], [2, 0], [3, 1], [3.5, 2]] : [[0, 0], [0.5, 1], [1, 2], [2, 1], [2.5, 0], [3, 2]];
-          pat.forEach(([b, k]) => e.play(s, 'koto', t + b * B, midiHz(ch[k]), 0));
-          if (i % 2 === 0) e.drum(s, 'taiko', t, 0.12);
-          if (i % 4 === 3) e.drum(s, 'block', t + 3.5 * B, 0.05);
+          [[0, 0], [1.5, 0], [2, 7], [3, 12]].forEach(([b, up]) => e.play(s, 'pluckBass', t + b * B, midiHz(bass + up), 0));
+          [0, 1, 2, 1, 0, 2, 1, 2].forEach((k, n) => e.play(s, 'shami', t + n * B / 2, midiHz(ch[k]), 0));
+          // matsuri taiko: don (drum head) + ka (rim)
+          [0, 1.5, 2, 3].forEach(b => e.drum(s, 'taiko', t + b * B, b % 2 ? 0.09 : 0.12));
+          [1, 2.5, 3.5].forEach(b => e.drum(s, 'block', t + b * B, 0.05));
+          e.beats(s, t, B, i, { hats: false, kick: false });   // the taiko is the kick
         }
       },
       modern: {
-        scale: [0, 2, 4, 7, 9], range: [72, 88], lead: 'lead', echoBeats: 0.75, swing: 0.08,  // C major pentatonic
-        chords: [[41, [53, 57, 60, 64]], [40, [52, 55, 59, 62]], [38, [50, 53, 57, 60]], [36, [48, 52, 55, 59]],
-                 [41, [53, 57, 60, 64]], [40, [52, 55, 59, 62]], [45, [57, 60, 64, 67]], [43, [55, 59, 62, 64]]],
-        rhythms: [[1, 0.5, 0.5, 2, -1, 1, 2], [-0.5, 0.5, 1, 1, 1.5, -1.5, 0.5, 0.5, 1], [1.5, 0.5, 1, 1, 3, -1], [0.5, 0.5, 0.5, 0.5, 2, -2, 2]],
+        scale: [0, 2, 4, 7, 9], range: [72, 88], lead: 'lead', echoBeats: 0.75, swing: 0,     // C major pentatonic
+        chords: [[45, [57, 60, 64]], [41, [57, 60, 65]], [48, [55, 60, 64]], [43, [55, 59, 62]],
+                 [45, [57, 60, 64]], [41, [57, 60, 65]], [43, [55, 59, 62]], [40, [55, 59, 64]]],
+        rhythms: [[0.5, 0.5, 0.5, 0.5, 1, 1, -1, 1, 2], [1, 0.5, 0.5, 1, 0.5, 0.5, 1, -1, 2], [-0.5, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 1, -2], [1.5, 0.5, 1.5, 0.5, 1, 1, 2]],
         bar(e, s, t, i, B, [bass, ch]) {
-          const at = b => t + e.swing(b, 0.08) * B;
-          [0, 2.5].forEach(b => ch.forEach(m => e.play(s, 'ep', at(b), midiHz(m), 1.4 * B)));
-          e.play(s, 'bass', at(0), midiHz(bass), 1.6 * B);
-          e.play(s, 'bass', at(2.5), midiHz(bass + (i % 2 ? 7 : 12)), 1.2 * B);
-          e.drum(s, 'kick', at(0), 0.2);
-          e.drum(s, 'kick', at(2.5), 0.15);
-          if (i % 4 === 3) e.drum(s, 'kick', at(3.5), 0.1);
-          e.drum(s, 'snare', at(1), 0.05);
-          e.drum(s, 'snare', at(3), 0.05);
-          for (let b = 0; b < 4; b += 0.5) e.drum(s, 'hat', at(b), b % 1 ? 0.012 : 0.02);
+          e.duck(s, t, B);
+          ch.forEach(m => e.play(s, 'pad', t, midiHz(m), 4 * B));
+          [0.5, 1.5, 2.5, 3.5].forEach(b => ch.forEach(m => e.play(s, 'stab', t + b * B, midiHz(m + 12), 0.3 * B)));
+          for (let k = 0; k < 8; k++) e.play(s, 'synthBass', t + k * B / 2, midiHz(bass + (k % 2 ? 12 : 0)), 0);
+          e.beats(s, t, B, i, { clap: true });
         }
       },
       space: {
-        scale: [9, 0, 2, 4, 7], range: [69, 88], lead: 'bell', echoBeats: 0.75, swing: 0,     // A minor pentatonic
+        scale: [9, 0, 2, 4, 7], range: [69, 88], lead: 'synLead', echoBeats: 0.75, swing: 0,  // A minor pentatonic
         chords: [[45, [57, 60, 64, 71]], [41, [53, 57, 60, 64]], [48, [55, 60, 64, 67]], [43, [55, 59, 62, 67]],
                  [45, [57, 60, 64, 71]], [41, [53, 57, 60, 64]], [38, [53, 57, 60, 62]], [40, [52, 57, 59, 64]]],
-        rhythms: [[2, 2, 3, -1], [1, 1, 2, -2, 2], [3, 1, -1, 3], [1.5, 1.5, 1, 2, -2]],
+        rhythms: [[1, 1, 1, 1, 2, -2], [1.5, 1.5, 1, 1, 1, 2], [0.5, 0.5, 1, 2, 1, 1, -2], [2, 1, 1, 1.5, 0.5, -2]],
         bar(e, s, t, i, B, [bass, ch]) {
+          e.duck(s, t, B);
           ch.forEach(m => e.play(s, 'pad', t, midiHz(m), 4 * B));
-          e.play(s, 'sub', t, midiHz(bass), 3.6 * B);
           const up = [0, 1, 2, 3, 2, 1, 2, 3];
           for (let k = 0; k < 16; k++) e.play(s, 'arp', t + k * B / 4, midiHz(ch[up[k % 8]] + 12), 0);
-          if (i % 2 === 0) e.drum(s, 'kick', t, 0.08);
+          for (let k = 0; k < 8; k++) e.play(s, 'synthBass', t + k * B / 2, midiHz(bass + (k === 7 ? 12 : 0)), 0);
+          e.beats(s, t, B, i, {});
         }
       }
     };
+
     Object.values(MUSIC_THEMES).forEach(T => {      // every melody note the theme may use, low to high
       T.pool = [];
       for (let m = T.range[0]; m <= T.range[1]; m++) if (T.scale.includes(m % 12)) T.pool.push(m);
@@ -5788,6 +5788,7 @@
         this.session = null;   // the theme loop that is playing
         this.timer = null;
         this.unlocked = false; // true after the first tap
+        this.hold = false;     // true while an ad is on screen
         this.bus = null;
       }
 
@@ -5810,7 +5811,7 @@
         verb.buffer = ir;
         vg.gain.value = 0.6;
         verb.connect(vg); vg.connect(out);
-        const noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate), nd = noise.getChannelData(0);
+        const noise = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate), nd = noise.getChannelData(0);
         for (let n = 0; n < nd.length; n++) nd[n] = Math.random() * 2 - 1;
         this.bus = { ctx, out, delay, verb, noise };
       }
@@ -5831,6 +5832,7 @@
         s.dry = ctx.createGain(); s.dry.connect(this.bus.out);
         s.echo = ctx.createGain(); s.echo.connect(this.bus.delay);
         s.verb = ctx.createGain(); s.verb.connect(this.bus.verb);
+        s.pump = ctx.createGain(); s.pump.connect(s.dry);
         this.bus.delay.delayTime.setValueAtTime(T.echoBeats * B, now);
         [s.dry, s.echo, s.verb].forEach(g => {
           g.gain.setValueAtTime(0.0001, now);
@@ -5925,6 +5927,27 @@
 
       swing(beat, amt) { return beat + (amt && beat % 1 === 0.5 ? amt : 0); }
 
+      // Duck the pumping parts on every beat, then swell back before the next one
+      duck(s, t, B) {
+        for (let b = 0; b < 4; b++) {
+          s.pump.gain.setValueAtTime(0.3, t + b * B);
+          s.pump.gain.linearRampToValueAtTime(1, t + (b + 0.6) * B);
+        }
+      }
+
+      // The shared drum kit: kick on every beat, snare/clap on 2 and 4, hats on the off-beats,
+      // a cymbal at the top of each 8-bar phrase and a snare fill into the next one
+      beats(s, t, B, i, { hats = true, clap = false, kick = true }) {
+        const last = s.T.chords.length - 1;
+        if (kick) for (let b = 0; b < 4; b++) e0(this, 'kick', b, 0.18);
+        [1, 3].forEach(b => e0(this, clap ? 'clap' : 'snare', b, 0.06));
+        if (hats) for (let b = 0.5; b < 4; b += 1) e0(this, 'ohat', b, 0.02);
+        if (hats) for (let b = 0; b < 4; b += 0.25) if (b % 0.5) e0(this, 'hat', b, 0.009);
+        if (i === 0) e0(this, 'crash', 0, 0.035);
+        if (i === last) [3, 3.25, 3.5, 3.75].forEach((b, n) => e0(this, 'snare', b, 0.035 + n * 0.012));
+        function e0(e, kind, beat, vol) { e.drum(s, kind, t + beat * B, vol); }
+      }
+
       play(s, name, t, freq, dur) {
         const o = MUSIC_INSTR[name], ctx = this.bus.ctx, a = o.attack || 0.01;
         const env = ctx.createGain();
@@ -5947,7 +5970,7 @@
           env.connect(f);
           node = f;
         }
-        node.connect(s.dry);
+        node.connect(o.pump ? s.pump : s.dry);
         [['echo', s.echo], ['verb', s.verb]].forEach(([k, bus]) => {
           if (!o[k]) return;
           const g = ctx.createGain();
@@ -5981,9 +6004,9 @@
         const ctx = this.bus.ctx, g = ctx.createGain();
         g.connect(s.dry);
         if (kind === 'kick' || kind === 'taiko') {
-          const o = ctx.createOscillator(), len = kind === 'kick' ? 0.3 : 0.6;
+          const o = ctx.createOscillator(), len = kind === 'kick' ? 0.26 : 0.6;
           o.type = 'sine';
-          o.frequency.setValueAtTime(kind === 'kick' ? 120 : 90, t);
+          o.frequency.setValueAtTime(kind === 'kick' ? 150 : 90, t);
           o.frequency.exponentialRampToValueAtTime(kind === 'kick' ? 42 : 55, t + len * 0.6);
           g.gain.setValueAtTime(vol, t);
           g.gain.exponentialRampToValueAtTime(0.0001, t + len);
@@ -6001,11 +6024,15 @@
           o.connect(g);
           o.start(t);
           o.stop(t + 0.1);
-        } else {                                // snare / hat: a burst of filtered noise
-          const n = ctx.createBufferSource(), f = ctx.createBiquadFilter(), len = kind === 'hat' ? 0.045 : 0.14;
+        } else {                                // snare / clap / hats / cymbal: a burst of filtered noise
+          const NOISE = { hat: [0.045, 'highpass', 7000], ohat: [0.16, 'highpass', 8000], snare: [0.14, 'bandpass', 1800],
+            clap: [0.12, 'bandpass', 1300], crash: [1.3, 'highpass', 5000] };
+          const [len, type, hz] = NOISE[kind] || NOISE.snare;
+          const n = ctx.createBufferSource(), f = ctx.createBiquadFilter();
           n.buffer = this.bus.noise;
-          f.type = kind === 'hat' ? 'highpass' : 'bandpass';
-          f.frequency.value = kind === 'hat' ? 7000 : 1800;
+          f.type = type;
+          f.frequency.value = hz;
+          if (kind === 'clap' || kind === 'crash') { const v = ctx.createGain(); v.gain.value = 0.35; g.connect(v); v.connect(s.verb); }
           g.gain.setValueAtTime(vol, t);
           g.gain.exponentialRampToValueAtTime(0.0001, t + len);
           n.connect(f); f.connect(g);
@@ -6017,7 +6044,7 @@
       // Which theme should be playing now: the screen on show, its own mute button, the tab visible
       wanted() {
         try {
-          if (!MUSIC.enabled || document.visibilityState === 'hidden') return null;
+          if (!MUSIC.enabled || this.hold || document.visibilityState === 'hidden') return null;   // hold: an ad is on
           const onGame = currentView === 'game';
           if (onGame ? sound.muted : !audioEnabled) return null;
           const theme = onGame ? gameTheme : currentTheme;
@@ -7608,6 +7635,8 @@
       endGameEvent();
       helperLeave(false);
       const earned = payGameEndCoins(idleEnded);
+      const adDue = endAdDue();
+      if (gameStats) gameStats.ad = adDue;
       const title = document.getElementById('go-title'), sub = document.getElementById('go-sub');
       if (title) title.textContent = idleEnded ? 'หมดเวลาแล้ว~' : 'กล่องแมวเต็มแย้ว!';
       if (sub) sub.textContent = idleEnded ? `ไม่ได้แตะจอเกิน ${Math.round(GAMEPLAY.idleTimeoutSec / 60)} นาที เกมจบให้ ได้เหรียญครึ่งเดียว` : 'น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก';
@@ -7618,6 +7647,7 @@
       const finalCombo = document.getElementById("final-combo");
       if (finalCombo) finalCombo.innerText = comboBestThisGame >= 2 ? `คอมโบสูงสุด ×${comboBestThisGame}` : '';
       document.getElementById("game-over-modal").style.display = "flex";
+      if (adDue) setTimeout(showEndAd, 600);   // after the coins land, over the summary
 
       // Secure Score Submission to Supabase RPC
       if (supabaseClient) {
@@ -10438,6 +10468,77 @@ class LiveCatActor {
     }
 
     // Runs every frame from gameLoop: counts Cat Ball play time, and drives the bug in the cat room
+    /* --- Ads (round 12, REQ-18 §4): one full-screen ad at the end of a game, once 10 minutes of play have
+           added up since the last ad — one long game, or several short ones together. Only real game ends
+           (box full / idle), never mid-game. Web: Google AdSense H5 Games Ads (Ad Placement API, adBreak).
+           No AdSense publisher id in the config yet → dev shows a stand-in ad so the timing can be checked,
+           prod shows nothing. The play time is kept on the device, so reloading doesn't skip the ad. --- */
+    const ADS = cfg('ads', {
+      enabled: true,
+      everyPlaySec: 600,           // play time (seconds on the game screen) between two ads
+      adsenseClient: '',           // "ca-pub-…" once the AdSense account is approved; '' = no real ads
+      testAdOnDev: true            // no publisher id on dev → show a stand-in ad instead
+    });
+    let adPlaySec = parseFloat(getStorageItem('ad_play_sec') || '0') || 0;
+    let adSavedAt = adPlaySec;
+    const saveAdClock = () => { setStorageItem('ad_play_sec', String(Math.round(adPlaySec))); adSavedAt = adPlaySec; };
+
+    function tickAdClock(dt) {
+      adPlaySec += dt;
+      if (adPlaySec - adSavedAt >= 10) saveAdClock();
+    }
+    const endAdDue = () => ADS.enabled && adPlaySec >= ADS.everyPlaySec;
+
+    function loadAdSense() {
+      if (!ADS.enabled || !ADS.adsenseClient || window.adBreak) return;
+      window.adsbygoogle = window.adsbygoogle || [];
+      window.adBreak = window.adConfig = o => window.adsbygoogle.push(o);
+      const s = document.createElement('script');
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(ADS.adsenseClient);
+      s.setAttribute('data-ad-frequency-hint', '30s');
+      if (IS_DEV_BUILD) s.setAttribute('data-adbreak-test', 'on');   // Google's test ads on dev
+      document.head.appendChild(s);
+      window.adConfig({ preloadAdBreaks: 'on', sound: 'on' });
+    }
+    loadAdSense();
+
+    // Game over: show the ad if one is due, then start counting again
+    function showEndAd() {
+      adPlaySec = 0;
+      saveAdClock();
+      const hold = on => { music.hold = on; music.update(); };
+      if (ADS.adsenseClient && window.adBreak) {
+        window.adBreak({ type: 'next', name: 'game_over', beforeAd: () => hold(true), afterAd: () => hold(false),
+          adBreakDone: () => hold(false) });
+        return 'adsense';
+      }
+      if (!(IS_DEV_BUILD && ADS.testAdOnDev)) return null;
+      hold(true);
+      const el = document.createElement('div');
+      el.id = 'test-ad';
+      el.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;' +
+        'background:rgba(2,6,23,0.94);color:#f8fafc;font-family:inherit;text-align:center;padding:24px';
+      el.innerHTML = '<div style="font-size:48px">📺</div><div style="font-size:20px;font-weight:700">พื้นที่โฆษณา</div>' +
+        `<div style="font-size:13px;color:#94a3b8;max-width:320px">ตัวอย่างบน dev เท่านั้น — ของจริงจะเป็นโฆษณา Google ขึ้นตรงนี้ หลังเล่นครบ ${Math.round(ADS.everyPlaySec / 60)} นาที</div>` +
+        '<button type="button" disabled style="font:inherit;font-size:15px;padding:10px 22px;border-radius:12px;border:0;background:#334155;color:#cbd5e1">ปิดได้ใน 5</button>';
+      document.body.appendChild(el);
+      const btn = el.querySelector('button');
+      let left = 5;
+      const t = setInterval(() => {
+        left--;
+        if (left > 0) { btn.textContent = `ปิดได้ใน ${left}`; return; }
+        clearInterval(t);
+        btn.disabled = false;
+        btn.textContent = 'ปิดโฆษณา ✕';
+        btn.style.background = '#f59e0b';
+        btn.style.color = '#fff';
+      }, 1000);
+      btn.addEventListener('click', () => { el.remove(); hold(false); });
+      return 'test';
+    }
+
     function tickPlayClock(dt) {
       let view = 'game';
       try { view = currentView; } catch (e) { view = 'game'; }
@@ -10452,6 +10553,7 @@ class LiveCatActor {
       }
       if (isGameOver || view !== 'game' || !gameStats || gameStats.drops === 0) return;
       gameStats.playSec += dt;
+      tickAdClock(dt);
       tickIdle(dt);
       tickHelperVisit(dt);
     }
@@ -10581,7 +10683,7 @@ class LiveCatActor {
         pointsPerMin: playSec ? Math.round(score / (playSec / 60)) : 0,
         mergesPerMin: playSec ? +(g.merges / (playSec / 60)).toFixed(1) : 0,
         event: g.event, helperVisits: g.helperVisits || [], skillsUsed: (g.helperVisits || []).filter(v => v.used).length,
-        theme: g.theme, device: g.device, loggedIn: !!currentUser
+        theme: g.theme, device: g.device, loggedIn: !!currentUser, ad: !!g.ad
       };
       const log = loadStatsLog();
       log.push(rec);
