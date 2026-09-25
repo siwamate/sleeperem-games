@@ -5701,6 +5701,379 @@
     const sound = new SoundEngine();
 
     /* ==========================================================================
+       BACKGROUND MUSIC (2026-09-25, round 12: upbeat) — one loop per theme, composed live with WebAudio,
+       so there are no audio files to load or license. The user found the first calm version sleepy, so
+       every theme drives: a kick on every beat, a drum fill into each 8-bar phrase, chords that "pump"
+       with the beat. Japanese: matsuri festival (taiko, shamisen, flute) · Modern: electro-pop (bass
+       8ths, claps, chord stabs) · Space: synthwave (16th arpeggio, saw lead, pad).
+       Plays the game theme on the game screen (locked while a game runs, like the backdrop) and the room
+       theme in the cat room; each screen's 🔊 button mutes it too. Starts on the first tap (browsers
+       block sound before that).
+       ========================================================================== */
+    const MUSIC = cfg('music', {
+      enabled: true,
+      volume: 0.5,           // overall music loudness (sound effects are not affected)
+      fadeSec: 1.2,          // fade in / out when the theme changes or the sound is muted
+      bpm: { japanese: 132, modern: 124, space: 140 }
+    });
+    const midiHz = m => 440 * Math.pow(2, (m - 69) / 12);
+
+    // Instruments: waves = [type, frequency ratio, level, detune cents]; pluck = decay seconds (no hold);
+    // pump = ducks on every beat (the dance-music "breathing" that makes a loop feel like it moves)
+    const MUSIC_INSTR = {
+      shami: { waves: [['triangle', 1, 1], ['sawtooth', 1, 0.35], ['sine', 2, 0.3]], pluck: 0.3, attack: 0.003, vol: 0.05, lp: 2600, verb: 0.2 },
+      flute: { waves: [['sine', 1, 1], ['triangle', 2, 0.12]], attack: 0.03, release: 0.18, vol: 0.065, lp: 3000, vib: [6, 12], verb: 0.3, echo: 0.15 },
+      pluckBass: { waves: [['triangle', 1, 1], ['sine', 1, 0.6]], pluck: 0.32, attack: 0.004, vol: 0.075, lp: 700 },
+      synthBass: { waves: [['sawtooth', 1, 1], ['square', 0.5, 0.35]], pluck: 0.2, attack: 0.004, vol: 0.09, lp: 650 },
+      stab:  { waves: [['sawtooth', 1, 0.4, -7], ['sawtooth', 1, 0.4, 7], ['square', 1, 0.15]], attack: 0.004, release: 0.1, vol: 0.03, lp: 2200, verb: 0.15 },
+      pad:   { waves: [['sawtooth', 1, 0.5, -9], ['sawtooth', 1, 0.5, 9]], attack: 0.4, release: 0.8, vol: 0.024, lp: 1100, verb: 0.35, pump: true },
+      arp:   { waves: [['sawtooth', 1, 1]], pluck: 0.16, attack: 0.004, vol: 0.03, lp: 1900, echo: 0.35, verb: 0.15 },
+      lead:  { waves: [['square', 1, 0.6], ['sawtooth', 1, 0.3, 6]], attack: 0.01, release: 0.15, vol: 0.042, lp: 2600, vib: [5.5, 8], echo: 0.25, verb: 0.15 },
+      synLead: { waves: [['sawtooth', 1, 0.5, -8], ['sawtooth', 1, 0.5, 8]], attack: 0.01, release: 0.2, vol: 0.042, lp: 2600, vib: [6, 10], echo: 0.35, verb: 0.3 }
+    };
+
+    // Each theme: melody scale (pitch classes) and range, 8 bars of [bass note, chord notes] (MIDI numbers),
+    // melody rhythms (2 bars = 8 beats, negative = rest) and what the band plays in one bar
+    const MUSIC_THEMES = {
+      japanese: {
+        scale: [2, 4, 7, 9, 11], range: [69, 86], lead: 'flute', echoBeats: 0.75, swing: 0,   // D yo pentatonic
+        chords: [[38, [62, 69, 74]], [43, [67, 71, 74]], [45, [64, 69, 76]], [38, [62, 67, 69]],
+                 [43, [67, 71, 74]], [40, [64, 67, 71]], [45, [64, 69, 76]], [38, [62, 69, 74]]],
+        rhythms: [[1, 0.5, 0.5, 1, 1, 1, 1, -2], [0.5, 0.5, 1, 0.5, 0.5, 1, 2, -2], [1.5, 0.5, 1, 1, 0.5, 0.5, 1, -2], [1, 1, 0.5, 0.5, 1, 3, -1]],
+        bar(e, s, t, i, B, [bass, ch]) {
+          [[0, 0], [1.5, 0], [2, 7], [3, 12]].forEach(([b, up]) => e.play(s, 'pluckBass', t + b * B, midiHz(bass + up), 0));
+          [0, 1, 2, 1, 0, 2, 1, 2].forEach((k, n) => e.play(s, 'shami', t + n * B / 2, midiHz(ch[k]), 0));
+          // matsuri taiko: don (drum head) + ka (rim)
+          [0, 1.5, 2, 3].forEach(b => e.drum(s, 'taiko', t + b * B, b % 2 ? 0.09 : 0.12));
+          [1, 2.5, 3.5].forEach(b => e.drum(s, 'block', t + b * B, 0.05));
+          e.beats(s, t, B, i, { hats: false, kick: false });   // the taiko is the kick
+        }
+      },
+      modern: {
+        scale: [0, 2, 4, 7, 9], range: [72, 88], lead: 'lead', echoBeats: 0.75, swing: 0,     // C major pentatonic
+        chords: [[45, [57, 60, 64]], [41, [57, 60, 65]], [48, [55, 60, 64]], [43, [55, 59, 62]],
+                 [45, [57, 60, 64]], [41, [57, 60, 65]], [43, [55, 59, 62]], [40, [55, 59, 64]]],
+        rhythms: [[0.5, 0.5, 0.5, 0.5, 1, 1, -1, 1, 2], [1, 0.5, 0.5, 1, 0.5, 0.5, 1, -1, 2], [-0.5, 0.5, 0.5, 0.5, 1, 1, 0.5, 0.5, 1, -2], [1.5, 0.5, 1.5, 0.5, 1, 1, 2]],
+        bar(e, s, t, i, B, [bass, ch]) {
+          e.duck(s, t, B);
+          ch.forEach(m => e.play(s, 'pad', t, midiHz(m), 4 * B));
+          [0.5, 1.5, 2.5, 3.5].forEach(b => ch.forEach(m => e.play(s, 'stab', t + b * B, midiHz(m + 12), 0.3 * B)));
+          for (let k = 0; k < 8; k++) e.play(s, 'synthBass', t + k * B / 2, midiHz(bass + (k % 2 ? 12 : 0)), 0);
+          e.beats(s, t, B, i, { clap: true });
+        }
+      },
+      space: {
+        scale: [9, 0, 2, 4, 7], range: [69, 88], lead: 'synLead', echoBeats: 0.75, swing: 0,  // A minor pentatonic
+        chords: [[45, [57, 60, 64, 71]], [41, [53, 57, 60, 64]], [48, [55, 60, 64, 67]], [43, [55, 59, 62, 67]],
+                 [45, [57, 60, 64, 71]], [41, [53, 57, 60, 64]], [38, [53, 57, 60, 62]], [40, [52, 57, 59, 64]]],
+        rhythms: [[1, 1, 1, 1, 2, -2], [1.5, 1.5, 1, 1, 1, 2], [0.5, 0.5, 1, 2, 1, 1, -2], [2, 1, 1, 1.5, 0.5, -2]],
+        bar(e, s, t, i, B, [bass, ch]) {
+          e.duck(s, t, B);
+          ch.forEach(m => e.play(s, 'pad', t, midiHz(m), 4 * B));
+          const up = [0, 1, 2, 3, 2, 1, 2, 3];
+          for (let k = 0; k < 16; k++) e.play(s, 'arp', t + k * B / 4, midiHz(ch[up[k % 8]] + 12), 0);
+          for (let k = 0; k < 8; k++) e.play(s, 'synthBass', t + k * B / 2, midiHz(bass + (k === 7 ? 12 : 0)), 0);
+          e.beats(s, t, B, i, {});
+        }
+      }
+    };
+
+    Object.values(MUSIC_THEMES).forEach(T => {      // every melody note the theme may use, low to high
+      T.pool = [];
+      for (let m = T.range[0]; m <= T.range[1]; m++) if (T.scale.includes(m % 12)) T.pool.push(m);
+    });
+
+    class MusicEngine {
+      constructor() {
+        this.session = null;   // the theme loop that is playing
+        this.timer = null;
+        this.unlocked = false; // true after the first tap
+        this.hold = false;     // true while an ad is on screen
+        this.bus = null;
+      }
+
+      // Shared output: volume, an echo (feedback delay) and a soft room reverb
+      buildBus(ctx) {
+        const out = ctx.createGain();
+        out.gain.value = MUSIC.volume;
+        out.connect(ctx.destination);
+        const delay = ctx.createDelay(2), fb = ctx.createGain(), dlp = ctx.createBiquadFilter();
+        fb.gain.value = 0.38;
+        dlp.type = 'lowpass';
+        dlp.frequency.value = 2200;
+        delay.connect(dlp); dlp.connect(fb); fb.connect(delay); dlp.connect(out);
+        const verb = ctx.createConvolver(), vg = ctx.createGain();
+        const len = Math.floor(ctx.sampleRate * 2.4), ir = ctx.createBuffer(2, len, ctx.sampleRate);
+        for (let c = 0; c < 2; c++) {
+          const d = ir.getChannelData(c);
+          for (let n = 0; n < len; n++) d[n] = (Math.random() * 2 - 1) * Math.pow(1 - n / len, 3);
+        }
+        verb.buffer = ir;
+        vg.gain.value = 0.6;
+        verb.connect(vg); vg.connect(out);
+        const noise = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate), nd = noise.getChannelData(0);
+        for (let n = 0; n < nd.length; n++) nd[n] = Math.random() * 2 - 1;
+        this.bus = { ctx, out, delay, verb, noise };
+      }
+
+      // A loop of one theme with its own faders (dry / echo / reverb), so the old theme can fade out
+      // while the next one fades in
+      newSession(theme, ctx) {
+        if (!this.bus || this.bus.ctx !== ctx) this.buildBus(ctx);
+        const T = MUSIC_THEMES[theme], B = 60 / ((MUSIC.bpm || {})[theme] || 80), now = ctx.currentTime;
+        let seed = (Date.now() ^ (Math.random() * 1e9)) >>> 0;
+        const rng = () => {                     // mulberry32: a fresh tune every session
+          seed = (seed + 0x6D2B79F5) >>> 0;
+          let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x;
+          return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+        };
+        const s = { theme, T, B, bar: 0, at: now + 0.15, rng, motifs: null, lastIdx: null };
+        s.dry = ctx.createGain(); s.dry.connect(this.bus.out);
+        s.echo = ctx.createGain(); s.echo.connect(this.bus.delay);
+        s.verb = ctx.createGain(); s.verb.connect(this.bus.verb);
+        s.pump = ctx.createGain(); s.pump.connect(s.dry);
+        this.bus.delay.delayTime.setValueAtTime(T.echoBeats * B, now);
+        [s.dry, s.echo, s.verb].forEach(g => {
+          g.gain.setValueAtTime(0.0001, now);
+          g.gain.exponentialRampToValueAtTime(1, now + MUSIC.fadeSec);
+        });
+        return s;
+      }
+
+      start(theme) {
+        sound.init();
+        this.bus && (this.bus.out.gain.value = MUSIC.volume);
+        this.session = this.newSession(theme, sound.ctx);
+        this.timer = setInterval(() => this.pump(), 50);
+        this.pump();
+      }
+
+      stop() {
+        clearInterval(this.timer);
+        this.timer = null;
+        const s = this.session;
+        this.session = null;
+        if (!s) return;
+        const now = this.bus.ctx.currentTime;
+        [s.dry, s.echo, s.verb].forEach(g => {
+          g.gain.cancelScheduledValues(now);
+          g.gain.setValueAtTime(Math.max(0.0001, g.gain.value), now);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + MUSIC.fadeSec * 0.7);
+        });
+        // Notes are scheduled up to two bars ahead; unplug the faders once those have played out silently
+        setTimeout(() => [s.dry, s.echo, s.verb].forEach(g => { try { g.disconnect(); } catch (e) {} }), (MUSIC.fadeSec + 10) * 1000);
+      }
+
+      // Schedule bars a little ahead of the audio clock
+      pump() {
+        const s = this.session;
+        if (!s) return;
+        const now = this.bus.ctx.currentTime;
+        if (s.at < now) s.at = now + 0.05;      // the timer was starved (busy tab): carry on, don't burst
+        while (s.at < now + 0.35) {
+          this.scheduleBar(s, s.at);
+          s.at += 4 * s.B;
+          s.bar++;
+        }
+      }
+
+      scheduleBar(s, t) {
+        const T = s.T, i = s.bar % T.chords.length, loop = Math.floor(s.bar / T.chords.length);
+        T.bar(this, s, t, i, s.B, T.chords[i]);
+        // Melody over 8 bars: A A' B A'. New motifs every 3 loops; every third loop the melody rests
+        if (i === 0 && loop % 3 === 0) s.motifs = [this.motif(s, 0), this.motif(s, 4)];
+        if (loop % 3 === 2 || i % 2) return;
+        let notes = s.motifs[i === 4 ? 1 : 0];
+        if (i === 2 || i === 6) notes = this.vary(s, notes);
+        notes.forEach(n => this.play(s, T.lead, t + this.swing(n.beat, T.swing) * s.B, midiHz(n.midi), n.len * s.B * 0.92));
+      }
+
+      // A 2-bar motif: a rhythm, notes that step through the scale and land on chord tones on strong beats
+      motif(s, startBar) {
+        const T = s.T, pool = T.pool, rng = s.rng;
+        const rhythm = T.rhythms[Math.floor(rng() * T.rhythms.length)];
+        let idx = s.lastIdx == null ? Math.floor(pool.length / 2) : s.lastIdx;
+        let beat = 0;
+        const notes = [];
+        rhythm.forEach(d => {
+          const len = Math.abs(d);
+          if (d > 0) {
+            const steps = [-2, -1, -1, 0, 1, 1, 2];
+            idx = Math.max(0, Math.min(pool.length - 1, idx + steps[Math.floor(rng() * steps.length)]));
+            if (beat % 2 === 0) {
+              const chord = T.chords[(startBar + Math.floor(beat / 4)) % T.chords.length][1];
+              let best = idx, gap = 99;
+              pool.forEach((m, k) => {
+                if (chord.some(c => ((m - c) % 12 + 12) % 12 === 0) && Math.abs(k - idx) < gap) { gap = Math.abs(k - idx); best = k; }
+              });
+              idx = best;
+            }
+            notes.push({ beat, len, midi: pool[idx] });
+          }
+          beat += len;
+        });
+        s.lastIdx = idx;
+        return notes;
+      }
+
+      // Same motif with its last note moved a step or two, so a repeat doesn't sound copy-pasted
+      vary(s, notes) {
+        if (!notes.length) return notes;
+        const pool = s.T.pool, last = notes[notes.length - 1];
+        const k = pool.indexOf(last.midi) + (s.rng() < 0.5 ? -1 : 1) * (s.rng() < 0.5 ? 1 : 2);
+        return notes.slice(0, -1).concat({ ...last, midi: pool[Math.max(0, Math.min(pool.length - 1, k))] });
+      }
+
+      swing(beat, amt) { return beat + (amt && beat % 1 === 0.5 ? amt : 0); }
+
+      // Duck the pumping parts on every beat, then swell back before the next one
+      duck(s, t, B) {
+        for (let b = 0; b < 4; b++) {
+          s.pump.gain.setValueAtTime(0.3, t + b * B);
+          s.pump.gain.linearRampToValueAtTime(1, t + (b + 0.6) * B);
+        }
+      }
+
+      // The shared drum kit: kick on every beat, snare/clap on 2 and 4, hats on the off-beats,
+      // a cymbal at the top of each 8-bar phrase and a snare fill into the next one
+      beats(s, t, B, i, { hats = true, clap = false, kick = true }) {
+        const last = s.T.chords.length - 1;
+        if (kick) for (let b = 0; b < 4; b++) e0(this, 'kick', b, 0.18);
+        [1, 3].forEach(b => e0(this, clap ? 'clap' : 'snare', b, 0.06));
+        if (hats) for (let b = 0.5; b < 4; b += 1) e0(this, 'ohat', b, 0.02);
+        if (hats) for (let b = 0; b < 4; b += 0.25) if (b % 0.5) e0(this, 'hat', b, 0.009);
+        if (i === 0) e0(this, 'crash', 0, 0.035);
+        if (i === last) [3, 3.25, 3.5, 3.75].forEach((b, n) => e0(this, 'snare', b, 0.035 + n * 0.012));
+        function e0(e, kind, beat, vol) { e.drum(s, kind, t + beat * B, vol); }
+      }
+
+      play(s, name, t, freq, dur) {
+        const o = MUSIC_INSTR[name], ctx = this.bus.ctx, a = o.attack || 0.01;
+        const env = ctx.createGain();
+        env.gain.setValueAtTime(0.0001, t);
+        env.gain.exponentialRampToValueAtTime(o.vol, t + a);
+        let end;
+        if (o.pluck) {
+          end = t + a + o.pluck;
+        } else {
+          const hold = Math.max(t + a, t + dur);
+          env.gain.setValueAtTime(o.vol, hold);
+          end = hold + o.release;
+        }
+        env.gain.exponentialRampToValueAtTime(0.0001, end);
+        let node = env;
+        if (o.lp) {
+          const f = ctx.createBiquadFilter();
+          f.type = 'lowpass';
+          f.frequency.value = o.lp;
+          env.connect(f);
+          node = f;
+        }
+        node.connect(o.pump ? s.pump : s.dry);
+        [['echo', s.echo], ['verb', s.verb]].forEach(([k, bus]) => {
+          if (!o[k]) return;
+          const g = ctx.createGain();
+          g.gain.value = o[k];
+          node.connect(g); g.connect(bus);
+        });
+        let vib = null;
+        if (o.vib) {                            // gentle vibrato that comes in after the note starts
+          const lfo = ctx.createOscillator();
+          vib = ctx.createGain();
+          lfo.frequency.value = o.vib[0];
+          vib.gain.value = o.vib[1];
+          lfo.connect(vib);
+          lfo.start(Math.min(t + 0.2, end));
+          lfo.stop(end + 0.05);
+        }
+        o.waves.forEach(([type, ratio, lvl, det]) => {
+          const osc = ctx.createOscillator(), g = ctx.createGain();
+          osc.type = type;
+          osc.frequency.value = freq * ratio;
+          if (det) osc.detune.value = det;
+          if (vib) vib.connect(osc.detune);
+          g.gain.value = lvl;
+          osc.connect(g); g.connect(env);
+          osc.start(t);
+          osc.stop(end + 0.05);
+        });
+      }
+
+      drum(s, kind, t, vol) {
+        const ctx = this.bus.ctx, g = ctx.createGain();
+        g.connect(s.dry);
+        if (kind === 'kick' || kind === 'taiko') {
+          const o = ctx.createOscillator(), len = kind === 'kick' ? 0.26 : 0.6;
+          o.type = 'sine';
+          o.frequency.setValueAtTime(kind === 'kick' ? 150 : 90, t);
+          o.frequency.exponentialRampToValueAtTime(kind === 'kick' ? 42 : 55, t + len * 0.6);
+          g.gain.setValueAtTime(vol, t);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+          o.connect(g);
+          o.start(t);
+          o.stop(t + len + 0.02);
+          if (kind === 'taiko') { const v = ctx.createGain(); v.gain.value = 0.4; g.connect(v); v.connect(s.verb); }
+        } else if (kind === 'block') {          // wood block
+          const o = ctx.createOscillator();
+          o.type = 'sine';
+          o.frequency.setValueAtTime(1100, t);
+          o.frequency.exponentialRampToValueAtTime(700, t + 0.06);
+          g.gain.setValueAtTime(vol, t);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.09);
+          o.connect(g);
+          o.start(t);
+          o.stop(t + 0.1);
+        } else {                                // snare / clap / hats / cymbal: a burst of filtered noise
+          const NOISE = { hat: [0.045, 'highpass', 7000], ohat: [0.16, 'highpass', 8000], snare: [0.14, 'bandpass', 1800],
+            clap: [0.12, 'bandpass', 1300], crash: [1.3, 'highpass', 5000] };
+          const [len, type, hz] = NOISE[kind] || NOISE.snare;
+          const n = ctx.createBufferSource(), f = ctx.createBiquadFilter();
+          n.buffer = this.bus.noise;
+          f.type = type;
+          f.frequency.value = hz;
+          if (kind === 'clap' || kind === 'crash') { const v = ctx.createGain(); v.gain.value = 0.35; g.connect(v); v.connect(s.verb); }
+          g.gain.setValueAtTime(vol, t);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+          n.connect(f); f.connect(g);
+          n.start(t, Math.random() * 0.5);
+          n.stop(t + len + 0.02);
+        }
+      }
+
+      // Which theme should be playing now: the screen on show, its own mute button, the tab visible
+      wanted() {
+        try {
+          if (!MUSIC.enabled || this.hold || document.visibilityState === 'hidden') return null;   // hold: an ad is on
+          const onGame = currentView === 'game';
+          if (onGame ? sound.muted : !audioEnabled) return null;
+          const theme = onGame ? gameTheme : currentTheme;
+          return MUSIC_THEMES[theme] ? theme : null;
+        } catch (e) { return null; }            // during startup the view / theme variables aren't set yet
+      }
+
+      update() {
+        if (!this.unlocked) return;
+        const want = this.wanted();
+        if (this.session && this.session.theme === want) return;
+        this.stop();
+        if (want) this.start(want);
+      }
+
+      unlock() {
+        if (this.unlocked) return;
+        this.unlocked = true;
+        sound.init();
+        if (sound.ctx.state === 'suspended') sound.ctx.resume();
+        this.update();
+      }
+    }
+
+    const music = new MusicEngine();
+    ['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => music.unlock(), { capture: true, once: true }));
+    document.addEventListener('visibilitychange', () => music.update());
+
+    /* ==========================================================================
        CANVAS & GAME ENGINE CORE (Custom Circle Physics Engine)
        ========================================================================== */
     const canvas = document.getElementById("gameCanvas");
@@ -6474,6 +6847,7 @@
       const view = document.getElementById("view-game");
       if (view) view.dataset.theme = theme;
       backdropKey = '';
+      music.update();
     }
 
     // Bright daytime backdrops (2026-09-25: the old ones read dark and gloomy)
@@ -7228,6 +7602,7 @@
     function toggleMute() {
       sound.muted = !sound.muted;
       document.getElementById("mute-btn").innerText = sound.muted ? "🔇" : "🔊";
+      music.update();
     }
 
     function checkGameOver(dt) {
@@ -7260,6 +7635,8 @@
       endGameEvent();
       helperLeave(false);
       const earned = payGameEndCoins(idleEnded);
+      const adDue = endAdDue();
+      if (gameStats) gameStats.ad = adDue;
       const title = document.getElementById('go-title'), sub = document.getElementById('go-sub');
       if (title) title.textContent = idleEnded ? 'หมดเวลาแล้ว~' : 'กล่องแมวเต็มแย้ว!';
       if (sub) sub.textContent = idleEnded ? `ไม่ได้แตะจอเกิน ${Math.round(GAMEPLAY.idleTimeoutSec / 60)} นาที เกมจบให้ ได้เหรียญครึ่งเดียว` : 'น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก';
@@ -7270,6 +7647,7 @@
       const finalCombo = document.getElementById("final-combo");
       if (finalCombo) finalCombo.innerText = comboBestThisGame >= 2 ? `คอมโบสูงสุด ×${comboBestThisGame}` : '';
       document.getElementById("game-over-modal").style.display = "flex";
+      if (adDue) setTimeout(showEndAd, 600);   // after the coins land, over the summary
 
       // Secure Score Submission to Supabase RPC
       if (supabaseClient) {
@@ -8421,6 +8799,7 @@ class LiveCatActor {
       updateRoomDecorations();
       if (typeof startSceneFx === 'function') { startSceneFx(); renderFxShop(); }
       if (!silent) showToast("🏡", `ย้ายไปห้อง${ROOM_NAMES[theme]}`);
+      music.update();
     }
 
     // Theme tabs (REQ-12): locked rooms show 🔒 and send the player to the theme shop
@@ -10089,6 +10468,77 @@ class LiveCatActor {
     }
 
     // Runs every frame from gameLoop: counts Cat Ball play time, and drives the bug in the cat room
+    /* --- Ads (round 12, REQ-18 §4): one full-screen ad at the end of a game, once 10 minutes of play have
+           added up since the last ad — one long game, or several short ones together. Only real game ends
+           (box full / idle), never mid-game. Web: Google AdSense H5 Games Ads (Ad Placement API, adBreak).
+           No AdSense publisher id in the config yet → dev shows a stand-in ad so the timing can be checked,
+           prod shows nothing. The play time is kept on the device, so reloading doesn't skip the ad. --- */
+    const ADS = cfg('ads', {
+      enabled: true,
+      everyPlaySec: 600,           // play time (seconds on the game screen) between two ads
+      adsenseClient: '',           // "ca-pub-…" once the AdSense account is approved; '' = no real ads
+      testAdOnDev: true            // no publisher id on dev → show a stand-in ad instead
+    });
+    let adPlaySec = parseFloat(getStorageItem('ad_play_sec') || '0') || 0;
+    let adSavedAt = adPlaySec;
+    const saveAdClock = () => { setStorageItem('ad_play_sec', String(Math.round(adPlaySec))); adSavedAt = adPlaySec; };
+
+    function tickAdClock(dt) {
+      adPlaySec += dt;
+      if (adPlaySec - adSavedAt >= 10) saveAdClock();
+    }
+    const endAdDue = () => ADS.enabled && adPlaySec >= ADS.everyPlaySec;
+
+    function loadAdSense() {
+      if (!ADS.enabled || !ADS.adsenseClient || window.adBreak) return;
+      window.adsbygoogle = window.adsbygoogle || [];
+      window.adBreak = window.adConfig = o => window.adsbygoogle.push(o);
+      const s = document.createElement('script');
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(ADS.adsenseClient);
+      s.setAttribute('data-ad-frequency-hint', '30s');
+      if (IS_DEV_BUILD) s.setAttribute('data-adbreak-test', 'on');   // Google's test ads on dev
+      document.head.appendChild(s);
+      window.adConfig({ preloadAdBreaks: 'on', sound: 'on' });
+    }
+    loadAdSense();
+
+    // Game over: show the ad if one is due, then start counting again
+    function showEndAd() {
+      adPlaySec = 0;
+      saveAdClock();
+      const hold = on => { music.hold = on; music.update(); };
+      if (ADS.adsenseClient && window.adBreak) {
+        window.adBreak({ type: 'next', name: 'game_over', beforeAd: () => hold(true), afterAd: () => hold(false),
+          adBreakDone: () => hold(false) });
+        return 'adsense';
+      }
+      if (!(IS_DEV_BUILD && ADS.testAdOnDev)) return null;
+      hold(true);
+      const el = document.createElement('div');
+      el.id = 'test-ad';
+      el.style.cssText = 'position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;' +
+        'background:rgba(2,6,23,0.94);color:#f8fafc;font-family:inherit;text-align:center;padding:24px';
+      el.innerHTML = '<div style="font-size:48px">📺</div><div style="font-size:20px;font-weight:700">พื้นที่โฆษณา</div>' +
+        `<div style="font-size:13px;color:#94a3b8;max-width:320px">ตัวอย่างบน dev เท่านั้น — ของจริงจะเป็นโฆษณา Google ขึ้นตรงนี้ หลังเล่นครบ ${Math.round(ADS.everyPlaySec / 60)} นาที</div>` +
+        '<button type="button" disabled style="font:inherit;font-size:15px;padding:10px 22px;border-radius:12px;border:0;background:#334155;color:#cbd5e1">ปิดได้ใน 5</button>';
+      document.body.appendChild(el);
+      const btn = el.querySelector('button');
+      let left = 5;
+      const t = setInterval(() => {
+        left--;
+        if (left > 0) { btn.textContent = `ปิดได้ใน ${left}`; return; }
+        clearInterval(t);
+        btn.disabled = false;
+        btn.textContent = 'ปิดโฆษณา ✕';
+        btn.style.background = '#f59e0b';
+        btn.style.color = '#fff';
+      }, 1000);
+      btn.addEventListener('click', () => { el.remove(); hold(false); });
+      return 'test';
+    }
+
     function tickPlayClock(dt) {
       let view = 'game';
       try { view = currentView; } catch (e) { view = 'game'; }
@@ -10103,6 +10553,7 @@ class LiveCatActor {
       }
       if (isGameOver || view !== 'game' || !gameStats || gameStats.drops === 0) return;
       gameStats.playSec += dt;
+      tickAdClock(dt);
       tickIdle(dt);
       tickHelperVisit(dt);
     }
@@ -10232,7 +10683,7 @@ class LiveCatActor {
         pointsPerMin: playSec ? Math.round(score / (playSec / 60)) : 0,
         mergesPerMin: playSec ? +(g.merges / (playSec / 60)).toFixed(1) : 0,
         event: g.event, helperVisits: g.helperVisits || [], skillsUsed: (g.helperVisits || []).filter(v => v.used).length,
-        theme: g.theme, device: g.device, loggedIn: !!currentUser
+        theme: g.theme, device: g.device, loggedIn: !!currentUser, ad: !!g.ad
       };
       const log = loadStatsLog();
       log.push(rec);
@@ -11398,6 +11849,7 @@ class LiveCatActor {
       audioEnabled = !audioEnabled;
       document.getElementById("sound-toggle").innerText = audioEnabled ? "🔊" : "🔇";
       showToast(audioEnabled ? "🔊" : "🔇", audioEnabled ? "เปิดเสียงเกม" : "ปิดเสียงเกม");
+      music.update();
     }
 
     /* ==========================================================================
@@ -11480,6 +11932,7 @@ class LiveCatActor {
         }
         scheduleVisitor(true);
       }
+      music.update();   // game screen plays the game theme, the cat room its room theme
     }
 
     function updateCoinDisplay() {
