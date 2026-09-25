@@ -9671,7 +9671,8 @@ class LiveCatActor {
        3. Scene effects sold in the shop (petals, fireflies, rain, fireworks, meteors...) — max 2 per room.
        4. Stranger cats: every 4-6 minutes a cat you don't own strolls past outside a window to tease you.
        ========================================================================== */
-    const SPRITE_BASE = '/cats/sprites/';
+    // dev reads its own copy so new sprites never reach the live game before approval (promote copies sprites-dev → sprites)
+    const SPRITE_BASE = IS_DEV_BUILD ? '/cats/sprites-dev/' : '/cats/sprites/';
     const SPRITE_PX = 80;                     // on-stage size of one 64 px frame
     let spriteManifest = null;
     const spriteActors = new Set();

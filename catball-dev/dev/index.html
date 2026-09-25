@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>Cat Ball Dev — Pixel Animation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Dev-only page: not linked from anywhere, never promoted to /catball/. Sprites: /cats/sprites-dev/ (deploy-dev.ps1 -WithSprites) -->
+  <style>
+    :root { --bg: #0b0f19; --card: #131b2e; --line: #334155; --text: #f8fafc; --soft: #cbd5e1; --muted: #94a3b8; --amber: #fbbf24; --sky: #38bdf8; --bad: #f87171; --ok: #4ade80; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 70%) fixed; background-color: var(--bg); color: var(--text);
+      font-family: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.5; }
+    .top { position: sticky; top: 0; z-index: 5; background: rgba(11, 15, 25, 0.94); backdrop-filter: blur(8px); border-bottom: 1px solid #1e293b; }
+    .top-in { max-width: 1200px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+    .brand { font-weight: 700; color: var(--amber); }
+    .badge { font-size: 11px; font-weight: 700; color: #0b0f19; background: var(--bad); border-radius: 999px; padding: 2px 8px; }
+    .ctl { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
+    .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+    .seg button, select { font: inherit; font-size: 12px; color: var(--soft); background: var(--card); border: 0; padding: 4px 10px; cursor: pointer; }
+    .seg button.on { background: var(--amber); color: #0b0f19; font-weight: 600; }
+    select { border: 1px solid var(--line); border-radius: 999px; }
+    main { max-width: 1200px; margin: 0 auto; padding: 18px 16px 60px; }
+    h1 { font-size: 22px; color: var(--amber); }
+    .muted { color: var(--muted); font-size: 12px; }
+    .summary { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; }
+    .chip { font: inherit; font-size: 12px; color: var(--soft); background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 4px 10px;
+      cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+    .chip.on { border-color: var(--amber); color: #fff; box-shadow: 0 0 0 1px var(--amber) inset; }
+    .chip .n { font-weight: 600; color: var(--ok); }
+    .chip .n.warn { color: var(--amber); }
+    .chip .n.bad { color: var(--bad); }
+    h2 { font-size: 16px; margin: 18px 0 8px; color: #fff; display: flex; gap: 8px; align-items: baseline; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(calc(var(--cell) + 20px), 1fr)); gap: 8px; }
+    .cell { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .cell.fail { border-color: #7f1d1d; background: #1f1320; }
+    .stage { width: var(--cell); height: var(--cell); border-radius: 8px; background: var(--stage); display: grid; place-items: center; overflow: hidden; }
+    .stage canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+    .lbl { font-size: 12px; color: var(--soft); font-weight: 600; }
+    .why { font-size: 10px; color: var(--bad); text-align: center; line-height: 1.3; max-width: var(--cell); }
+    .empty { font-size: 11px; color: var(--bad); text-align: center; padding: 6px; }
+    #msg { margin-top: 30px; color: var(--muted); }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="top"><div class="top-in">
+    <span class="brand">🐾 Cat Ball Dev</span><span class="badge">DEV ONLY</span>
+    <div class="ctl">มุมมอง
+      <span class="seg" id="mode"><button data-v="cat" class="on">ทีละตัว</button><button data-v="pose">เทียบท่าเดียวทุกตัว</button></span>
+    </div>
+    <div class="ctl" id="pose-ctl" hidden>ท่า <select id="pose"></select></div>
+    <div class="ctl">ขนาด <span class="seg" id="zoom"><button data-v="1">1×</button><button data-v="2" class="on">2×</button><button data-v="3">3×</button></span></div>
+    <div class="ctl">ความเร็ว <span class="seg" id="speed"><button data-v="0.5">0.5×</button><button data-v="1" class="on">1×</button><button data-v="2">2×</button><button data-v="0">หยุด</button></span></div>
+    <div class="ctl">พื้น <span class="seg" id="bg"><button data-v="#0f172a" class="on">มืด</button><button data-v="#f1e4c8">ญี่ปุ่น</button><button data-v="#dbeafe">โมเดิร์น</button><button data-v="#1e1b4b">อวกาศ</button><button data-v="#ffffff">ขาว</button></span></div>
+    <div class="ctl"><label><input type="checkbox" id="showfail" checked> แสดงแถบที่ตก QA</label></div>
+  </div></header>
+  <main>
+    <h1>Pixel Animation แมว 20 ตัว</h1>
+    <p class="muted" id="sub">กำลังโหลด…</p>
+    <div class="summary" id="summary"></div>
+    <div id="view"></div>
+    <p id="msg"></p>
+  </main>
+  <script>
+    const SPRITES = '/cats/sprites-dev/';
+    const NAMES = { savannah: 'ซาวันนาห์', mainecoon: 'เมนคูน', bengal: 'เบงกอล', ragdoll: 'แร็กดอลล์', sphynx: 'สฟิงซ์', british: 'บริติช ช็อตแฮร์',
+      scottish: 'สก็อตติช โฟลด์', norwegian: 'นอร์วีเจียน ฟอเรสต์', russianblue: 'รัสเซียน บลู', munchkin: 'มันช์กิ้น', exotic: 'เอ็กโซติก ช็อตแฮร์',
+      birman: 'เบอร์แมน', turkish: 'เตอร์กิช แองโกรา', persian: 'เปอร์เซีย', americanshorthair: 'อเมริกัน ช็อตแฮร์', abyssinian: 'อาบิสซิเนียน',
+      khaomanee: 'ขาวมณี', korat: 'โคราช', suphalak: 'ศุภลักษณ์', siamese: 'วิเชียรมาศ' };
+    const ACTION_TH = { idle: 'ยืน', walk: 'เดิน', jump: 'กระโดด', sit: 'นั่ง', sleep: 'นอน', groom: 'เลียขน', eat: 'กิน', drink: 'ดื่มน้ำ', treat: 'ขอขนม', scratch: 'ลับเล็บ', pounce: 'ตะครุบ' };
+    // QA reasons from build_atlas.py, in Thai
+    const WHY = w => w.replace(/^f\d: /, '').replace(/^size ([\d.]+)x$/, (m, r) => `ขนาดตัว ${r} เท่าของท่ายืน`).replace(/^<2 feet$/, 'เท้าแตะพื้นไม่ถึง 2')
+      .replace(/^(\d+) pieces$/, 'ตัวแยกเป็น $1 ชิ้น').replace(/^no motion$/, 'ไม่ขยับ');
+    const state = { mode: 'cat', cat: null, pose: 'walk-E', zoom: 2, speed: 1, bg: '#0f172a', showFail: true };
+    let M = null, report = {}, sheets = {}, players = [];
+
+    const seg = (id, key, cast = v => v) => document.querySelectorAll(`#${id} button`).forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll(`#${id} button`).forEach(x => x.classList.toggle('on', x === b));
+      state[key] = cast(b.dataset.v);
+      render();
+    }));
+
+    async function load() {
+      try {
+        M = await (await fetch(SPRITES + 'manifest.json', { cache: 'no-store' })).json();
+      } catch (e) {
+        document.getElementById('sub').textContent = 'ยังไม่มีสไปรต์บน dev (deploy-dev.ps1 -WithSprites)';
+        return;
+      }
+      try { report = await (await fetch('report.json', { cache: 'no-store' })).json(); } catch (e) { report = {}; }
+      const ids = Object.keys(M.cats).sort((a, b) => M.cats[b].anims.length - M.cats[a].anims.length || a.localeCompare(b));
+      state.cat = ids[0];
+      await Promise.all(ids.map(id => new Promise(res => {
+        const img = new Image();
+        img.onload = () => { sheets[id] = img; res(); };
+        img.onerror = res;
+        img.src = SPRITES + M.cats[id].file + '?v=' + Date.now();
+      })));
+      const total = ids.length * M.rows.length, ok = ids.reduce((n, id) => n + M.cats[id].anims.length, 0);
+      document.getElementById('sub').textContent = `${ids.length} ตัว × ${M.rows.length} แถบ · ผ่าน QA ${ok}/${total} (${Math.round(ok / total * 100)}%) · เฟรม ${M.frame} px × ${M.cols}`;
+      document.getElementById('summary').innerHTML = ids.map(id => {
+        const n = M.cats[id].anims.length, cls = n === M.rows.length ? '' : n >= M.rows.length - 3 ? 'warn' : 'bad';
+        return `<button class="chip" data-id="${id}">${NAMES[id] || id} <span class="n ${cls}">${n}/${M.rows.length}</span></button>`;
+      }).join('');
+      document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { state.mode = 'cat'; state.cat = c.dataset.id; syncMode(); render(); }));
+      document.getElementById('pose').innerHTML = M.rows.map(r => `<option value="${r}">${ACTION_TH[r.split('-')[0]] || r} ${r.split('-')[1]} (${r})</option>`).join('');
+      document.getElementById('pose').value = state.pose;
+      render();
+      requestAnimationFrame(tick);
+    }
+
+    function syncMode() {
+      document.querySelectorAll('#mode button').forEach(b => b.classList.toggle('on', b.dataset.v === state.mode));
+      document.getElementById('pose-ctl').hidden = state.mode !== 'pose';
+    }
+
+    function cell(id, row) {
+      const has = M.cats[id].anims.includes(row);
+      const why = (report[id] && report[id][row]) || [];
+      if (!has && !state.showFail) return '';
+      const label = state.mode === 'cat' ? `${ACTION_TH[row.split('-')[0]] || ''} ${row.split('-')[1]}` : (NAMES[id] || id);
+      return `<div class="cell${has ? '' : ' fail'}"><div class="stage">${has ? `<canvas data-id="${id}" data-row="${row}"></canvas>` :
+        '<div class="empty">ตก QA<br>(ไม่อยู่ใน atlas — เกมใช้ทิศ/ท่าใกล้เคียงแทน)</div>'}</div>
+        <div class="lbl">${label}</div>${!has && why.length ? `<div class="why">${[...new Set(why.map(WHY))].slice(0, 3).join(' · ')}</div>` : ''}</div>`;
+    }
+
+    function render() {
+      if (!M) return;
+      const px = M.frame * state.zoom;
+      document.documentElement.style.setProperty('--cell', px + 'px');
+      document.documentElement.style.setProperty('--stage', state.bg);
+      document.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', state.mode === 'cat' && c.dataset.id === state.cat));
+      let html = '';
+      if (state.mode === 'cat') {
+        const byAction = {};
+        M.rows.forEach(r => (byAction[r.split('-')[0]] = byAction[r.split('-')[0]] || []).push(r));
+        html = `<h2>${NAMES[state.cat] || state.cat} <span class="muted">${M.cats[state.cat].anims.length}/${M.rows.length} ผ่าน</span></h2>` +
+          Object.entries(byAction).map(([a, rows]) => `<h2>${ACTION_TH[a] || a} <span class="muted">${a} · ${M.fps[a]} fps</span></h2><div class="grid">${rows.map(r => cell(state.cat, r)).join('')}</div>`).join('');
+      } else {
+        const ids = Object.keys(M.cats);
+        const ok = ids.filter(id => M.cats[id].anims.includes(state.pose)).length;
+        html = `<h2>${ACTION_TH[state.pose.split('-')[0]] || ''} ${state.pose} <span class="muted">${ok}/${ids.length} ตัวผ่าน · ${M.fps[state.pose.split('-')[0]]} fps</span></h2>` +
+          `<div class="grid">${ids.map(id => cell(id, state.pose)).join('')}</div>`;
+      }
+      document.getElementById('view').innerHTML = html;
+      players = [...document.querySelectorAll('canvas[data-id]')].map(cv => {
+        cv.width = cv.height = px;
+        const g = cv.getContext('2d');
+        g.imageSmoothingEnabled = false;
+        const row = M.rows.indexOf(cv.dataset.row);
+        return { g, img: sheets[cv.dataset.id], row, fps: M.fps[cv.dataset.row.split('-')[0]] || 6, px };
+      });
+      last = performance.now();
+    }
+
+    let clock = 0, last = performance.now();
+    function tick(now) {
+      clock += (now - last) / 1000 * state.speed;
+      last = now;
+      players.forEach(p => {
+        if (!p.img) return;
+        const f = Math.floor(clock * p.fps) % M.cols;
+        p.g.clearRect(0, 0, p.px, p.px);
+        p.g.drawImage(p.img, f * M.frame, p.row * M.frame, M.frame, M.frame, 0, 0, p.px, p.px);
+      });
+      requestAnimationFrame(tick);
+    }
+
+    seg('mode', 'mode');
+    document.querySelectorAll('#mode button').forEach(b => b.addEventListener('click', syncMode));
+    seg('zoom', 'zoom', Number);
+    seg('speed', 'speed', Number);
+    seg('bg', 'bg');
+    document.getElementById('pose').addEventListener('change', e => { state.pose = e.target.value; render(); });
+    document.getElementById('showfail').addEventListener('change', e => { state.showFail = e.target.checked; render(); });
+    load();
+  </script>
+</body>
+</html>
