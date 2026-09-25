@@ -5384,10 +5384,16 @@
       drop: 1.4 * 0.5,             // a freshly dropped ball landing on the pile: 50%
       ball: 1.4 * 0.5,             // balls knocking into each other: 50%
       grow: 1.4,                   // a merged / grown ball pushing its neighbours: 100% (unchanged)
-      growTime: 0.4                // seconds a new merged ball keeps the full push
+      growTime: 0.4,               // seconds a new merged ball keeps the full push
+      // Fall speed (round 13: 'balls fall too slowly, not exciting'). The old 980 gravity with 0.995 damping per
+      // substep capped a fall at ~400 px/s; now a drop crosses the box in well under a second
+      gravity: 2000,               // px/s² (was 980)
+      fallDrag: 0.998,             // vertical speed kept per physics substep (was 0.995; sideways stays 0.995)
+      dropSpeed: 300               // px/s downward push when a ball leaves the hand (was 0)
     });
     const GAMEPLAY = cfg('gameplay', {
       comboWindow: 1.0,            // seconds between merges that keep a combo going
+      dropCooldownSec: 0.4,        // wait between two drops (was 0.55 — round 13, faster play)
       overflowSeconds: 2.5,        // a ball resting above the red line this long ends the game
       shakesPerGame: 1,            // box shakes at the start of a game
       idleTimeoutSec: 300,         // no tap on the game screen this long (5 min) → the game ends...
@@ -6206,11 +6212,11 @@
         }
 
         // Gravity (softened for a moment after the shake so the balls float apart)
-        this.vy += 980 * dt * (shakeLowGravity > 0 ? 0.3 : 1);
+        this.vy += PHYSICS.gravity * dt * (shakeLowGravity > 0 ? 0.3 : 1);
 
         // Air damping
         this.vx *= 0.995;
-        this.vy *= 0.995;
+        this.vy *= PHYSICS.fallDrag;
 
         // Update position
         this.x += this.vx * dt;
@@ -7505,6 +7511,7 @@
       const newCat = new Cat(clampedX, 70, currentCatTier);
       newCat.lucky = currentLucky;
       newCat.fresh = true;
+      newCat.vy = PHYSICS.dropSpeed;
       cats.push(newCat);
       if (gameStats && gameStats.drops++ === 0) { gameStats.startedAt = Date.now(); rollGameEvent(); }
 
@@ -7520,7 +7527,7 @@
 
       setTimeout(() => {
         dropCooldown = false;
-      }, 550);
+      }, GAMEPLAY.dropCooldownSec * 1000);
     }
 
     // Pointer events (Mouse & Touch) - scaled accurately to canvas internal coordinate space
@@ -7833,7 +7840,8 @@
        ROOMS, CAT SPOTS & PERCHES (REQ-03)
        - 3 rooms = the 3 theme tabs. Max 12 cats per room; a breed lives in one room only
          (so no duplicate cats anywhere).
-       - Cats spawn/park only on spots inside the living zone X 410-960 (visible on phones),
+       - Cats spawn/park only on spots inside the living zone X 410-960 (visible on phones) — spot x ≤ 920 so the
+         80 px actor box (and its pixel sprite) ends by 960,
          one cat per spot, so they never pile up at the viewport edge.
        - Perches with `requires` exist only when that furniture is owned (no cats floating on
          furniture that isn't in the room).
@@ -7845,7 +7853,7 @@
     const floorRow = (y, xs, surface = 'floor') => xs.map(x => ({ x, y, surface }));
     const ROOM_SPOTS = {
       japanese: [
-        ...floorRow(140, [430, 480, 530, 580, 790, 840, 890, 940]),
+        ...floorRow(140, [430, 480, 530, 580, 785, 830, 875, 920]),
         ...floorRow(86, [440, 500, 560, 650, 720, 800, 860, 920]),
         { x: 505, y: 185, surface: 'table', requires: ['jp_tea', 'jp_dango'] },
         { x: 510, y: 128, surface: 'cushion', requires: ['jp_cushion'] },
@@ -7854,7 +7862,7 @@
       modern: [
         ...floorRow(116, [420, 470, 520, 570]),
         ...floorRow(78, [430, 490, 550, 640, 700]),
-        ...floorRow(232, [800, 850, 900, 950], 'mezzanine'),
+        ...floorRow(232, [790, 835, 880, 920], 'mezzanine'),
         { x: 743, y: 177, surface: 'stairs' },
         { x: 480, y: 430, surface: 'catwalk' },
         { x: 620, y: 430, surface: 'catwalk' },
@@ -7862,7 +7870,7 @@
         { x: 825, y: 165, surface: 'table', requires: ['mod_table', 'mod_books', 'mod_diffuser'] }
       ],
       space: [
-        ...floorRow(100, [430, 480, 530, 580, 790, 840, 890, 940]),
+        ...floorRow(100, [430, 480, 530, 580, 785, 830, 875, 920]),
         ...floorRow(62, [440, 500, 560, 650, 720, 800, 860, 920]),
         { x: 635, y: 345, surface: 'hover' },
         { x: 870, y: 270, surface: 'hover' }
