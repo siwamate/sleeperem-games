@@ -146,6 +146,50 @@
     .skill-box .sk-desc { font-size: 11px; color: #cbd5e1; margin-top: 4px; }
     .skill-box .sk-next { font-size: 10px; color: #94a3b8; margin-top: 2px; }
     .skill-box .item-buy-btn { width: 100%; margin-top: 8px; font-size: 11px; }
+    /* Game cursor (dot by default, bought ones from the shop) */
+    #view-game, #view-game * { cursor: var(--game-cursor, crosshair) !important; }
+    .cursor-preview { background: repeating-conic-gradient(#1e293b 0 25%, #334155 0 50%) 0 0 / 12px 12px; }
+    .cursor-preview img { width: 32px; height: 32px; image-rendering: pixelated; }
+    /* Theme events */
+    .event-pill, .idle-warn {
+      position: absolute; left: 50%; transform: translateX(-50%) scale(0.8); z-index: 58; pointer-events: none; white-space: nowrap;
+      font: 800 12px Prompt, sans-serif; padding: 4px 12px; border-radius: 12px; opacity: 0; transition: opacity 0.25s, transform 0.25s;
+    }
+    .event-pill { top: 6px; background: linear-gradient(135deg, rgba(88, 28, 135, 0.92), rgba(219, 39, 119, 0.92)); color: #fff; border: 2px solid #ffd84d; }
+    .idle-warn { top: 40%; background: rgba(15, 23, 42, 0.88); color: #fde047; font-size: 14px; }
+    .event-pill.show, .idle-warn.show { opacity: 1; transform: translateX(-50%) scale(1); }
+    #canvas-wrap.event-meteor { box-shadow: inset 0 0 0 3px #a78bfa, 0 0 26px rgba(167, 139, 250, 0.6); }
+    #canvas-wrap.event-sakura { box-shadow: inset 0 0 0 3px #f9a8d4, 0 0 26px rgba(249, 168, 212, 0.6); }
+    #canvas-wrap.event-fireworks { box-shadow: inset 0 0 0 3px #fbbf24, 0 0 26px rgba(251, 191, 36, 0.6); }
+    /* Helper cat walking along the top bar */
+    #view-game .header { position: relative; }
+    .header-cat-lane { position: absolute; inset: 0; pointer-events: none; overflow: visible; z-index: 30; }
+    .header-cat {
+      position: absolute; bottom: -4px; width: 44px; height: 44px; margin-left: -22px; padding: 0; border: none; background: none;
+      pointer-events: auto; display: flex; align-items: flex-end; justify-content: center;
+    }
+    .header-cat img { width: 42px; height: 42px; object-fit: contain; filter: drop-shadow(0 3px 3px rgba(0,0,0,0.45)); transform-origin: 50% 100%; }
+    .header-cat.is-walking img { animation: hcWalk 0.36s ease-in-out infinite alternate; }
+    .header-cat.is-leaving img { transform: scaleX(-1); animation-name: hcWalkBack; }
+    @keyframes hcWalk { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-3px) rotate(3deg); } }
+    @keyframes hcWalkBack { from { transform: scaleX(-1) translateY(0) rotate(-3deg); } to { transform: scaleX(-1) translateY(-3px) rotate(3deg); } }
+    .header-cat.is-sitting img { animation: hcBreathe 2.4s ease-in-out infinite; }
+    .header-cat.is-napping img { transform: scaleY(0.78) scaleX(1.12); animation: hcNap 3s ease-in-out infinite; }
+    @keyframes hcBreathe { 50% { transform: scaleY(0.95) scaleX(1.03); } }
+    @keyframes hcNap { 50% { transform: scaleY(0.72) scaleX(1.15); } }
+    .header-cat .hc-zz { position: absolute; right: -6px; top: -4px; font-size: 12px; opacity: 0; }
+    .header-cat.is-napping .hc-zz { opacity: 1; animation: hcZz 2s ease-in-out infinite; }
+    @keyframes hcZz { 50% { transform: translate(3px, -5px); opacity: 0.4; } }
+    .header-cat .hc-bubble {
+      position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); white-space: nowrap; pointer-events: none;
+      background: #fff; color: #1e293b; font: 800 11px Prompt, sans-serif; padding: 3px 8px; border-radius: 10px; opacity: 0; transition: opacity 0.2s;
+    }
+    .header-cat.has-skill .hc-bubble, .header-cat.show-bubble .hc-bubble { opacity: 1; }
+    .header-cat.has-skill .hc-bubble { background: #ffd84d; animation: hcPulse 0.9s ease-in-out infinite; }
+    .header-cat.has-skill img { filter: drop-shadow(0 0 8px #ffd84d) drop-shadow(0 3px 3px rgba(0,0,0,0.45)); }
+    @keyframes hcPulse { 50% { transform: translateX(-50%) scale(1.08); } }
+    .header-cat .hc-heart { position: absolute; bottom: 40px; left: 50%; animation: hcHeart 0.9s ease-out forwards; pointer-events: none; }
+    @keyframes hcHeart { to { transform: translate(-50%, -26px); opacity: 0; } }
     .litter2-station-anchor { position: absolute; left: 988px; bottom: 108px; z-index: 20; }
     .final-lucky { font-size: 11px; color: #fbbf24; margin-top: 2px; }
     .rem-coin {
@@ -4468,6 +4512,7 @@
       <!-- Dev Staging Ribbon & Tools (Shown only on Staging) -->
     <!-- Header -->
     <div class="header">
+      <div id="header-cat-lane" class="header-cat-lane"></div>
       <div class="brand-title">
         <span>🐱</span> ฟาร์มแมว
       </div>
@@ -4492,7 +4537,6 @@
         <div id="next-cat-view" class="next-bubble" onclick="useSwapCharge()"><canvas id="next-cat-canvas" width="80" height="80"></canvas></div>
         <span id="next-cat-name" style="font-weight: 600; color: #f59e0b;">ก้อนไหมพรม</span>
       </div>
-      <button id="helper-badge" class="helper-badge" onclick="showHelperInfo()" style="display:none"></button>
       <div id="highest-cat-hud" style="font-size: 11px; color: #38bdf8; font-weight: 600; display:flex; align-items:center; gap:4px;">
         <span>สูงสุด:</span>
         <span id="highest-tier-name" style="color: #fbbf24; font-weight: 700;">Tier 1 (ลูกแมวส้ม)</span>
@@ -4509,6 +4553,8 @@
     <div id="canvas-wrap">
       <canvas id="gameCanvas"></canvas>
       <!-- Combo HUD: multiplier + 1-second window bar (REQ-01 combo) -->
+      <div id="event-pill" class="event-pill"></div>
+      <div id="idle-warn" class="idle-warn"></div>
       <div id="helper-pop" class="helper-pop"><img src="" alt=""><div><div class="hp-name"></div><div class="hp-skill"></div></div></div>
           <div id="combo-hud" class="combo-hud">
         <div class="combo-label">COMBO</div>
@@ -4567,8 +4613,8 @@
       <div class="modal-card">
         <button class="modal-close-x" onclick="restartGame()" title="ปิด">✕</button>
         <div style="font-size: 48px; margin-bottom: 8px;">😿</div>
-        <h2 style="font-size: 20px; font-weight: 700; color: #f87171; margin-bottom: 4px;">กล่องแมวเต็มแย้ว!</h2>
-        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก</p>
+        <h2 id="go-title" style="font-size: 20px; font-weight: 700; color: #f87171; margin-bottom: 4px;">กล่องแมวเต็มแย้ว!</h2>
+        <p id="go-sub" style="font-size: 12px; color: #94a3b8; margin-bottom: 16px;">น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก</p>
         
         <div style="background: #0f172a; padding: 12px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #334155;">
           <div style="font-size: 11px; color: #94a3b8;">คะแนนรอบนี้</div>
@@ -5109,6 +5155,8 @@
         <div class="shop-panel" data-shop-panel="special">
           <p class="cat-shop-hint">ไอเทมใช้ได้ทั้งห้องแมวและ Cat Ball</p>
           <div class="items-grid" id="special-shop-grid"></div>
+          <p class="cat-shop-hint" style="margin-top:14px;">🖱️ เคอร์เซอร์ในเกม Cat Ball (เห็นบนคอม)</p>
+          <div class="items-grid" id="cursor-shop-grid"></div>
         </div>
       </div>
     </div>
@@ -5230,6 +5278,53 @@
     /* ==========================================================================
        ISOLATED STORAGE & UNIFIED USER SESSION (Cat Ball & Cat Farm Synchronized)
        ========================================================================== */
+    /* ==========================================================================
+       GAME CONFIG (REQ-17): every tunable number lives in ONE JSON file —
+       /config/catball-dev.json on dev, /config/catball.json on prod (tiny, loaded before anything else).
+       Keys missing from the file keep the defaults written in the code; keys starting with "_" are notes.
+       cfg('economy', {...defaults}) → merged section. dumpGameConfig() → the whole effective config.
+       ========================================================================== */
+    const GAME_CONFIG_URL = window.location.pathname.includes('-dev') || window.location.hostname === 'localhost'
+      ? '/config/catball-dev.json' : '/config/catball.json';
+    const GAME_CONFIG = (() => {
+      try {
+        const x = new XMLHttpRequest();
+        x.open('GET', GAME_CONFIG_URL + '?t=' + Math.floor(Date.now() / 60000), false);   // sync on purpose: config before code
+        x.send();
+        if (x.status === 200) return JSON.parse(x.responseText);
+      } catch (e) { console.warn('game config not loaded — using defaults', e); }
+      return {};
+    })();
+    const CONFIG_USED = {};
+    function cfgGet(path) {
+      return path.split('.').reduce((o, k) => (o && typeof o === 'object') ? o[k] : undefined, GAME_CONFIG);
+    }
+    function cfgMerge(base, over) {
+      if (over === undefined || over === null) return base;
+      if (base && typeof base === 'object' && !Array.isArray(base) && typeof over === 'object' && !Array.isArray(over)) {
+        const out = { ...base };
+        for (const k of Object.keys(over)) if (!k.startsWith('_')) out[k] = cfgMerge(base[k], over[k]);
+        return out;
+      }
+      return over;
+    }
+    function cfg(path, defaults) {
+      const value = cfgMerge(defaults, cfgGet(path));
+      const keys = path.split('.');
+      let o = CONFIG_USED;
+      keys.slice(0, -1).forEach(k => { o = o[k] = o[k] || {}; });
+      const last = keys[keys.length - 1];
+      o[last] = (o[last] && typeof o[last] === 'object' && typeof value === 'object' && !Array.isArray(value)) ? { ...o[last], ...value } : value;
+      return value;
+    }
+    // Prices kept on item objects (shop lists): { id: price } in the config
+    function cfgPrices(path, entries, field) {
+      const table = cfg(path, Object.fromEntries(entries.map(([id, obj]) => [id, obj[field]])));
+      entries.forEach(([id, obj]) => { if (typeof table[id] === 'number') obj[field] = table[id]; });
+    }
+    // The whole effective config (to write the JSON file / check what is live)
+    function dumpGameConfig() { return JSON.parse(JSON.stringify(CONFIG_USED)); }
+
     const IS_DEV_BUILD = window.location.pathname.includes("-dev");
     const STORAGE_PREFIX = IS_DEV_BUILD ? "sleeperem_dev_" : "sleeperem_prod_";
 
@@ -5266,7 +5361,7 @@
     // Earning side of the economy (REQ-13). Prices live next to their items; both were tuned together.
     // Round 7: coins are 1% of the score, no per-game limit, but at most 2,500 earned per day (5,000 with
     // the big wallet). Simulated games score ~23k (bots) – 40k (good players) → ≈ 300–450 REM a game.
-    const ECONOMY = {
+    const ECONOMY = cfg('economy', {
       pointsPerCoin: 100,          // Cat Ball score → REM = 1% of the score
       feverMinCombo: 5,            // every finished chain of ×5+ ...
       feverBonus: 2,               // ... pays a flat +2 REM (chains are common, so keep it small)
@@ -5281,18 +5376,31 @@
       qteReward: [3, 5],           // ... tap it in time for 3-5 REM
       qteLife: 5,                  // seconds before it flies away
       poopCoin: 1                  // scooping the litter box pays 1 REM per poop (max 5 per box)
-    };
+    });
     // Ball bounce (REQ-01 §3.5, 2026-09-25). The old ball-to-ball impulse was 2 × (1 + 0.2), i.e. a bounce of 1.4.
-    const PHYSICS = {
+    const PHYSICS = cfg('physics', {
       wall: 0.25,                  // side walls: unchanged
       floor: 0.25 * 0.5,           // a ball falling straight onto the floor: 50% of the old bounce
       drop: 1.4 * 0.5,             // a freshly dropped ball landing on the pile: 50%
       ball: 1.4 * 0.5,             // balls knocking into each other: 50%
       grow: 1.4,                   // a merged / grown ball pushing its neighbours: 100% (unchanged)
       growTime: 0.4                // seconds a new merged ball keeps the full push
-    };
+    });
+    const GAMEPLAY = cfg('gameplay', {
+      comboWindow: 1.0,            // seconds between merges that keep a combo going
+      overflowSeconds: 2.5,        // a ball resting above the red line this long ends the game
+      shakesPerGame: 1,            // box shakes at the start of a game
+      idleTimeoutSec: 60,          // no tap on the game screen this long → the game ends...
+      idleWarnSec: 10,             // ... with a warning this many seconds before
+      idleCoinFactor: 0.5          // ... and pays only this share of the game's coins
+    });
     const randInt = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
-    const FOOD_PRICES = { fish: 50, tuna: 125, macaron: 300 };   // hand-feeding (consumable, 1× / 8 h per cat)
+    const FARM_CFG = cfg('farm', {
+      visitorEverySec: [35, 70],   // butterfly / balloon / drone visitors in the cat room
+      strangerFirstSec: [120, 180],// first stranger cat outside the window...
+      strangerEverySec: [240, 360] // ... then one every 4-6 minutes
+    });
+    const FOOD_PRICES = cfg('prices.food', { fish: 50, tuna: 125, macaron: 300 });   // hand-feeding (consumable, 1× / 8 h per cat)
 
     // Every coin the player earns goes through earnCoins(): it stops at the daily cap (REQ-13 §2.1).
     // Returns what was really paid, so pops and summaries show the true amount.
@@ -5665,7 +5773,7 @@
     // Game Variables
     let score = 0;
     let bestScore = parseInt(localStorage.getItem("sleeperem_best") || "0");
-    let moonShakesLeft = 1;
+    let moonShakesLeft = GAMEPLAY.shakesPerGame;
     let shakeLowGravity = 0;   // seconds of low gravity left after a shake
     let shakeGrace = 0;        // seconds the overflow countdown stays paused after a shake
     let isGameOver = false;
@@ -6044,7 +6152,7 @@
        - Daily chest: once a day for signed-in players, bigger with a login streak
        Deliberately NOT used (gambling dark patterns): fake near-misses, losses shown as wins, real money, pay-to-continue.
        ========================================================================== */
-    const COMBO_WINDOW = 1.0;
+    const COMBO_WINDOW = GAMEPLAY.comboWindow;
     let combo = 0;
     let comboTimer = 0;
     let comboPoints = 0;
@@ -6143,9 +6251,9 @@
       if (comboTimer > 0) combo++;
       else if (skillFx.comboStart) { combo = skillFx.comboStart; skillFx.comboStart = 0; }   // skill "ไฟลุก"
       else combo = 1;
-      comboTimer = COMBO_WINDOW;
+      comboTimer = COMBO_WINDOW * eventComboMult();
       comboBestThisGame = Math.max(comboBestThisGame, combo);
-      const gained = CAT_TIERS[nextTier].score * combo * (skillFx.starT > 0 ? 2 : 1);   // skill "ดาวเด่น"
+      const gained = Math.round(CAT_TIERS[nextTier].score * combo * (skillFx.starT > 0 ? 2 : 1) * eventScoreMult());   // skill "ดาวเด่น" · theme event
       if (gameStats) { gameStats.merges++; gameStats.maxTier = Math.max(gameStats.maxTier, nextTier); }
       if (skillFx.rainT > 0) {                    // skill "ฝนเงิน": +1 REM per merge
         const got = earnCoins(1); gameCoins.skill += got;
@@ -6237,13 +6345,13 @@
     }
 
     function rollLucky() {
-      return Math.random() < LUCKY_CHANCE;
+      return Math.random() < ECONOMY.luckyChance * eventLuckyMult();
     }
 
     function updateFx(dt) {
       if (skillFx.chainT > 0) {                   // skill "ล่าต่อเนื่อง": the combo window never runs out
         skillFx.chainT -= dt;
-        if (comboTimer > 0) comboTimer = COMBO_WINDOW;
+        if (comboTimer > 0) comboTimer = COMBO_WINDOW * eventComboMult();
       }
       if (skillFx.starT > 0) {
         skillFx.starT -= dt;
@@ -6255,7 +6363,7 @@
         if (comboTimer <= 0) endCombo();
       }
       const fill = document.getElementById("combo-bar-fill");
-      if (fill) fill.style.transform = `scaleX(${Math.max(0, comboTimer / COMBO_WINDOW)})`;
+      if (fill) fill.style.transform = `scaleX(${Math.max(0, comboTimer / (COMBO_WINDOW * eventComboMult()))})`;
       for (let i = fxRings.length - 1; i >= 0; i--) { fxRings[i].update(dt); if (fxRings[i].life <= 0) fxRings.splice(i, 1); }
       for (let i = fxTexts.length - 1; i >= 0; i--) { fxTexts[i].update(dt); if (fxTexts[i].life <= 0) fxTexts.splice(i, 1); }
       screenShake *= Math.pow(0.02, dt); // fast exponential decay
@@ -7024,7 +7132,7 @@
       newCat.lucky = currentLucky;
       newCat.fresh = true;
       cats.push(newCat);
-      if (gameStats && gameStats.drops++ === 0) gameStats.startedAt = Date.now();
+      if (gameStats && gameStats.drops++ === 0) { gameStats.startedAt = Date.now(); rollGameEvent(); }
 
       // Trigger Cooldown
       dropCooldown = true;
@@ -7136,7 +7244,7 @@
 
       if (isOverDanger) {
         dangerTimer += dt;
-        if (dangerTimer >= 2.5 && !isGameOver) {
+        if (dangerTimer >= GAMEPLAY.overflowSeconds && !isGameOver) {
           if (skillFx.net > 0) useSafetyNet();   // skill "เบาะนุ่ม" saves the game once
           else triggerGameOver();
         }
@@ -7149,9 +7257,14 @@
       isGameOver = true;
       if (comboTimer > 0) endCombo();
       clearQteBug();
-      const earned = payGameEndCoins();
-      rewardHelperBond();
-      finishGameStats('gameover', earned);
+      endGameEvent();
+      helperLeave(false);
+      const earned = payGameEndCoins(idleEnded);
+      const title = document.getElementById('go-title'), sub = document.getElementById('go-sub');
+      if (title) title.textContent = idleEnded ? 'หมดเวลาแล้ว~' : 'กล่องแมวเต็มแย้ว!';
+      if (sub) sub.textContent = idleEnded ? `ไม่ได้แตะจอเกิน ${Math.round(GAMEPLAY.idleTimeoutSec / 60)} นาที เกมจบให้ ได้เหรียญครึ่งเดียว` : 'น้องแมวล้นกล่องออกมาพักผ่อนข้างนอก';
+      finishGameStats(idleEnded ? 'idle' : 'gameover', earned);
+      renderIdleWarning();
       if (gameTheme !== currentTheme) applyGameTheme(currentTheme);   // the room the player picked meanwhile
       document.getElementById("final-score").innerText = score.toLocaleString();
       const finalCombo = document.getElementById("final-combo");
@@ -7192,7 +7305,13 @@
       comboBestThisGame = 0;
       updateComboHUD(false);
       document.getElementById("score-val").innerText = "0";
-      moonShakesLeft = 1;
+      moonShakesLeft = GAMEPLAY.shakesPerGame;
+      idleSec = 0;
+      idleEnded = false;
+      gameEvent = null;
+      eventFx.length = 0;
+      endGameEvent();
+      renderIdleWarning();
       dropsThisGame = 0;
       luckyStreak = 0;
       skillFx = newSkillFx();
@@ -7207,7 +7326,7 @@
       isGameOver = false;
       dropCooldown = false;
       dangerTimer = 0;
-      document.getElementById("moon-count").innerText = "1";
+      document.getElementById("moon-count").innerText = moonShakesLeft;
       document.getElementById("moon-shake-btn").disabled = false;
       document.getElementById("game-over-modal").style.display = "none";
       updateScoreUI();
@@ -7248,6 +7367,7 @@
       // RENDER FRAME
       ctx.clearRect(0, 0, width, height);
       drawBackdrop(dt);
+      drawEventFx(dt);
       ctx.save();
       if (screenShake > 0) ctx.translate((Math.random() - 0.5) * screenShake, (Math.random() - 0.5) * screenShake);
 
@@ -7453,13 +7573,13 @@
        - Prices follow the REQ-04 breed grades; the 3 cheapest cats are one-time rewards:
          first login -> #1, Cat Ball Tier 5 -> #2, Cat Ball Tier 10 -> #3.
        ========================================================================== */
-    const CAT_PRICES = {
+    const CAT_PRICES = cfg('prices.cats', {
       siamese: 1500, americanshorthair: 2000, british: 2500, scottish: 3000,
       munchkin: 3500, russianblue: 3800, birman: 4000, exotic: 4200, persian: 4500,
       abyssinian: 6000, turkish: 6500, sphynx: 7000, ragdoll: 7500, bengal: 8000,
       norwegian: 10000, savannah: 12000, mainecoon: 14000,
       korat: 18000, khaomanee: 20000, suphalak: 25000
-    };
+    });
     const CAT_GRADE = {
       siamese: 1, americanshorthair: 1, british: 1, scottish: 1,
       munchkin: 2, russianblue: 2, birman: 2, exotic: 2, persian: 2,
@@ -7500,7 +7620,7 @@
        Only มัทฉะญี่ปุ่น is standard. Other rooms stay locked until bought in ร้านค้า › ธีมห้อง
        (no grandfathering, no free unlocks). Cats left in a locked room go back to "no room".
        ========================================================================== */
-    const THEME_PRICES = { japanese: 0, modern: 10000, space: 20000 };
+    const THEME_PRICES = cfg('prices.rooms', { japanese: 0, modern: 10000, space: 20000 });
     const THEME_ICONS = { japanese: '🍵', modern: '🫐', space: '🌃' };
     const THEME_DESC = {
       japanese: 'ห้องมาตรฐาน ระเบียงไม้ ประตูโชจิเลื่อนได้ สวนไผ่ หิ่งห้อยตอนกลางคืน',
@@ -8545,7 +8665,7 @@ class LiveCatActor {
 
     function scheduleVisitor(soon = false) {
       clearTimeout(visitorTimer);
-      visitorTimer = setTimeout(spawnVisitor, soon ? 9000 : 35000 + Math.random() * 35000);
+      visitorTimer = setTimeout(spawnVisitor, soon ? 9000 : randInt(FARM_CFG.visitorEverySec[0], FARM_CFG.visitorEverySec[1]) * 1000);
     }
 
     function removeVisitor() {
@@ -8985,10 +9105,16 @@ class LiveCatActor {
        - Both raise its bond (ความสนิท) 0..10 hearts; high bond will unlock cat skills later (plan in REQ-14).
        - Special items: name tag (rename one cat, used up), golden lucky cat (Cat Ball end-of-game REM ×2, forever).
        ========================================================================== */
-    const PET_COOLDOWN_MS = 60 * 60 * 1000;
-    const FEED_COOLDOWN_MS = 8 * 60 * 60 * 1000;
-    const BOND_LEVELS = [0, 10, 25, 45, 70, 100, 140, 190, 250, 320, 400];   // xp needed for hearts 0..10
-    const BOND_GAIN = { pet: 3, fish: 5, tuna: 8, macaron: 12 };
+    const CARE = cfg('care', {
+      petCooldownMin: 60,          // pet a cat at most once per hour
+      feedCooldownHours: 8,        // hand-feed a cat at most once per 8 hours
+      bondLevels: [0, 10, 25, 45, 70, 100, 140, 190, 250, 320, 400],   // xp needed for hearts 0..10
+      bondGain: { pet: 3, fish: 5, tuna: 8, macaron: 12 }
+    });
+    const PET_COOLDOWN_MS = CARE.petCooldownMin * 60 * 1000;
+    const FEED_COOLDOWN_MS = CARE.feedCooldownHours * 60 * 60 * 1000;
+    const BOND_LEVELS = CARE.bondLevels;
+    const BOND_GAIN = CARE.bondGain;
 
     let catBond = {};
     try { catBond = JSON.parse(getStorageItem('cat_bond') || '{}') || {}; } catch (e) { catBond = {}; }
@@ -9063,10 +9189,12 @@ class LiveCatActor {
       lucky_cat: { icon: '🐈', name: 'แมวกวักทองคำ', desc: 'จบเกม Cat Ball แล้วเหรียญจากคะแนนและคอมโบ ×2 ทุกเกมตลอดไป • ของหายากที่สุดในร้าน', price: 222222, stack: false },
       big_wallet: { icon: '💰', name: 'กระเป๋าเหรียญใหญ่', desc: 'เพิ่มเพดานเหรียญที่หาได้ต่อวันจาก 2,500 เป็น 5,000 ตลอดไป', price: 30000, stack: false }
     };
+    cfgPrices('prices.special', Object.entries(SPECIAL_ITEMS), 'price');
 
     function renderSpecialShop() {
       const grid = document.getElementById('special-shop-grid');
       if (!grid) return;
+      try { renderCursorShop(); } catch (e) { /* cursors not set up yet during startup */ }
       grid.innerHTML = '';
       Object.entries(SPECIAL_ITEMS).forEach(([id, it]) => {
         const have = perks[id];
@@ -9132,15 +9260,23 @@ class LiveCatActor {
     }
 
     // End of a Cat Ball game: this game's REM, with the golden lucky cat doubling score + combo coins
-    function payGameEndCoins() {
+    function payGameEndCoins(idle = false) {
       const base = gameCoins.score + gameCoins.fever;
       const bonus = perks.lucky_cat ? earnCoins(base) : 0;
       const gem = skillFx.gemPct ? earnCoins(Math.round(base * skillFx.gemPct / 100)) : 0;   // skill "ตาเพชร"
       gameCoins.skill += gem;
-      const total = base + bonus + gameCoins.lucky + gameCoins.skill;
+      let total = base + bonus + gameCoins.lucky + gameCoins.skill;
+      if (idle) {                            // left the game alone: keep only GAMEPLAY.idleCoinFactor of it
+        const back = Math.min(fishCoins, total - Math.floor(total * GAMEPLAY.idleCoinFactor));
+        fishCoins -= back;
+        earnDay.n = Math.max(0, earnDay.n - back);
+        setStorageItem('earn_day', JSON.stringify(earnDay));
+        updateCoinsDisplay();
+        total -= back;
+      }
       const el = document.getElementById('final-coins');
       if (el) {
-        el.innerHTML = coinHTML(`ได้เหรียญ +${total.toLocaleString()} 🪙`) +
+        el.innerHTML = coinHTML(`ได้เหรียญ +${total.toLocaleString()} 🪙${idle ? ' (ครึ่งเดียว)' : ''}`) +
           (bonus ? `<div class="final-lucky">🐈 แมวกวักทองคำ ×2 (+${bonus.toLocaleString()})</div>` : '') +
           (gem ? `<div class="final-lucky">💎 ตาเพชร +${skillFx.gemPct}% (+${gem.toLocaleString()})</div>` : '');
       }
@@ -9391,6 +9527,7 @@ class LiveCatActor {
       meteor:    { room: 'space', icon: '☄️', name: 'ฝนดาวตก', desc: 'ดาวตกพุ่งผ่านหน้าต่างวงโคจร', price: 2200 },
       aurora:    { room: 'space', icon: '🌌', name: 'ออโรร่าอวกาศ', desc: 'แสงออโรร่าพลิ้วเหนือเมืองไซเบอร์', price: 3000 }
     };
+    cfgPrices('prices.sceneFx', Object.entries(SCENE_FX), 'price');
     const FX_MAX_ON = 2;
     let sceneFx = { owned: [], on: {} };
     try { sceneFx = Object.assign({ owned: [], on: {} }, JSON.parse(getStorageItem('scene_fx') || '{}') || {}); } catch (e) { sceneFx = { owned: [], on: {} }; }
@@ -9559,7 +9696,7 @@ class LiveCatActor {
     let strangerTimer = null;
     let strangerEl = null;
 
-    function scheduleStranger(ms = 240000 + Math.random() * 120000) {
+    function scheduleStranger(ms = randInt(FARM_CFG.strangerEverySec[0], FARM_CFG.strangerEverySec[1]) * 1000) {
       clearTimeout(strangerTimer);
       strangerTimer = setTimeout(spawnStranger, ms);
     }
@@ -9626,7 +9763,7 @@ class LiveCatActor {
       anim.onfinish = () => { clearInterval(tick); el.remove(); strangerEl = null; };
     }
     const STRANGER_X = { japanese: 440, modern: 520, space: 630 };
-    scheduleStranger(120000 + Math.random() * 60000);  // first visit 2-3 min after opening, then every 4-6 min
+    scheduleStranger(randInt(FARM_CFG.strangerFirstSec[0], FARM_CFG.strangerFirstSec[1]) * 1000);  // first visit 2-3 min after opening, then every 4-6 min
 
 
     /* ==========================================================================
@@ -9671,10 +9808,16 @@ class LiveCatActor {
       bengal: 'aim', savannah: 'shrink', sphynx: 'fire', norwegian: 'shake',
       birman: 'lucky', korat: 'rain', khaomanee: 'gem', suphalak: 'purse'
     };
-    const HELPER_FROM = 80, HELPER_TO = 100, HELPER_BOND_PER_DAY = 5;
-    const SKILL_MAX_LV = 3;        // designed levels
-    const SKILL_OPEN_LV = 2;       // levels players can reach for now
-    const SKILL_UPGRADE = { 2: { price: 3750, hearts: 3 }, 3: { price: 12500, hearts: 7 } };   // target level → cost
+    Object.entries(cfg('skills.values', Object.fromEntries(Object.entries(HELPER_SKILLS).map(([k, sk]) => [k, sk.vals]))))
+      .forEach(([k, vals]) => { if (HELPER_SKILLS[k] && Array.isArray(vals)) HELPER_SKILLS[k].vals = vals; });
+    const SKILL_CFG = cfg('skills', {
+      maxLevel: 3,                 // designed levels
+      openLevel: 2,                // levels players can reach for now
+      upgrade: { 2: { price: 3750, hearts: 3 }, 3: { price: 12500, hearts: 7 } }   // target level → cost
+    });
+    const SKILL_MAX_LV = SKILL_CFG.maxLevel;
+    const SKILL_OPEN_LV = SKILL_CFG.openLevel;
+    const SKILL_UPGRADE = SKILL_CFG.upgrade;
     let catSkill = {};
     try { catSkill = JSON.parse(getStorageItem('cat_skill') || '{}') || {}; } catch (e) { catSkill = {}; }
     const skillLv = id => Math.min(SKILL_OPEN_LV, Math.max(1, parseInt(catSkill[id], 10) || 1));
@@ -9683,58 +9826,6 @@ class LiveCatActor {
     let helper = null;          // { id, hearts, lv, chance, at, rolled, armed, used }
     let dropsThisGame = 0;
     let luckyStreak = 0;
-
-    function pickHelper() {
-      helper = null;
-      let owned = [];
-      try { owned = currentUser ? (ownedCats || []).filter(id => BREED_SKILL[id]) : []; } catch (e) { owned = []; }
-      if (owned.length) {
-        const id = owned[Math.floor(Math.random() * owned.length)];
-        const hearts = bondLevel(bondOf(id).xp);
-        helper = { id, hearts, lv: skillLv(id), chance: hearts / 10, at: randInt(HELPER_FROM, HELPER_TO), rolled: false, armed: false, used: false };
-      }
-      if (gameStats) gameStats.helper = helper ? { cat: helper.id, skill: BREED_SKILL[helper.id], lv: helper.lv, hearts: helper.hearts, fired: false } : null;
-      renderHelperBadge();
-    }
-
-    function renderHelperBadge() {
-      const el = document.getElementById('helper-badge');
-      if (!el) return;
-      if (!helper) { el.style.display = 'none'; return; }
-      const breed = CAT_BREEDS.find(b => b.id === helper.id);
-      const sk = skillOf(helper.id);
-      el.style.display = 'flex';
-      el.innerHTML = `<img src="${breed.img}" alt=""><span>${sk.icon}</span><span class="hb-lv">Lv${helper.lv}</span><span class="hb-hearts">❤️${helper.hearts}</span>`;
-      el.title = `${catDisplayName(breed)} มาเชียร์ • สกิล ${sk.name} Lv${helper.lv}: ${sk.desc(skillVal(helper.id, helper.lv))} • โอกาส ${Math.round(helper.chance * 100)}%`;
-      el.classList.toggle('is-used', helper.used);
-    }
-
-    function showHelperInfo() {
-      if (!helper) return;
-      const breed = CAT_BREEDS.find(b => b.id === helper.id);
-      const sk = skillOf(helper.id);
-      showSkillToast(sk.icon, helper.chance
-        ? `${catDisplayName(breed)} มาเชียร์! "${sk.name}" Lv${helper.lv}: ${sk.desc(skillVal(helper.id, helper.lv))} • ช่วงลูกที่ ${HELPER_FROM}–${HELPER_TO} (โอกาส ${Math.round(helper.chance * 100)}%)`
-        : `${catDisplayName(breed)} มาเชียร์! เลี้ยงให้สนิทขึ้น (ลูบ/ป้อน) แล้วจะช่วยใช้สกิล "${sk.name}"`);
-    }
-
-    // Called from dropCat() after every drop
-    function helperTick() {
-      dropsThisGame++;
-      if (!helper || helper.used) return;
-      if (!helper.rolled) {
-        if (dropsThisGame < helper.at) return;
-        helper.rolled = true;
-        helper.armed = Math.random() < helper.chance;
-        if (!helper.armed) { helper.used = true; renderHelperBadge(); return; }   // silent miss
-      }
-      if (helper.armed && useHelperSkill(BREED_SKILL[helper.id], helper.lv)) {
-        helper.armed = false;
-        helper.used = true;
-        if (gameStats && gameStats.helper) { gameStats.helper.fired = true; gameStats.helper.firedAt = dropsThisGame; }
-        renderHelperBadge();
-      }
-    }
 
     // Balls that are still in play, highest (closest to the overflow line) first
     const liveBalls = () => cats.filter(c => !c.merged).sort((a, b) => a.y - b.y);
@@ -9923,18 +10014,6 @@ class LiveCatActor {
       setTimeout(() => pop.classList.remove('show'), 2600);
     }
 
-    // Finished game: the helper gets a little closer (+1 bond, up to 5 a day)
-    function rewardHelperBond() {
-      if (!helper || !currentUser) return;
-      const b = bondOf(helper.id);
-      const today = new Date().toLocaleDateString('en-CA');
-      if (b.helpDay !== today) { b.helpDay = today; b.helpN = 0; }
-      if (b.helpN >= HELPER_BOND_PER_DAY) return;
-      b.helpN++;
-      b.xp = Math.min(BOND_LEVELS[BOND_LEVELS.length - 1], b.xp + 1);
-      saveBond();
-    }
-
     // Cat window: the breed's skill, its level and the upgrade button
     function renderSkillUI(actor) {
       const box = document.getElementById('modal-skill');
@@ -9975,7 +10054,7 @@ class LiveCatActor {
       renderBondUI(currentDetailCat);
       const sk = skillOf(id);
       showToast(sk.icon, `สกิล ${sk.name} เป็น Lv${next} แล้ว: ${sk.desc(sk.vals[next - 1])}`);
-      if (helper && helper.id === id && !helper.used) { helper.lv = next; renderHelperBadge(); }
+      if (helper && helper.id === id && !helper.used) helper.lv = next;
     }
     /* ==========================================================================
        QUICK TIME EVENT + GAME STATS (REQ-15 §5, REQ-16 — 2026-09-25)
@@ -10024,6 +10103,8 @@ class LiveCatActor {
       }
       if (isGameOver || view !== 'game' || !gameStats || gameStats.drops === 0) return;
       gameStats.playSec += dt;
+      tickIdle(dt);
+      tickHelperVisit(dt);
     }
 
     const qteHost = () => document.getElementById('room-viewport');
@@ -10120,12 +10201,12 @@ class LiveCatActor {
       try { theme = document.getElementById('view-game').dataset.theme || currentTheme; } catch (e) { theme = null; }
       return {
         startedAt: Date.now(), playSec: 0, drops: 0, merges: 0, maxTier: 0, chains: 0, fevers: 0, shakes: 0,
-        lucky: 0, helper: null, done: false, theme,
+        lucky: 0, event: null, helperVisits: [], done: false, theme,
         device: window.matchMedia && matchMedia('(pointer: coarse)').matches ? 'touch' : 'mouse'
       };
     }
     gameStats = newGameStats();
-    if (helper) gameStats.helper = { cat: helper.id, skill: BREED_SKILL[helper.id], lv: helper.lv, hearts: helper.hearts, fired: false };
+    document.getElementById('moon-count').innerText = moonShakesLeft;
 
     function loadStatsLog() {
       try { return JSON.parse(getStorageItem('catball_stats') || '[]') || []; } catch (e) { return []; }
@@ -10150,7 +10231,8 @@ class LiveCatActor {
         coins: earned != null ? earned : Object.values(coinSplit).reduce((a, b) => a + b, 0), coinSplit,
         pointsPerMin: playSec ? Math.round(score / (playSec / 60)) : 0,
         mergesPerMin: playSec ? +(g.merges / (playSec / 60)).toFixed(1) : 0,
-        helper: g.helper, theme: g.theme, device: g.device, loggedIn: !!currentUser
+        event: g.event, helperVisits: g.helperVisits || [], skillsUsed: (g.helperVisits || []).filter(v => v.used).length,
+        theme: g.theme, device: g.device, loggedIn: !!currentUser
       };
       const log = loadStatsLog();
       log.push(rec);
@@ -10190,9 +10272,9 @@ class LiveCatActor {
     function exportCatballStats() {
       const log = loadStatsLog();
       const cols = ['at', 'end', 'playSec', 'durationSec', 'score', 'bestCombo', 'maxLevel', 'drops', 'merges', 'chains', 'fevers',
-        'shakes', 'lucky', 'coins', 'pointsPerMin', 'mergesPerMin', 'theme', 'device', 'helperCat', 'helperSkill', 'helperLv', 'helperFired'];
+        'shakes', 'lucky', 'coins', 'pointsPerMin', 'mergesPerMin', 'theme', 'device', 'event', 'helperVisits', 'skillsUsed'];
       const rows = log.map(r => cols.map(c => {
-        const v = c.startsWith('helper') ? (r.helper ? { helperCat: r.helper.cat, helperSkill: r.helper.skill, helperLv: r.helper.lv, helperFired: r.helper.fired }[c] : '') : r[c];
+        const v = c === 'event' ? (r.event ? r.event.id + (r.event.started ? '' : ' (not reached)') : '') : c === 'helperVisits' ? (r.helperVisits || []).length : r[c];
         return v == null ? '' : String(v).replace(/[",\n]/g, ' ');
       }).join(','));
       const blob = new Blob([[cols.join(','), ...rows].join('\n')], { type: 'text/csv' });
@@ -10207,6 +10289,366 @@ class LiveCatActor {
     window.addEventListener('pagehide', () => {
       if (!isGameOver && gameStats && gameStats.drops > 0) finishGameStats('leave', null);
     });
+
+    /* ==========================================================================
+       ROUND 9 (2026-09-25): theme events · idle timeout · helper cat walk-ins · cursors
+       All numbers come from the game config (REQ-17): events.*, gameplay.idle*, helper.*, prices.cursors.
+       ========================================================================== */
+
+    /* --- 1. Theme events: some games get a festival that boosts the score for a while (REQ-01 §3.8) --- */
+    const GAME_EVENTS = cfg('events', {
+      chance: 0.1,                 // share of games that get the event of their theme
+      startAtDrop: [30, 70],       // it begins on a random drop in this range
+      durationSec: 30,             // and lasts this many seconds of play
+      themes: {
+        space:    { id: 'meteor',    icon: '☄️', name: 'ฝนดาวตก',   scoreMult: 1.5, comboWindowMult: 1, luckyMult: 1 },
+        japanese: { id: 'sakura',    icon: '🌸', name: 'พายุซากุระ', scoreMult: 1.3, comboWindowMult: 1.5, luckyMult: 1 },
+        modern:   { id: 'fireworks', icon: '🎆', name: 'ค่ำคืนพลุ',  scoreMult: 1.3, comboWindowMult: 1, luckyMult: 4 }
+      }
+    });
+    let gameEvent = null;          // { def, at, left, on, done }
+    const eventFx = [];
+
+    function rollGameEvent() {
+      const def = GAME_EVENTS.themes[gameTheme];
+      gameEvent = def && Math.random() < GAME_EVENTS.chance
+        ? { def, at: randInt(GAME_EVENTS.startAtDrop[0], GAME_EVENTS.startAtDrop[1]), left: GAME_EVENTS.durationSec, on: false, done: false }
+        : null;
+      if (gameStats) gameStats.event = gameEvent ? { id: def.id, at: gameEvent.at, started: false } : null;
+    }
+    const eventOn = () => !!(gameEvent && gameEvent.on);
+    const eventScoreMult = () => eventOn() ? gameEvent.def.scoreMult : 1;
+    const eventComboMult = () => eventOn() ? gameEvent.def.comboWindowMult : 1;
+    const eventLuckyMult = () => eventOn() ? gameEvent.def.luckyMult : 1;
+
+    function eventDescription(def) {
+      const parts = [];
+      if (def.scoreMult > 1) parts.push(`คะแนน +${Math.round((def.scoreMult - 1) * 100)}%`);
+      if (def.comboWindowMult > 1) parts.push(`คอมโบต่อง่ายขึ้น ×${def.comboWindowMult}`);
+      if (def.luckyMult > 1) parts.push(`ลูกนำโชค ×${def.luckyMult}`);
+      return parts.join(' · ');
+    }
+
+    // Called after every drop
+    function eventTick() {
+      if (!gameEvent || gameEvent.on || gameEvent.done || dropsThisGame < gameEvent.at) return;
+      gameEvent.on = true;
+      if (gameStats && gameStats.event) gameStats.event.started = true;
+      const def = gameEvent.def;
+      document.getElementById('canvas-wrap').classList.add('event-on', 'event-' + def.id);
+      showSkillToast(def.icon, `${def.name}! ${eventDescription(def)} นาน ${GAME_EVENTS.durationSec} วินาที`);
+      sound.playNotes([523.25, 659.25, 783.99, 1046.5, 1318.5], { type: 'triangle', gap: 0.07, dur: 0.35, vol: 0.12 });
+      renderEventPill();
+    }
+
+    function endGameEvent() {
+      if (!gameEvent) return;
+      gameEvent.on = false; gameEvent.done = true;
+      const wrap = document.getElementById('canvas-wrap');
+      if (wrap) wrap.classList.remove('event-on', 'event-meteor', 'event-sakura', 'event-fireworks');
+      renderEventPill();
+    }
+
+    function renderEventPill() {
+      const el = document.getElementById('event-pill');
+      if (!el) return;
+      if (!eventOn()) { el.classList.remove('show'); return; }
+      el.classList.add('show');
+      el.textContent = `${gameEvent.def.icon} ${gameEvent.def.name} ${eventDescription(gameEvent.def)} · ${Math.ceil(gameEvent.left)} วิ`;
+    }
+
+    // Per frame: count the event down and draw its sky (meteors / petals / fireworks) behind the balls
+    function drawEventFx(dt) {
+      if (eventOn() && !isGameOver) {
+        gameEvent.left -= dt;
+        if (Math.floor(gameEvent.left + dt) !== Math.floor(gameEvent.left)) renderEventPill();
+        if (gameEvent.left <= 0) endGameEvent();
+      }
+      if (eventOn()) {
+        const id = gameEvent.def.id;
+        const rate = id === 'meteor' ? 5 : id === 'sakura' ? 14 : 1.6;
+        if (Math.random() < rate * dt) {
+          if (id === 'meteor') eventFx.push({ kind: id, x: Math.random() * width * 1.2, y: -20, vx: -380 - Math.random() * 200, vy: 420 + Math.random() * 160, life: 1.2 });
+          else if (id === 'sakura') eventFx.push({ kind: id, x: Math.random() * width, y: -10, vx: 20 + Math.random() * 40, vy: 50 + Math.random() * 50, life: 7, r: 3 + Math.random() * 3, spin: Math.random() * 6 });
+          else {
+            const cx = 40 + Math.random() * (width - 80), cy = 40 + Math.random() * DANGER_Y * 1.4, hue = Math.floor(Math.random() * 360);
+            for (let i = 0; i < 26; i++) { const a = i / 26 * Math.PI * 2, sp = 90 + Math.random() * 60; eventFx.push({ kind: id, x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1.1, hue }); }
+          }
+        }
+      }
+      for (let i = eventFx.length - 1; i >= 0; i--) {
+        const p = eventFx[i];
+        p.life -= dt; p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.kind === 'fireworks') p.vy += 60 * dt;
+        if (p.kind === 'sakura') p.spin += dt * 3;
+        if (p.life <= 0 || p.y > height + 20) { eventFx.splice(i, 1); continue; }
+        ctx.save();
+        if (p.kind === 'meteor') {
+          const g = ctx.createLinearGradient(p.x, p.y, p.x - p.vx * 0.18, p.y - p.vy * 0.18);
+          g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(0.3, 'rgba(253,224,71,0.7)'); g.addColorStop(1, 'rgba(253,224,71,0)');
+          ctx.strokeStyle = g; ctx.lineWidth = 3; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.vx * 0.18, p.y - p.vy * 0.18); ctx.stroke();
+        } else if (p.kind === 'sakura') {
+          ctx.globalAlpha = Math.min(1, p.life);
+          ctx.translate(p.x + Math.sin(p.spin) * 8, p.y); ctx.rotate(p.spin);
+          ctx.fillStyle = '#f9a8d4'; ctx.beginPath(); ctx.ellipse(0, 0, p.r, p.r * 0.6, 0, 0, Math.PI * 2); ctx.fill();
+        } else {
+          ctx.globalAlpha = Math.max(0, p.life / 1.1);
+          ctx.fillStyle = `hsl(${p.hue}, 95%, 65%)`; ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
+        }
+        ctx.restore();
+      }
+    }
+
+    /* --- 2. Idle timeout: no tap on the game screen for a minute ends the game with half the coins --- */
+    let idleSec = 0;
+    let idleEnded = false;
+    function noteGameInput() { idleSec = 0; renderIdleWarning(); }
+    document.addEventListener('pointerdown', () => { let v = 'game'; try { v = currentView; } catch (e) { /* startup */ } if (v === 'game') noteGameInput(); }, true);
+    document.addEventListener('keydown', () => noteGameInput(), true);
+
+    // Called from tickPlayClock while a game is running on screen
+    function tickIdle(dt) {
+      idleSec += dt;
+      renderIdleWarning();
+      if (idleSec >= GAMEPLAY.idleTimeoutSec && !isGameOver) {
+        idleEnded = true;
+        triggerGameOver();
+      }
+    }
+    function renderIdleWarning() {
+      const el = document.getElementById('idle-warn');
+      if (!el) return;
+      const left = GAMEPLAY.idleTimeoutSec - idleSec;
+      const show = !isGameOver && left <= GAMEPLAY.idleWarnSec && left > 0;
+      el.classList.toggle('show', show);
+      if (show) el.textContent = `ยังเล่นอยู่ไหม? แตะจอ ไม่งั้นจบเกมใน ${Math.ceil(left)} วิ`;
+    }
+
+    /* --- 3. Helper cat walk-ins (REQ-14 §3, round 9): every 3-5 minutes one of your cats walks along the
+           top bar, sits or naps there. With a chance of 10% per bond heart it offers its skill — tap it.
+           Not tapped within 2 minutes → it walks off. --- */
+    const HELPER_CFG = cfg('helper', {
+      visitEverySec: [180, 300],   // a cat walks in every 3-5 minutes of play
+      firstVisitSec: [180, 300],
+      skillChancePerHeart: 0.1,    // chance it offers its skill = hearts × this
+      skillWaitSec: 120,           // an offered skill waits this long for a tap, then the cat leaves
+      stayWithoutSkillSec: [25, 45],
+      bondPerDay: 5                // +1 bond per visit, at most this many a day
+    });
+    let helperClock = 0;
+    let helperNextAt = randInt(HELPER_CFG.firstVisitSec[0], HELPER_CFG.firstVisitSec[1]);
+
+    function pickHelper() {                // new game: any visitor leaves, the clock keeps running
+      helperLeave(true);
+      renderSwapCharges();
+    }
+    function helperTick() { dropsThisGame++; eventTick(); }
+
+    // Runs from tickPlayClock while a game is running on the game screen
+    function tickHelperVisit(dt) {
+      helperClock += dt;
+      if (helper) {
+        helper.t += dt;
+        if (helper.phase === 'stay' && helper.t >= helper.stay) helperLeave(false);
+        return;
+      }
+      if (helperClock < helperNextAt) return;
+      helperNextAt = helperClock + randInt(HELPER_CFG.visitEverySec[0], HELPER_CFG.visitEverySec[1]);
+      helperArrive();
+    }
+
+    function helperArrive(forceId = null) {
+      let owned = [];
+      try { owned = currentUser ? (ownedCats || []).filter(id => BREED_SKILL[id]) : []; } catch (e) { owned = []; }
+      if (forceId) owned = [forceId];
+      const lane = document.getElementById('header-cat-lane');
+      if (!owned.length || !lane) return null;
+      const id = owned[Math.floor(Math.random() * owned.length)];
+      const hearts = bondLevel(bondOf(id).xp);
+      const canSkill = Math.random() < hearts * HELPER_CFG.skillChancePerHeart;
+      const breed = CAT_BREEDS.find(b => b.id === id);
+      const sk = skillOf(id);
+      const el = document.createElement('button');
+      el.className = 'header-cat is-walking';
+      el.innerHTML = `<span class="hc-bubble"></span><img src="${breed.img}" alt=""><span class="hc-zz">💤</span>`;
+      el.title = catDisplayName(breed);
+      el.addEventListener('pointerdown', e => { e.stopPropagation(); tapHeaderCat(); });
+      lane.appendChild(el);
+      const W = lane.clientWidth;
+      const spot = Math.round(W * (0.3 + Math.random() * 0.4));
+      el.style.left = (W + 40) + 'px';
+      void el.offsetWidth;
+      el.style.transition = 'left 3.2s linear';
+      el.style.left = spot + 'px';
+      helper = { id, hearts, lv: skillLv(id), canSkill, used: false, el, phase: 'walk', t: 0,
+        stay: canSkill ? HELPER_CFG.skillWaitSec : randInt(HELPER_CFG.stayWithoutSkillSec[0], HELPER_CFG.stayWithoutSkillSec[1]) };
+      if (gameStats) (gameStats.helperVisits = gameStats.helperVisits || []).push({ cat: id, skill: BREED_SKILL[id], lv: helper.lv, hearts, offered: canSkill, used: false });
+      setTimeout(() => {
+        if (!helper || helper.el !== el) return;
+        helper.phase = 'stay'; helper.t = 0;
+        el.classList.remove('is-walking');
+        el.classList.add(Math.random() < 0.5 ? 'is-sitting' : 'is-napping');
+        if (helper.canSkill) {
+          el.classList.add('has-skill');
+          el.querySelector('.hc-bubble').textContent = `${sk.icon} แตะใช้สกิล!`;
+          sound.playNotes([880, 1174.66], { type: 'sine', gap: 0.08, dur: 0.2, vol: 0.08 });
+        }
+      }, 3200);
+      return helper;
+    }
+
+    function tapHeaderCat() {
+      if (!helper || helper.phase === 'leave') return;
+      noteGameInput();
+      const breed = CAT_BREEDS.find(b => b.id === helper.id);
+      const bubble = helper.el.querySelector('.hc-bubble');
+      if (helper.canSkill && !helper.used && helper.phase === 'stay' && !isGameOver) {
+        if (useHelperSkill(BREED_SKILL[helper.id], helper.lv)) {
+          helper.used = true;
+          const v = gameStats && gameStats.helperVisits && gameStats.helperVisits[gameStats.helperVisits.length - 1];
+          if (v) v.used = true;
+          helper.el.classList.remove('has-skill');
+          bubble.textContent = '💖';
+          setTimeout(() => helperLeave(false), 2500);
+        } else {
+          bubble.textContent = 'รอจังหวะก่อนนะ~';
+          setTimeout(() => { if (helper && !helper.used && bubble) bubble.textContent = `${skillOf(helper.id).icon} แตะใช้สกิล!`; }, 1500);
+        }
+        return;
+      }
+      bubble.textContent = 'เมี๊ยว~ 💕';
+      helper.el.classList.add('show-bubble');
+      setTimeout(() => helper && helper.el && helper.el.classList.remove('show-bubble'), 1400);
+      try { audio.playPurr(); } catch (e) { /* no audio */ }
+      if (breed) spawnHeartInHeader(helper.el);
+    }
+
+    function spawnHeartInHeader(el) {
+      const h = document.createElement('span');
+      h.className = 'hc-heart'; h.textContent = '💖';
+      el.appendChild(h);
+      setTimeout(() => h.remove(), 900);
+    }
+
+    function helperLeave(now) {
+      if (!helper) return;
+      const h = helper;
+      helper = null;
+      rewardVisitBond(h.id);
+      if (!h.el) return;
+      if (now) { h.el.remove(); return; }
+      h.phase = 'leave';
+      h.el.classList.remove('is-sitting', 'is-napping', 'has-skill', 'show-bubble');
+      h.el.classList.add('is-walking', 'is-leaving');
+      h.el.style.transition = 'left 3s linear';
+      h.el.style.left = '-60px';
+      setTimeout(() => h.el.remove(), 3100);
+    }
+
+    // +1 bond for the cat that came to cheer (at most HELPER_CFG.bondPerDay a day)
+    function rewardVisitBond(id) {
+      if (!currentUser || !id) return;
+      const b = bondOf(id);
+      const today = new Date().toLocaleDateString('en-CA');
+      if (b.helpDay !== today) { b.helpDay = today; b.helpN = 0; }
+      if (b.helpN >= HELPER_CFG.bondPerDay) return;
+      b.helpN++;
+      b.xp = Math.min(BOND_LEVELS[BOND_LEVELS.length - 1], b.xp + 1);
+      saveBond();
+    }
+
+    /* --- 4. Cursors: a round dot by default, cute ones for sale (shop › ไอเทมพิเศษ) --- */
+    const CURSOR_PRICES = cfg('prices.cursors', { dot: 0, paw: 1500, fish: 2000, yarn: 2000, heart: 2500, mouse: 2500, coin: 3000, goldpaw: 8000 });
+    // 16×16 pixel maps; hot = the click point in the 32 px image
+    const CURSORS = {
+      dot:     { name: 'จุดกลม', hot: [16, 16], colors: { k: '#1e293b', w: '#ffffff', p: '#f9a8d4' },
+        map: ['................', '................', '................', '................', '......kkkk......', '.....kwwwwk.....', '....kwwppwwk....', '....kwppppwk....', '....kwppppwk....', '....kwwppwwk....', '.....kwwwwk.....', '......kkkk......', '................', '................', '................', '................'] },
+      paw:     { name: 'อุ้งเท้าชมพู', hot: [16, 14], colors: { k: '#7f1d1d', w: '#ffffff', p: '#f472b6' },
+        map: ['................', '...kk......kk...', '..kppk....kppk..', '..kppk.kk.kppk..', '...kk.kppk.kk...', '......kppk......', '.kk....kk....kk.', 'kppk........kppk', 'kppk..kkkk..kppk', '.kk..kwwwwk..kk.', '....kwppppwk....', '...kwppppppwk...', '...kwppppppwk...', '....kwppppwk....', '.....kkkkkk.....', '................'] },
+      fish:    { name: 'ปลาทูน่า', hot: [4, 8], colors: { k: '#0c4a6e', b: '#38bdf8', w: '#e0f2fe', e: '#0f172a' },
+        map: ['................', '................', '................', '.....kkkkk......', '...kkbbbbbkk..kk', '..kbwbbbbbbbkkbk', '.kbebbbbbbbbbbbk', 'kbbbbbbbbbbbbbk.', '.kbbbwwwwbbbbbbk', '..kbbwwwbbbbkkbk', '...kkbbbbbkk..kk', '.....kkkkk......', '................', '................', '................', '................'] },
+      yarn:    { name: 'ไหมพรม', hot: [16, 16], colors: { k: '#831843', r: '#f472b6', l: '#fbcfe8' },
+        map: ['................', '................', '.....kkkkkk.....', '...kkrrlrrrkk...', '..krrlrrrlrrrk..', '..krlrrrlrrlrk..', '.krrrrlrrrlrrrk.', '.krlrrrlrrrlrrk.', '.krrlrrrlrrrlrk.', '.krrrlrrrlrrrrk.', '..krrrlrrrlrrk..', '..krlrrrlrrrrk..', '...kkrrrlrrkk...', '.....kkkkkk..kk.', '.............kk.', '..............k.'] },
+      heart:   { name: 'หัวใจ', hot: [16, 16], colors: { k: '#881337', r: '#fb7185', w: '#ffe4e6' },
+        map: ['................', '................', '................', '...kkk....kkk...', '..krrrk..krrrk..', '.krwwrrkkrrrrrk.', '.krwrrrrrrrrrrk.', '.krrrrrrrrrrrrk.', '.krrrrrrrrrrrrk.', '..krrrrrrrrrrk..', '...krrrrrrrrk...', '....krrrrrrk....', '.....krrrrk.....', '......krrk......', '.......kk.......', '................'] },
+      mouse:   { name: 'หนูของเล่น', hot: [6, 6], colors: { k: '#334155', g: '#cbd5e1', p: '#f9a8d4', e: '#0f172a' },
+        map: ['................', '................', '..kk.kk.........', '.kppkppk........', '.kgggggkk.......', 'kegggggggkk.....', '.kggggggggggk...', '..kggggggggggk..', '...kkggggggggk..', '.....kkkkggggk..', '.........kkkk.k.', '..............k.', '.............k..', '................', '................', '................'] },
+      coin:    { name: 'เหรียญ REM', hot: [16, 16], image: 'coin' },
+      goldpaw: { name: 'อุ้งเท้าทองคำ', hot: [16, 14], colors: { k: '#78350f', w: '#fef9c3', p: '#facc15' },
+        map: ['................', '...kk......kk...', '..kppk....kppk..', '..kppk.kk.kppk..', '...kk.kppk.kk...', '......kppk......', '.kk....kk....kk.', 'kppk........kppk', 'kppk..kkkk..kppk', '.kk..kwwwwk..kk.', '....kwppppwk....', '...kwppppppwk...', '...kwppppppwk...', '....kwppppwk....', '.....kkkkkk.....', '................'] }
+    };
+    Object.entries(CURSOR_PRICES).forEach(([id, price]) => { if (CURSORS[id]) CURSORS[id].price = price; });
+    const cursorURLs = {};
+    function cursorURL(id) {
+      if (cursorURLs[id]) return cursorURLs[id];
+      const c = CURSORS[id] || CURSORS.dot;
+      const cv = document.createElement('canvas');
+      cv.width = cv.height = 32;
+      const g = cv.getContext('2d');
+      g.imageSmoothingEnabled = false;
+      if (c.image === 'coin') {
+        if (!remCoinImg.complete) return null;
+        g.drawImage(remCoinImg, 0, 0, 32, 32);
+      } else {
+        c.map.forEach((row, y) => [...row].forEach((ch, x) => { if (c.colors[ch]) { g.fillStyle = c.colors[ch]; g.fillRect(x * 2, y * 2, 2, 2); } }));
+      }
+      return (cursorURLs[id] = cv.toDataURL('image/png'));
+    }
+    function applyCursor() {
+      const id = perks.cursor && CURSORS[perks.cursor] ? perks.cursor : 'dot';
+      const url = cursorURL(id);
+      if (!url) { remCoinImg.addEventListener('load', applyCursor, { once: true }); return; }
+      const [hx, hy] = CURSORS[id].hot;
+      document.documentElement.style.setProperty('--game-cursor', `url(${url}) ${hx} ${hy}, crosshair`);
+    }
+    const ownsCursor = id => id === 'dot' || (perks.cursors || []).includes(id);
+
+    function renderCursorShop() {
+      const grid = document.getElementById('cursor-shop-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      Object.entries(CURSORS).forEach(([id, c]) => {
+        const owned = ownsCursor(id);
+        const using = (perks.cursor || 'dot') === id;
+        const card = document.createElement('div');
+        card.className = 'item-card' + (owned ? ' owned' : '');
+        const btn = using ? `<button class="item-buy-btn equipped" disabled>✓ ใช้อยู่</button>`
+          : owned ? `<button class="item-buy-btn" style="background:#334155;" onclick="useCursor('${id}')">ใช้อันนี้</button>`
+          : `<button class="item-buy-btn" onclick="buyCursor('${id}')">ซื้อ (${c.price.toLocaleString()} <i class="rem-coin"></i>)</button>`;
+        card.innerHTML = `
+          <div class="card-top">
+            <div class="theme-card-preview cursor-preview">${cursorURL(id) ? `<img src="${cursorURL(id)}" alt="">` : '🪙'}</div>
+            <div>
+              <div class="item-name">เคอร์เซอร์${c.name}</div>
+              <div class="item-desc">${id === 'dot' ? 'แบบเริ่มต้น จุดกลมเล็งง่าย' : 'เปลี่ยนเมาส์ในเกม Cat Ball'} (เห็นบนคอม)</div>
+              <div class="item-scope is-universal">🖱️ เคอร์เซอร์</div>
+            </div>
+          </div>
+          ${btn}`;
+        grid.appendChild(card);
+      });
+    }
+    function buyCursor(id) {
+      const c = CURSORS[id];
+      if (!c || ownsCursor(id) || requireLogin()) return;
+      if (!spendCoins(c.price)) return;
+      perks.cursors = [...(perks.cursors || []), id];
+      perks.cursor = id;
+      savePerks();
+      audio.playCoin();
+      applyCursor();
+      renderCursorShop();
+      showToast('🖱️', `ได้เคอร์เซอร์${c.name}แล้ว! ใช้ในเกม Cat Ball`);
+    }
+    function useCursor(id) {
+      if (!ownsCursor(id)) return;
+      perks.cursor = id;
+      savePerks();
+      applyCursor();
+      renderCursorShop();
+    }
+    applyCursor();
 
     /* ==========================================================================
        SHOP & ROOM DECOR (theme-only items + universal items)
@@ -10245,6 +10687,7 @@ class LiveCatActor {
       { id: "sp_star", room: "space", name: "ป้ายไฟนีออน MEOW", emoji: "🌃", desc: "ป้ายนีออนกะพริบสไตล์ไซเบอร์พังก์", cost: 2800 },
       { id: "sp_pod", room: "space", name: "พ็อดนอนไร้แรงโน้มถ่วง", emoji: "💤", desc: "พ็อดห้อยเพดานสำหรับงีบหลับ", cost: 3000 }
     ];
+    cfgPrices('prices.decor', SHOP_ITEMS.map(i => [i.id, i]), 'cost');
     let currentShopFilter = 'all';
 
     let ownedItems = [];
@@ -10535,15 +10978,20 @@ class LiveCatActor {
       }
     };
     // Second litter box (REQ-12 §litter, 2026-09-25): bought once, then upgraded / skinned like the first
-    STATION_DEFS.litter2 = { ...STATION_DEFS.litter, name: 'กระบะทราย 2', x: 1020, buyPrice: 6000 };
+    STATION_DEFS.litter2 = { ...STATION_DEFS.litter, name: 'กระบะทราย 2', x: 1020, buyPrice: cfg('prices.secondLitterBox', 6000) };
     const LITTER_IDS = ['litter', 'litter2'];
     const isLitter = id => LITTER_IDS.includes(id);
-    const LITTER_CAP = 5;
+    const LITTER_CAP = cfg('farm.litterCap', 5);
+    cfg('prices.stations', { feeder: [0, 1500, 4000], fountain: [0, 1500, 4000], litter: [0, 2000, 5000] });
+    Object.entries(cfgGet('prices.stations') || {}).forEach(([id, list]) => {
+      if (STATION_DEFS[id] && Array.isArray(list)) list.forEach((p, i) => { if (STATION_DEFS[id].levels[i]) STATION_DEFS[id].levels[i].price = p; });
+    });
     const STATION_SKINS = {
       japanese: { name: 'ธีมญี่ปุ่น', desc: 'ไม้ฮิโนกิ ลายซากุระ', price: 1250 },
       modern: { name: 'ธีมโมเดิร์น', desc: 'หินอ่อนขอบทอง', price: 1250 },
       space: { name: 'ธีมไซเบอร์', desc: 'นีออนเรืองแสง', price: 1500 }
     };
+    cfgPrices('prices.stationSkins', Object.entries(STATION_SKINS), 'price');
     const STATION_IDS = ['feeder', 'fountain', 'litter', 'litter2'];
 
     let stations = null;

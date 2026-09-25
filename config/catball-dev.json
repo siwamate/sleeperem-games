@@ -1,0 +1,504 @@
+{
+  "_readme": "ค่าปรับเกม Cat Ball + ห้องแมว ทั้งหมดอยู่ไฟล์นี้ที่เดียว (REQ-17). dev ใช้ config/catball-dev.json, prod ใช้ config/catball.json (promote คัดลอกให้). คีย์ที่ขึ้นต้นด้วย _ เป็นคำอธิบาย เกมไม่อ่าน. ลบคีย์ไหนออก = ใช้ค่าเดิมในโค้ด. ช่วง [a, b] = สุ่มระหว่าง a ถึง b. แก้แล้ว deploy dev (หรือรอ ~1 นาทีให้ cache หมด)",
+  "economy": {
+    "_about": "รายได้ (REQ-13)",
+    "_keys": {
+      "pointsPerCoin": "คะแนนกี่แต้มได้ 1 เหรียญ (100 = 1%)",
+      "feverMinCombo": "คอมโบขั้นต่ำที่นับเป็น FEVER",
+      "feverBonus": "เหรียญต่อ FEVER 1 ครั้ง",
+      "luckyChance": "โอกาสลูกนำโชคต่อลูก (0.025 = 2.5%)",
+      "luckyTable": "[โอกาส, ต่ำสุด, สูงสุด] เหรียญจากลูกนำโชค",
+      "visitorReward": "เหรียญผู้มาเยือนในห้อง [ต่ำ, สูง]",
+      "visitorDailyCap": "ผู้มาเยือนให้เหรียญได้กี่ครั้ง/วัน",
+      "chestByDay": "กล่องรายวัน วันที่ 1..7+ [ต่ำ, สูง]",
+      "dailyCap": "เพดานเหรียญที่หาได้ต่อวัน",
+      "dailyCapWallet": "เพดานเมื่อมีกระเป๋าเหรียญใหญ่",
+      "startCoins": "เหรียญเริ่มต้นบัญชีใหม่",
+      "qteEvery": "แมลงในห้องแมวมาทุก [ต่ำ, สูง] วินาทีที่อยู่ในห้อง",
+      "qteReward": "เหรียญตบแมลง [ต่ำ, สูง]",
+      "qteLife": "แมลงอยู่กี่วินาทีก่อนบินหนี",
+      "poopCoin": "เหรียญต่ออึ 1 ก้อน"
+    },
+    "pointsPerCoin": 100,
+    "feverMinCombo": 5,
+    "feverBonus": 2,
+    "luckyChance": 0.025,
+    "luckyTable": [
+      [
+        0.6,
+        1,
+        3
+      ],
+      [
+        0.3,
+        4,
+        6
+      ],
+      [
+        0.1,
+        10,
+        20
+      ]
+    ],
+    "visitorReward": [
+      2,
+      5
+    ],
+    "visitorDailyCap": 10,
+    "chestByDay": [
+      [
+        6,
+        12
+      ],
+      [
+        10,
+        20
+      ],
+      [
+        16,
+        30
+      ],
+      [
+        24,
+        40
+      ],
+      [
+        30,
+        60
+      ],
+      [
+        40,
+        80
+      ],
+      [
+        100,
+        200
+      ]
+    ],
+    "dailyCap": 2500,
+    "dailyCapWallet": 5000,
+    "startCoins": 300,
+    "qteEvery": [
+      180,
+      300
+    ],
+    "qteReward": [
+      3,
+      5
+    ],
+    "qteLife": 5,
+    "poopCoin": 1
+  },
+  "physics": {
+    "_about": "ค่าเด้ง = ความเร็วตอนเด้งออก ÷ ความเร็วตอนชน (REQ-01 §3.5)",
+    "_keys": {
+      "wall": "ชนผนังซ้ายขวา",
+      "floor": "ตกลงพื้นตรงๆ",
+      "drop": "ลูกที่เพิ่งปล่อยจากมือตกลงบนกอง",
+      "ball": "ลูกชนกันเอง",
+      "grow": "ลูกที่เพิ่งขยายร่างดันลูกข้างๆ",
+      "growTime": "ช่วงวินาทีหลังขยายร่างที่ใช้ค่า grow"
+    },
+    "wall": 0.25,
+    "floor": 0.125,
+    "drop": 0.7,
+    "ball": 0.7,
+    "grow": 1.4,
+    "growTime": 0.4
+  },
+  "gameplay": {
+    "_about": "กติกาเกม Cat Ball",
+    "_keys": {
+      "comboWindow": "วินาทีระหว่างการรวมที่ยังนับคอมโบต่อ",
+      "overflowSeconds": "ลูกค้างเหนือเส้นแดงกี่วินาทีถึงจบเกม",
+      "shakesPerGame": "สิทธิ์เขย่ากล่องตอนเริ่มเกม",
+      "idleTimeoutSec": "ไม่แตะจอเกมกี่วินาทีแล้วจบเกม",
+      "idleWarnSec": "เตือนก่อนจบกี่วินาที",
+      "idleCoinFactor": "จบเพราะไม่เล่น ได้เหรียญเท่าไหร่ (0.5 = ครึ่งเดียว)"
+    },
+    "comboWindow": 1,
+    "overflowSeconds": 2.5,
+    "shakesPerGame": 1,
+    "idleTimeoutSec": 60,
+    "idleWarnSec": 10,
+    "idleCoinFactor": 0.5
+  },
+  "events": {
+    "_about": "อีเวนต์ประจำธีม (REQ-01 §3.8): บางเกมมีเทศกาลช่วงหนึ่ง",
+    "_keys": {
+      "chance": "โอกาสต่อเกม (0.1 = 10%)",
+      "startAtDrop": "เริ่มที่ลูกที่ [ต่ำ, สูง]",
+      "durationSec": "นานกี่วินาที",
+      "themes": "ต่อธีม: scoreMult คูณคะแนน (1.5 = +50%), comboWindowMult คูณเวลาต่อคอมโบ, luckyMult คูณโอกาสลูกนำโชค"
+    },
+    "chance": 0.1,
+    "startAtDrop": [
+      30,
+      70
+    ],
+    "durationSec": 30,
+    "themes": {
+      "space": {
+        "id": "meteor",
+        "icon": "☄️",
+        "name": "ฝนดาวตก",
+        "scoreMult": 1.5,
+        "comboWindowMult": 1,
+        "luckyMult": 1
+      },
+      "japanese": {
+        "id": "sakura",
+        "icon": "🌸",
+        "name": "พายุซากุระ",
+        "scoreMult": 1.3,
+        "comboWindowMult": 1.5,
+        "luckyMult": 1
+      },
+      "modern": {
+        "id": "fireworks",
+        "icon": "🎆",
+        "name": "ค่ำคืนพลุ",
+        "scoreMult": 1.3,
+        "comboWindowMult": 1,
+        "luckyMult": 4
+      }
+    }
+  },
+  "helper": {
+    "_about": "แมวผู้ช่วยเดินมาบนแถบด้านบนระหว่างเล่น (REQ-14 §3)",
+    "_keys": {
+      "visitEverySec": "มาทุก [ต่ำ, สูง] วินาทีที่เล่น",
+      "firstVisitSec": "ตัวแรกมาหลังเริ่มเล่น [ต่ำ, สูง] วินาที",
+      "skillChancePerHeart": "โอกาสมีสกิลให้กด ต่อหัวใจความสนิท (0.1 = 10%)",
+      "skillWaitSec": "รอให้กดสกิลกี่วินาทีก่อนเดินจากไป",
+      "stayWithoutSkillSec": "ถ้าไม่มีสกิล อยู่นาน [ต่ำ, สูง] วินาที",
+      "bondPerDay": "ความสนิท +1 ต่อการมาเยี่ยม สูงสุดกี่ครั้ง/วัน"
+    },
+    "visitEverySec": [
+      180,
+      300
+    ],
+    "firstVisitSec": [
+      180,
+      300
+    ],
+    "skillChancePerHeart": 0.1,
+    "skillWaitSec": 120,
+    "stayWithoutSkillSec": [
+      25,
+      45
+    ],
+    "bondPerDay": 5
+  },
+  "skills": {
+    "_about": "สกิลแมว 20 แบบ: values = ค่าของ Lv1, Lv2, Lv3 ต่อสกิล (ความหมายดู REQ-14 §3.1)",
+    "_keys": {
+      "maxLevel": "เลเวลที่ออกแบบไว้",
+      "openLevel": "เลเวลที่เปิดให้อัปได้ตอนนี้",
+      "upgrade": "ค่าอัปเกรดไปเลเวลนั้น: price เหรียญ, hearts ความสนิทขั้นต่ำ"
+    },
+    "values": {
+      "call": [
+        1,
+        2,
+        3
+      ],
+      "wave": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "magnet": [
+        1,
+        2,
+        3
+      ],
+      "whisper": [
+        3,
+        5,
+        7
+      ],
+      "snack": [
+        2,
+        3,
+        4
+      ],
+      "bite": [
+        2,
+        3,
+        4
+      ],
+      "grow": [
+        1,
+        2,
+        3
+      ],
+      "loaf": [
+        6,
+        10,
+        15
+      ],
+      "star": [
+        8,
+        12,
+        16
+      ],
+      "net": [
+        3,
+        4,
+        5
+      ],
+      "swap": [
+        1,
+        2,
+        3
+      ],
+      "chain": [
+        6,
+        9,
+        12
+      ],
+      "aim": [
+        1,
+        2,
+        3
+      ],
+      "shrink": [
+        1,
+        2,
+        3
+      ],
+      "fire": [
+        3,
+        4,
+        5
+      ],
+      "shake": [
+        1,
+        2,
+        3
+      ],
+      "lucky": [
+        3,
+        5,
+        8
+      ],
+      "rain": [
+        10,
+        15,
+        20
+      ],
+      "gem": [
+        20,
+        35,
+        50
+      ],
+      "purse": [
+        8,
+        15,
+        25
+      ]
+    },
+    "maxLevel": 3,
+    "openLevel": 2,
+    "upgrade": {
+      "2": {
+        "price": 3750,
+        "hearts": 3
+      },
+      "3": {
+        "price": 12500,
+        "hearts": 7
+      }
+    }
+  },
+  "care": {
+    "_about": "ดูแลแมว (REQ-14 §1)",
+    "_keys": {
+      "petCooldownMin": "ลูบหัวได้ทุกกี่นาที",
+      "feedCooldownHours": "ป้อนอาหารได้ทุกกี่ชั่วโมง",
+      "bondLevels": "แต้มสะสมที่ต้องใช้ของหัวใจ 0..10",
+      "bondGain": "แต้มความสนิทต่อการลูบ/อาหารแต่ละชนิด"
+    },
+    "petCooldownMin": 60,
+    "feedCooldownHours": 8,
+    "bondLevels": [
+      0,
+      10,
+      25,
+      45,
+      70,
+      100,
+      140,
+      190,
+      250,
+      320,
+      400
+    ],
+    "bondGain": {
+      "pet": 3,
+      "fish": 5,
+      "tuna": 8,
+      "macaron": 12
+    }
+  },
+  "farm": {
+    "_about": "ห้องแมว (REQ-12, REQ-15)",
+    "_keys": {
+      "visitorEverySec": "ผู้มาเยือนมาทุก [ต่ำ, สูง] วินาที",
+      "strangerFirstSec": "แมวแปลกหน้าตัวแรก [ต่ำ, สูง] วินาที",
+      "strangerEverySec": "แมวแปลกหน้าตัวต่อไปทุก [ต่ำ, สูง] วินาที",
+      "litterCap": "กระบะจุกี่ก้อน"
+    },
+    "visitorEverySec": [
+      35,
+      70
+    ],
+    "strangerFirstSec": [
+      120,
+      180
+    ],
+    "strangerEverySec": [
+      240,
+      360
+    ],
+    "litterCap": 5
+  },
+  "prices": {
+    "_about": "ราคาทุกอย่าง (เหรียญ REM, REQ-13 §3)",
+    "_keys": {
+      "food": "อาหารป้อนมือ",
+      "cats": "แมวแต่ละพันธุ์",
+      "rooms": "ห้อง/ธีม",
+      "decor": "ของแต่ง (id ตามร้าน)",
+      "sceneFx": "เอฟเฟกต์ฉาก",
+      "stations": "ชาม/น้ำ/กระบะ [Lv1, Lv2, Lv3]",
+      "stationSkins": "ธีมสถานี",
+      "secondLitterBox": "กระบะทรายอันที่ 2",
+      "special": "ไอเทมพิเศษ",
+      "cursors": "เคอร์เซอร์ในเกม (dot = ฟรี)"
+    },
+    "food": {
+      "fish": 50,
+      "tuna": 125,
+      "macaron": 300
+    },
+    "cats": {
+      "siamese": 1500,
+      "americanshorthair": 2000,
+      "british": 2500,
+      "scottish": 3000,
+      "munchkin": 3500,
+      "russianblue": 3800,
+      "birman": 4000,
+      "exotic": 4200,
+      "persian": 4500,
+      "abyssinian": 6000,
+      "turkish": 6500,
+      "sphynx": 7000,
+      "ragdoll": 7500,
+      "bengal": 8000,
+      "norwegian": 10000,
+      "savannah": 12000,
+      "mainecoon": 14000,
+      "korat": 18000,
+      "khaomanee": 20000,
+      "suphalak": 25000
+    },
+    "rooms": {
+      "japanese": 0,
+      "modern": 10000,
+      "space": 20000
+    },
+    "special": {
+      "name_tag": 750,
+      "lucky_cat": 222222,
+      "big_wallet": 30000
+    },
+    "sceneFx": {
+      "bubbles": 1250,
+      "snow": 1750,
+      "butterfly": 1500,
+      "sakura": 2000,
+      "maple": 1750,
+      "fireflies": 2200,
+      "rain": 1500,
+      "disco": 2500,
+      "fireworks": 3000,
+      "meteor": 2200,
+      "aurora": 3000
+    },
+    "cursors": {
+      "dot": 0,
+      "paw": 1500,
+      "fish": 2000,
+      "yarn": 2000,
+      "heart": 2500,
+      "mouse": 2500,
+      "coin": 3000,
+      "goldpaw": 8000
+    },
+    "decor": {
+      "uni_rug": 800,
+      "uni_box": 600,
+      "uni_mouse": 600,
+      "uni_yarn": 600,
+      "uni_scratcher": 1050,
+      "jp_bonsai": 900,
+      "jp_lantern": 1050,
+      "jp_tea": 700,
+      "jp_scroll": 1300,
+      "jp_cushion": 600,
+      "jp_dango": 600,
+      "jp_bell": 800,
+      "jp_tsukubai": 950,
+      "mod_sofa": 2100,
+      "mod_table": 1650,
+      "mod_plant": 950,
+      "mod_lamp": 1150,
+      "mod_books": 600,
+      "mod_diffuser": 700,
+      "mod_cat_bed": 1500,
+      "mod_daybed": 1900,
+      "sp_crystal": 2600,
+      "sp_plant": 1900,
+      "sp_globe": 3200,
+      "sp_capsule": 3500,
+      "sp_feeder": 2400,
+      "sp_star": 2800,
+      "sp_pod": 3000
+    },
+    "secondLitterBox": 6000,
+    "stations": {
+      "feeder": [
+        0,
+        1500,
+        4000
+      ],
+      "fountain": [
+        0,
+        1500,
+        4000
+      ],
+      "litter": [
+        0,
+        2000,
+        5000
+      ]
+    },
+    "stationSkins": {
+      "japanese": 1250,
+      "modern": 1250,
+      "space": 1500
+    }
+  }
+}
