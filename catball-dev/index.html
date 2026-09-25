@@ -4308,6 +4308,97 @@
     }
 
 
+
+    /* ==========================================================================
+       FAIRYTALE PALETTE (2026-09-25, rollback tag: pre-fairytale-palette)
+       High contrast + dreamy glow on every page: midnight-violet night sky, gold & rose accents,
+       saturated scenes with a soft bloom. Delete this block to go back to the old navy look.
+       ========================================================================== */
+    :root {
+      --ft-night: #140a33; --ft-deep: #1d1147; --ft-panel: #26175c; --ft-panel2: #321f73;
+      --ft-line: rgba(196, 167, 255, 0.35); --ft-gold: #ffd84d; --ft-rose: #ff7ac6; --ft-mint: #5ef2c8; --ft-sky: #7cd8ff;
+    }
+    html, body {
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(255, 122, 198, 0.22), transparent 60%),
+        radial-gradient(900px 600px at 85% 90%, rgba(124, 216, 255, 0.20), transparent 60%),
+        radial-gradient(700px 500px at 60% 40%, rgba(255, 216, 77, 0.10), transparent 60%),
+        linear-gradient(180deg, #0c0526 0%, #1a0c46 55%, #2b0f57 100%);
+    }
+    body::before {                                   /* tiny twinkling stars behind the app */
+      content: ''; position: fixed; inset: 0; pointer-events: none; opacity: 0.7;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 28% 72%, #ffe9a8, transparent),
+        radial-gradient(1.5px 1.5px at 47% 12%, #fff, transparent), radial-gradient(1px 1px at 66% 58%, #ffd1ec, transparent),
+        radial-gradient(1.5px 1.5px at 83% 26%, #fff, transparent), radial-gradient(1px 1px at 91% 81%, #bfeaff, transparent),
+        radial-gradient(1px 1px at 5% 88%, #fff, transparent), radial-gradient(1.5px 1.5px at 38% 44%, #fff5c2, transparent);
+      animation: ftTwinkle 5s ease-in-out infinite alternate;
+    }
+    @keyframes ftTwinkle { from { opacity: 0.35; } to { opacity: 0.85; } }
+
+    /* App frames: glowing gold-rose edge */
+    #view-game, #view-farm {
+      border: 1px solid rgba(255, 216, 77, 0.45) !important;
+      box-shadow: 0 0 0 1px rgba(255, 122, 198, 0.25), 0 24px 70px rgba(10, 0, 40, 0.8), 0 0 60px rgba(255, 122, 198, 0.28) !important;
+    }
+    #view-farm { background: linear-gradient(180deg, var(--ft-deep), var(--ft-night)); color: #fdf7ff; }
+    .farm-bottom-scroll-container { background: linear-gradient(180deg, var(--ft-deep), var(--ft-night)); }
+    .farm-bottom-scroll-container::-webkit-scrollbar-track { background: var(--ft-night); }
+    .farm-header { background: linear-gradient(180deg, #2c1a6b, var(--ft-deep)); border-bottom: 2px solid var(--ft-line); }
+    .theme-tab-btn { background: var(--ft-panel); border-color: var(--ft-line); color: #e9ddff; }
+    .theme-tab-btn.active { background: linear-gradient(135deg, var(--ft-rose), #8b5cf6) !important; border-color: var(--ft-gold) !important; color: #fff !important; box-shadow: 0 0 18px rgba(255, 122, 198, 0.55); }
+    .section-title, .shop-sub-title { color: var(--ft-gold) !important; text-shadow: 0 0 12px rgba(255, 216, 77, 0.45); }
+
+    /* Cards, panels and modals */
+    .shop-cat-card, .item-card {
+      background: linear-gradient(160deg, var(--ft-panel2), var(--ft-panel)) !important;
+      border: 1px solid var(--ft-line) !important;
+      box-shadow: 0 6px 18px rgba(10, 0, 40, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+    }
+    .shop-cat-card:hover, .shop-cat-card.active { border-color: var(--ft-gold) !important; box-shadow: 0 0 22px rgba(255, 216, 77, 0.4) !important; }
+    .item-card.owned { border-color: var(--ft-mint) !important; box-shadow: 0 0 16px rgba(94, 242, 200, 0.3) !important; }
+    .item-card.is-legendary { border-color: var(--ft-gold) !important; box-shadow: 0 0 26px rgba(255, 216, 77, 0.55) !important; }
+    .item-name { color: #fffaf0; }
+    .item-desc, .cat-shop-hint { color: #d8c8ff !important; }
+    .item-buy-btn { background: linear-gradient(135deg, #ffcf3f, #ff8a3d); color: #3a1300; font-weight: 800; box-shadow: 0 4px 14px rgba(255, 138, 61, 0.45); }
+    .item-buy-btn.equipped { background: linear-gradient(135deg, var(--ft-mint), #2bb8a0) !important; color: #06302a !important; }
+    .farm-modal-card, .modal-card {
+      background: linear-gradient(170deg, #34207a, var(--ft-deep)) !important;
+      border: 2px solid rgba(255, 216, 77, 0.55) !important;
+      box-shadow: 0 0 0 1px rgba(255, 122, 198, 0.3), 0 24px 60px rgba(8, 0, 30, 0.85), 0 0 50px rgba(255, 122, 198, 0.3) !important;
+    }
+    .bond-box, .farm-modal-card [style*="background: #090e1a"] { background: rgba(12, 5, 38, 0.6) !important; border-color: var(--ft-line) !important; }
+    .currency-pill { border-color: var(--ft-gold) !important; box-shadow: 0 0 14px rgba(255, 216, 77, 0.45); }
+
+    /* Scenes: saturated + contrasty, then a soft dreamy bloom and a violet vignette on top */
+    .room-viewport { background: var(--ft-night); }
+    .room-stage { filter: saturate(1.35) contrast(1.12) brightness(1.04); }
+    .room-viewport::after, #canvas-wrap::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 40;
+      background:
+        radial-gradient(60% 45% at 18% 12%, rgba(255, 240, 200, 0.28), transparent 70%),
+        radial-gradient(50% 40% at 88% 85%, rgba(255, 122, 198, 0.22), transparent 70%),
+        radial-gradient(120% 90% at 50% 50%, transparent 60%, rgba(40, 10, 90, 0.45) 100%);
+      mix-blend-mode: screen;
+      animation: ftBloom 7s ease-in-out infinite alternate;
+    }
+    #canvas-wrap::after { mix-blend-mode: normal; background:
+        radial-gradient(60% 40% at 15% 8%, rgba(255, 245, 210, 0.22), transparent 70%),
+        radial-gradient(50% 35% at 90% 95%, rgba(255, 122, 198, 0.16), transparent 70%),
+        radial-gradient(130% 100% at 50% 50%, transparent 65%, rgba(60, 20, 120, 0.35) 100%); }
+    @keyframes ftBloom { from { opacity: 0.75; } to { opacity: 1; } }
+    #gameCanvas { filter: saturate(1.3) contrast(1.12); }
+    #view-game .stat-value { background: linear-gradient(180deg, #ffffff, var(--ft-gold)); -webkit-background-clip: text; background-clip: text; }
+    .cat-name-label { color: #fff7d6; text-shadow: 0 0 6px rgba(255, 216, 77, 0.6); }
+    .feeding-menu-bar, .shop-section { background: transparent !important; border-color: var(--ft-line) !important; }
+    .feed-btn {
+      background: linear-gradient(160deg, var(--ft-panel2), var(--ft-panel)) !important; border: 1px solid var(--ft-line) !important;
+      color: #fdf7ff !important; box-shadow: 0 4px 12px rgba(10, 0, 40, 0.5);
+    }
+    .feed-btn:hover { border-color: var(--ft-rose) !important; box-shadow: 0 0 16px rgba(255, 122, 198, 0.45); }
+    .feed-btn .cost { color: var(--ft-gold) !important; }
+    .shop-home-btn, .filter-btn { background: var(--ft-panel) !important; border-color: var(--ft-line) !important; color: #e9ddff !important; }
+    .filter-btn.active { background: linear-gradient(135deg, var(--ft-rose), #8b5cf6) !important; color: #fff !important; }
   </style>
 </head>
 <body>
@@ -4940,7 +5031,7 @@
 
         <!-- Room themes (REQ-12) -->
         <div class="shop-panel" data-shop-panel="themes">
-          <p class="cat-shop-hint">ซื้อธีมแล้วได้ห้องใหม่อีก 1 ห้อง (ห้องละ 12 ตัว) • ห้องลับต้องค้นหาในฉากก่อนถึงจะซื้อได้</p>
+          <p class="cat-shop-hint">ซื้อธีมแล้วได้ห้องใหม่อีก 1 ห้อง (ห้องละ 12 ตัว) • ชามและกระบะทรายใส่ธีมทับได้ • เอฟเฟกต์ฉากอยู่ด้านล่าง</p>
           <div class="items-grid" id="theme-shop-grid"></div>
           <h4 class="shop-sub-title">✨ เอฟเฟกต์ฉาก <span>เปิดได้ห้องละ 2 อย่าง</span></h4>
           <div class="items-grid" id="fx-shop-grid"></div>
@@ -5234,13 +5325,13 @@
     const CAT_TIERS = [
       { tier: 0, name: "ก้อนไหมพรม", radius: 18, color: "#f472b6", score: 2, eye: "yarn" },
       { tier: 1, name: "ลูกแมวส้มจิ๋ว", radius: 26, color: "#fb923c", score: 4, eye: "sleepy" },
-      { tier: 2, name: "แมวสลิดขี้เซา", radius: 34, color: "#94a3b8", score: 8, eye: "happy" },
+      { tier: 2, name: "แมวสลิดขี้เซา", radius: 34, color: "#a5b4fc", score: 8, eye: "happy" },
       { tier: 3, name: "แมวสามสีอบอุ่น", radius: 44, color: "#fcd34d", score: 16, eye: "winking" },
-      { tier: 4, name: "แมวดำนำโชค", radius: 55, color: "#334155", score: 32, eye: "sleepy" },
-      { tier: 5, name: "แมววิเชียรมาศ", radius: 68, color: "#e2e8f0", score: 64, eye: "mask" },
-      { tier: 6, name: "แมวเปอร์เซียปุย", radius: 82, color: "#fdba74", score: 128, eye: "fluffy" },
+      { tier: 4, name: "แมวดำนำโชค", radius: 55, color: "#3b2a7a", score: 32, eye: "sleepy" },
+      { tier: 5, name: "แมววิเชียรมาศ", radius: 68, color: "#fdf4ff", score: 64, eye: "mask" },
+      { tier: 6, name: "แมวเปอร์เซียปุย", radius: 82, color: "#ffb38a", score: 128, eye: "fluffy" },
       { tier: 7, name: "พี่ส้มตัวตึง", radius: 98, color: "#ea580c", score: 256, eye: "curious" },
-      { tier: 8, name: "ท่านอนก้อนขนยักษ์", radius: 116, color: "#c084fc", score: 512, eye: "zen" },
+      { tier: 8, name: "ท่านอนก้อนขนยักษ์", radius: 116, color: "#d08cff", score: 512, eye: "zen" },
       { tier: 9, name: "ราชาแมวคู่ Sleeperem", radius: 136, color: "#f59e0b", score: 1024, eye: "king" }
     ];
 
