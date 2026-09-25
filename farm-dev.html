@@ -109,6 +109,8 @@
     .item-card.is-legendary { border-color: #facc15; box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.4), 0 0 22px rgba(250, 204, 21, 0.25); }
     .theme-card-preview.special-lucky_cat { background: radial-gradient(circle, #fde047, #b45309); }
     .theme-card-preview.special-name_tag { background: linear-gradient(135deg, #7c3aed, #f472b6); }
+    .theme-card-preview.special-big_wallet { background: linear-gradient(135deg, #065f46, #fbbf24); }
+    .final-today { font-size: 11px; color: #cbd5e1; font-weight: 700; margin-top: 2px; }
     .final-coins { margin-top: 6px; font-size: 15px; font-weight: 800; color: #fde047; }
     .final-stats { margin-top: 8px; font-size: 11px; line-height: 1.6; color: #cbd5e1; }
     .final-stats b { color: #fff; }
@@ -5033,15 +5035,15 @@
         </div>
         <button class="feed-btn" onclick="feedFood('fish')">
           <span>🐟 ปลาแห้ง</span>
-          <span class="cost">+0.2 kg (20 <i class="rem-coin"></i>)</span>
+          <span class="cost">+0.2 kg (50 <i class="rem-coin"></i>)</span>
         </button>
         <button class="feed-btn" onclick="feedFood('tuna')">
           <span>🥫 ทูน่ากระป๋อง</span>
-          <span class="cost">+0.5 kg (50 <i class="rem-coin"></i>)</span>
+          <span class="cost">+0.5 kg (125 <i class="rem-coin"></i>)</span>
         </button>
         <button class="feed-btn" onclick="feedFood('macaron')">
           <span>🍰 มาการองแมว</span>
-          <span class="cost">+1.0 kg (120 <i class="rem-coin"></i>)</span>
+          <span class="cost">+1.0 kg (300 <i class="rem-coin"></i>)</span>
         </button>
 
       </div>
@@ -5207,7 +5209,7 @@
           💖 ลูบหัวน้องแมว
         </button>
         <button class="item-buy-btn" id="modal-feed-btn" onclick="feedCurrentDetailCat()" style="flex: 1; font-size: 11px;">
-          🐟 ป้อนปลาแห้ง (20 <i class="rem-coin"></i>)
+          🐟 ป้อนปลาแห้ง (50 <i class="rem-coin"></i>)
         </button>
       </div>
       <button class="item-buy-btn name-tag-btn" id="modal-name-btn" onclick="renameCurrentCat()">🏷️ ตั้งชื่อ</button>
@@ -5265,16 +5267,19 @@
     const REM_COIN_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABEElEQVR4nGNkwAKitdj+YxNfeu0XI7oYCzaNi/a0YNPPwOBS8x/dICZcmhmFLeH477NusNisElYMFzKiawZpQAZ/Lgeh8H9f+saQ1vMb7iUmmASyZkY2G6yaQYBVjwvuEnAYRGux/Uf2Mz7NyCBSk5mBgYHtPzwQQbZvi3IDs72XHMap8cPzzwwMonDfM8C9QAwAa0YDTJRoRjHgD5Kft8bYEqUZBFhgDGapUga3ym6GXe1fwHwYDQGMDGYJiMR5agEiQTKCCFBMgKIGFEWYmhGB+nqPDdyA5df/gtMBI8wAEI1sCKv2dhRD0DWDANwAdENA4KsoRBG6s5E1w72AbggkkWACdM0YBqAbhA6wZWcAbzt7pxj+pFIAAAAASUVORK5CYII=';
     const remCoinImg = new Image();
     remCoinImg.src = REM_COIN_SRC;
-    // Earning side of the economy (REQ-13). Prices live next to their items; both were tuned together
-    // from simulated games (~40k points / ~410 drops / ~20 FEVER chains per game) → ≈ 120–160 REM a game.
+    // Earning side of the economy (REQ-13). Prices live next to their items; both were tuned together.
+    // Round 7: coins are 1% of the score, no per-game limit, but at most 2,500 earned per day (5,000 with
+    // the big wallet). Simulated games score ~23k (bots) – 40k (good players) → ≈ 300–450 REM a game.
     const ECONOMY = {
-      pointsPerCoin: 500,          // Cat Ball score → REM (≈ 80 per average game)
+      pointsPerCoin: 100,          // Cat Ball score → REM = 1% of the score
       feverMinCombo: 5,            // every finished chain of ×5+ ...
       feverBonus: 2,               // ... pays a flat +2 REM (chains are common, so keep it small)
       luckyChance: 0.025,          // lucky ball share of drops (≈ 10 a game)
       luckyTable: [[0.6, 1, 3], [0.3, 4, 6], [0.1, 10, 20]],   // [probability, min, max] → ≈ 4 REM each
-      visitorReward: [2, 6], visitorDailyCap: 10,
-      chestByDay: [[3, 6], [5, 10], [8, 15], [12, 20], [15, 30], [20, 40], [50, 100]],   // streak day 1..7
+      visitorReward: [4, 12], visitorDailyCap: 10,
+      chestByDay: [[6, 12], [10, 20], [16, 30], [24, 40], [30, 60], [40, 80], [100, 200]],   // streak day 1..7
+      dailyCap: 2500,              // REM that can be earned per day (all sources)...
+      dailyCapWallet: 5000,        // ... raised by the big wallet (shop › ไอเทมพิเศษ)
       startCoins: 300,
       qteEvery: [180, 300],        // a bug crosses the box every 3-5 minutes of play...
       qteReward: [3, 5],           // ... tap it in time for 3-5 REM
@@ -5291,6 +5296,40 @@
       growTime: 0.4                // seconds a new merged ball keeps the full push
     };
     const randInt = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+    const FOOD_PRICES = { fish: 50, tuna: 125, macaron: 300 };   // hand-feeding (consumable, 1× / 8 h per cat)
+
+    // Every coin the player earns goes through earnCoins(): it stops at the daily cap (REQ-13 §2.1).
+    // Returns what was really paid, so pops and summaries show the true amount.
+    const todayStr = () => new Date().toLocaleDateString('en-CA');
+    let earnDay = { day: '', n: 0 };
+    try { earnDay = JSON.parse(getStorageItem('earn_day') || 'null') || earnDay; } catch (e) { /* keep default */ }
+    let capToastDay = '';
+    function dailyCap() {
+      let wallet = false;
+      try { wallet = !!perks.big_wallet; } catch (e) { wallet = false; }
+      return wallet ? ECONOMY.dailyCapWallet : ECONOMY.dailyCap;
+    }
+    function earnedToday() {
+      if (earnDay.day !== todayStr()) earnDay = { day: todayStr(), n: 0 };
+      return earnDay.n;
+    }
+    function earnCoins(amount) {
+      amount = Math.max(0, Math.floor(amount || 0));
+      if (!amount) return 0;
+      const got = Math.min(amount, Math.max(0, dailyCap() - earnedToday()));
+      if (got) {
+        fishCoins += got;
+        earnDay.n += got;
+        setStorageItem('earn_day', JSON.stringify(earnDay));
+        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+      }
+      if (got < amount && capToastDay !== todayStr()) {
+        capToastDay = todayStr();
+        const more = dailyCap() < ECONOMY.dailyCapWallet ? ` • กระเป๋าเหรียญใหญ่เพิ่มเป็น ${ECONOMY.dailyCapWallet.toLocaleString()} ได้` : '';
+        setTimeout(() => showToast("🌙", `วันนี้เก็บเหรียญครบ ${dailyCap().toLocaleString()} แล้ว พรุ่งนี้มาใหม่นะ${more}`), 0);
+      }
+      return got;
+    }
 
     function escapeHtml(text) {
       return String(text).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
@@ -6113,9 +6152,8 @@
       const gained = CAT_TIERS[nextTier].score * combo * (skillFx.starT > 0 ? 2 : 1);   // skill "ดาวเด่น"
       if (gameStats) { gameStats.merges++; gameStats.maxTier = Math.max(gameStats.maxTier, nextTier); }
       if (skillFx.rainT > 0) {                    // skill "ฝนเงิน": +1 REM per merge
-        fishCoins += 1; gameCoins.skill += 1;
-        fxTexts.push(new FxText(x + 18, y - 34, '+1 🪙', '#fde047', 14));
-        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+        const got = earnCoins(1); gameCoins.skill += got;
+        if (got) fxTexts.push(new FxText(x + 18, y - 34, '+1 🪙', '#fde047', 14));
       }
       score += gained;
       comboPoints = combo === 1 ? gained : comboPoints + gained;
@@ -6147,12 +6185,8 @@
       if (gameStats && combo >= 3) { gameStats.chains++; if (combo >= ECONOMY.feverMinCombo) gameStats.fevers++; }
       if (combo >= 3) {
         // Chain finished: celebrate the total; FEVER chains (×5+) also pay a small flat REM bonus
-        const bonus = combo >= ECONOMY.feverMinCombo ? ECONOMY.feverBonus : 0;
-        if (bonus) {
-          fishCoins += bonus;
-          gameCoins.fever += bonus;
-          if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
-        }
+        const bonus = combo >= ECONOMY.feverMinCombo ? earnCoins(ECONOMY.feverBonus) : 0;
+        gameCoins.fever += bonus;
         showComboSummary(combo, comboPoints, bonus);
       }
       combo = 0;
@@ -6197,10 +6231,9 @@
         if (roll < chance) { reward = randInt(min, max); break; }
         roll -= chance;
       }
-      fishCoins += reward;
+      reward = earnCoins(reward);
       gameCoins.lucky += reward;
       if (gameStats) gameStats.lucky++;
-      if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
       sound.playLucky();
       fxTexts.push(new FxText(x, y - 44, `🍀 LUCKY +${reward} 🪙`, "#fde047", 22));
       for (let i = 0; i < 26; i++) particles.push(new StarParticle(x, y, i % 2 ? "#fde047" : "#fff7c2"));
@@ -6293,7 +6326,7 @@
       if (gift) { gift.classList.add("is-opening"); setTimeout(() => { gift.classList.remove("is-opening"); gift.classList.add("is-opened"); }, 1150); }
       const day = Math.min(streak, 7);
       const [lo, hi] = ECONOMY.chestByDay[day - 1];
-      const reward = randInt(lo, hi);
+      let reward = randInt(lo, hi);
       const amount = document.getElementById("chest-amount");
       // Slot-style number roll before the reveal (anticipation), then the real amount
       const t0 = performance.now();
@@ -6305,13 +6338,12 @@
           setTimeout(roll, 70 + t / 20);
           return;
         }
+        reward = earnCoins(reward);
         amount.innerHTML = coinHTML(`+${reward} 🪙`);
         amount.classList.remove("reveal");
         void amount.offsetWidth;
         amount.classList.add("reveal");
         sound.playChest();
-        fishCoins += reward;
-        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
         setStorageItem('daily_chest', JSON.stringify({ last: todayKey(), streak, amount: reward }));
         claimBtn.innerText = "พรุ่งนี้มาใหม่นะ 🐾";
         refreshDailyChestButton();
@@ -6694,7 +6726,7 @@
        so it follows the account to any device and survives clearing the browser — no table needed.
        localStorage is the working copy; each farm write is pushed to the account 2 s later.
        ========================================================================== */
-    const FARM_SYNC_KEYS = ['fish_coins', 'owned_items', 'hidden_items', 'owned_cats', 'cat_rewards', 'room_cats', 'cat_weights', 'owned_themes', 'station_state', 'visitor_log', 'current_room', 'daily_chest', 'cat_bond', 'cat_names', 'perks', 'scene_fx', 'cat_skill', 'catball_summary'];
+    const FARM_SYNC_KEYS = ['fish_coins', 'owned_items', 'hidden_items', 'owned_cats', 'cat_rewards', 'room_cats', 'cat_weights', 'owned_themes', 'station_state', 'visitor_log', 'current_room', 'daily_chest', 'cat_bond', 'cat_names', 'perks', 'scene_fx', 'cat_skill', 'catball_summary', 'earn_day'];
     var FARM_SYNC_KEYS_SET = new Set(FARM_SYNC_KEYS); // var: setStorageItem runs before this line during start-up
     const FARM_CLOUD_FIELD = IS_DEV_BUILD ? 'farm_dev' : 'farm_prod';
     // Explicit empty farm so the legacy un-prefixed fallback in getStorageItem never resurrects old data
@@ -6929,11 +6961,7 @@
       // Score becomes REM at ECONOMY.pointsPerCoin. Pay only the new part (the old code re-paid on every merge).
       const earnedCoins = Math.floor(score / ECONOMY.pointsPerCoin) - Math.floor(coinedScore / ECONOMY.pointsPerCoin);
       coinedScore = score;
-      if (earnedCoins > 0) {
-        gameCoins.score += earnedCoins;
-        fishCoins += earnedCoins;
-        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
-      }
+      if (earnedCoins > 0) gameCoins.score += earnCoins(earnedCoins);
     }
 
     function updateNextCatUI() {
@@ -7423,11 +7451,11 @@
          first login -> #1, Cat Ball Tier 5 -> #2, Cat Ball Tier 10 -> #3.
        ========================================================================== */
     const CAT_PRICES = {
-      siamese: 600, americanshorthair: 800, british: 1000, scottish: 1200,
-      munchkin: 1400, russianblue: 1520, birman: 1600, exotic: 1680, persian: 1800,
-      abyssinian: 2400, turkish: 2600, sphynx: 2800, ragdoll: 3000, bengal: 3200,
-      norwegian: 4000, savannah: 4800, mainecoon: 5600,
-      korat: 7200, khaomanee: 8000, suphalak: 10000
+      siamese: 1500, americanshorthair: 2000, british: 2500, scottish: 3000,
+      munchkin: 3500, russianblue: 3800, birman: 4000, exotic: 4200, persian: 4500,
+      abyssinian: 6000, turkish: 6500, sphynx: 7000, ragdoll: 7500, bengal: 8000,
+      norwegian: 10000, savannah: 12000, mainecoon: 14000,
+      korat: 18000, khaomanee: 20000, suphalak: 25000
     };
     const CAT_GRADE = {
       siamese: 1, americanshorthair: 1, british: 1, scottish: 1,
@@ -7469,7 +7497,7 @@
        Only มัทฉะญี่ปุ่น is standard. Other rooms stay locked until bought in ร้านค้า › ธีมห้อง
        (no grandfathering, no free unlocks). Cats left in a locked room go back to "no room".
        ========================================================================== */
-    const THEME_PRICES = { japanese: 0, modern: 4000, space: 8000 };
+    const THEME_PRICES = { japanese: 0, modern: 10000, space: 20000 };
     const THEME_ICONS = { japanese: '🍵', modern: '🫐', space: '🌃' };
     const THEME_DESC = {
       japanese: 'ห้องมาตรฐาน ระเบียงไม้ ประตูโชจิเลื่อนได้ สวนไผ่ หิ่งห้อยตอนกลางคืน',
@@ -8599,11 +8627,9 @@ class LiveCatActor {
         showToast(v.cls === 'butterfly' ? '🦋' : '✨', `วันนี้รับเหรียญจาก${v.name}ครบ ${VISITOR_DAILY_CAP} ครั้งแล้ว พรุ่งนี้มาใหม่นะ`);
         return;
       }
-      const reward = randInt(...ECONOMY.visitorReward);
+      const reward = earnCoins(randInt(...ECONOMY.visitorReward));
       log.n++;
       setStorageItem('visitor_log', JSON.stringify(log));
-      fishCoins += reward;
-      updateCoinsDisplay();
       audio.playCoin();
       spawnCoinPop(x, y, `+${reward} 🪙`);
     }
@@ -8713,11 +8739,11 @@ class LiveCatActor {
        FEEDING & CHONKY SYSTEM
        ========================================================================== */
     function feedFood(type) {
-      let cost = 20;
+      let cost = FOOD_PRICES.fish;
       let kg = 0.2;
       let name = "ปลาแห้ง";
-      if (type === 'tuna') { cost = 50; kg = 0.5; name = "ทูน่ากระป๋อง"; }
-      if (type === 'macaron') { cost = 120; kg = 1.0; name = "มาการองแมว"; }
+      if (type === 'tuna') { cost = FOOD_PRICES.tuna; kg = 0.5; name = "ทูน่ากระป๋อง"; }
+      if (type === 'macaron') { cost = FOOD_PRICES.macaron; kg = 1.0; name = "มาการองแมว"; }
       if (requireLogin()) return;
 
       // Don't charge when there is nobody to feed
@@ -8749,6 +8775,10 @@ class LiveCatActor {
       coins = fishCoins;
       const el = document.getElementById("coin-val");
       if (el) el.innerText = fishCoins.toLocaleString();
+      try {
+        const pill = el && el.closest('[class*="coin"]');
+        if (pill) pill.title = `วันนี้เก็บได้ ${earnedToday().toLocaleString()} / ${dailyCap().toLocaleString()} เหรียญ`;
+      } catch (e) { /* earn tracker not ready during startup */ }
       setStorageItem('fish_coins', String(fishCoins));
     }
 
@@ -8930,7 +8960,7 @@ class LiveCatActor {
         showToast("😸", `${catDisplayName(currentDetailCat.data)}ยังอิ่มอยู่ — ให้อาหารได้อีกใน ${fmtWait(feedWait)}`);
         return;
       }
-      if (!spendCoins(20)) return;
+      if (!spendCoins(FOOD_PRICES.fish)) return;
 
       currentDetailCat.feed(0.2);
       giveCare(currentDetailCat.data.id, 'feed', BOND_GAIN.fish);
@@ -9015,7 +9045,7 @@ class LiveCatActor {
       const petWait = careWait(actor.data.id, 'pet');
       const feedWait = careWait(actor.data.id, 'feed');
       if (petBtn) petBtn.innerHTML = petWait ? `💖 ลูบได้อีกใน ${fmtWait(petWait)}` : '💖 ลูบหัว (+3 ความสนิท)';
-      if (feedBtn) feedBtn.innerHTML = feedWait ? `🐟 อิ่มแล้ว • อีก ${fmtWait(feedWait)}` : '🐟 ป้อนปลาแห้ง (20 <i class="rem-coin"></i>)';
+      if (feedBtn) feedBtn.innerHTML = feedWait ? `🐟 อิ่มแล้ว • อีก ${fmtWait(feedWait)}` : `🐟 ป้อนปลาแห้ง (${FOOD_PRICES.fish} <i class="rem-coin"></i>)`;
       if (petBtn) petBtn.classList.toggle('is-waiting', !!petWait);
       if (feedBtn) feedBtn.classList.toggle('is-waiting', !!feedWait);
       const tagBtn = document.getElementById('modal-name-btn');
@@ -9025,8 +9055,9 @@ class LiveCatActor {
 
     /* --- Special items (shop › ไอเทมพิเศษ) --- */
     const SPECIAL_ITEMS = {
-      name_tag: { icon: '🏷️', name: 'ป้ายชื่อแมว', desc: 'ตั้งชื่อเล่นให้แมว 1 ตัว (ใช้แล้วหมดไป 1 ป้าย) เปลี่ยนชื่อใหม่ก็ใช้ป้ายใหม่', price: 300, stack: true },
-      lucky_cat: { icon: '🐈', name: 'แมวกวักทองคำ', desc: 'จบเกม Cat Ball แล้วเหรียญจากคะแนนและคอมโบ ×2 ทุกเกมตลอดไป • ของหายากที่สุดในร้าน', price: 88888, stack: false }
+      name_tag: { icon: '🏷️', name: 'ป้ายชื่อแมว', desc: 'ตั้งชื่อเล่นให้แมว 1 ตัว (ใช้แล้วหมดไป 1 ป้าย) เปลี่ยนชื่อใหม่ก็ใช้ป้ายใหม่', price: 750, stack: true },
+      lucky_cat: { icon: '🐈', name: 'แมวกวักทองคำ', desc: 'จบเกม Cat Ball แล้วเหรียญจากคะแนนและคอมโบ ×2 ทุกเกมตลอดไป • ของหายากที่สุดในร้าน', price: 222222, stack: false },
+      big_wallet: { icon: '💰', name: 'กระเป๋าเหรียญใหญ่', desc: 'เพิ่มเพดานเหรียญที่หาได้ต่อวันจาก 2,500 เป็น 5,000 ตลอดไป', price: 30000, stack: false }
     };
 
     function renderSpecialShop() {
@@ -9047,7 +9078,7 @@ class LiveCatActor {
             <div>
               <div class="item-name">${it.name}</div>
               <div class="item-desc">${it.desc}</div>
-              <div class="item-scope is-universal">${it.stack ? `🎒 มีอยู่ ${have || 0} ป้าย` : id === 'lucky_cat' ? '👑 ตำนาน • ซื้อครั้งเดียวใช้ได้ตลอด' : ''}</div>
+              <div class="item-scope is-universal">${it.stack ? `🎒 มีอยู่ ${have || 0} ป้าย` : id === 'lucky_cat' ? '👑 ตำนาน • ซื้อครั้งเดียวใช้ได้ตลอด' : id === 'big_wallet' ? `⏫ เพดานต่อวัน ${dailyCap().toLocaleString()} เหรียญ` : ''}</div>
             </div>
           </div>
           ${btn}`;
@@ -9064,7 +9095,9 @@ class LiveCatActor {
       savePerks();
       audio.playCoin();
       renderSpecialShop();
-      showToast(it.icon, id === 'lucky_cat' ? 'แมวกวักทองคำมาอยู่ด้วยแล้ว! จบเกม Cat Ball ได้เหรียญ ×2' : `ได้${it.name}แล้ว — แตะแมวในห้อง › 🏷️ ตั้งชื่อ`);
+      showToast(it.icon, id === 'lucky_cat' ? 'แมวกวักทองคำมาอยู่ด้วยแล้ว! จบเกม Cat Ball ได้เหรียญ ×2'
+        : id === 'big_wallet' ? 'กระเป๋าเหรียญใหญ่! เพดานเหรียญต่อวันเป็น 5,000 แล้ว' : `ได้${it.name}แล้ว — แตะแมวในห้อง › 🏷️ ตั้งชื่อ`);
+      updateCoinsDisplay();
     }
 
     function renameCurrentCat() {
@@ -9097,19 +9130,16 @@ class LiveCatActor {
     // End of a Cat Ball game: this game's REM, with the golden lucky cat doubling score + combo coins
     function payGameEndCoins() {
       const base = gameCoins.score + gameCoins.fever;
-      const bonus = perks.lucky_cat ? base : 0;
-      const gem = skillFx.gemPct ? Math.round(base * skillFx.gemPct / 100) : 0;   // skill "ตาเพชร"
-      if (bonus || gem) {
-        fishCoins += bonus + gem;
-        gameCoins.skill += gem;
-        updateCoinsDisplay();
-      }
+      const bonus = perks.lucky_cat ? earnCoins(base) : 0;
+      const gem = skillFx.gemPct ? earnCoins(Math.round(base * skillFx.gemPct / 100)) : 0;   // skill "ตาเพชร"
+      gameCoins.skill += gem;
       const total = base + bonus + gameCoins.lucky + gameCoins.qte + gameCoins.skill;
       const el = document.getElementById('final-coins');
       if (el) {
         el.innerHTML = coinHTML(`ได้เหรียญ +${total.toLocaleString()} 🪙`) +
           (bonus ? `<div class="final-lucky">🐈 แมวกวักทองคำ ×2 (+${bonus.toLocaleString()})</div>` : '') +
-          (gem ? `<div class="final-lucky">💎 ตาเพชร +${skillFx.gemPct}% (+${gem.toLocaleString()})</div>` : '');
+          (gem ? `<div class="final-lucky">💎 ตาเพชร +${skillFx.gemPct}% (+${gem.toLocaleString()})</div>` : '') +
+          `<div class="final-today">วันนี้เก็บได้ ${earnedToday().toLocaleString()} / ${dailyCap().toLocaleString()} เหรียญ</div>`;
       }
       return total;
     }
@@ -9346,17 +9376,17 @@ class LiveCatActor {
 
     /* --- 3. Scene effects (shop › ธีม & เอฟเฟกต์) --- */
     const SCENE_FX = {
-      bubbles:   { room: 'all', icon: '🫧', name: 'ฟองสบู่ลอยฟ่อง', desc: 'ฟองสบู่ลอยทั่วห้อง แมวชอบกระโดดตะปบ', price: 500 },
-      snow:      { room: 'all', icon: '❄️', name: 'หิมะโปรยปราย', desc: 'เกล็ดหิมะเบาๆ ตกทั้งห้อง', price: 700 },
-      butterfly: { room: 'japanese', icon: '🦋', name: 'ฝูงผีเสื้อ', desc: 'ผีเสื้อบินวนในห้อง แมววิ่งไล่', price: 600 },
-      sakura:    { room: 'japanese', icon: '🌸', name: 'พายุซากุระ', desc: 'กลีบซากุระโปรยเต็มห้อง', price: 800 },
-      maple:     { room: 'japanese', icon: '🍁', name: 'ใบเมเปิลร่วง', desc: 'ใบไม้แดงปลิวผ่านระเบียง', price: 700 },
-      fireflies: { room: 'japanese', icon: '✨', name: 'หิ่งห้อยทั้งวัน', desc: 'หิ่งห้อยลอยในห้องไม่ต้องรอกลางคืน', price: 900 },
-      rain:      { room: 'modern', icon: '🌧️', name: 'ฝนพรำหน้าต่าง', desc: 'ฝนตกนอกหน้าต่างกระจก บรรยากาศชิลๆ', price: 600 },
-      disco:     { room: 'modern', icon: '🪩', name: 'ไฟดิสโก้', desc: 'จุดไฟสีวิ่งบนพื้น แมววิ่งไล่ตะปบ', price: 1000 },
-      fireworks: { room: 'modern', icon: '🎆', name: 'พลุเหนือเมือง', desc: 'พลุสีสันจุดเหนือตึกระฟ้า', price: 1200 },
-      meteor:    { room: 'space', icon: '☄️', name: 'ฝนดาวตก', desc: 'ดาวตกพุ่งผ่านหน้าต่างวงโคจร', price: 900 },
-      aurora:    { room: 'space', icon: '🌌', name: 'ออโรร่าอวกาศ', desc: 'แสงออโรร่าพลิ้วเหนือเมืองไซเบอร์', price: 1200 }
+      bubbles:   { room: 'all', icon: '🫧', name: 'ฟองสบู่ลอยฟ่อง', desc: 'ฟองสบู่ลอยทั่วห้อง แมวชอบกระโดดตะปบ', price: 1250 },
+      snow:      { room: 'all', icon: '❄️', name: 'หิมะโปรยปราย', desc: 'เกล็ดหิมะเบาๆ ตกทั้งห้อง', price: 1750 },
+      butterfly: { room: 'japanese', icon: '🦋', name: 'ฝูงผีเสื้อ', desc: 'ผีเสื้อบินวนในห้อง แมววิ่งไล่', price: 1500 },
+      sakura:    { room: 'japanese', icon: '🌸', name: 'พายุซากุระ', desc: 'กลีบซากุระโปรยเต็มห้อง', price: 2000 },
+      maple:     { room: 'japanese', icon: '🍁', name: 'ใบเมเปิลร่วง', desc: 'ใบไม้แดงปลิวผ่านระเบียง', price: 1750 },
+      fireflies: { room: 'japanese', icon: '✨', name: 'หิ่งห้อยทั้งวัน', desc: 'หิ่งห้อยลอยในห้องไม่ต้องรอกลางคืน', price: 2200 },
+      rain:      { room: 'modern', icon: '🌧️', name: 'ฝนพรำหน้าต่าง', desc: 'ฝนตกนอกหน้าต่างกระจก บรรยากาศชิลๆ', price: 1500 },
+      disco:     { room: 'modern', icon: '🪩', name: 'ไฟดิสโก้', desc: 'จุดไฟสีวิ่งบนพื้น แมววิ่งไล่ตะปบ', price: 2500 },
+      fireworks: { room: 'modern', icon: '🎆', name: 'พลุเหนือเมือง', desc: 'พลุสีสันจุดเหนือตึกระฟ้า', price: 3000 },
+      meteor:    { room: 'space', icon: '☄️', name: 'ฝนดาวตก', desc: 'ดาวตกพุ่งผ่านหน้าต่างวงโคจร', price: 2200 },
+      aurora:    { room: 'space', icon: '🌌', name: 'ออโรร่าอวกาศ', desc: 'แสงออโรร่าพลิ้วเหนือเมืองไซเบอร์', price: 3000 }
     };
     const FX_MAX_ON = 2;
     let sceneFx = { owned: [], on: {} };
@@ -9641,7 +9671,7 @@ class LiveCatActor {
     const HELPER_FROM = 80, HELPER_TO = 100, HELPER_BOND_PER_DAY = 5;
     const SKILL_MAX_LV = 3;        // designed levels
     const SKILL_OPEN_LV = 2;       // levels players can reach for now
-    const SKILL_UPGRADE = { 2: { price: 1500, hearts: 3 }, 3: { price: 5000, hearts: 7 } };   // target level → cost
+    const SKILL_UPGRADE = { 2: { price: 3750, hearts: 3 }, 3: { price: 12500, hearts: 7 } };   // target level → cost
     let catSkill = {};
     try { catSkill = JSON.parse(getStorageItem('cat_skill') || '{}') || {}; } catch (e) { catSkill = {}; }
     const skillLv = id => Math.min(SKILL_OPEN_LV, Math.max(1, parseInt(catSkill[id], 10) || 1));
@@ -9834,8 +9864,8 @@ class LiveCatActor {
           skillFx.gemPct = v;
           break;
         case 'purse':
-          fishCoins += v; gameCoins.skill += v; updateCoinsDisplay();
-          fxTexts.push(new FxText(width / 2, 90, `👛 +${v} 🪙`, "#fde047", 24));
+          { const got = earnCoins(v); gameCoins.skill += got;
+            fxTexts.push(new FxText(width / 2, 90, `👛 +${got} 🪙`, "#fde047", 24)); }
           break;
         default:
           return false;
@@ -10052,10 +10082,8 @@ class LiveCatActor {
       const b = qteBug;
       if (!b || b.fleeing && b.x < -20) return;
       qteBug = null;
-      const reward = randInt(ECONOMY.qteReward[0], ECONOMY.qteReward[1]);
-      fishCoins += reward;
+      const reward = earnCoins(randInt(ECONOMY.qteReward[0], ECONOMY.qteReward[1]));
       gameCoins.qte += reward;
-      updateCoinsDisplay();
       if (gameStats) {
         gameStats.qteHit++;
         const ms = Math.round(b.t * 1000);
@@ -10193,37 +10221,37 @@ class LiveCatActor {
        ========================================================================== */
     // room: 'all' = ใช้ได้ทุกห้อง (universal); otherwise the only room where the piece exists (REQ-06)
     const SHOP_ITEMS = [
-      { id: "uni_rug", room: "all", name: "พรมขนนุ่มทรงกลม", emoji: "🟣", desc: "พรมนุ่มฟูวางกลางห้อง แมวชอบนอนกลิ้ง", cost: 320 },
-      { id: "uni_box", room: "all", name: "กล่องกระดาษสุดรัก", emoji: "📦", desc: "ของเล่นอันดับหนึ่งของแมวทุกตัว", cost: 140 },
-      { id: "uni_mouse", room: "all", name: "หนูของเล่น", emoji: "🐭", desc: "หนูผ้ากำมะหยี่ไว้ตะปบเล่น", cost: 100 },
-      { id: "uni_yarn", room: "all", name: "ลูกไหมพรม", emoji: "🧶", desc: "ไหมพรมสีสดกลิ้งไปมาได้ทั้งวัน", cost: 180 },
-      { id: "uni_scratcher", room: "all", name: "เสาลับเล็บเชือกป่าน", emoji: "🪵", desc: "ลับเล็บได้ทุกห้อง โซฟาปลอดภัย", cost: 420 },
+      { id: "uni_rug", room: "all", name: "พรมขนนุ่มทรงกลม", emoji: "🟣", desc: "พรมนุ่มฟูวางกลางห้อง แมวชอบนอนกลิ้ง", cost: 800 },
+      { id: "uni_box", room: "all", name: "กล่องกระดาษสุดรัก", emoji: "📦", desc: "ของเล่นอันดับหนึ่งของแมวทุกตัว", cost: 600 },
+      { id: "uni_mouse", room: "all", name: "หนูของเล่น", emoji: "🐭", desc: "หนูผ้ากำมะหยี่ไว้ตะปบเล่น", cost: 600 },
+      { id: "uni_yarn", room: "all", name: "ลูกไหมพรม", emoji: "🧶", desc: "ไหมพรมสีสดกลิ้งไปมาได้ทั้งวัน", cost: 600 },
+      { id: "uni_scratcher", room: "all", name: "เสาลับเล็บเชือกป่าน", emoji: "🪵", desc: "ลับเล็บได้ทุกห้อง โซฟาปลอดภัย", cost: 1050 },
 
-      { id: "jp_bonsai", room: "japanese", name: "บอนไซไม้ดัดมัทฉะ", emoji: "🪴", desc: "ต้นสนบอนไซโบราณ เสริมสิริมงคล", cost: 350 },
-      { id: "jp_lantern", room: "japanese", name: "โคมไฟกระดาษแดง", emoji: "🏮", desc: "โคมไฟญี่ปุ่นเรืองแสงนวลตา", cost: 420 },
-      { id: "jp_tea", room: "japanese", name: "ชุดกาน้ำชามัทฉะ", emoji: "🍵", desc: "มาพร้อมโต๊ะโคทัตสึ แมวขึ้นไปนั่งได้", cost: 280 },
-      { id: "jp_scroll", room: "japanese", name: "ภาพแขวนภูเขาไฟฟูจิ", emoji: "📜", desc: "ภาพวาดพู่กันโบราณบนผืนผ้าไหม", cost: 520 },
-      { id: "jp_cushion", room: "japanese", name: "เบาะทาทามิวงกลม", emoji: "🍃", desc: "เบาะรองนั่งสานจากหญ้าอิกุสะ", cost: 240 },
-      { id: "jp_dango", room: "japanese", name: "ขนมดังโงะ 3 สี", emoji: "🍡", desc: "ขนมหวานแสนอร่อยของเจ้าเหมียว", cost: 210 },
-      { id: "jp_bell", room: "japanese", name: "กระดิ่งลมฟูริน", emoji: "🎐", desc: "ส่งเสียงใสเมื่อสายลมพัดผ่าน", cost: 320 },
-      { id: "jp_tsukubai", room: "japanese", name: "อ่างหินทสึกุบาอิ", emoji: "🪨", desc: "อ่างหินล้างมือแบบเซน", cost: 380 },
+      { id: "jp_bonsai", room: "japanese", name: "บอนไซไม้ดัดมัทฉะ", emoji: "🪴", desc: "ต้นสนบอนไซโบราณ เสริมสิริมงคล", cost: 900 },
+      { id: "jp_lantern", room: "japanese", name: "โคมไฟกระดาษแดง", emoji: "🏮", desc: "โคมไฟญี่ปุ่นเรืองแสงนวลตา", cost: 1050 },
+      { id: "jp_tea", room: "japanese", name: "ชุดกาน้ำชามัทฉะ", emoji: "🍵", desc: "มาพร้อมโต๊ะโคทัตสึ แมวขึ้นไปนั่งได้", cost: 700 },
+      { id: "jp_scroll", room: "japanese", name: "ภาพแขวนภูเขาไฟฟูจิ", emoji: "📜", desc: "ภาพวาดพู่กันโบราณบนผืนผ้าไหม", cost: 1300 },
+      { id: "jp_cushion", room: "japanese", name: "เบาะทาทามิวงกลม", emoji: "🍃", desc: "เบาะรองนั่งสานจากหญ้าอิกุสะ", cost: 600 },
+      { id: "jp_dango", room: "japanese", name: "ขนมดังโงะ 3 สี", emoji: "🍡", desc: "ขนมหวานแสนอร่อยของเจ้าเหมียว", cost: 600 },
+      { id: "jp_bell", room: "japanese", name: "กระดิ่งลมฟูริน", emoji: "🎐", desc: "ส่งเสียงใสเมื่อสายลมพัดผ่าน", cost: 800 },
+      { id: "jp_tsukubai", room: "japanese", name: "อ่างหินทสึกุบาอิ", emoji: "🪨", desc: "อ่างหินล้างมือแบบเซน", cost: 950 },
 
-      { id: "mod_sofa", room: "modern", name: "โซฟากำมะหยี่บลูเบอร์รี่", emoji: "🛋️", desc: "โซฟาดีไซเนอร์นุ่มพิเศษ แมวขึ้นไปนอนได้", cost: 840 },
-      { id: "mod_table", room: "modern", name: "ชุดเอสเปรสโซ่สีทอง", emoji: "☕", desc: "มาพร้อมโต๊ะหินอ่อนขอบทอง", cost: 660 },
-      { id: "mod_plant", room: "modern", name: "ต้นมอนสเตอร่าด่าง", emoji: "🌿", desc: "ต้นไม้ฟอกอากาศบนชั้นลอย", cost: 380 },
-      { id: "mod_lamp", room: "modern", name: "โคมไฟตั้งพื้นเรขาคณิต", emoji: "💡", desc: "แสงไฟวอร์มไวท์อบอุ่น", cost: 460 },
-      { id: "mod_books", room: "modern", name: "กองนิตยสารศิลปะ", emoji: "📚", desc: "หนังสือภาพถ่ายดีไซน์ชั้นนำ", cost: 240 },
-      { id: "mod_diffuser", room: "modern", name: "ก้านไม้หอมอโรม่า", emoji: "🕯️", desc: "กลิ่นวานิลลาและผลเบอร์รี่หวาน", cost: 280 },
-      { id: "mod_cat_bed", room: "modern", name: "ที่นอนแคปซูลอะคริลิก", emoji: "🥣", desc: "ชามใสสำหรับแมวนอนขดตัว", cost: 600 },
-      { id: "mod_daybed", room: "modern", name: "เดย์เบดกำมะหยี่ชั้นลอย", emoji: "🛏️", desc: "เตียงพักผ่อนชมวิวบนชั้นลอย", cost: 770 },
+      { id: "mod_sofa", room: "modern", name: "โซฟากำมะหยี่บลูเบอร์รี่", emoji: "🛋️", desc: "โซฟาดีไซเนอร์นุ่มพิเศษ แมวขึ้นไปนอนได้", cost: 2100 },
+      { id: "mod_table", room: "modern", name: "ชุดเอสเปรสโซ่สีทอง", emoji: "☕", desc: "มาพร้อมโต๊ะหินอ่อนขอบทอง", cost: 1650 },
+      { id: "mod_plant", room: "modern", name: "ต้นมอนสเตอร่าด่าง", emoji: "🌿", desc: "ต้นไม้ฟอกอากาศบนชั้นลอย", cost: 950 },
+      { id: "mod_lamp", room: "modern", name: "โคมไฟตั้งพื้นเรขาคณิต", emoji: "💡", desc: "แสงไฟวอร์มไวท์อบอุ่น", cost: 1150 },
+      { id: "mod_books", room: "modern", name: "กองนิตยสารศิลปะ", emoji: "📚", desc: "หนังสือภาพถ่ายดีไซน์ชั้นนำ", cost: 600 },
+      { id: "mod_diffuser", room: "modern", name: "ก้านไม้หอมอโรม่า", emoji: "🕯️", desc: "กลิ่นวานิลลาและผลเบอร์รี่หวาน", cost: 700 },
+      { id: "mod_cat_bed", room: "modern", name: "ที่นอนแคปซูลอะคริลิก", emoji: "🥣", desc: "ชามใสสำหรับแมวนอนขดตัว", cost: 1500 },
+      { id: "mod_daybed", room: "modern", name: "เดย์เบดกำมะหยี่ชั้นลอย", emoji: "🛏️", desc: "เตียงพักผ่อนชมวิวบนชั้นลอย", cost: 1900 },
 
-      { id: "sp_crystal", room: "space", name: "คริสตัลพลังงานนีออน", emoji: "🔮", desc: "เรืองแสงบนแท่นโฮเวอร์", cost: 1050 },
-      { id: "sp_plant", room: "space", name: "ดอกไม้ไบโอเรืองแสง", emoji: "🌺", desc: "พืชสังเคราะห์แสงจากไฟนีออน", cost: 770 },
-      { id: "sp_globe", room: "space", name: "โฮโลแกรมดาวเคราะห์", emoji: "🪐", desc: "เครื่องฉายดาวเคราะห์ 3 มิติ", cost: 1260 },
-      { id: "sp_capsule", room: "space", name: "แคปซูลโฮเวอร์", emoji: "🛸", desc: "ยานลอยตัวจิ๋วสำหรับแมว", cost: 1400 },
-      { id: "sp_feeder", room: "space", name: "แบตเตอรี่ควอนตัมคอร์", emoji: "⚡", desc: "แกนพลังงานควอนตัมเรืองแสง", cost: 980 },
-      { id: "sp_star", room: "space", name: "ป้ายไฟนีออน MEOW", emoji: "🌃", desc: "ป้ายนีออนกะพริบสไตล์ไซเบอร์พังก์", cost: 1120 },
-      { id: "sp_pod", room: "space", name: "พ็อดนอนไร้แรงโน้มถ่วง", emoji: "💤", desc: "พ็อดห้อยเพดานสำหรับงีบหลับ", cost: 1190 }
+      { id: "sp_crystal", room: "space", name: "คริสตัลพลังงานนีออน", emoji: "🔮", desc: "เรืองแสงบนแท่นโฮเวอร์", cost: 2600 },
+      { id: "sp_plant", room: "space", name: "ดอกไม้ไบโอเรืองแสง", emoji: "🌺", desc: "พืชสังเคราะห์แสงจากไฟนีออน", cost: 1900 },
+      { id: "sp_globe", room: "space", name: "โฮโลแกรมดาวเคราะห์", emoji: "🪐", desc: "เครื่องฉายดาวเคราะห์ 3 มิติ", cost: 3200 },
+      { id: "sp_capsule", room: "space", name: "แคปซูลโฮเวอร์", emoji: "🛸", desc: "ยานลอยตัวจิ๋วสำหรับแมว", cost: 3500 },
+      { id: "sp_feeder", room: "space", name: "แบตเตอรี่ควอนตัมคอร์", emoji: "⚡", desc: "แกนพลังงานควอนตัมเรืองแสง", cost: 2400 },
+      { id: "sp_star", room: "space", name: "ป้ายไฟนีออน MEOW", emoji: "🌃", desc: "ป้ายนีออนกะพริบสไตล์ไซเบอร์พังก์", cost: 2800 },
+      { id: "sp_pod", room: "space", name: "พ็อดนอนไร้แรงโน้มถ่วง", emoji: "💤", desc: "พ็อดห้อยเพดานสำหรับงีบหลับ", cost: 3000 }
     ];
     let currentShopFilter = 'all';
 
@@ -10493,36 +10521,36 @@ class LiveCatActor {
         name: 'ชามข้าว', icon: '🥣', x: 605,
         levels: [
           { name: 'ชามพลาสติก', desc: 'ชามพลาสติกธรรมดา ใส่ได้ 1 มื้อ', price: 0 },
-          { name: 'ชามเซรามิก', desc: 'ชามเซรามิกมีฐาน ใส่ได้ 2 มื้อ', price: 600 },
-          { name: 'เครื่องให้อาหารอัตโนมัติ', desc: 'มีถังเก็บอาหาร ใส่ได้ 3 มื้อ แมวมากินต่อกันเอง', price: 1600 }
+          { name: 'ชามเซรามิก', desc: 'ชามเซรามิกมีฐาน ใส่ได้ 2 มื้อ', price: 1500 },
+          { name: 'เครื่องให้อาหารอัตโนมัติ', desc: 'มีถังเก็บอาหาร ใส่ได้ 3 มื้อ แมวมากินต่อกันเอง', price: 4000 }
         ]
       },
       fountain: {
         name: 'ชามน้ำ', icon: '💧', x: 745,
         levels: [
           { name: 'ชามน้ำพลาสติก', desc: 'ชามพลาสติกธรรมดา ดื่มได้ 1 รอบ', price: 0 },
-          { name: 'ชามน้ำเซรามิก', desc: 'ชามเซรามิกมีฐาน ดื่มได้ 2 รอบ', price: 600 },
-          { name: 'น้ำพุแมวหมุนเวียน', desc: 'น้ำไหลเวียนตลอด ดื่มได้ 3 รอบ', price: 1600 }
+          { name: 'ชามน้ำเซรามิก', desc: 'ชามเซรามิกมีฐาน ดื่มได้ 2 รอบ', price: 1500 },
+          { name: 'น้ำพุแมวหมุนเวียน', desc: 'น้ำไหลเวียนตลอด ดื่มได้ 3 รอบ', price: 4000 }
         ]
       },
       litter: {
         name: 'กระบะทราย', icon: '🪣', x: 900,
         levels: [
           { name: 'ถาดทรายพลาสติก', desc: 'ถาดพลาสติกธรรมดา จุ 5 ก้อน • ตักได้ก้อนละ 1 เหรียญ', price: 0 },
-          { name: 'กระบะทรายมีฝาครอบ', desc: 'ฝาครอบกันกลิ่น จุ 5 ก้อน • เต็มแล้วไม่มีกลิ่น แมวไม่บ่น', price: 800 },
-          { name: 'กระบะทรายอัตโนมัติ', desc: 'จุ 5 ก้อน • ตักเองหลังใช้ 2 นาที เก็บเหรียญให้ด้วย', price: 2000 }
+          { name: 'กระบะทรายมีฝาครอบ', desc: 'ฝาครอบกันกลิ่น จุ 5 ก้อน • เต็มแล้วไม่มีกลิ่น แมวไม่บ่น', price: 2000 },
+          { name: 'กระบะทรายอัตโนมัติ', desc: 'จุ 5 ก้อน • ตักเองหลังใช้ 2 นาที เก็บเหรียญให้ด้วย', price: 5000 }
         ]
       }
     };
     // Second litter box (REQ-12 §litter, 2026-09-25): bought once, then upgraded / skinned like the first
-    STATION_DEFS.litter2 = { ...STATION_DEFS.litter, name: 'กระบะทราย 2', x: 1020, buyPrice: 2500 };
+    STATION_DEFS.litter2 = { ...STATION_DEFS.litter, name: 'กระบะทราย 2', x: 1020, buyPrice: 6000 };
     const LITTER_IDS = ['litter', 'litter2'];
     const isLitter = id => LITTER_IDS.includes(id);
     const LITTER_CAP = 5;
     const STATION_SKINS = {
-      japanese: { name: 'ธีมญี่ปุ่น', desc: 'ไม้ฮิโนกิ ลายซากุระ', price: 500 },
-      modern: { name: 'ธีมโมเดิร์น', desc: 'หินอ่อนขอบทอง', price: 500 },
-      space: { name: 'ธีมไซเบอร์', desc: 'นีออนเรืองแสง', price: 600 }
+      japanese: { name: 'ธีมญี่ปุ่น', desc: 'ไม้ฮิโนกิ ลายซากุระ', price: 1250 },
+      modern: { name: 'ธีมโมเดิร์น', desc: 'หินอ่อนขอบทอง', price: 1250 },
+      space: { name: 'ธีมไซเบอร์', desc: 'นีออนเรืองแสง', price: 1500 }
     };
     const STATION_IDS = ['feeder', 'fountain', 'litter', 'litter2'];
 
@@ -10635,7 +10663,7 @@ class LiveCatActor {
         const pay = scoopLitter(id);
         playScoopSound();
         spawnRefillParticles(id);
-        showToast("🧹", `ตักอึ ${pay / ECONOMY.poopCoin} ก้อน ได้ +${pay} 🪙 กระบะสะอาดแล้ว!`);
+        showToast("🧹", `ตักอึเรียบร้อย ได้ +${pay} 🪙 กระบะสะอาดแล้ว!`);
         catInstances.filter(c => c.dom && !c.isBusy).slice(0, 2).forEach(c => showSpeechBubble(c.dom, 'หอมสะอาด ✨'));
         return;
       }
@@ -10655,11 +10683,10 @@ class LiveCatActor {
     // Empty a litter box: every poop pays ECONOMY.poopCoin REM (REQ-12 / REQ-13)
     function scoopLitter(id) {
       const st = stations[id];
-      const pay = st.amount * ECONOMY.poopCoin;
+      const poops = st.amount;
+      const pay = earnCoins(poops * ECONOMY.poopCoin);
       st.amount = 0;
       if (pay) {
-        fishCoins += pay;
-        updateCoinsDisplay();
         const def = STATION_DEFS[id];
         try { spawnCoinPop(def.x, (BOWL_Y[currentTheme] || 125) + 70, `+${pay} 🪙`); } catch (e) { /* stage not ready */ }
       }
