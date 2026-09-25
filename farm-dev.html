@@ -5390,7 +5390,7 @@
       comboWindow: 1.0,            // seconds between merges that keep a combo going
       overflowSeconds: 2.5,        // a ball resting above the red line this long ends the game
       shakesPerGame: 1,            // box shakes at the start of a game
-      idleTimeoutSec: 60,          // no tap on the game screen this long → the game ends...
+      idleTimeoutSec: 300,         // no tap on the game screen this long (5 min) → the game ends...
       idleWarnSec: 10,             // ... with a warning this many seconds before
       idleCoinFactor: 0.5          // ... and pays only this share of the game's coins
     });
@@ -10300,10 +10300,12 @@ class LiveCatActor {
       chance: 0.1,                 // share of games that get the event of their theme
       startAtDrop: [30, 70],       // it begins on a random drop in this range
       durationSec: 30,             // and lasts this many seconds of play
+      // Events only boost the score for now; comboWindowMult / luckyMult stay 1 until scene decorations
+      // sold later carry those extras (user, round 10)
       themes: {
         space:    { id: 'meteor',    icon: '☄️', name: 'ฝนดาวตก',   scoreMult: 1.5, comboWindowMult: 1, luckyMult: 1 },
-        japanese: { id: 'sakura',    icon: '🌸', name: 'พายุซากุระ', scoreMult: 1.3, comboWindowMult: 1.5, luckyMult: 1 },
-        modern:   { id: 'fireworks', icon: '🎆', name: 'ค่ำคืนพลุ',  scoreMult: 1.3, comboWindowMult: 1, luckyMult: 4 }
+        japanese: { id: 'sakura',    icon: '🌸', name: 'พายุซากุระ', scoreMult: 1.3, comboWindowMult: 1, luckyMult: 1 },
+        modern:   { id: 'fireworks', icon: '🎆', name: 'ค่ำคืนพลุ',  scoreMult: 1.3, comboWindowMult: 1, luckyMult: 1 }
       }
     });
     let gameEvent = null;          // { def, at, left, on, done }
