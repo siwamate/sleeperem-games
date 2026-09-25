@@ -110,6 +110,43 @@
     .theme-card-preview.special-lucky_cat { background: radial-gradient(circle, #fde047, #b45309); }
     .theme-card-preview.special-name_tag { background: linear-gradient(135deg, #7c3aed, #f472b6); }
     .final-coins { margin-top: 6px; font-size: 15px; font-weight: 800; color: #fde047; }
+    .final-stats { margin-top: 8px; font-size: 11px; line-height: 1.6; color: #cbd5e1; }
+    .final-stats b { color: #fff; }
+    .final-stats .fs-life { color: #94a3b8; font-size: 10px; }
+    .helper-badge .hb-lv { font-size: 9px; color: #ffd84d; }
+    /* Quick time event: a bug crosses the box, tap it for a few REM */
+    .qte-bug {
+      position: absolute; left: 0; top: 0; z-index: 55; width: 52px; height: 52px; margin: -26px 0 0 -26px; padding: 0; border: none;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 70%); border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; touch-action: none;
+    }
+    .qte-bug svg { width: 36px; height: auto; image-rendering: pixelated; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45)); }
+    .qte-bug.flap svg { animation: qteFlap 0.12s steps(2) infinite; }
+    @keyframes qteFlap { 50% { transform: scaleX(0.8); } }
+    .qte-bug.splat { pointer-events: none; animation: qteSplat 0.45s ease-out forwards; }
+    @keyframes qteSplat { 30% { transform: scale(1.5); } 100% { transform: scale(0.2); opacity: 0; } }
+    .qte-hint {
+      position: absolute; left: 50%; top: 8px; transform: translateX(-50%); z-index: 56; pointer-events: none; white-space: nowrap;
+      background: rgba(15, 23, 42, 0.8); color: #fde047; font: 800 12px Prompt, sans-serif; padding: 3px 10px; border-radius: 10px;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .qte-hint.show { opacity: 1; }
+    .qte-pop { position: absolute; z-index: 57; pointer-events: none; font: 900 18px Prompt, sans-serif; color: #fde047;
+      text-shadow: 0 2px 0 #92400e, 0 0 8px rgba(0,0,0,0.5); animation: qtePop 1s ease-out forwards; transform: translate(-50%, -50%); }
+    @keyframes qtePop { to { margin-top: -40px; opacity: 0; } }
+    /* Helper skills in play */
+    #canvas-wrap.star-boost { box-shadow: inset 0 0 0 3px #ffd84d, 0 0 26px rgba(255, 216, 77, 0.55); }
+    .next-bubble.can-swap { cursor: pointer; box-shadow: 0 0 0 3px #ffd84d, 0 0 14px rgba(255, 216, 77, 0.8) !important; }
+    .next-bubble { position: relative; }
+    .next-bubble .swap-badge { position: absolute; right: -6px; top: -6px; background: #ffd84d; color: #1e293b; font: 800 10px Prompt, sans-serif; border-radius: 8px; padding: 0 4px; }
+    .skill-box { background: #090e1a; border: 1px solid #1e293b; border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; text-align: left; }
+    .skill-box .sk-head { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: #fff; }
+    .skill-box .sk-icon { font-size: 18px; }
+    .skill-box .sk-lv { margin-left: auto; font-size: 11px; color: #ffd84d; }
+    .skill-box .sk-desc { font-size: 11px; color: #cbd5e1; margin-top: 4px; }
+    .skill-box .sk-next { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+    .skill-box .item-buy-btn { width: 100%; margin-top: 8px; font-size: 11px; }
+    .litter2-station-anchor { position: absolute; left: 988px; bottom: 108px; z-index: 20; }
     .final-lucky { font-size: 11px; color: #fbbf24; margin-top: 2px; }
     .rem-coin {
       display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.2em; margin: 0 0.05em;
@@ -4452,7 +4489,7 @@
     <div class="preview-bar">
       <div class="next-indicator">
         <span>ถัดไป:</span>
-        <div id="next-cat-view" class="next-bubble"><canvas id="next-cat-canvas" width="80" height="80"></canvas></div>
+        <div id="next-cat-view" class="next-bubble" onclick="useSwapCharge()"><canvas id="next-cat-canvas" width="80" height="80"></canvas></div>
         <span id="next-cat-name" style="font-weight: 600; color: #f59e0b;">ก้อนไหมพรม</span>
       </div>
       <button id="helper-badge" class="helper-badge" onclick="showHelperInfo()" style="display:none"></button>
@@ -4473,6 +4510,7 @@
       <canvas id="gameCanvas"></canvas>
       <!-- Combo HUD: multiplier + 1-second window bar (REQ-01 combo) -->
       <div id="helper-pop" class="helper-pop"><img src="" alt=""><div><div class="hp-name"></div><div class="hp-skill"></div></div></div>
+      <div id="qte-hint" class="qte-hint"></div>
           <div id="combo-hud" class="combo-hud">
         <div class="combo-label">COMBO</div>
         <div class="combo-mult" id="combo-mult">×2</div>
@@ -4538,6 +4576,7 @@
           <div id="final-score" style="font-size: 28px; font-weight: 700; color: #38bdf8; font-family: monospace;">0</div>
           <div id="final-combo" style="font-size: 12px; font-weight: 700; color: #f472b6;"></div>
           <div id="final-coins" class="final-coins"></div>
+          <div id="final-stats" class="final-stats"></div>
         </div>
 
         <div style="display:flex; gap:8px; margin-top:14px;">
@@ -4969,6 +5008,13 @@
             <div class="station-label-tag" id="litter-label">กระบะทราย</div>
           </div>
         </div>
+        <div class="litter2-station-anchor" id="litter2-anchor" style="display:none">
+          <div class="station-interactive-wrap" id="litter2-station-wrap" onclick="useStation('litter2', event)">
+            <button class="station-upgrade-btn" onclick="openStationModal('litter2', event)" title="อัปเกรด / ใส่ธีม">⬆</button>
+            <div class="station-body" id="litter2-visual"></div>
+            <div class="station-label-tag" id="litter2-label">กระบะทราย 2</div>
+          </div>
+        </div>
 
         <div id="scene-fx-layer" class="scene-fx-layer"></div>
         <div id="cats-stage-layer"></div>
@@ -5152,6 +5198,9 @@
         <div class="bond-text">ความสนิท 0/10</div>
       </div>
 
+      <!-- Helper skill (REQ-14 §3): one unique skill per breed, levels 1-3 (level 3 opens later) -->
+      <div class="skill-box" id="modal-skill"></div>
+
       <!-- Quick Action Buttons -->
       <div style="display: flex; gap: 8px;">
         <button class="item-buy-btn" id="modal-pet-btn" onclick="triggerPetCurrentCat(event)" style="flex: 1; font-size: 11px; background: linear-gradient(135deg, #e11d48, #f43f5e);">
@@ -5226,7 +5275,20 @@
       luckyTable: [[0.6, 1, 3], [0.3, 4, 6], [0.1, 10, 20]],   // [probability, min, max] → ≈ 4 REM each
       visitorReward: [2, 6], visitorDailyCap: 10,
       chestByDay: [[3, 6], [5, 10], [8, 15], [12, 20], [15, 30], [20, 40], [50, 100]],   // streak day 1..7
-      startCoins: 300
+      startCoins: 300,
+      qteEvery: [180, 300],        // a bug crosses the box every 3-5 minutes of play...
+      qteReward: [3, 5],           // ... tap it in time for 3-5 REM
+      qteLife: 5,                  // seconds before it flies away
+      poopCoin: 1                  // scooping the litter box pays 1 REM per poop (max 5 per box)
+    };
+    // Ball bounce (REQ-01 §3.5, 2026-09-25). The old ball-to-ball impulse was 2 × (1 + 0.2), i.e. a bounce of 1.4.
+    const PHYSICS = {
+      wall: 0.25,                  // side walls: unchanged
+      floor: 0.25 * 0.3,           // a ball falling straight onto the floor: 30% of the old bounce
+      drop: 1.4 * 0.3,             // a freshly dropped ball landing on the pile: 30%
+      ball: 1.4 * 0.5,             // balls knocking into each other: 50%
+      grow: 1.4,                   // a merged / grown ball pushing its neighbours: 100% (unchanged)
+      growTime: 0.4                // seconds a new merged ball keeps the full push
     };
     const randInt = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 
@@ -5614,10 +5676,13 @@
         this.age = 0;         // idle life: after 5 s a ball now and then twitches an ear, peeks or wiggles whiskers
         this.idle = null;     // { type: 'ear'|'blink'|'whisker', t, dur, side }
         this.nextIdleAt = 5 + Math.random() * 5;
+        this.fresh = false;   // just dropped: its first landing bounces softly (PHYSICS.drop / floor)
+        this.growT = 0;       // just merged: keeps the full push on its neighbours for PHYSICS.growTime
       }
 
       update(dt) {
         this.wobbleT += dt;
+        if (this.growT > 0) this.growT -= dt;
         this.tickIdle(dt);
         // Pop-in animation
         if (this.scale < this.targetScale) {
@@ -5636,7 +5701,7 @@
         this.y += this.vy * dt;
 
         // Boundary checks (Left, Right, Floor, Ceiling)
-        const restitution = 0.25; // bouncy feeling
+        const restitution = PHYSICS.wall;
         const friction = 0.94;
 
         if (this.x - this.r < 0) {
@@ -5655,8 +5720,9 @@
 
         if (this.y + this.r > height) {
           this.y = height - this.r;
-          this.vy = -this.vy * restitution;
+          this.vy = -this.vy * PHYSICS.floor;
           this.vx *= friction;
+          this.fresh = false;
         }
       }
 
@@ -5954,6 +6020,11 @@
     let currentLucky = false;
     let nextLucky = false;
     const LUCKY_CHANCE = ECONOMY.luckyChance;
+    // Running helper-skill effects of this game (see HELPER CAT SKILLS)
+    const newSkillFx = () => ({ forcedNext: [], starT: 0, chainT: 0, comboStart: 0, aim: 0, swaps: 0, net: 0, rainT: 0, gemPct: 0 });
+    let skillFx = newSkillFx();
+    // Stats of the running game (REQ-16) — saved and sent when it ends
+    let gameStats = null;
     const fxRings = [];
     const fxTexts = [];
 
@@ -6034,10 +6105,18 @@
 
     // Called for every merge: scores it with the combo multiplier and plays all merge FX
     function registerMerge(nextTier, x, y, wasLucky) {
-      combo = comboTimer > 0 ? combo + 1 : 1;
+      if (comboTimer > 0) combo++;
+      else if (skillFx.comboStart) { combo = skillFx.comboStart; skillFx.comboStart = 0; }   // skill "ไฟลุก"
+      else combo = 1;
       comboTimer = COMBO_WINDOW;
       comboBestThisGame = Math.max(comboBestThisGame, combo);
-      const gained = CAT_TIERS[nextTier].score * combo;
+      const gained = CAT_TIERS[nextTier].score * combo * (skillFx.starT > 0 ? 2 : 1);   // skill "ดาวเด่น"
+      if (gameStats) { gameStats.merges++; gameStats.maxTier = Math.max(gameStats.maxTier, nextTier); }
+      if (skillFx.rainT > 0) {                    // skill "ฝนเงิน": +1 REM per merge
+        fishCoins += 1; gameCoins.skill += 1;
+        fxTexts.push(new FxText(x + 18, y - 34, '+1 🪙', '#fde047', 14));
+        if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
+      }
       score += gained;
       comboPoints = combo === 1 ? gained : comboPoints + gained;
 
@@ -6065,6 +6144,7 @@
     }
 
     function endCombo() {
+      if (gameStats && combo >= 3) { gameStats.chains++; if (combo >= ECONOMY.feverMinCombo) gameStats.fevers++; }
       if (combo >= 3) {
         // Chain finished: celebrate the total; FEVER chains (×5+) also pay a small flat REM bonus
         const bonus = combo >= ECONOMY.feverMinCombo ? ECONOMY.feverBonus : 0;
@@ -6119,6 +6199,7 @@
       }
       fishCoins += reward;
       gameCoins.lucky += reward;
+      if (gameStats) gameStats.lucky++;
       if (typeof updateCoinsDisplay === 'function') updateCoinsDisplay();
       sound.playLucky();
       fxTexts.push(new FxText(x, y - 44, `🍀 LUCKY +${reward} 🪙`, "#fde047", 22));
@@ -6131,6 +6212,15 @@
     }
 
     function updateFx(dt) {
+      if (skillFx.chainT > 0) {                   // skill "ล่าต่อเนื่อง": the combo window never runs out
+        skillFx.chainT -= dt;
+        if (comboTimer > 0) comboTimer = COMBO_WINDOW;
+      }
+      if (skillFx.starT > 0) {
+        skillFx.starT -= dt;
+        if (skillFx.starT <= 0) document.getElementById("canvas-wrap").classList.remove("star-boost");
+      }
+      if (skillFx.rainT > 0) skillFx.rainT -= dt;
       if (comboTimer > 0) {
         comboTimer -= dt;
         if (comboTimer <= 0) endCombo();
@@ -6434,6 +6524,7 @@
                 newCat.vy = -80; // little joyous bounce
                 newCat.scale = 0.55;
                 newCat.wobbleAmp = 1;
+                newCat.growT = PHYSICS.growTime;
                 cats.push(newCat);
               }, 10);
 
@@ -6458,13 +6549,15 @@
             // Relative velocity impulse
             const kx = c1.vx - c2.vx;
             const ky = c1.vy - c2.vy;
-            const p = 2 * (nx * kx + ny * ky) / totalMass;
+            const p = (nx * kx + ny * ky) / totalMass;
 
-            const restitution = 0.2;
-            c1.vx -= p * c2.mass * nx * (1 + restitution);
-            c1.vy -= p * c2.mass * ny * (1 + restitution);
-            c2.vx += p * c1.mass * nx * (1 + restitution);
-            c2.vy += p * c1.mass * ny * (1 + restitution);
+            // Three kinds of contact (REQ-01 §3.5): growing push 100%, fresh drop 30%, ball-to-ball 50%
+            const e = (c1.growT > 0 || c2.growT > 0) ? PHYSICS.grow : (c1.fresh || c2.fresh) ? PHYSICS.drop : PHYSICS.ball;
+            c1.vx -= p * c2.mass * nx * (1 + e);
+            c1.vy -= p * c2.mass * ny * (1 + e);
+            c2.vx += p * c1.mass * nx * (1 + e);
+            c2.vy += p * c1.mass * ny * (1 + e);
+            c1.fresh = c2.fresh = false;
           }
         }
       }
@@ -6601,7 +6694,7 @@
        so it follows the account to any device and survives clearing the browser — no table needed.
        localStorage is the working copy; each farm write is pushed to the account 2 s later.
        ========================================================================== */
-    const FARM_SYNC_KEYS = ['fish_coins', 'owned_items', 'hidden_items', 'owned_cats', 'cat_rewards', 'room_cats', 'cat_weights', 'owned_themes', 'station_state', 'visitor_log', 'current_room', 'daily_chest', 'cat_bond', 'cat_names', 'perks', 'scene_fx'];
+    const FARM_SYNC_KEYS = ['fish_coins', 'owned_items', 'hidden_items', 'owned_cats', 'cat_rewards', 'room_cats', 'cat_weights', 'owned_themes', 'station_state', 'visitor_log', 'current_room', 'daily_chest', 'cat_bond', 'cat_names', 'perks', 'scene_fx', 'cat_skill', 'catball_summary'];
     var FARM_SYNC_KEYS_SET = new Set(FARM_SYNC_KEYS); // var: setStorageItem runs before this line during start-up
     const FARM_CLOUD_FIELD = IS_DEV_BUILD ? 'farm_dev' : 'farm_prod';
     // Explicit empty farm so the legacy un-prefixed fallback in getStorageItem never resurrects old data
@@ -6821,7 +6914,7 @@
     }
 
     // Score already turned into REM this game; gameCoins splits this game's income for the end-of-game summary
-    const gameCoins = { score: 0, fever: 0, lucky: 0 };
+    const gameCoins = { score: 0, fever: 0, lucky: 0, qte: 0, skill: 0 };
     let coinedScore = 0;
 
     function updateScoreUI() {
@@ -6888,21 +6981,29 @@
       if (dropCooldown || isGameOver) return;
 
       const currentConfig = CAT_TIERS[currentCatTier];
+      // Skill "ตาเหยี่ยว": the ball lands right above a ball of the same kind
+      let dropX = aimX;
+      if (skillFx.aim > 0) {
+        const mate = cats.filter(c => c.tier === currentCatTier && !c.merged).sort((a, b) => a.y - b.y)[0];
+        if (mate) { dropX = mate.x; skillFx.aim--; fxTexts.push(new FxText(mate.x, 60, '🎯', '#fde047', 20)); }
+      }
       // Bound aim inside walls with safety margin
-      const clampedX = Math.max(currentConfig.radius + 6, Math.min(width - currentConfig.radius - 6, aimX));
+      const clampedX = Math.max(currentConfig.radius + 6, Math.min(width - currentConfig.radius - 6, dropX));
 
       sound.playDrop();
       const newCat = new Cat(clampedX, 70, currentCatTier);
       newCat.lucky = currentLucky;
+      newCat.fresh = true;
       cats.push(newCat);
+      if (gameStats && gameStats.drops++ === 0) gameStats.startedAt = Date.now();
 
       // Trigger Cooldown
       dropCooldown = true;
       currentCatTier = nextCatTier;
       currentLucky = nextLucky;
-      nextCatTier = getRandomInitialTier();
+      nextCatTier = skillFx.forcedNext.length ? skillFx.forcedNext.shift() : getRandomInitialTier();
       nextLucky = rollLucky();
-      if (luckyStreak > 0) { nextLucky = true; luckyStreak--; }   // helper skill "lucky aura"
+      if (luckyStreak > 0) { nextLucky = true; luckyStreak--; }   // helper skill "ดวงเฮง"
       updateNextCatUI();
       helperTick();
 
@@ -6936,6 +7037,7 @@
       }
 
       moonShakesLeft--;
+      if (gameStats) gameStats.shakes++;
       document.getElementById("moon-count").innerText = moonShakesLeft;
       if (moonShakesLeft <= 0) {
         document.getElementById("moon-shake-btn").disabled = true;
@@ -7006,7 +7108,8 @@
       if (isOverDanger) {
         dangerTimer += dt;
         if (dangerTimer >= 2.5 && !isGameOver) {
-          triggerGameOver();
+          if (skillFx.net > 0) useSafetyNet();   // skill "เบาะนุ่ม" saves the game once
+          else triggerGameOver();
         }
       } else {
         dangerTimer = Math.max(0, dangerTimer - dt * 2);
@@ -7016,8 +7119,10 @@
     function triggerGameOver() {
       isGameOver = true;
       if (comboTimer > 0) endCombo();
-      payGameEndCoins();
+      clearQteBug();
+      const earned = payGameEndCoins();
       rewardHelperBond();
+      finishGameStats('gameover', earned);
       document.getElementById("final-score").innerText = score.toLocaleString();
       const finalCombo = document.getElementById("final-combo");
       if (finalCombo) finalCombo.innerText = comboBestThisGame >= 2 ? `คอมโบสูงสุด ×${comboBestThisGame}` : '';
@@ -7042,13 +7147,15 @@
     }
 
     function restartGame() {
+      if (!isGameOver && gameStats && gameStats.drops > 0) finishGameStats('restart', null);   // quit mid-game
+      clearQteBug();
       cats.length = 0;
       particles.length = 0;
       fxRings.length = 0;
       fxTexts.length = 0;
       score = 0;
       coinedScore = 0;
-      gameCoins.score = gameCoins.fever = gameCoins.lucky = 0;
+      gameCoins.score = gameCoins.fever = gameCoins.lucky = gameCoins.qte = gameCoins.skill = 0;
       displayScore = 0;
       combo = 0;
       comboTimer = 0;
@@ -7058,6 +7165,10 @@
       moonShakesLeft = 1;
       dropsThisGame = 0;
       luckyStreak = 0;
+      skillFx = newSkillFx();
+      document.getElementById("canvas-wrap").classList.remove("star-boost");
+      renderSwapCharges();
+      gameStats = newGameStats();
       pickHelper();
       shakeLowGravity = 0;
       shakeGrace = 0;
@@ -7101,6 +7212,7 @@
 
       updateFx(dt);
       drawNextPreview(dt);
+      tickPlayClock(dt);
 
       // RENDER FRAME
       ctx.clearRect(0, 0, width, height);
@@ -8258,7 +8370,7 @@ class LiveCatActor {
         grid.appendChild(card);
       });
       // Station skins live in the same category: themes you wear over bowls and the litter box
-      STATION_IDS.forEach(id => {
+      STATION_IDS.filter(stationActive).forEach(id => {
         const st = stations[id];
         const def = STATION_DEFS[id];
         const card = document.createElement('div');
@@ -8908,6 +9020,7 @@ class LiveCatActor {
       if (feedBtn) feedBtn.classList.toggle('is-waiting', !!feedWait);
       const tagBtn = document.getElementById('modal-name-btn');
       if (tagBtn) tagBtn.innerText = `🏷️ ตั้งชื่อ${perks.name_tag ? ` (มีป้าย ${perks.name_tag})` : ''}`;
+      renderSkillUI(actor);
     }
 
     /* --- Special items (shop › ไอเทมพิเศษ) --- */
@@ -8985,15 +9098,18 @@ class LiveCatActor {
     function payGameEndCoins() {
       const base = gameCoins.score + gameCoins.fever;
       const bonus = perks.lucky_cat ? base : 0;
-      if (bonus) {
-        fishCoins += bonus;
+      const gem = skillFx.gemPct ? Math.round(base * skillFx.gemPct / 100) : 0;   // skill "ตาเพชร"
+      if (bonus || gem) {
+        fishCoins += bonus + gem;
+        gameCoins.skill += gem;
         updateCoinsDisplay();
       }
-      const total = base + bonus + gameCoins.lucky;
+      const total = base + bonus + gameCoins.lucky + gameCoins.qte + gameCoins.skill;
       const el = document.getElementById('final-coins');
       if (el) {
         el.innerHTML = coinHTML(`ได้เหรียญ +${total.toLocaleString()} 🪙`) +
-          (bonus ? `<div class="final-lucky">🐈 แมวกวักทองคำ ×2 (+${bonus.toLocaleString()})</div>` : '');
+          (bonus ? `<div class="final-lucky">🐈 แมวกวักทองคำ ×2 (+${bonus.toLocaleString()})</div>` : '') +
+          (gem ? `<div class="final-lucky">💎 ตาเพชร +${skillFx.gemPct}% (+${gem.toLocaleString()})</div>` : '');
       }
       return total;
     }
@@ -9481,32 +9597,57 @@ class LiveCatActor {
 
 
     /* ==========================================================================
-       HELPER CAT SKILLS (REQ-14 §3, approved 2026-09-25)
+       HELPER CAT SKILLS (REQ-14 §3, approved 2026-09-25, reworked round 6)
        - Each game one of the player's own cats is picked at random to cheer from the side of the box.
-       - Every breed has 1 skill. It fires once, at a random drop between 80 and 100,
-         with a chance of 10% per bond heart (10 hearts = always). A miss is silent (no fake near-miss).
+       - Every breed has its own skill — 20 breeds, 20 different skills, no two the same.
+       - It fires once, at a random drop between 80 and 100, with a chance of 10% per bond heart
+         (10 hearts = always). A miss is silent (no fake near-miss). If the skill has nothing to act on
+         at that moment it waits and fires on a later drop.
+       - Skill level 1-3 makes the skill stronger (e.g. free shake +1 → +2 → +3). Level 2 is bought in the
+         cat's window (REM + bond hearts); level 3 is designed but not open yet (SKILL_OPEN_LV).
        - The helper cat gains +1 bond per finished game (up to 5 a day) → play Cat Ball ↔ care for cats.
        ========================================================================== */
+    // vals[lv - 1] is the strength at each level; desc(v) says what it does at that strength.
+    // Ball levels in texts are 1-based ("เลเวล 3" = tier index 2).
     const HELPER_SKILLS = {
-      call:   { icon: '📣', name: 'เรียกเพื่อน', desc: 'ลูกถัดไปเป็นแบบเดียวกับลูกเล็กที่อยู่สูงสุดในกล่อง' },
-      magnet: { icon: '🧲', name: 'จับคู่', desc: 'ดึงลูกคู่ที่เหมือนกันมาชนกันให้รวมร่าง' },
-      snack:  { icon: '🍘', name: 'กินเศษ', desc: 'กินลูกเล็ก (ไหมพรม/ลูกแมวส้ม) ที่อยู่สูงสุด 2 ลูก' },
-      loaf:   { icon: '🍞', name: 'นอนทับ', desc: 'นอนทับขอบกล่อง หยุดเวลาล้นกล่อง 6 วินาที' },
-      swap:   { icon: '🐾', name: 'ตบสลับ', desc: 'สลับลูกที่ถืออยู่กับลูกถัดไป' },
-      shake:  { icon: '🌙', name: 'เขย่าฟรี', desc: 'ได้สิทธิ์เขย่ากล่องเพิ่ม +1' },
-      lucky:  { icon: '🍀', name: 'ออร่านำโชค', desc: '3 ลูกถัดไปเป็นลูกนำโชค' }
+      call:    { icon: '📣', name: 'เรียกเพื่อน', vals: [1, 2, 3], desc: v => `${v} ลูกถัดไปเป็นแบบเดียวกับลูกเล็กที่อยู่สูงสุดในกล่อง` },
+      wave:    { icon: '🌊', name: 'คลื่นรวมร่าง', vals: [[0, 2], [1, 3], [2, 4]], desc: v => `จับคู่ลูกเลเวล 1${v[0] ? '–' + (v[0] + 1) : ''} ที่เหมือนกันให้รวมร่าง สูงสุด ${v[1]} คู่` },
+      magnet:  { icon: '🧲', name: 'แม่เหล็กจับคู่', vals: [1, 2, 3], desc: v => `ดึงลูกที่เหมือนกันและใกล้กันที่สุดมาชนกัน ${v} คู่` },
+      whisper: { icon: '🤫', name: 'ย่องเบา', vals: [3, 5, 7], desc: v => `${v} ลูกถัดไปเป็นลูกเล็กสุด (ไหมพรม)` },
+      snack:   { icon: '🍘', name: 'กินเศษ', vals: [2, 3, 4], desc: v => `กินลูกเลเวล 1–2 ที่อยู่สูงสุด ${v} ลูก` },
+      bite:    { icon: '😋', name: 'งับคำโต', vals: [2, 3, 4], desc: v => `งับลูกที่อยู่สูงสุด 1 ลูก (ไม่เกินเลเวล ${v + 1})` },
+      grow:    { icon: '💪', name: 'ปั๊มโต', vals: [1, 2, 3], desc: v => `ลูกเล็กที่อยู่สูงสุด ${v} ลูกโตขึ้น 1 เลเวล (ดันลูกข้างๆ เต็มแรง)` },
+      loaf:    { icon: '🍞', name: 'นอนทับ', vals: [6, 10, 15], desc: v => `นอนทับขอบกล่อง หยุดเวลาล้นกล่อง ${v} วินาที` },
+      star:    { icon: '👑', name: 'ดาวเด่น', vals: [8, 12, 16], desc: v => `คะแนนรวมร่าง ×2 นาน ${v} วินาที` },
+      net:     { icon: '🛟', name: 'เบาะนุ่ม', vals: [3, 4, 5], desc: v => `กางเบาะรอไว้: ถ้ากล่องจะล้น ช่วยไว้ 1 ครั้งโดยเก็บลูกบนสุด ${v} ลูก` },
+      swap:    { icon: '🐾', name: 'ตบสลับ', vals: [1, 2, 3], desc: v => `ได้สิทธิ์สลับลูกที่ถือกับลูกถัดไป ${v} ครั้ง (แตะช่อง "ถัดไป")` },
+      chain:   { icon: '⚡', name: 'ล่าต่อเนื่อง', vals: [6, 9, 12], desc: v => `คอมโบไม่ขาดนาน ${v} วินาที` },
+      aim:     { icon: '🎯', name: 'ตาเหยี่ยว', vals: [1, 2, 3], desc: v => `${v} ลูกถัดไปตกลงบนลูกแบบเดียวกันเอง` },
+      shrink:  { icon: '🔽', name: 'ย่อตัว', vals: [1, 2, 3], desc: v => `ลูกที่อยู่สูงสุด ${v} ลูกเล็กลง 1 เลเวล (เปิดที่ให้หายใจ)` },
+      fire:    { icon: '🔥', name: 'ไฟลุก', vals: [3, 4, 5], desc: v => `คอมโบถัดไปเริ่มที่ ×${v} ทันที` },
+      shake:   { icon: '🌙', name: 'เขย่าฟรี', vals: [1, 2, 3], desc: v => `ได้สิทธิ์เขย่ากล่องเพิ่ม +${v}` },
+      lucky:   { icon: '🍀', name: 'ดวงเฮง', vals: [3, 5, 8], desc: v => `${v} ลูกถัดไปเป็นลูกนำโชค` },
+      rain:    { icon: '🌧️', name: 'ฝนเงิน', vals: [10, 15, 20], desc: v => `รวมร่างได้ +1 เหรียญทุกครั้ง นาน ${v} วินาที` },
+      gem:     { icon: '💎', name: 'ตาเพชร', vals: [20, 35, 50], desc: v => `จบเกมได้เหรียญจากคะแนนและคอมโบเพิ่ม +${v}%` },
+      purse:   { icon: '👛', name: 'ถุงทองแดง', vals: [8, 15, 25], desc: v => `ได้เหรียญทันที +${v}` }
     };
     const BREED_SKILL = {
-      siamese: 'call', turkish: 'call',
-      americanshorthair: 'magnet', russianblue: 'magnet', bengal: 'magnet',
-      british: 'snack', exotic: 'snack', mainecoon: 'snack',
-      scottish: 'loaf', persian: 'loaf', ragdoll: 'loaf',
-      munchkin: 'swap', abyssinian: 'swap', savannah: 'swap',
-      sphynx: 'shake', norwegian: 'shake',
-      birman: 'lucky', korat: 'lucky', khaomanee: 'lucky', suphalak: 'lucky'
+      siamese: 'call', turkish: 'wave', americanshorthair: 'magnet', russianblue: 'whisper',
+      british: 'snack', exotic: 'bite', mainecoon: 'grow', scottish: 'loaf',
+      persian: 'star', ragdoll: 'net', munchkin: 'swap', abyssinian: 'chain',
+      bengal: 'aim', savannah: 'shrink', sphynx: 'fire', norwegian: 'shake',
+      birman: 'lucky', korat: 'rain', khaomanee: 'gem', suphalak: 'purse'
     };
     const HELPER_FROM = 80, HELPER_TO = 100, HELPER_BOND_PER_DAY = 5;
-    let helper = null;          // { id, hearts, chance, at, used }
+    const SKILL_MAX_LV = 3;        // designed levels
+    const SKILL_OPEN_LV = 2;       // levels players can reach for now
+    const SKILL_UPGRADE = { 2: { price: 1500, hearts: 3 }, 3: { price: 5000, hearts: 7 } };   // target level → cost
+    let catSkill = {};
+    try { catSkill = JSON.parse(getStorageItem('cat_skill') || '{}') || {}; } catch (e) { catSkill = {}; }
+    const skillLv = id => Math.min(SKILL_OPEN_LV, Math.max(1, parseInt(catSkill[id], 10) || 1));
+    const skillOf = id => HELPER_SKILLS[BREED_SKILL[id]];
+    const skillVal = (id, lv = skillLv(id)) => skillOf(id).vals[lv - 1];
+    let helper = null;          // { id, hearts, lv, chance, at, rolled, armed, used }
     let dropsThisGame = 0;
     let luckyStreak = 0;
 
@@ -9517,8 +9658,9 @@ class LiveCatActor {
       if (owned.length) {
         const id = owned[Math.floor(Math.random() * owned.length)];
         const hearts = bondLevel(bondOf(id).xp);
-        helper = { id, hearts, chance: hearts / 10, at: HELPER_FROM + Math.floor(Math.random() * (HELPER_TO - HELPER_FROM + 1)), used: false };
+        helper = { id, hearts, lv: skillLv(id), chance: hearts / 10, at: randInt(HELPER_FROM, HELPER_TO), rolled: false, armed: false, used: false };
       }
+      if (gameStats) gameStats.helper = helper ? { cat: helper.id, skill: BREED_SKILL[helper.id], lv: helper.lv, hearts: helper.hearts, fired: false } : null;
       renderHelperBadge();
     }
 
@@ -9527,84 +9669,223 @@ class LiveCatActor {
       if (!el) return;
       if (!helper) { el.style.display = 'none'; return; }
       const breed = CAT_BREEDS.find(b => b.id === helper.id);
-      const sk = HELPER_SKILLS[BREED_SKILL[helper.id]];
+      const sk = skillOf(helper.id);
       el.style.display = 'flex';
-      el.innerHTML = `<img src="${breed.img}" alt=""><span>${sk.icon}</span><span class="hb-hearts">❤️${helper.hearts}</span>`;
-      el.title = `${catDisplayName(breed)} มาเชียร์ • สกิล ${sk.name}: ${sk.desc} • โอกาส ${Math.round(helper.chance * 100)}%`;
+      el.innerHTML = `<img src="${breed.img}" alt=""><span>${sk.icon}</span><span class="hb-lv">Lv${helper.lv}</span><span class="hb-hearts">❤️${helper.hearts}</span>`;
+      el.title = `${catDisplayName(breed)} มาเชียร์ • สกิล ${sk.name} Lv${helper.lv}: ${sk.desc(skillVal(helper.id, helper.lv))} • โอกาส ${Math.round(helper.chance * 100)}%`;
       el.classList.toggle('is-used', helper.used);
     }
 
     function showHelperInfo() {
       if (!helper) return;
       const breed = CAT_BREEDS.find(b => b.id === helper.id);
-      const sk = HELPER_SKILLS[BREED_SKILL[helper.id]];
+      const sk = skillOf(helper.id);
       showSkillToast(sk.icon, helper.chance
-        ? `${catDisplayName(breed)} มาเชียร์! สกิล "${sk.name}" อาจใช้ช่วงลูกที่ ${HELPER_FROM}–${HELPER_TO} (โอกาส ${Math.round(helper.chance * 100)}%)`
+        ? `${catDisplayName(breed)} มาเชียร์! "${sk.name}" Lv${helper.lv}: ${sk.desc(skillVal(helper.id, helper.lv))} • ช่วงลูกที่ ${HELPER_FROM}–${HELPER_TO} (โอกาส ${Math.round(helper.chance * 100)}%)`
         : `${catDisplayName(breed)} มาเชียร์! เลี้ยงให้สนิทขึ้น (ลูบ/ป้อน) แล้วจะช่วยใช้สกิล "${sk.name}"`);
     }
 
     // Called from dropCat() after every drop
     function helperTick() {
       dropsThisGame++;
-      if (!helper || helper.used || dropsThisGame !== helper.at) return;
-      helper.used = true;
-      renderHelperBadge();
-      if (Math.random() < helper.chance) useHelperSkill(BREED_SKILL[helper.id]);
+      if (!helper || helper.used) return;
+      if (!helper.rolled) {
+        if (dropsThisGame < helper.at) return;
+        helper.rolled = true;
+        helper.armed = Math.random() < helper.chance;
+        if (!helper.armed) { helper.used = true; renderHelperBadge(); return; }   // silent miss
+      }
+      if (helper.armed && useHelperSkill(BREED_SKILL[helper.id], helper.lv)) {
+        helper.armed = false;
+        helper.used = true;
+        if (gameStats && gameStats.helper) { gameStats.helper.fired = true; gameStats.helper.firedAt = dropsThisGame; }
+        renderHelperBadge();
+      }
     }
 
-    function useHelperSkill(type) {
-      let done = false;
-      if (type === 'call') {
-        const top = cats.filter(c => c.tier <= 4 && !c.merged).sort((a, b) => a.y - b.y)[0];
-        if (top) { nextCatTier = top.tier; updateNextCatUI(); done = true; }
-      } else if (type === 'magnet') {
+    // Balls that are still in play, highest (closest to the overflow line) first
+    const liveBalls = () => cats.filter(c => !c.merged).sort((a, b) => a.y - b.y);
+    function popBalls(list) {
+      list.forEach(c => { c.merged = true; for (let k = 0; k < 14; k++) particles.push(new Particle(c.x, c.y, CAT_TIERS[c.tier].color)); });
+      for (let i = cats.length - 1; i >= 0; i--) if (cats[i].merged) cats.splice(i, 1);
+    }
+    // Swap a ball for one of another tier in the same place (grow / shrink)
+    function resizeBall(c, tier) {
+      c.merged = true;
+      const b = new Cat(c.x, c.y, tier);
+      b.scale = 0.7; b.wobbleAmp = 1; b.lucky = c.lucky;
+      if (tier > c.tier) b.growT = PHYSICS.growTime;     // growing pushes its neighbours with full force
+      cats.push(b);
+      for (let k = 0; k < 16; k++) particles.push(new StarParticle(c.x, c.y, CAT_TIERS[tier].color));
+    }
+    // Put b right next to a so they merge on the next physics step
+    function pullTogether(a, b) {
+      for (let k = 0; k < 16; k++) particles.push(new StarParticle(b.x, b.y, "#a5f3fc"));
+      const ang = Math.atan2(b.y - a.y, b.x - a.x);
+      b.x = a.x + Math.cos(ang) * (a.r + b.r - 3);
+      b.y = a.y + Math.sin(ang) * (a.r + b.r - 3);
+    }
+    function nearestPairs(maxPairs, maxTier) {
+      const used = new Set(), pairs = [];
+      while (pairs.length < maxPairs) {
         let best = null;
         for (let i = 0; i < cats.length; i++) for (let j = i + 1; j < cats.length; j++) {
           const a = cats[i], b = cats[j];
-          if (a.tier !== b.tier || a.tier >= CAT_TIERS.length - 1 || a.merged || b.merged) continue;
+          if (a.tier !== b.tier || a.tier > maxTier || a.tier >= CAT_TIERS.length - 1 || a.merged || b.merged || used.has(a) || used.has(b)) continue;
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (!best || d < best.d) best = { a, b, d };
         }
-        if (best) {
-          for (let k = 0; k < 16; k++) particles.push(new StarParticle(best.b.x, best.b.y, "#a5f3fc"));
-          const ang = Math.atan2(best.b.y - best.a.y, best.b.x - best.a.x);
-          best.b.x = best.a.x + Math.cos(ang) * (best.a.r + best.b.r - 3);
-          best.b.y = best.a.y + Math.sin(ang) * (best.a.r + best.b.r - 3);
-          done = true;
-        }
-      } else if (type === 'snack') {
-        const small = cats.filter(c => c.tier <= 1 && !c.merged).sort((a, b) => a.y - b.y).slice(0, 2);
-        small.forEach(c => { c.merged = true; for (let k = 0; k < 14; k++) particles.push(new Particle(c.x, c.y, CAT_TIERS[c.tier].color)); });
-        for (let i = cats.length - 1; i >= 0; i--) if (cats[i].merged) cats.splice(i, 1);
-        done = small.length > 0;
-      } else if (type === 'loaf') {
-        shakeGrace = Math.max(shakeGrace, 6); dangerTimer = 0; done = true;
-      } else if (type === 'swap') {
-        [currentCatTier, nextCatTier] = [nextCatTier, currentCatTier];
-        [currentLucky, nextLucky] = [nextLucky, currentLucky];
-        updateNextCatUI(); done = true;
-      } else if (type === 'shake') {
-        moonShakesLeft++;
-        document.getElementById("moon-count").innerText = moonShakesLeft;
-        document.getElementById("moon-shake-btn").disabled = false;
-        done = true;
+        if (!best) break;
+        used.add(best.a); used.add(best.b); pairs.push(best);
       }
-      if (!done || type === 'lucky') {        // lucky aura (also the fallback when the skill has nothing to act on)
-        type = 'lucky';
-        luckyStreak = 3; nextLucky = true; updateNextCatUI();
-      }
-      const breed = CAT_BREEDS.find(b => b.id === helper.id);
+      return pairs;
+    }
+
+    // Runs a skill at a level; returns false when there is nothing to act on (it then waits for a later drop)
+    function useHelperSkill(type, lv = 1) {
       const sk = HELPER_SKILLS[type];
-      showHelperPop(breed, sk);
+      const v = sk.vals[lv - 1];
+      const wrap = document.getElementById("canvas-wrap");
+      switch (type) {
+        case 'call': {
+          const top = liveBalls().find(c => c.tier <= 4);
+          if (!top) return false;
+          nextCatTier = top.tier;
+          skillFx.forcedNext = Array(v - 1).fill(top.tier);
+          updateNextCatUI();
+          break;
+        }
+        case 'wave': {
+          const pairs = nearestPairs(v[1], v[0]);
+          if (!pairs.length) return false;
+          pairs.forEach(p => pullTogether(p.a, p.b));
+          break;
+        }
+        case 'magnet': {
+          const pairs = nearestPairs(v, CAT_TIERS.length - 2);
+          if (!pairs.length) return false;
+          pairs.forEach(p => pullTogether(p.a, p.b));
+          break;
+        }
+        case 'whisper':
+          nextCatTier = 0;
+          skillFx.forcedNext = Array(v - 1).fill(0);
+          updateNextCatUI();
+          break;
+        case 'snack': {
+          const small = liveBalls().filter(c => c.tier <= 1).slice(0, v);
+          if (!small.length) return false;
+          popBalls(small);
+          break;
+        }
+        case 'bite': {
+          const top = liveBalls().find(c => c.tier <= v);
+          if (!top) return false;
+          popBalls([top]);
+          break;
+        }
+        case 'grow': {
+          const list = liveBalls().filter(c => c.tier <= 4).slice(0, v);
+          if (!list.length) return false;
+          list.forEach(c => resizeBall(c, c.tier + 1));
+          break;
+        }
+        case 'shrink': {
+          const list = liveBalls().filter(c => c.tier >= 1 && c.tier <= 8).slice(0, v);
+          if (!list.length) return false;
+          list.forEach(c => resizeBall(c, c.tier - 1));
+          break;
+        }
+        case 'loaf':
+          shakeGrace = Math.max(shakeGrace, v); dangerTimer = 0;
+          break;
+        case 'star':
+          skillFx.starT = v;
+          if (wrap) wrap.classList.add("star-boost");
+          break;
+        case 'net':
+          skillFx.net = v;
+          break;
+        case 'swap':
+          skillFx.swaps += v;
+          renderSwapCharges();
+          break;
+        case 'chain':
+          skillFx.chainT = v;
+          break;
+        case 'aim':
+          skillFx.aim += v;
+          break;
+        case 'fire':
+          skillFx.comboStart = v;
+          break;
+        case 'shake':
+          moonShakesLeft += v;
+          document.getElementById("moon-count").innerText = moonShakesLeft;
+          document.getElementById("moon-shake-btn").disabled = false;
+          break;
+        case 'lucky':
+          luckyStreak = v - 1; nextLucky = true; updateNextCatUI();
+          break;
+        case 'rain':
+          skillFx.rainT = v;
+          break;
+        case 'gem':
+          skillFx.gemPct = v;
+          break;
+        case 'purse':
+          fishCoins += v; gameCoins.skill += v; updateCoinsDisplay();
+          fxTexts.push(new FxText(width / 2, 90, `👛 +${v} 🪙`, "#fde047", 24));
+          break;
+        default:
+          return false;
+      }
+      for (let k = 0; k < 18; k++) particles.push(new StarParticle(width / 2 + (Math.random() - 0.5) * 120, 80, "#ffd84d"));
+      showHelperPop(CAT_BREEDS.find(b => b.id === helper.id), sk, lv);
+      sound.playLucky();
+      return true;
+    }
+
+    // Skill "ตบสลับ": tap the next-ball bubble to swap it with the ball in hand
+    function renderSwapCharges() {
+      const el = document.getElementById('next-cat-view');
+      if (!el) return;
+      el.classList.toggle('can-swap', skillFx.swaps > 0);
+      let badge = el.querySelector('.swap-badge');
+      if (skillFx.swaps > 0) {
+        if (!badge) { badge = document.createElement('span'); badge.className = 'swap-badge'; el.appendChild(badge); }
+        badge.textContent = `🐾×${skillFx.swaps}`;
+      } else if (badge) badge.remove();
+    }
+    function useSwapCharge() {
+      if (skillFx.swaps <= 0 || isGameOver) return;
+      skillFx.swaps--;
+      [currentCatTier, nextCatTier] = [nextCatTier, currentCatTier];
+      [currentLucky, nextLucky] = [nextLucky, currentLucky];
+      updateNextCatUI();
+      renderSwapCharges();
+      sound.playNotes([880, 660], { type: "square", gap: 0.05, dur: 0.08, vol: 0.06 });
+    }
+
+    // Skill "เบาะนุ่ม": the box was about to overflow → clear the top balls instead of game over
+    function useSafetyNet() {
+      const n = skillFx.net;
+      skillFx.net = 0;
+      popBalls(liveBalls().slice(0, n));
+      dangerTimer = 0;
+      shakeGrace = Math.max(shakeGrace, 2);
+      screenShake = 14;
+      const breed = helper && CAT_BREEDS.find(b => b.id === helper.id);
+      if (breed) showHelperPop(breed, HELPER_SKILLS.net, helper.lv, `${catDisplayName(breed)} รับไว้ทัน!`);
       sound.playLucky();
     }
 
-    function showHelperPop(breed, sk) {
+    function showHelperPop(breed, sk, lv = 1, title = null) {
       const pop = document.getElementById('helper-pop');
-      if (!pop) return;
+      if (!pop || !breed) return;
       pop.querySelector('img').src = breed.img;
-      pop.querySelector('.hp-name').textContent = `${catDisplayName(breed)} ใช้สกิล!`;
-      pop.querySelector('.hp-skill').textContent = `${sk.icon} ${sk.name}`;
+      pop.querySelector('.hp-name').textContent = title || `${catDisplayName(breed)} ใช้สกิล!`;
+      pop.querySelector('.hp-skill').textContent = `${sk.icon} ${sk.name} Lv${lv}`;
       pop.classList.remove('show'); void pop.offsetWidth; pop.classList.add('show');
       setTimeout(() => pop.classList.remove('show'), 2600);
     }
@@ -9620,6 +9901,293 @@ class LiveCatActor {
       b.xp = Math.min(BOND_LEVELS[BOND_LEVELS.length - 1], b.xp + 1);
       saveBond();
     }
+
+    // Cat window: the breed's skill, its level and the upgrade button
+    function renderSkillUI(actor) {
+      const box = document.getElementById('modal-skill');
+      if (!box || !actor) return;
+      const id = actor.data.id;
+      const sk = skillOf(id);
+      if (!sk) { box.style.display = 'none'; return; }
+      box.style.display = '';
+      const lv = skillLv(id);
+      const hearts = bondLevel(bondOf(id).xp);
+      const next = lv + 1;
+      let nextLine = '', btn = '';
+      if (next <= SKILL_MAX_LV) {
+        const cost = SKILL_UPGRADE[next];
+        nextLine = `<div class="sk-next">Lv${next}: ${escapeHtml(sk.desc(sk.vals[next - 1]))}</div>`;
+        if (next > SKILL_OPEN_LV) btn = `<button class="item-buy-btn" disabled style="opacity:0.55;">🔒 Lv${next} เปิดเร็วๆ นี้</button>`;
+        else if (hearts < cost.hearts) btn = `<button class="item-buy-btn is-waiting" onclick="upgradeCatSkill()">⬆ Lv${next} ต้องสนิท ❤️${cost.hearts} (ตอนนี้ ${hearts})</button>`;
+        else btn = `<button class="item-buy-btn" onclick="upgradeCatSkill()">⬆ อัปเกรดเป็น Lv${next} (${cost.price.toLocaleString()} <i class="rem-coin"></i>)</button>`;
+      }
+      box.innerHTML = `
+        <div class="sk-head"><span class="sk-icon">${sk.icon}</span>สกิล ${escapeHtml(sk.name)}<span class="sk-lv">Lv${lv}/${SKILL_MAX_LV}</span></div>
+        <div class="sk-desc">${escapeHtml(sk.desc(sk.vals[lv - 1]))} • ช่วยในเกม Cat Ball โอกาส ${hearts * 10}%</div>
+        ${nextLine}${btn}`;
+    }
+
+    function upgradeCatSkill() {
+      if (!currentDetailCat || requireLogin()) return;
+      const id = currentDetailCat.data.id;
+      const next = skillLv(id) + 1;
+      if (next > SKILL_OPEN_LV) { showToast("🔒", `สกิล Lv${next} จะเปิดเร็วๆ นี้`); return; }
+      const cost = SKILL_UPGRADE[next];
+      const hearts = bondLevel(bondOf(id).xp);
+      if (hearts < cost.hearts) { showToast("💞", `ต้องสนิทถึง ${cost.hearts} หัวใจก่อน (ตอนนี้ ${hearts}) — ลูบหัว/ป้อนขนมทุกวันนะ`); return; }
+      if (!spendCoins(cost.price)) return;
+      catSkill[id] = next;
+      setStorageItem('cat_skill', JSON.stringify(catSkill));
+      audio.playCoin();
+      renderBondUI(currentDetailCat);
+      const sk = skillOf(id);
+      showToast(sk.icon, `สกิล ${sk.name} เป็น Lv${next} แล้ว: ${sk.desc(sk.vals[next - 1])}`);
+      if (helper && helper.id === id && !helper.used) { helper.lv = next; renderHelperBadge(); }
+    }
+    /* ==========================================================================
+       QUICK TIME EVENT + GAME STATS (REQ-01 §3.6, REQ-16 — 2026-09-25)
+       - Every 3-5 minutes of play a pixel bug crosses the box. Tap it within 5 s for 3-5 REM.
+         The clock only runs while a game is being played on screen (not on the farm, not in a hidden tab).
+       - Every game is measured (time, drops, merges, combos, highest level, shakes, bugs, coins, helper skill...)
+         and saved: the last 100 games on this device (catball_stats), a small lifetime summary synced with
+         the account (catball_summary), and one row per game in Supabase table game_sessions for analysis
+         (Sleeperem-Games/supabase/game_sessions.sql). Console: exportCatballStats() downloads a CSV.
+       ========================================================================== */
+    const QTE_BUGS = [
+      { id: 'fly', name: 'แมลงวัน', icon: '🪰', speed: 190, jitter: 90, flap: true,
+        colors: { k: '#1e293b', w: 'rgba(224,242,254,0.9)', r: '#ef4444', g: '#64748b' },
+        map: ['....rkkr....', '.....kk.....', '.www.kk.www.', 'wwwwkkkkwwww', 'wwwwkggkwwww', '.wwwkggkwww.', '..w.kggk.w..', '.....kk.....'] },
+      { id: 'moth', name: 'ผีเสื้อกลางคืน', icon: '🦋', speed: 120, jitter: 60, flap: true,
+        colors: { k: '#312e81', p: '#a78bfa', P: '#6d28d9', y: '#fde68a' },
+        map: ['...k....k...', '....k..k....', '.pp..kk..pp.', 'pPpp.kk.ppPp', 'pyPppkkppPyp', 'pppppkkppppp', '.pppkkkkppp.', '..pp.kk.pp..', '.....kk.....'] },
+      { id: 'beetle', name: 'ด้วงทอง', icon: '🪲', speed: 140, jitter: 20, flap: false,
+        colors: { k: '#1f2937', o: '#fbbf24', O: '#b45309', y: '#fef08a' },
+        map: ['..k......k..', '...k....k...', '....kkkk....', 'k..OooooO..k', '.kOoyooyoOk.', '..OooOOooO..', 'k.OooOOooO.k', '.kOooOOooOk.', '...OoOOoO...', '....kOOk....'] }
+    ];
+    let qteClock = 0;                                   // seconds of real play, across games
+    let qteNextAt = randInt(ECONOMY.qteEvery[0], ECONOMY.qteEvery[1]);
+    let qteBug = null;
+
+    function pixelSVG(map, colors) {
+      let rects = '';
+      map.forEach((row, y) => [...row].forEach((ch, x) => {
+        if (colors[ch]) rects += `<rect x="${x}" y="${y}" width="1.05" height="1.05" fill="${colors[ch]}"/>`;
+      }));
+      return `<svg viewBox="0 0 ${map[0].length} ${map.length}" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
+    }
+
+    // Runs every frame from gameLoop; counts play time and drives the bug
+    function tickPlayClock(dt) {
+      let onScreen = true;
+      try { onScreen = currentView === 'game'; } catch (e) { onScreen = true; }
+      if (isGameOver || !onScreen || document.hidden || !gameStats || gameStats.drops === 0) return;
+      gameStats.playSec += dt;
+      qteClock += dt;
+      if (qteBug) moveQteBug(dt);
+      else if (qteClock >= qteNextAt) spawnQteBug();
+    }
+
+    function spawnQteBug(kind = null) {
+      const wrap = document.getElementById('canvas-wrap');
+      if (!wrap || qteBug) return;
+      const def = QTE_BUGS.find(b => b.id === kind) || QTE_BUGS[Math.floor(Math.random() * QTE_BUGS.length)];
+      const W = wrap.clientWidth, H = wrap.clientHeight;
+      const fromLeft = Math.random() < 0.5;
+      const el = document.createElement('button');
+      el.className = 'qte-bug' + (def.flap ? ' flap' : '');
+      el.setAttribute('aria-label', `ตบ${def.name}`);
+      el.innerHTML = pixelSVG(def.map, def.colors);
+      el.addEventListener('pointerdown', swatQteBug);
+      wrap.appendChild(el);
+      qteBug = { el, def, x: fromLeft ? -20 : W + 20, y: H * (0.2 + Math.random() * 0.35), tx: W / 2, ty: H * 0.4, vx: 0, vy: 0, t: 0, fleeing: false };
+      pickBugTarget();
+      placeQteBug();
+      qteNextAt = qteClock + randInt(ECONOMY.qteEvery[0], ECONOMY.qteEvery[1]);
+      const hint = document.getElementById('qte-hint');
+      if (hint) {
+        hint.textContent = `${def.icon} ตบ${def.name}! +${ECONOMY.qteReward[0]}–${ECONOMY.qteReward[1]} เหรียญ`;
+        hint.classList.add('show');
+        setTimeout(() => hint.classList.remove('show'), 1800);
+      }
+      sound.playNotes([1600, 1750, 1600, 1750], { type: "sawtooth", gap: 0.04, dur: 0.05, vol: 0.025 });
+    }
+
+    function pickBugTarget() {
+      const wrap = document.getElementById('canvas-wrap');
+      const W = wrap.clientWidth, H = wrap.clientHeight;
+      qteBug.tx = 30 + Math.random() * (W - 60);
+      qteBug.ty = H * 0.12 + Math.random() * H * 0.55;
+    }
+
+    function placeQteBug() {
+      const b = qteBug;
+      const ang = Math.atan2(b.vy, b.vx) + Math.PI / 2;    // sprites face up
+      b.el.style.transform = `translate(${b.x.toFixed(1)}px, ${b.y.toFixed(1)}px) rotate(${ang.toFixed(2)}rad)`;
+    }
+
+    function moveQteBug(dt) {
+      const b = qteBug;
+      const wrap = document.getElementById('canvas-wrap');
+      const W = wrap.clientWidth, H = wrap.clientHeight;
+      b.t += dt;
+      if (!b.fleeing && b.t > ECONOMY.qteLife) {            // too slow: it flies away (a miss)
+        b.fleeing = true;
+        b.tx = b.x < W / 2 ? -60 : W + 60; b.ty = -40;
+      }
+      const dx = b.tx - b.x, dy = b.ty - b.y, d = Math.hypot(dx, dy) || 1;
+      if (!b.fleeing && d < 24) pickBugTarget();
+      const speed = b.def.speed * (b.fleeing ? 1.8 : 1);
+      b.vx += ((dx / d) * speed - b.vx) * Math.min(1, dt * 4) + (Math.random() - 0.5) * b.def.jitter * dt * 10;
+      b.vy += ((dy / d) * speed - b.vy) * Math.min(1, dt * 4) + (Math.random() - 0.5) * b.def.jitter * dt * 10;
+      b.x += b.vx * dt; b.y += b.vy * dt;
+      placeQteBug();
+      if (b.fleeing && (b.x < -50 || b.x > W + 50 || b.y < -30)) {
+        if (gameStats) gameStats.qteMiss++;
+        clearQteBug();
+      }
+    }
+
+    function swatQteBug(e) {
+      if (e) { e.stopPropagation(); e.preventDefault(); }
+      const b = qteBug;
+      if (!b || b.fleeing && b.x < -20) return;
+      qteBug = null;
+      const reward = randInt(ECONOMY.qteReward[0], ECONOMY.qteReward[1]);
+      fishCoins += reward;
+      gameCoins.qte += reward;
+      updateCoinsDisplay();
+      if (gameStats) {
+        gameStats.qteHit++;
+        const ms = Math.round(b.t * 1000);
+        gameStats.qteFastMs = gameStats.qteFastMs == null ? ms : Math.min(gameStats.qteFastMs, ms);
+      }
+      b.el.classList.add('splat');
+      setTimeout(() => b.el.remove(), 460);
+      const pop = document.createElement('div');
+      pop.className = 'qte-pop';
+      pop.innerHTML = coinHTML(`+${reward} 🪙`);
+      pop.style.left = b.x + 'px'; pop.style.top = b.y + 'px';
+      b.el.parentNode.appendChild(pop);
+      setTimeout(() => pop.remove(), 1000);
+      sound.playNotes([180, 1320, 1760, 2093], { type: "square", gap: 0.05, dur: 0.1, vol: 0.08 });
+    }
+
+    function clearQteBug() {
+      if (qteBug && qteBug.el) qteBug.el.remove();
+      qteBug = null;
+    }
+
+    /* --- Game stats --- */
+    const STATS_KEEP = 100;
+    let statsServerOff = false;
+
+    function newGameStats() {
+      let theme = null;
+      try { theme = document.getElementById('view-game').dataset.theme || currentTheme; } catch (e) { theme = null; }
+      return {
+        startedAt: Date.now(), playSec: 0, drops: 0, merges: 0, maxTier: 0, chains: 0, fevers: 0, shakes: 0,
+        lucky: 0, qteHit: 0, qteMiss: 0, qteFastMs: null, helper: null, done: false, theme,
+        device: window.matchMedia && matchMedia('(pointer: coarse)').matches ? 'touch' : 'mouse'
+      };
+    }
+    gameStats = newGameStats();
+    if (helper) gameStats.helper = { cat: helper.id, skill: BREED_SKILL[helper.id], lv: helper.lv, hearts: helper.hearts, fired: false };
+
+    function loadStatsLog() {
+      try { return JSON.parse(getStorageItem('catball_stats') || '[]') || []; } catch (e) { return []; }
+    }
+    function loadStatsSummary() {
+      try { return JSON.parse(getStorageItem('catball_summary') || '{}') || {}; } catch (e) { return {}; }
+    }
+
+    // end: 'gameover' | 'restart' (quit mid-game) | 'leave' (closed the page mid-game)
+    function finishGameStats(end, earned) {
+      const g = gameStats;
+      if (!g || g.done || g.drops === 0) return null;
+      g.done = true;
+      const maxTier = Math.max(g.maxTier, ...cats.map(c => c.tier), 0);
+      const coinSplit = { ...gameCoins };
+      const playSec = Math.round(g.playSec);
+      const rec = {
+        v: 1, game: 'catball', end, at: new Date(g.startedAt).toISOString(),
+        durationSec: Math.round((Date.now() - g.startedAt) / 1000), playSec,
+        score, bestCombo: comboBestThisGame, maxLevel: maxTier + 1,
+        drops: g.drops, merges: g.merges, chains: g.chains, fevers: g.fevers, shakes: g.shakes, lucky: g.lucky,
+        qteHit: g.qteHit, qteMiss: g.qteMiss, qteFastMs: g.qteFastMs,
+        coins: earned != null ? earned : Object.values(coinSplit).reduce((a, b) => a + b, 0), coinSplit,
+        pointsPerMin: playSec ? Math.round(score / (playSec / 60)) : 0,
+        mergesPerMin: playSec ? +(g.merges / (playSec / 60)).toFixed(1) : 0,
+        helper: g.helper, theme: g.theme, device: g.device, loggedIn: !!currentUser
+      };
+      const log = loadStatsLog();
+      log.push(rec);
+      setStorageItem('catball_stats', JSON.stringify(log.slice(-STATS_KEEP)));
+      const sum = loadStatsSummary();
+      sum.games = (sum.games || 0) + 1;
+      sum.playSec = (sum.playSec || 0) + playSec;
+      sum.totalScore = (sum.totalScore || 0) + score;
+      sum.bestScore = Math.max(sum.bestScore || 0, score);
+      sum.bestCombo = Math.max(sum.bestCombo || 0, comboBestThisGame);
+      sum.bestLevel = Math.max(sum.bestLevel || 0, rec.maxLevel);
+      sum.longestSec = Math.max(sum.longestSec || 0, playSec);
+      sum.merges = (sum.merges || 0) + g.merges;
+      sum.drops = (sum.drops || 0) + g.drops;
+      sum.fevers = (sum.fevers || 0) + g.fevers;
+      sum.qteHit = (sum.qteHit || 0) + g.qteHit;
+      sum.qteMiss = (sum.qteMiss || 0) + g.qteMiss;
+      sum.coins = (sum.coins || 0) + rec.coins;
+      sum.quits = (sum.quits || 0) + (end === 'gameover' ? 0 : 1);
+      sum.lastAt = new Date().toISOString();
+      setStorageItem('catball_summary', JSON.stringify(sum));
+      sendGameStats(rec);
+      if (end === 'gameover') renderFinalStats(rec, sum);
+      return rec;
+    }
+
+    function sendGameStats(rec) {
+      if (statsServerOff || !currentUser || typeof supabaseClient === 'undefined' || !supabaseClient) return;
+      try {
+        supabaseClient.from('game_sessions').insert({
+          game: rec.game, end_reason: rec.end, score: rec.score, play_sec: rec.playSec, best_combo: rec.bestCombo,
+          max_level: rec.maxLevel, drops: rec.drops, merges: rec.merges, coins: rec.coins, stats: rec
+        }).then(({ error }) => {
+          if (error) { statsServerOff = true; console.warn('game_sessions (stats) not saved:', error.message); }
+        });
+      } catch (e) { statsServerOff = true; }
+    }
+
+    const fmtClock = sec => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+    function renderFinalStats(rec, sum) {
+      const el = document.getElementById('final-stats');
+      if (!el) return;
+      const bugs = rec.qteHit + rec.qteMiss ? ` • 🪰 ตบแมลง ${rec.qteHit}/${rec.qteHit + rec.qteMiss}` : '';
+      el.innerHTML = `⏱ เล่น <b>${fmtClock(rec.playSec)}</b> นาที • 🐾 ปล่อย <b>${rec.drops}</b> ลูก • ✨ รวมร่าง <b>${rec.merges}</b> ครั้ง<br>` +
+        `🔥 FEVER <b>${rec.fevers}</b> ครั้ง • 👑 ถึงเลเวล <b>${rec.maxLevel}</b>${bugs}` +
+        `<div class="fs-life">รวมทุกเกม: ${sum.games} เกม • ${Math.round(sum.playSec / 60)} นาที • สูงสุด ${sum.bestScore.toLocaleString()} • คอมโบ ×${sum.bestCombo} • เลเวล ${sum.bestLevel}</div>`;
+    }
+
+    // For analysis: downloads this device's game log as CSV
+    function exportCatballStats() {
+      const log = loadStatsLog();
+      const cols = ['at', 'end', 'playSec', 'durationSec', 'score', 'bestCombo', 'maxLevel', 'drops', 'merges', 'chains', 'fevers',
+        'shakes', 'lucky', 'qteHit', 'qteMiss', 'qteFastMs', 'coins', 'pointsPerMin', 'mergesPerMin', 'theme', 'device', 'helperCat', 'helperSkill', 'helperLv', 'helperFired'];
+      const rows = log.map(r => cols.map(c => {
+        const v = c.startsWith('helper') ? (r.helper ? { helperCat: r.helper.cat, helperSkill: r.helper.skill, helperLv: r.helper.lv, helperFired: r.helper.fired }[c] : '') : r[c];
+        return v == null ? '' : String(v).replace(/[",\n]/g, ' ');
+      }).join(','));
+      const blob = new Blob([[cols.join(','), ...rows].join('\n')], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `catball-stats-${new Date().toLocaleDateString('en-CA')}.csv`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      return log.length;
+    }
+
+    window.addEventListener('pagehide', () => {
+      if (!isGameOver && gameStats && gameStats.drops > 0) finishGameStats('leave', null);
+    });
+
     /* ==========================================================================
        SHOP & ROOM DECOR (theme-only items + universal items)
        ========================================================================== */
@@ -9746,6 +10314,22 @@ class LiveCatActor {
           const st = stations[id];
           const def = STATION_DEFS[id];
           const next = def.levels[st.lv];
+          if (!stationActive(id)) {
+            const buy = document.createElement("div");
+            buy.className = "item-card";
+            buy.innerHTML = `
+            <div class="card-top">
+              <div class="item-emoji">${def.icon}</div>
+              <div>
+                <div class="item-name">กระบะทรายอันที่ 2</div>
+                <div class="item-desc">วางอีกฝั่งของห้อง จุ 5 ก้อน • ตักได้ก้อนละ ${ECONOMY.poopCoin} เหรียญ • ซื้อได้ 1 อัน</div>
+                <div class="item-scope is-universal">🌐 ใช้ได้ทุกห้อง</div>
+              </div>
+            </div>
+            <button class="item-buy-btn" onclick="buyLitter2()">ซื้อ (${def.buyPrice.toLocaleString()} <i class="rem-coin"></i>)</button>`;
+            grid.appendChild(buy);
+            return;
+          }
           const card = document.createElement("div");
           card.className = "item-card" + (st.lv > 1 ? " owned" : "");
           card.innerHTML = `
@@ -9886,7 +10470,7 @@ class LiveCatActor {
     function spawnRefillParticles(stationType) {
       const targetWrap = document.getElementById(stationType + '-station-wrap');
       if (!targetWrap) return;
-      const icons = { feeder: ['🟤', '🌾', '🥣', '✨'], fountain: ['💧', '💦', '🫧', '✨'], litter: ['✨', '🧹', '🫧', '🌼'] }[stationType];
+      const icons = { feeder: ['🟤', '🌾', '🥣', '✨'], fountain: ['💧', '💦', '🫧', '✨'], litter: ['✨', '🧹', '🫧', '🌼'] }[isLitter(stationType) ? 'litter' : stationType];
       for (let i = 0; i < 5; i++) {
         const p = document.createElement('div');
         p.className = 'refill-grain-particle';
@@ -9924,18 +10508,23 @@ class LiveCatActor {
       litter: {
         name: 'กระบะทราย', icon: '🪣', x: 900,
         levels: [
-          { name: 'ถาดทรายพลาสติก', desc: 'ถาดพลาสติกธรรมดา ใช้ได้ 2 ครั้งก็ต้องตัก', price: 0 },
-          { name: 'กระบะทรายมีฝาครอบ', desc: 'มีฝาครอบกันกลิ่น ใช้ได้ 4 ครั้ง', price: 800 },
-          { name: 'กระบะทรายอัตโนมัติ', desc: 'ใช้ได้ 6 ครั้ง และตักทรายเองทุก 2 นาที', price: 2000 }
+          { name: 'ถาดทรายพลาสติก', desc: 'ถาดพลาสติกธรรมดา จุ 5 ก้อน • ตักได้ก้อนละ 1 เหรียญ', price: 0 },
+          { name: 'กระบะทรายมีฝาครอบ', desc: 'ฝาครอบกันกลิ่น จุ 5 ก้อน • เต็มแล้วไม่มีกลิ่น แมวไม่บ่น', price: 800 },
+          { name: 'กระบะทรายอัตโนมัติ', desc: 'จุ 5 ก้อน • ตักเองหลังใช้ 2 นาที เก็บเหรียญให้ด้วย', price: 2000 }
         ]
       }
     };
+    // Second litter box (REQ-12 §litter, 2026-09-25): bought once, then upgraded / skinned like the first
+    STATION_DEFS.litter2 = { ...STATION_DEFS.litter, name: 'กระบะทราย 2', x: 1020, buyPrice: 2500 };
+    const LITTER_IDS = ['litter', 'litter2'];
+    const isLitter = id => LITTER_IDS.includes(id);
+    const LITTER_CAP = 5;
     const STATION_SKINS = {
       japanese: { name: 'ธีมญี่ปุ่น', desc: 'ไม้ฮิโนกิ ลายซากุระ', price: 500 },
       modern: { name: 'ธีมโมเดิร์น', desc: 'หินอ่อนขอบทอง', price: 500 },
       space: { name: 'ธีมไซเบอร์', desc: 'นีออนเรืองแสง', price: 600 }
     };
-    const STATION_IDS = ['feeder', 'fountain', 'litter'];
+    const STATION_IDS = ['feeder', 'fountain', 'litter', 'litter2'];
 
     let stations = null;
     try { stations = JSON.parse(getStorageItem('station_state') || 'null'); } catch (e) { stations = null; }
@@ -9950,8 +10539,10 @@ class LiveCatActor {
         skins,
         amount: Math.max(0, parseInt(s.amount, 10) || 0)
       };
+      if (id === 'litter2') stations[id].owned = !!s.owned;
     });
-    const stationCapacity = id => id === 'litter' ? stations.litter.lv * 2 : stations[id].lv;
+    const stationCapacity = id => isLitter(id) ? LITTER_CAP : stations[id].lv;
+    const stationActive = id => id !== 'litter2' || stations.litter2.owned;
     if (!stationsWereSaved) {
       // Legacy bowls were plain booleans (feeder_filled / fountain_filled)
       if (getStorageItem('feeder_filled') === 'true') stations.feeder.amount = 1;
@@ -9961,33 +10552,33 @@ class LiveCatActor {
 
     // Litter is per room (fix 2026-09-25: one shared counter showed poop in rooms where no cat lives).
     // stations.litter.amount reads/writes the current room; a room without cats is always clean.
-    (() => {
-      const lit = stations.litter;
+    LITTER_IDS.forEach(id => {
+      const lit = stations[id];
       let saved = {};
-      try { saved = (JSON.parse(getStorageItem('station_state') || '{}').litter || {}).rooms || {}; } catch (e) { saved = {}; }
+      try { saved = (JSON.parse(getStorageItem('station_state') || '{}')[id] || {}).rooms || {}; } catch (e) { saved = {}; }
       lit.rooms = {};
       ROOM_IDS.forEach(r => { lit.rooms[r] = Math.max(0, parseInt(saved[r], 10) || 0); });
       const roomHasCats = () => typeof roomCats !== 'undefined' && (roomCats[currentTheme] || []).length > 0;
       Object.defineProperty(lit, 'amount', {
         enumerable: false,
-        get() { return roomHasCats() ? Math.min(lit.rooms[currentTheme] || 0, stationCapacity('litter')) : 0; },
+        get() { return roomHasCats() ? Math.min(lit.rooms[currentTheme] || 0, stationCapacity(id)) : 0; },
         set(v) { lit.rooms[currentTheme] = Math.max(0, v); }
       });
-    })();
+    });
 
     function saveStations() {
       setStorageItem('station_state', JSON.stringify(stations));
     }
 
     function stationClass(id, st) {
-      return `station-body st-${id} st-lv-${st.lv}` + (st.skin ? ` skin-${st.skin}` : '') + (st.amount > 0 ? ' has-supply' : '');
+      return `station-body st-${isLitter(id) ? 'litter' : id} st-lv-${st.lv}` + (st.skin ? ` skin-${st.skin}` : '') + (st.amount > 0 ? ' has-supply' : '');
     }
 
     function stationBodyHTML(id, st) {
-      const cap = id === 'litter' ? st.lv * 2 : st.lv;
-      if (id === 'litter') {
-        const dirt = st.amount > 0 ? `<div class="st-dirt">${'💩'.repeat(Math.min(st.amount, 3))}</div>` : '';
-        const stink = st.amount >= cap ? '<div class="st-stink">〰</div>' : '';
+      const cap = isLitter(id) ? LITTER_CAP : st.lv;
+      if (isLitter(id)) {
+        const dirt = st.amount > 0 ? `<div class="st-dirt">${'💩'.repeat(Math.min(st.amount, LITTER_CAP))}</div>` : '';
+        const stink = st.amount >= cap && st.lv < 2 ? '<div class="st-stink">〰</div>' : '';
         if (st.lv === 3) return `<div class="st-globe"></div><div class="st-tray"></div>${dirt}${stink}`;
         if (st.lv === 2) return `<div class="st-hood"></div><div class="st-tray"></div>${dirt}${stink}`;
         return `<div class="st-tray">${dirt}</div>${stink}`;
@@ -10001,7 +10592,10 @@ class LiveCatActor {
     }
 
     function renderStationVisuals() {
+      const anchor2 = document.getElementById('litter2-anchor');
+      if (anchor2) anchor2.style.display = stations.litter2.owned ? '' : 'none';
       STATION_IDS.forEach(id => {
+        if (!stationActive(id)) return;
         const st = stations[id];
         const def = STATION_DEFS[id];
         const cap = stationCapacity(id);
@@ -10011,11 +10605,11 @@ class LiveCatActor {
         if (!body || !wrap) return;
         body.className = stationClass(id, st);
         body.innerHTML = stationBodyHTML(id, st);
-        wrap.classList.toggle('is-empty', id === 'litter' ? st.amount >= cap : st.amount === 0);
+        wrap.classList.toggle('is-empty', isLitter(id) ? st.amount >= cap : st.amount === 0);
         if (label) label.innerText = `${def.name} ${st.amount}/${cap}`;
         const levelName = def.levels[st.lv - 1].name;
-        wrap.title = id === 'litter'
-          ? (st.amount > 0 ? `${levelName} — แตะเพื่อตักทราย` : `${levelName} สะอาดอยู่`)
+        wrap.title = isLitter(id)
+          ? (st.amount > 0 ? `${levelName} — แตะเพื่อตักทราย (ก้อนละ ${ECONOMY.poopCoin} เหรียญ)` : `${levelName} สะอาดอยู่`)
           : (st.amount < cap ? `${levelName} — แตะเพื่อเติม` : `${levelName} เต็มแล้ว`);
       });
     }
@@ -10032,17 +10626,16 @@ class LiveCatActor {
       const st = stations[id];
       const def = STATION_DEFS[id];
       const cap = stationCapacity(id);
-      if (id === 'litter') {
+      if (isLitter(id)) {
+        if (!stationActive(id)) return;
         if (st.amount === 0) {
           showToast("✨", "กระบะทรายยังสะอาดอยู่");
           return;
         }
-        st.amount = 0;
-        saveStations();
-        renderStationVisuals();
+        const pay = scoopLitter(id);
         playScoopSound();
-        spawnRefillParticles('litter');
-        showToast("🧹", "ตักทรายเรียบร้อย กระบะสะอาดแล้ว!");
+        spawnRefillParticles(id);
+        showToast("🧹", `ตักอึ ${pay / ECONOMY.poopCoin} ก้อน ได้ +${pay} 🪙 กระบะสะอาดแล้ว!`);
         catInstances.filter(c => c.dom && !c.isBusy).slice(0, 2).forEach(c => showSpeechBubble(c.dom, 'หอมสะอาด ✨'));
         return;
       }
@@ -10058,6 +10651,21 @@ class LiveCatActor {
       renderStationVisuals();
       showToast(def.icon, id === 'feeder' ? `ใส่อาหารเต็มชามแล้ว (${cap} มื้อ)` : `เติมน้ำเต็มแล้ว (${cap} รอบ)`);
       attractNearbyCatsToStation(id);
+    }
+    // Empty a litter box: every poop pays ECONOMY.poopCoin REM (REQ-12 / REQ-13)
+    function scoopLitter(id) {
+      const st = stations[id];
+      const pay = st.amount * ECONOMY.poopCoin;
+      st.amount = 0;
+      if (pay) {
+        fishCoins += pay;
+        updateCoinsDisplay();
+        const def = STATION_DEFS[id];
+        try { spawnCoinPop(def.x, (BOWL_Y[currentTheme] || 125) + 70, `+${pay} 🪙`); } catch (e) { /* stage not ready */ }
+      }
+      saveStations();
+      renderStationVisuals();
+      return pay;
     }
     function executeFeederRefill(e) { useStation('feeder', e); }
     function executeFountainRefill(e) { useStation('fountain', e); }
@@ -10128,17 +10736,20 @@ class LiveCatActor {
 
     // Called from the cat AI now and then; returns true when the cat went to the litter box
     let litterBusy = false;
-    let litterAutoCleanTimer = null;
+    const litterAutoCleanTimer = {};
     function maybeUseLitter(cat) {
       if (!currentUser || litterBusy || !cat.dom || catInstances.some(c => c.isBusy)) return false;
-      const st = stations.litter;
-      const cap = stationCapacity('litter');
-      if (st.amount >= cap) {
-        showSpeechBubble(cat.dom, 'กระบะเต็มแล้ว ตักหน่อยสิ 😾');
+      const boxes = LITTER_IDS.filter(stationActive).filter(id => stations[id].amount < LITTER_CAP)
+        .sort((a, b) => stations[a].amount - stations[b].amount || Math.abs(STATION_DEFS[a].x - cat.x) - Math.abs(STATION_DEFS[b].x - cat.x));
+      if (!boxes.length) {
+        if (LITTER_IDS.filter(stationActive).some(id => stations[id].lv < 2)) showSpeechBubble(cat.dom, 'กระบะเต็มแล้ว ตักหน่อยสิ 😾');
         return false;
       }
+      const id = boxes[0];
+      const st = stations[id];
+      const cap = LITTER_CAP;
       litterBusy = true;
-      walkCatToStation(cat, STATION_DEFS.litter.x, BOWL_Y[currentTheme] || 125, 'ขอตัวเข้าห้องน้ำ 🚽', () => {
+      walkCatToStation(cat, STATION_DEFS[id].x, BOWL_Y[currentTheme] || 125, 'ขอตัวเข้าห้องน้ำ 🚽', () => {
         cat.setState('crouching');
         showSpeechBubble(cat.dom, 'ขอความเป็นส่วนตัวหน่อย 🙈');
         setTimeout(() => {
@@ -10146,7 +10757,7 @@ class LiveCatActor {
           st.amount = Math.min(cap, st.amount + 1);
           saveStations();
           renderStationVisuals();
-          scheduleLitterAutoClean();
+          scheduleLitterAutoClean(id);
           if (!cat.dom) return;
           cat.isBusy = false;
           cat.isMoving = false;
@@ -10158,16 +10769,16 @@ class LiveCatActor {
       return true;
     }
 
-    // Level 3 litter box scoops itself 2 minutes after it gets used
-    function scheduleLitterAutoClean() {
-      if (stations.litter.lv < 3 || stations.litter.amount === 0 || litterAutoCleanTimer) return;
-      litterAutoCleanTimer = setTimeout(() => {
-        litterAutoCleanTimer = null;
-        if (stations.litter.lv < 3 || stations.litter.amount === 0) return;
-        stations.litter.amount = 0;
-        saveStations();
-        renderStationVisuals();
-        if (currentView === 'farm') showToast("🤖", "กระบะทรายอัตโนมัติตักทรายให้แล้ว");
+    // Level 3 litter box scoops itself (and collects the coins) 2 minutes after it gets used
+    function scheduleLitterAutoClean(id) {
+      if (!id) { LITTER_IDS.forEach(scheduleLitterAutoClean); return; }
+      const st = stations[id];
+      if (!stationActive(id) || st.lv < 3 || st.amount === 0 || litterAutoCleanTimer[id]) return;
+      litterAutoCleanTimer[id] = setTimeout(() => {
+        litterAutoCleanTimer[id] = null;
+        if (st.lv < 3 || st.amount === 0) return;
+        const pay = scoopLitter(id);
+        if (currentView === 'farm') showToast("🤖", `${STATION_DEFS[id].name}อัตโนมัติตักให้แล้ว +${pay} 🪙`);
       }, 120000);
     }
     scheduleLitterAutoClean();
@@ -10187,6 +10798,16 @@ class LiveCatActor {
       const st = stations[id];
       const def = STATION_DEFS[id];
       document.getElementById('station-modal-title').innerText = `${def.icon} ${def.name}`;
+      if (!stationActive(id)) {
+        document.getElementById('station-modal-sub').innerText = 'ยังไม่มี — ซื้อได้ 1 อัน (รวมเป็น 2 กระบะ)';
+        document.getElementById('station-modal-preview').innerHTML = `<div class="${stationClass(id, st)}">${stationBodyHTML(id, st)}</div>`;
+        document.getElementById('station-level-list').innerHTML = `<div class="station-option is-current">
+            <div class="opt-text"><div class="opt-name">กระบะทรายอันที่ 2</div><div class="opt-desc">วางอีกฝั่งของห้อง จุ 5 ก้อน แมวใช้ได้ 2 ที่ ตักได้ก้อนละ ${ECONOMY.poopCoin} เหรียญ</div></div>
+            <button class="item-buy-btn" onclick="buyLitter2()">ซื้อ (${def.buyPrice.toLocaleString()} <i class="rem-coin"></i>)</button>
+          </div>`;
+        document.getElementById('station-skin-list').innerHTML = '';
+        return;
+      }
       document.getElementById('station-modal-sub').innerText =
         `ตอนนี้: ${def.levels[st.lv - 1].name} (ระดับ ${st.lv}/3)${st.skin ? ' • ' + STATION_SKINS[st.skin].name : ''}`;
       document.getElementById('station-modal-preview').innerHTML =
@@ -10231,17 +10852,27 @@ class LiveCatActor {
       if (wrap) wrap.animate([{ scale: '0.6' }, { scale: '1.25' }, { scale: '1' }], { duration: 600, easing: 'ease-out' });
     }
 
+    function buyLitter2() {
+      if (requireLogin()) return;
+      if (stations.litter2.owned) return;
+      if (!spendCoins(STATION_DEFS.litter2.buyPrice)) return;
+      stations.litter2.owned = true;
+      audio.playCoin();
+      afterStationChange('litter2');
+      showToast("🪣", "ได้กระบะทรายอันที่ 2 แล้ว! วางไว้อีกฝั่งของห้อง");
+    }
+
     function upgradeStation(id) {
       if (requireLogin()) return;
       const st = stations[id];
-      if (st.lv >= 3) return;
+      if (st.lv >= 3 || !stationActive(id)) return;
       const next = STATION_DEFS[id].levels[st.lv];
       if (!spendCoins(next.price)) return;
       st.lv++;
-      if (id !== 'litter') st.amount = stationCapacity(id); // upgrades come filled
+      if (!isLitter(id)) st.amount = stationCapacity(id); // upgrades come filled
       audio.playCoin();
       afterStationChange(id);
-      scheduleLitterAutoClean();
+      scheduleLitterAutoClean(isLitter(id) ? id : undefined);
       showToast("⬆️", `อัปเกรดเป็น${next.name}แล้ว!`);
     }
 
