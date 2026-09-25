@@ -5386,10 +5386,10 @@
       grow: 1.4,                   // a merged / grown ball pushing its neighbours: 100% (unchanged)
       growTime: 0.4,               // seconds a new merged ball keeps the full push
       // Fall speed (round 13: 'balls fall too slowly, not exciting'). The old 980 gravity with 0.995 damping per
-      // substep capped a fall at ~400 px/s; now a drop crosses the box in well under a second
-      gravity: 2000,               // px/s² (was 980)
+      // substep capped a fall at ~400 px/s; now a drop reaches the floor in ~1 s (user: '1 วิ')
+      gravity: 1100,               // px/s² (was 980)
       fallDrag: 0.998,             // vertical speed kept per physics substep (was 0.995; sideways stays 0.995)
-      dropSpeed: 300               // px/s downward push when a ball leaves the hand (was 0)
+      dropSpeed: 200               // px/s downward push when a ball leaves the hand (was 0)
     });
     const GAMEPLAY = cfg('gameplay', {
       comboWindow: 1.0,            // seconds between merges that keep a combo going

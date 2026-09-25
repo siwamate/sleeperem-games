@@ -108,9 +108,9 @@
     "ball": 0.7,
     "grow": 1.4,
     "growTime": 0.4,
-    "gravity": 2000,
+    "gravity": 1100,
     "fallDrag": 0.998,
-    "dropSpeed": 300
+    "dropSpeed": 200
   },
   "gameplay": {
     "_about": "กติกาเกม Cat Ball",
