@@ -110,11 +110,8 @@
     .theme-card-preview.special-lucky_cat { background: radial-gradient(circle, #fde047, #b45309); }
     .theme-card-preview.special-name_tag { background: linear-gradient(135deg, #7c3aed, #f472b6); }
     .theme-card-preview.special-big_wallet { background: linear-gradient(135deg, #065f46, #fbbf24); }
-    .final-today { font-size: 11px; color: #cbd5e1; font-weight: 700; margin-top: 2px; }
+
     .final-coins { margin-top: 6px; font-size: 15px; font-weight: 800; color: #fde047; }
-    .final-stats { margin-top: 8px; font-size: 11px; line-height: 1.6; color: #cbd5e1; }
-    .final-stats b { color: #fff; }
-    .final-stats .fs-life { color: #94a3b8; font-size: 10px; }
     .helper-badge .hb-lv { font-size: 9px; color: #ffd84d; }
     /* Quick time event: a bug crosses the box, tap it for a few REM */
     .qte-bug {
@@ -122,6 +119,7 @@
       background: radial-gradient(circle, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0) 70%); border-radius: 50%; cursor: pointer;
       display: flex; align-items: center; justify-content: center; touch-action: none;
     }
+    .qte-rot { display: flex; }
     .qte-bug svg { width: 36px; height: auto; image-rendering: pixelated; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45)); }
     .qte-bug.flap svg { animation: qteFlap 0.12s steps(2) infinite; }
     @keyframes qteFlap { 50% { transform: scaleX(0.8); } }
@@ -4512,7 +4510,6 @@
       <canvas id="gameCanvas"></canvas>
       <!-- Combo HUD: multiplier + 1-second window bar (REQ-01 combo) -->
       <div id="helper-pop" class="helper-pop"><img src="" alt=""><div><div class="hp-name"></div><div class="hp-skill"></div></div></div>
-      <div id="qte-hint" class="qte-hint"></div>
           <div id="combo-hud" class="combo-hud">
         <div class="combo-label">COMBO</div>
         <div class="combo-mult" id="combo-mult">×2</div>
@@ -4578,7 +4575,6 @@
           <div id="final-score" style="font-size: 28px; font-weight: 700; color: #38bdf8; font-family: monospace;">0</div>
           <div id="final-combo" style="font-size: 12px; font-weight: 700; color: #f472b6;"></div>
           <div id="final-coins" class="final-coins"></div>
-          <div id="final-stats" class="final-stats"></div>
         </div>
 
         <div style="display:flex; gap:8px; margin-top:14px;">
@@ -5276,12 +5272,12 @@
       feverBonus: 2,               // ... pays a flat +2 REM (chains are common, so keep it small)
       luckyChance: 0.025,          // lucky ball share of drops (≈ 10 a game)
       luckyTable: [[0.6, 1, 3], [0.3, 4, 6], [0.1, 10, 20]],   // [probability, min, max] → ≈ 4 REM each
-      visitorReward: [4, 12], visitorDailyCap: 10,
+      visitorReward: [2, 5], visitorDailyCap: 10,
       chestByDay: [[6, 12], [10, 20], [16, 30], [24, 40], [30, 60], [40, 80], [100, 200]],   // streak day 1..7
       dailyCap: 2500,              // REM that can be earned per day (all sources)...
       dailyCapWallet: 5000,        // ... raised by the big wallet (shop › ไอเทมพิเศษ)
       startCoins: 300,
-      qteEvery: [180, 300],        // a bug crosses the box every 3-5 minutes of play...
+      qteEvery: [180, 300],        // a bug flies through the cat room every 3-5 minutes spent there...
       qteReward: [3, 5],           // ... tap it in time for 3-5 REM
       qteLife: 5,                  // seconds before it flies away
       poopCoin: 1                  // scooping the litter box pays 1 REM per poop (max 5 per box)
@@ -5289,8 +5285,8 @@
     // Ball bounce (REQ-01 §3.5, 2026-09-25). The old ball-to-ball impulse was 2 × (1 + 0.2), i.e. a bounce of 1.4.
     const PHYSICS = {
       wall: 0.25,                  // side walls: unchanged
-      floor: 0.25 * 0.3,           // a ball falling straight onto the floor: 30% of the old bounce
-      drop: 1.4 * 0.3,             // a freshly dropped ball landing on the pile: 30%
+      floor: 0.25 * 0.5,           // a ball falling straight onto the floor: 50% of the old bounce
+      drop: 1.4 * 0.5,             // a freshly dropped ball landing on the pile: 50%
       ball: 1.4 * 0.5,             // balls knocking into each other: 50%
       grow: 1.4,                   // a merged / grown ball pushing its neighbours: 100% (unchanged)
       growTime: 0.4                // seconds a new merged ball keeps the full push
@@ -6360,6 +6356,11 @@
     let backdropKey = '';
     const THEME_PETALS = [];
 
+    // A game is running from its first drop until game over / restart
+    function gameRunning() {
+      try { return !isGameOver && !!gameStats && gameStats.drops > 0; } catch (e) { return false; }
+    }
+
     function applyGameTheme(theme) {
       gameTheme = theme;
       const view = document.getElementById("view-game");
@@ -6583,7 +6584,7 @@
             const ky = c1.vy - c2.vy;
             const p = (nx * kx + ny * ky) / totalMass;
 
-            // Three kinds of contact (REQ-01 §3.5): growing push 100%, fresh drop 30%, ball-to-ball 50%
+            // Three kinds of contact (REQ-01 §3.5): growing push 100%, fresh drop 50%, ball-to-ball 50%
             const e = (c1.growT > 0 || c2.growT > 0) ? PHYSICS.grow : (c1.fresh || c2.fresh) ? PHYSICS.drop : PHYSICS.ball;
             c1.vx -= p * c2.mass * nx * (1 + e);
             c1.vy -= p * c2.mass * ny * (1 + e);
@@ -6946,7 +6947,7 @@
     }
 
     // Score already turned into REM this game; gameCoins splits this game's income for the end-of-game summary
-    const gameCoins = { score: 0, fever: 0, lucky: 0, qte: 0, skill: 0 };
+    const gameCoins = { score: 0, fever: 0, lucky: 0, skill: 0 };
     let coinedScore = 0;
 
     function updateScoreUI() {
@@ -7151,6 +7152,7 @@
       const earned = payGameEndCoins();
       rewardHelperBond();
       finishGameStats('gameover', earned);
+      if (gameTheme !== currentTheme) applyGameTheme(currentTheme);   // the room the player picked meanwhile
       document.getElementById("final-score").innerText = score.toLocaleString();
       const finalCombo = document.getElementById("final-combo");
       if (finalCombo) finalCombo.innerText = comboBestThisGame >= 2 ? `คอมโบสูงสุด ×${comboBestThisGame}` : '';
@@ -7183,7 +7185,7 @@
       fxTexts.length = 0;
       score = 0;
       coinedScore = 0;
-      gameCoins.score = gameCoins.fever = gameCoins.lucky = gameCoins.qte = gameCoins.skill = 0;
+      gameCoins.score = gameCoins.fever = gameCoins.lucky = gameCoins.skill = 0;
       displayScore = 0;
       combo = 0;
       comboTimer = 0;
@@ -7194,6 +7196,7 @@
       dropsThisGame = 0;
       luckyStreak = 0;
       skillFx = newSkillFx();
+      if (gameTheme !== currentTheme) applyGameTheme(currentTheme);
       document.getElementById("canvas-wrap").classList.remove("star-boost");
       renderSwapCharges();
       gameStats = newGameStats();
@@ -8270,9 +8273,10 @@ class LiveCatActor {
     function switchTheme(theme, silent = false) {
       if (!ROOM_IDS.includes(theme) || !ownsTheme(theme)) return;
       currentTheme = theme;
-      // Cat Ball wears the same theme as the last farm room (synced look)
+      // Cat Ball wears the same theme as the last farm room (synced look) — but a running game keeps
+      // the theme it started with; the new one is put on when that game ends (restartGame / triggerGameOver)
       if (getStorageItem('current_room') !== theme) setStorageItem('current_room', theme);
-      applyGameTheme(theme);
+      if (!gameRunning()) applyGameTheme(theme);
       if (typeof removeVisitor === 'function') removeVisitor();
       document.querySelectorAll('.theme-tab-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById('tab-' + theme).classList.add('active');
@@ -9133,13 +9137,12 @@ class LiveCatActor {
       const bonus = perks.lucky_cat ? earnCoins(base) : 0;
       const gem = skillFx.gemPct ? earnCoins(Math.round(base * skillFx.gemPct / 100)) : 0;   // skill "ตาเพชร"
       gameCoins.skill += gem;
-      const total = base + bonus + gameCoins.lucky + gameCoins.qte + gameCoins.skill;
+      const total = base + bonus + gameCoins.lucky + gameCoins.skill;
       const el = document.getElementById('final-coins');
       if (el) {
         el.innerHTML = coinHTML(`ได้เหรียญ +${total.toLocaleString()} 🪙`) +
           (bonus ? `<div class="final-lucky">🐈 แมวกวักทองคำ ×2 (+${bonus.toLocaleString()})</div>` : '') +
-          (gem ? `<div class="final-lucky">💎 ตาเพชร +${skillFx.gemPct}% (+${gem.toLocaleString()})</div>` : '') +
-          `<div class="final-today">วันนี้เก็บได้ ${earnedToday().toLocaleString()} / ${dailyCap().toLocaleString()} เหรียญ</div>`;
+          (gem ? `<div class="final-lucky">💎 ตาเพชร +${skillFx.gemPct}% (+${gem.toLocaleString()})</div>` : '');
       }
       return total;
     }
@@ -9975,9 +9978,9 @@ class LiveCatActor {
       if (helper && helper.id === id && !helper.used) { helper.lv = next; renderHelperBadge(); }
     }
     /* ==========================================================================
-       QUICK TIME EVENT + GAME STATS (REQ-01 §3.6, REQ-16 — 2026-09-25)
-       - Every 3-5 minutes of play a pixel bug crosses the box. Tap it within 5 s for 3-5 REM.
-         The clock only runs while a game is being played on screen (not on the farm, not in a hidden tab).
+       QUICK TIME EVENT + GAME STATS (REQ-15 §5, REQ-16 — 2026-09-25)
+       - Every 3-5 minutes spent in the cat room (signed in, tab visible) a pixel bug flies through it.
+         Tap it within 5 s for 3-5 REM. (Round 8: moved out of Cat Ball — it got in the way of play.)
        - Every game is measured (time, drops, merges, combos, highest level, shakes, bugs, coins, helper skill...)
          and saved: the last 100 games on this device (catball_stats), a small lifetime summary synced with
          the account (catball_summary), and one row per game in Supabase table game_sessions for analysis
@@ -9994,7 +9997,7 @@ class LiveCatActor {
         colors: { k: '#1f2937', o: '#fbbf24', O: '#b45309', y: '#fef08a' },
         map: ['..k......k..', '...k....k...', '....kkkk....', 'k..OooooO..k', '.kOoyooyoOk.', '..OooOOooO..', 'k.OooOOooO.k', '.kOooOOooOk.', '...OoOOoO...', '....kOOk....'] }
     ];
-    let qteClock = 0;                                   // seconds of real play, across games
+    let qteClock = 0;                                   // seconds spent in the cat room
     let qteNextAt = randInt(ECONOMY.qteEvery[0], ECONOMY.qteEvery[1]);
     let qteBug = null;
 
@@ -10006,19 +10009,27 @@ class LiveCatActor {
       return `<svg viewBox="0 0 ${map[0].length} ${map.length}" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
     }
 
-    // Runs every frame from gameLoop; counts play time and drives the bug
+    // Runs every frame from gameLoop: counts Cat Ball play time, and drives the bug in the cat room
     function tickPlayClock(dt) {
-      let onScreen = true;
-      try { onScreen = currentView === 'game'; } catch (e) { onScreen = true; }
-      if (isGameOver || !onScreen || document.hidden || !gameStats || gameStats.drops === 0) return;
+      let view = 'game';
+      try { view = currentView; } catch (e) { view = 'game'; }
+      if (view !== 'farm' && qteBug) clearQteBug();
+      if (document.hidden) return;
+      if (view === 'farm') {
+        if (!currentUser) return;
+        qteClock += dt;
+        if (qteBug) moveQteBug(dt);
+        else if (qteClock >= qteNextAt) spawnQteBug();
+        return;
+      }
+      if (isGameOver || view !== 'game' || !gameStats || gameStats.drops === 0) return;
       gameStats.playSec += dt;
-      qteClock += dt;
-      if (qteBug) moveQteBug(dt);
-      else if (qteClock >= qteNextAt) spawnQteBug();
     }
 
+    const qteHost = () => document.getElementById('room-viewport');
+
     function spawnQteBug(kind = null) {
-      const wrap = document.getElementById('canvas-wrap');
+      const wrap = qteHost();
       if (!wrap || qteBug) return;
       const def = QTE_BUGS.find(b => b.id === kind) || QTE_BUGS[Math.floor(Math.random() * QTE_BUGS.length)];
       const W = wrap.clientWidth, H = wrap.clientHeight;
@@ -10026,14 +10037,15 @@ class LiveCatActor {
       const el = document.createElement('button');
       el.className = 'qte-bug' + (def.flap ? ' flap' : '');
       el.setAttribute('aria-label', `ตบ${def.name}`);
-      el.innerHTML = pixelSVG(def.map, def.colors);
+      el.innerHTML = `<span class="qte-rot">${pixelSVG(def.map, def.colors)}</span>`;
       el.addEventListener('pointerdown', swatQteBug);
       wrap.appendChild(el);
       qteBug = { el, def, x: fromLeft ? -20 : W + 20, y: H * (0.2 + Math.random() * 0.35), tx: W / 2, ty: H * 0.4, vx: 0, vy: 0, t: 0, fleeing: false };
       pickBugTarget();
       placeQteBug();
       qteNextAt = qteClock + randInt(ECONOMY.qteEvery[0], ECONOMY.qteEvery[1]);
-      const hint = document.getElementById('qte-hint');
+      let hint = wrap.querySelector('.qte-hint');
+      if (!hint) { hint = document.createElement('div'); hint.className = 'qte-hint'; wrap.appendChild(hint); }
       if (hint) {
         hint.textContent = `${def.icon} ตบ${def.name}! +${ECONOMY.qteReward[0]}–${ECONOMY.qteReward[1]} เหรียญ`;
         hint.classList.add('show');
@@ -10043,7 +10055,7 @@ class LiveCatActor {
     }
 
     function pickBugTarget() {
-      const wrap = document.getElementById('canvas-wrap');
+      const wrap = qteHost();
       const W = wrap.clientWidth, H = wrap.clientHeight;
       qteBug.tx = 30 + Math.random() * (W - 60);
       qteBug.ty = H * 0.12 + Math.random() * H * 0.55;
@@ -10052,12 +10064,14 @@ class LiveCatActor {
     function placeQteBug() {
       const b = qteBug;
       const ang = Math.atan2(b.vy, b.vx) + Math.PI / 2;    // sprites face up
-      b.el.style.transform = `translate(${b.x.toFixed(1)}px, ${b.y.toFixed(1)}px) rotate(${ang.toFixed(2)}rad)`;
+      b.el.style.left = b.x.toFixed(1) + 'px';
+      b.el.style.top = b.y.toFixed(1) + 'px';
+      b.el.firstChild.style.transform = `rotate(${ang.toFixed(2)}rad)`;   // splat / flap animations use their own transforms
     }
 
     function moveQteBug(dt) {
       const b = qteBug;
-      const wrap = document.getElementById('canvas-wrap');
+      const wrap = qteHost();
       const W = wrap.clientWidth, H = wrap.clientHeight;
       b.t += dt;
       if (!b.fleeing && b.t > ECONOMY.qteLife) {            // too slow: it flies away (a miss)
@@ -10071,10 +10085,7 @@ class LiveCatActor {
       b.vy += ((dy / d) * speed - b.vy) * Math.min(1, dt * 4) + (Math.random() - 0.5) * b.def.jitter * dt * 10;
       b.x += b.vx * dt; b.y += b.vy * dt;
       placeQteBug();
-      if (b.fleeing && (b.x < -50 || b.x > W + 50 || b.y < -30)) {
-        if (gameStats) gameStats.qteMiss++;
-        clearQteBug();
-      }
+      if (b.fleeing && (b.x < -50 || b.x > W + 50 || b.y < -30)) clearQteBug();
     }
 
     function swatQteBug(e) {
@@ -10083,12 +10094,7 @@ class LiveCatActor {
       if (!b || b.fleeing && b.x < -20) return;
       qteBug = null;
       const reward = earnCoins(randInt(ECONOMY.qteReward[0], ECONOMY.qteReward[1]));
-      gameCoins.qte += reward;
-      if (gameStats) {
-        gameStats.qteHit++;
-        const ms = Math.round(b.t * 1000);
-        gameStats.qteFastMs = gameStats.qteFastMs == null ? ms : Math.min(gameStats.qteFastMs, ms);
-      }
+      try { const cat = catInstances.find(c => c.dom && !c.isBusy); if (cat) showSpeechBubble(cat.dom, 'จับได้แล้ว! 🐾'); } catch (e) { /* no cats */ }
       b.el.classList.add('splat');
       setTimeout(() => b.el.remove(), 460);
       const pop = document.createElement('div');
@@ -10114,7 +10120,7 @@ class LiveCatActor {
       try { theme = document.getElementById('view-game').dataset.theme || currentTheme; } catch (e) { theme = null; }
       return {
         startedAt: Date.now(), playSec: 0, drops: 0, merges: 0, maxTier: 0, chains: 0, fevers: 0, shakes: 0,
-        lucky: 0, qteHit: 0, qteMiss: 0, qteFastMs: null, helper: null, done: false, theme,
+        lucky: 0, helper: null, done: false, theme,
         device: window.matchMedia && matchMedia('(pointer: coarse)').matches ? 'touch' : 'mouse'
       };
     }
@@ -10141,7 +10147,6 @@ class LiveCatActor {
         durationSec: Math.round((Date.now() - g.startedAt) / 1000), playSec,
         score, bestCombo: comboBestThisGame, maxLevel: maxTier + 1,
         drops: g.drops, merges: g.merges, chains: g.chains, fevers: g.fevers, shakes: g.shakes, lucky: g.lucky,
-        qteHit: g.qteHit, qteMiss: g.qteMiss, qteFastMs: g.qteFastMs,
         coins: earned != null ? earned : Object.values(coinSplit).reduce((a, b) => a + b, 0), coinSplit,
         pointsPerMin: playSec ? Math.round(score / (playSec / 60)) : 0,
         mergesPerMin: playSec ? +(g.merges / (playSec / 60)).toFixed(1) : 0,
@@ -10161,14 +10166,11 @@ class LiveCatActor {
       sum.merges = (sum.merges || 0) + g.merges;
       sum.drops = (sum.drops || 0) + g.drops;
       sum.fevers = (sum.fevers || 0) + g.fevers;
-      sum.qteHit = (sum.qteHit || 0) + g.qteHit;
-      sum.qteMiss = (sum.qteMiss || 0) + g.qteMiss;
       sum.coins = (sum.coins || 0) + rec.coins;
       sum.quits = (sum.quits || 0) + (end === 'gameover' ? 0 : 1);
       sum.lastAt = new Date().toISOString();
       setStorageItem('catball_summary', JSON.stringify(sum));
       sendGameStats(rec);
-      if (end === 'gameover') renderFinalStats(rec, sum);
       return rec;
     }
 
@@ -10184,21 +10186,11 @@ class LiveCatActor {
       } catch (e) { statsServerOff = true; }
     }
 
-    const fmtClock = sec => `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
-    function renderFinalStats(rec, sum) {
-      const el = document.getElementById('final-stats');
-      if (!el) return;
-      const bugs = rec.qteHit + rec.qteMiss ? ` • 🪰 ตบแมลง ${rec.qteHit}/${rec.qteHit + rec.qteMiss}` : '';
-      el.innerHTML = `⏱ เล่น <b>${fmtClock(rec.playSec)}</b> นาที • 🐾 ปล่อย <b>${rec.drops}</b> ลูก • ✨ รวมร่าง <b>${rec.merges}</b> ครั้ง<br>` +
-        `🔥 FEVER <b>${rec.fevers}</b> ครั้ง • 👑 ถึงเลเวล <b>${rec.maxLevel}</b>${bugs}` +
-        `<div class="fs-life">รวมทุกเกม: ${sum.games} เกม • ${Math.round(sum.playSec / 60)} นาที • สูงสุด ${sum.bestScore.toLocaleString()} • คอมโบ ×${sum.bestCombo} • เลเวล ${sum.bestLevel}</div>`;
-    }
-
     // For analysis: downloads this device's game log as CSV
     function exportCatballStats() {
       const log = loadStatsLog();
       const cols = ['at', 'end', 'playSec', 'durationSec', 'score', 'bestCombo', 'maxLevel', 'drops', 'merges', 'chains', 'fevers',
-        'shakes', 'lucky', 'qteHit', 'qteMiss', 'qteFastMs', 'coins', 'pointsPerMin', 'mergesPerMin', 'theme', 'device', 'helperCat', 'helperSkill', 'helperLv', 'helperFired'];
+        'shakes', 'lucky', 'coins', 'pointsPerMin', 'mergesPerMin', 'theme', 'device', 'helperCat', 'helperSkill', 'helperLv', 'helperFired'];
       const rows = log.map(r => cols.map(c => {
         const v = c.startsWith('helper') ? (r.helper ? { helperCat: r.helper.cat, helperSkill: r.helper.skill, helperLv: r.helper.lv, helperFired: r.helper.fired }[c] : '') : r[c];
         return v == null ? '' : String(v).replace(/[",\n]/g, ' ');
