@@ -77,6 +77,28 @@
       border-radius: 10px; transition: all 0.2s; pointer-events: none;
     }
     .stranger-bubble.show { opacity: 1; transform: translateX(-50%) scale(1); }
+    .helper-badge {
+      display: flex; align-items: center; gap: 3px; padding: 2px 8px 2px 3px; border-radius: 14px; cursor: pointer;
+      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 216, 77, 0.55); color: #fff; font: 700 11px Prompt, sans-serif;
+    }
+    .helper-badge img { width: 22px; height: 22px; object-fit: contain; }
+    @media (max-width: 480px) {
+      .next-indicator > span:first-child, #highest-cat-hud > span:first-child { display: none; }
+      #next-cat-name, #highest-tier-name { max-width: 88px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; }
+      .helper-badge { padding-right: 6px; }
+    }
+    .helper-badge.is-used { opacity: 0.5; }
+    .helper-pop {
+      position: absolute; left: 8px; bottom: 18px; z-index: 60; display: flex; align-items: center; gap: 8px; pointer-events: none;
+      padding: 6px 12px 6px 6px; border-radius: 18px; background: linear-gradient(135deg, rgba(88, 28, 135, 0.92), rgba(219, 39, 119, 0.9));
+      border: 2px solid #ffd84d; box-shadow: 0 0 24px rgba(255, 216, 77, 0.6); color: #fff;
+      transform: translateX(-130%); transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .helper-pop.show { transform: translateX(0); }
+    .helper-pop img { width: 54px; height: 54px; object-fit: contain; animation: helperHop 0.5s ease-in-out infinite alternate; }
+    @keyframes helperHop { to { transform: translateY(-5px); } }
+    .helper-pop .hp-name { font: 800 12px Prompt, sans-serif; }
+    .helper-pop .hp-skill { font: 800 15px Prompt, sans-serif; color: #ffd84d; }
     .bond-box { background: #090e1a; border: 1px solid #1e293b; border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; text-align: center; }
     .bond-hearts { font-size: 13px; letter-spacing: 1px; }
     .bond-bar { height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden; margin: 6px 0 4px; }
@@ -4433,6 +4455,7 @@
         <div id="next-cat-view" class="next-bubble"><canvas id="next-cat-canvas" width="80" height="80"></canvas></div>
         <span id="next-cat-name" style="font-weight: 600; color: #f59e0b;">ก้อนไหมพรม</span>
       </div>
+      <button id="helper-badge" class="helper-badge" onclick="showHelperInfo()" style="display:none"></button>
       <div id="highest-cat-hud" style="font-size: 11px; color: #38bdf8; font-weight: 600; display:flex; align-items:center; gap:4px;">
         <span>สูงสุด:</span>
         <span id="highest-tier-name" style="color: #fbbf24; font-weight: 700;">Tier 1 (ลูกแมวส้ม)</span>
@@ -4449,7 +4472,8 @@
     <div id="canvas-wrap">
       <canvas id="gameCanvas"></canvas>
       <!-- Combo HUD: multiplier + 1-second window bar (REQ-01 combo) -->
-      <div id="combo-hud" class="combo-hud">
+      <div id="helper-pop" class="helper-pop"><img src="" alt=""><div><div class="hp-name"></div><div class="hp-skill"></div></div></div>
+          <div id="combo-hud" class="combo-hud">
         <div class="combo-label">COMBO</div>
         <div class="combo-mult" id="combo-mult">×2</div>
         <div class="combo-bar"><span id="combo-bar-fill"></span></div>
@@ -5225,6 +5249,7 @@
         refreshGuestMode();
         refreshDailyChestButton();
         if (typeof grantCatReward === 'function') grantCatReward('login');
+        if (typeof pickHelper === 'function' && dropsThisGame === 0) pickHelper();
         if (pendingFarmEntry) {
           pendingFarmEntry = false;
           closeLoginModal();
@@ -6877,7 +6902,9 @@
       currentLucky = nextLucky;
       nextCatTier = getRandomInitialTier();
       nextLucky = rollLucky();
+      if (luckyStreak > 0) { nextLucky = true; luckyStreak--; }   // helper skill "lucky aura"
       updateNextCatUI();
+      helperTick();
 
       setTimeout(() => {
         dropCooldown = false;
@@ -6990,6 +7017,7 @@
       isGameOver = true;
       if (comboTimer > 0) endCombo();
       payGameEndCoins();
+      rewardHelperBond();
       document.getElementById("final-score").innerText = score.toLocaleString();
       const finalCombo = document.getElementById("final-combo");
       if (finalCombo) finalCombo.innerText = comboBestThisGame >= 2 ? `คอมโบสูงสุด ×${comboBestThisGame}` : '';
@@ -7028,6 +7056,9 @@
       updateComboHUD(false);
       document.getElementById("score-val").innerText = "0";
       moonShakesLeft = 1;
+      dropsThisGame = 0;
+      luckyStreak = 0;
+      pickHelper();
       shakeLowGravity = 0;
       shakeGrace = 0;
       activeIdleBalls = 0;
@@ -9448,6 +9479,147 @@ class LiveCatActor {
     const STRANGER_X = { japanese: 440, modern: 520, space: 630 };
     scheduleStranger(120000 + Math.random() * 60000);  // first visit 2-3 min after opening, then every 4-6 min
 
+
+    /* ==========================================================================
+       HELPER CAT SKILLS (REQ-14 §3, approved 2026-09-25)
+       - Each game one of the player's own cats is picked at random to cheer from the side of the box.
+       - Every breed has 1 skill. It fires once, at a random drop between 80 and 100,
+         with a chance of 10% per bond heart (10 hearts = always). A miss is silent (no fake near-miss).
+       - The helper cat gains +1 bond per finished game (up to 5 a day) → play Cat Ball ↔ care for cats.
+       ========================================================================== */
+    const HELPER_SKILLS = {
+      call:   { icon: '📣', name: 'เรียกเพื่อน', desc: 'ลูกถัดไปเป็นแบบเดียวกับลูกเล็กที่อยู่สูงสุดในกล่อง' },
+      magnet: { icon: '🧲', name: 'จับคู่', desc: 'ดึงลูกคู่ที่เหมือนกันมาชนกันให้รวมร่าง' },
+      snack:  { icon: '🍘', name: 'กินเศษ', desc: 'กินลูกเล็ก (ไหมพรม/ลูกแมวส้ม) ที่อยู่สูงสุด 2 ลูก' },
+      loaf:   { icon: '🍞', name: 'นอนทับ', desc: 'นอนทับขอบกล่อง หยุดเวลาล้นกล่อง 6 วินาที' },
+      swap:   { icon: '🐾', name: 'ตบสลับ', desc: 'สลับลูกที่ถืออยู่กับลูกถัดไป' },
+      shake:  { icon: '🌙', name: 'เขย่าฟรี', desc: 'ได้สิทธิ์เขย่ากล่องเพิ่ม +1' },
+      lucky:  { icon: '🍀', name: 'ออร่านำโชค', desc: '3 ลูกถัดไปเป็นลูกนำโชค' }
+    };
+    const BREED_SKILL = {
+      siamese: 'call', turkish: 'call',
+      americanshorthair: 'magnet', russianblue: 'magnet', bengal: 'magnet',
+      british: 'snack', exotic: 'snack', mainecoon: 'snack',
+      scottish: 'loaf', persian: 'loaf', ragdoll: 'loaf',
+      munchkin: 'swap', abyssinian: 'swap', savannah: 'swap',
+      sphynx: 'shake', norwegian: 'shake',
+      birman: 'lucky', korat: 'lucky', khaomanee: 'lucky', suphalak: 'lucky'
+    };
+    const HELPER_FROM = 80, HELPER_TO = 100, HELPER_BOND_PER_DAY = 5;
+    let helper = null;          // { id, hearts, chance, at, used }
+    let dropsThisGame = 0;
+    let luckyStreak = 0;
+
+    function pickHelper() {
+      helper = null;
+      let owned = [];
+      try { owned = currentUser ? (ownedCats || []).filter(id => BREED_SKILL[id]) : []; } catch (e) { owned = []; }
+      if (owned.length) {
+        const id = owned[Math.floor(Math.random() * owned.length)];
+        const hearts = bondLevel(bondOf(id).xp);
+        helper = { id, hearts, chance: hearts / 10, at: HELPER_FROM + Math.floor(Math.random() * (HELPER_TO - HELPER_FROM + 1)), used: false };
+      }
+      renderHelperBadge();
+    }
+
+    function renderHelperBadge() {
+      const el = document.getElementById('helper-badge');
+      if (!el) return;
+      if (!helper) { el.style.display = 'none'; return; }
+      const breed = CAT_BREEDS.find(b => b.id === helper.id);
+      const sk = HELPER_SKILLS[BREED_SKILL[helper.id]];
+      el.style.display = 'flex';
+      el.innerHTML = `<img src="${breed.img}" alt=""><span>${sk.icon}</span><span class="hb-hearts">❤️${helper.hearts}</span>`;
+      el.title = `${catDisplayName(breed)} มาเชียร์ • สกิล ${sk.name}: ${sk.desc} • โอกาส ${Math.round(helper.chance * 100)}%`;
+      el.classList.toggle('is-used', helper.used);
+    }
+
+    function showHelperInfo() {
+      if (!helper) return;
+      const breed = CAT_BREEDS.find(b => b.id === helper.id);
+      const sk = HELPER_SKILLS[BREED_SKILL[helper.id]];
+      showSkillToast(sk.icon, helper.chance
+        ? `${catDisplayName(breed)} มาเชียร์! สกิล "${sk.name}" อาจใช้ช่วงลูกที่ ${HELPER_FROM}–${HELPER_TO} (โอกาส ${Math.round(helper.chance * 100)}%)`
+        : `${catDisplayName(breed)} มาเชียร์! เลี้ยงให้สนิทขึ้น (ลูบ/ป้อน) แล้วจะช่วยใช้สกิล "${sk.name}"`);
+    }
+
+    // Called from dropCat() after every drop
+    function helperTick() {
+      dropsThisGame++;
+      if (!helper || helper.used || dropsThisGame !== helper.at) return;
+      helper.used = true;
+      renderHelperBadge();
+      if (Math.random() < helper.chance) useHelperSkill(BREED_SKILL[helper.id]);
+    }
+
+    function useHelperSkill(type) {
+      let done = false;
+      if (type === 'call') {
+        const top = cats.filter(c => c.tier <= 4 && !c.merged).sort((a, b) => a.y - b.y)[0];
+        if (top) { nextCatTier = top.tier; updateNextCatUI(); done = true; }
+      } else if (type === 'magnet') {
+        let best = null;
+        for (let i = 0; i < cats.length; i++) for (let j = i + 1; j < cats.length; j++) {
+          const a = cats[i], b = cats[j];
+          if (a.tier !== b.tier || a.tier >= CAT_TIERS.length - 1 || a.merged || b.merged) continue;
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (!best || d < best.d) best = { a, b, d };
+        }
+        if (best) {
+          for (let k = 0; k < 16; k++) particles.push(new StarParticle(best.b.x, best.b.y, "#a5f3fc"));
+          const ang = Math.atan2(best.b.y - best.a.y, best.b.x - best.a.x);
+          best.b.x = best.a.x + Math.cos(ang) * (best.a.r + best.b.r - 3);
+          best.b.y = best.a.y + Math.sin(ang) * (best.a.r + best.b.r - 3);
+          done = true;
+        }
+      } else if (type === 'snack') {
+        const small = cats.filter(c => c.tier <= 1 && !c.merged).sort((a, b) => a.y - b.y).slice(0, 2);
+        small.forEach(c => { c.merged = true; for (let k = 0; k < 14; k++) particles.push(new Particle(c.x, c.y, CAT_TIERS[c.tier].color)); });
+        for (let i = cats.length - 1; i >= 0; i--) if (cats[i].merged) cats.splice(i, 1);
+        done = small.length > 0;
+      } else if (type === 'loaf') {
+        shakeGrace = Math.max(shakeGrace, 6); dangerTimer = 0; done = true;
+      } else if (type === 'swap') {
+        [currentCatTier, nextCatTier] = [nextCatTier, currentCatTier];
+        [currentLucky, nextLucky] = [nextLucky, currentLucky];
+        updateNextCatUI(); done = true;
+      } else if (type === 'shake') {
+        moonShakesLeft++;
+        document.getElementById("moon-count").innerText = moonShakesLeft;
+        document.getElementById("moon-shake-btn").disabled = false;
+        done = true;
+      }
+      if (!done || type === 'lucky') {        // lucky aura (also the fallback when the skill has nothing to act on)
+        type = 'lucky';
+        luckyStreak = 3; nextLucky = true; updateNextCatUI();
+      }
+      const breed = CAT_BREEDS.find(b => b.id === helper.id);
+      const sk = HELPER_SKILLS[type];
+      showHelperPop(breed, sk);
+      sound.playLucky();
+    }
+
+    function showHelperPop(breed, sk) {
+      const pop = document.getElementById('helper-pop');
+      if (!pop) return;
+      pop.querySelector('img').src = breed.img;
+      pop.querySelector('.hp-name').textContent = `${catDisplayName(breed)} ใช้สกิล!`;
+      pop.querySelector('.hp-skill').textContent = `${sk.icon} ${sk.name}`;
+      pop.classList.remove('show'); void pop.offsetWidth; pop.classList.add('show');
+      setTimeout(() => pop.classList.remove('show'), 2600);
+    }
+
+    // Finished game: the helper gets a little closer (+1 bond, up to 5 a day)
+    function rewardHelperBond() {
+      if (!helper || !currentUser) return;
+      const b = bondOf(helper.id);
+      const today = new Date().toLocaleDateString('en-CA');
+      if (b.helpDay !== today) { b.helpDay = today; b.helpN = 0; }
+      if (b.helpN >= HELPER_BOND_PER_DAY) return;
+      b.helpN++;
+      b.xp = Math.min(BOND_LEVELS[BOND_LEVELS.length - 1], b.xp + 1);
+      saveBond();
+    }
     /* ==========================================================================
        SHOP & ROOM DECOR (theme-only items + universal items)
        ========================================================================== */
@@ -10254,6 +10426,7 @@ class LiveCatActor {
       renderThemeShop();
       renderSpecialShop();
       renderFxShop();
+      pickHelper();
       initSceneToys();
       refreshGuestMode();
       const shopCount = document.getElementById('shop-item-count');
