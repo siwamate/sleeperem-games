@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>
   <style>
 
     /* UNIFIED APP CONTAINER (CAT BALL + CAT FARM SPA) */
@@ -4831,7 +4831,7 @@
           </div>
           <div class="plaque-tag-body">
             <span class="icon">🏆</span>
-            <span class="text" id="plaque-owner-text">Kanel</span>
+            <span class="text" id="plaque-owner-text">Sleeperem Farm</span>
           </div>
         </div>
 
@@ -5485,14 +5485,14 @@
     }
 
     function updateUserUI(user) {
-      const isOwner = user ? isKanelNotarry(user) : false;
+      const isOwner = user ? isFarmOwner(user) : false;
 
       // 1. Cat Ball View: Bottom Action Bar Profile Badge
       const nameElem = document.getElementById("user-name");
       const avatarElem = document.getElementById("user-avatar");
       if (nameElem) {
         if (user) {
-          nameElem.innerText = isOwner ? "👑 Kanel" : (user.name ? user.name.split(" ")[0] : "ผู้เล่น");
+          nameElem.innerText = (isOwner ? "👑 " : "") + (user.name ? user.name.split(" ")[0] : "ผู้เล่น");
           nameElem.style.color = isOwner ? "#fbbf24" : "#38bdf8";
         } else {
           nameElem.innerText = "Guest";
@@ -5513,11 +5513,11 @@
       const farmIcon = document.getElementById("farm-user-icon");
       if (farmPill) {
         farmPill.className = isOwner ? "header-user-badge is-owner" : "header-user-badge";
-        farmPill.title = user ? (isOwner ? "คุณ Kanel Notarry (เจ้าของฟาร์ม)" : user.name) : "คลิกเพื่อจัดการบัญชีผู้ใช้";
+        farmPill.title = user ? (isOwner ? `${user.name} (เจ้าของฟาร์ม)` : user.name) : "คลิกเพื่อจัดการบัญชีผู้ใช้";
       }
       if (farmName) {
         if (user) {
-          farmName.innerText = isOwner ? "👑 Kanel (เจ้าของ)" : (user.name ? user.name.split(" ")[0] : "ผู้มาเยือน");
+          farmName.innerText = (isOwner ? "👑 " : "") + (user.name ? user.name.split(" ")[0] : "ผู้มาเยือน");
           farmName.style.color = isOwner ? "#fbbf24" : "#38bdf8";
         } else {
           farmName.innerText = "เข้าสู่ระบบ";
@@ -5535,7 +5535,7 @@
       // 3. Mini Leaderboard Plaque in Farm
       const plaque = document.getElementById("plaque-owner-text");
       if (plaque) {
-        plaque.innerText = isOwner ? "Kanel (เจ้าของฟาร์ม)" : "Sleeperem Farm";
+        plaque.innerText = isOwner ? "เจ้าของฟาร์ม" : "Sleeperem Farm";
       }
     }
 
@@ -7139,17 +7139,12 @@
 
 
     let currentUser = null;
-    const KANEL_NOTARRY_UUID = "087bafcd-0191-419f-8a39-bd834eb323f2";
+    // The farm owner's account id. Only the id decides: a name or an email can be chosen by anyone, and the
+    // owner's real name does not belong in a page everyone can read (brand privacy rule).
+    const OWNER_UUID = "087bafcd-0191-419f-8a39-bd834eb323f2";
 
-    function isKanelNotarry(user) {
-      if (!user) return false;
-      const id = user.id || "";
-      const meta = user.user_metadata || {};
-      const name = (meta.full_name || meta.name || user.name || "").toLowerCase();
-      const email = (user.email || "").toLowerCase();
-      return id === KANEL_NOTARRY_UUID ||
-             (name.includes("kanel") && name.includes("notarry")) ||
-             email.includes("notarry");
+    function isFarmOwner(user) {
+      return !!user && user.id === OWNER_UUID;
     }
 
     /* dev tools removed */
@@ -7176,7 +7171,7 @@
       if (currentUser) {
         guestView.style.display = "none";
         userView.style.display = "block";
-        const isOwner = isKanelNotarry(currentUser);
+        const isOwner = isFarmOwner(currentUser);
         document.getElementById("modal-user-name").innerText = isOwner ? `${currentUser.name} 👑` : currentUser.name;
         document.getElementById("modal-high-score").innerText = bestScore.toLocaleString();
         
@@ -11869,16 +11864,16 @@ class LiveCatActor {
     }
 
     /* ==========================================================================
-       SUPABASE AUTH & KANEL NOTARRY SECURITY (Connected to live Cat Ball project)
+       SUPABASE AUTH & FARM OWNER (Connected to live Cat Ball project)
        ========================================================================== */
     // SUPABASE_URL unified
     // SUPABASE_ANON_KEY unified
     // supabaseClient unified
 
-    // KANEL_NOTARRY_UUID unified
+    // OWNER_UUID unified
     // currentUser unified with catball currentUser
 
-    // isKanelNotarry unified
+    // isFarmOwner unified
 
     // loginWithFacebook unified
 
