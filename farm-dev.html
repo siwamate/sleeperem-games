@@ -5444,6 +5444,11 @@
     function escapeHtml(text) {
       return String(text).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
     }
+    // A picture address that comes from an account is that user's own text, and the leaderboard shows it to
+    // everyone: only https, and escaped before it goes into HTML
+    function safeImgUrl(url) {
+      return /^https:\/\//i.test(String(url || '')) ? escapeHtml(url) : '';
+    }
     function coinHTML(text) {
       return escapeHtml(text).replace(/🪙/g, '<i class="rem-coin" aria-label="REM"></i>');
     }
@@ -5496,7 +5501,7 @@
       }
       if (avatarElem) {
         if (user && user.avatar) {
-          avatarElem.innerHTML = `<img src="${user.avatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'}; display:block;">`;
+          avatarElem.innerHTML = `<img src="${safeImgUrl(user.avatar)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'}; display:block;">`;
         } else {
           avatarElem.innerHTML = user ? (isOwner ? "👑" : "🐱") : "👤";
         }
@@ -5521,7 +5526,7 @@
       }
       if (farmIcon) {
         if (user && user.avatar) {
-          farmIcon.innerHTML = `<img src="${user.avatar}" class="user-avatar-img" style="border:1.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'};">`;
+          farmIcon.innerHTML = `<img src="${safeImgUrl(user.avatar)}" class="user-avatar-img" style="border:1.5px solid ${isOwner ? '#fbbf24' : '#38bdf8'};">`;
         } else {
           farmIcon.innerHTML = user ? (isOwner ? "👑" : "🐱") : "👤";
         }
@@ -6151,7 +6156,9 @@
 
     // Game Variables
     let score = 0;
-    let bestScore = parseInt(localStorage.getItem("sleeperem_best") || "0");
+    // through the storage helpers: a bare localStorage call here throws where storage is blocked (a game
+    // portal's iframe, private browsing) and the game never starts
+    let bestScore = parseInt(getStorageItem('best', '0'), 10) || 0;
     let moonShakesLeft = GAMEPLAY.shakesPerGame;
     let shakeLowGravity = 0;   // seconds of low gravity left after a shake
     let shakeGrace = 0;        // seconds the overflow countdown stays paused after a shake
@@ -7397,7 +7404,7 @@
 
           const tierConfig = CAT_TIERS[row.highest_tier] || CAT_TIERS[CAT_TIERS.length - 1];
           const tierName = tierConfig ? tierConfig.name : `Tier ${row.highest_tier + 1}`;
-          const avatarSrc = row.avatar_url || "";
+          const avatarSrc = safeImgUrl(row.avatar_url);
           const avatarHtml = avatarSrc
             ? `<img src="${avatarSrc}" class="leaderboard-avatar" onerror="this.onerror=null;this.parentNode.innerHTML='<span class=\'leaderboard-avatar-placeholder\'>🐱</span>';">`
             : `<div class="leaderboard-avatar-placeholder">🐱</div>`;
@@ -7442,7 +7449,7 @@
       // score-val is animated by the rolling counter in updateFx()
       if (score > bestScore) {
         bestScore = score;
-        localStorage.setItem("sleeperem_best", bestScore);
+        setStorageItem('best', bestScore);
       }
       document.getElementById("best-val").innerText = bestScore.toLocaleString();
       updateHighestCatHUD();
